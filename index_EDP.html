@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDP — Strategic Dashboard 2024</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0f0e;
+    --bg2: #141614;
+    --bg3: #1a1d1a;
+    --bg4: #1f231f;
+    --border: rgba(255,255,255,0.07);
+    --border-s: rgba(255,255,255,0.12);
+    --text: #e8ebe6;
+    --text2: #8f9b8a;
+    --text3: #5a6456;
+    --green: #5cdb8e;
+    --green-dim: #2a4d3a;
+    --green-bg: rgba(92,219,142,0.08);
+    --amber: #f4b942;
+    --amber-dim: #4a3a1a;
+    --amber-bg: rgba(244,185,66,0.08);
+    --red: #e05c5c;
+    --red-dim: #4a1f1f;
+    --red-bg: rgba(224,92,92,0.08);
+    --blue: #5ba8d4;
+    --blue-bg: rgba(91,168,212,0.08);
+    --accent: #5cdb8e;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Instrument Sans', sans-serif;
+    --serif: 'DM Serif Display', serif;
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.6; }
+
+  body { min-height: 100vh; }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    background: rgba(13,15,14,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+  .site-header .logo {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--text);
+    letter-spacing: .01em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; animation: pulse 2.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+  .header-meta { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: .05em; }
+  .nav-tabs { display: flex; gap: 2px; }
+  .nav-tab {
+    font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 6px;
+    border: none; background: transparent; color: var(--text3); cursor: pointer;
+    transition: all .18s; font-family: var(--sans); letter-spacing: .02em;
+  }
+  .nav-tab:hover { color: var(--text); background: var(--bg3); }
+  .nav-tab.active { color: var(--green); background: var(--green-bg); }
+
+  /* ─── LAYOUT ─── */
+  .main { max-width: 1280px; margin: 0 auto; padding: 2rem 2.5rem 4rem; }
+
+  /* ─── HERO ─── */
+  .hero {
+    padding: 2.5rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: end;
+  }
+  .hero-eyebrow { font-family: var(--mono); font-size: 11px; color: var(--green); letter-spacing: .12em; text-transform: uppercase; margin-bottom: .6rem; }
+  .hero-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem); color: var(--text); line-height: 1.1; font-weight: 400; }
+  .hero-title em { font-style: italic; color: var(--green); }
+  .hero-sub { margin-top: .7rem; font-size: 13px; color: var(--text2); max-width: 520px; line-height: 1.7; }
+  .hero-kpis { display: flex; gap: 1.5rem; }
+  .hkpi { text-align: right; }
+  .hkpi-val { font-family: var(--serif); font-size: 1.9rem; color: var(--text); line-height: 1; }
+  .hkpi-label { font-size: 11px; color: var(--text3); margin-top: 3px; font-family: var(--mono); }
+
+  /* ─── SECTION ─── */
+  .section { margin-bottom: 3rem; }
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase;
+    margin-bottom: 1.2rem; padding-bottom: .7rem; border-bottom: 1px solid var(--border);
+  }
+  .section-label span { color: var(--green); font-size: 10px; background: var(--green-bg); padding: 2px 8px; border-radius: 3px; }
+  .section-title { font-family: var(--serif); font-size: 1.4rem; color: var(--text); font-weight: 400; margin-bottom: 1.2rem; }
+
+  /* ─── METRIC ROW ─── */
+  .metrics-row { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+  .mc {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+    padding: .85rem 1.1rem;
+    transition: border-color .18s;
+  }
+  .mc:hover { border-color: var(--border-s); }
+  .mc-label { font-size: 10px; color: var(--text3); font-family: var(--mono); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 4px; }
+  .mc-value { font-family: var(--serif); font-size: 1.6rem; color: var(--text); line-height: 1.1; }
+  .mc-sub { font-size: 11px; margin-top: 3px; font-family: var(--mono); }
+  .pos { color: var(--green); }
+  .neg { color: var(--red); }
+  .flat { color: var(--text3); }
+
+  /* ─── GRID ─── */
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+  /* ─── CARD ─── */
+  .card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.1rem 1.3rem;
+  }
+  .card-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 10px; letter-spacing: .02em; text-transform: uppercase; font-family: var(--mono); }
+
+  /* ─── BAR CHART ─── */
+  .bar-section { margin-bottom: 1.5rem; }
+  .bar-section-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+  .bar-label { font-size: 11px; color: var(--text2); width: 140px; flex-shrink: 0; text-align: right; font-family: var(--mono); }
+  .bar-track { flex: 1; height: 7px; background: var(--bg4); border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; transition: width .8s cubic-bezier(.16,1,.3,1); }
+  .bar-val { font-size: 11px; font-weight: 500; color: var(--text); width: 48px; text-align: right; font-family: var(--mono); }
+
+  /* ─── VALUE CHAIN LAYERS ─── */
+  .vc-layer {
+    border-left: 3px solid; padding: .8rem 1.1rem;
+    margin-bottom: 8px; border-radius: 0 10px 10px 0;
+    background: var(--bg3); transition: background .18s;
+  }
+  .vc-layer:hover { background: var(--bg4); }
+  .vc-layer-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; font-family: var(--sans); }
+  .vc-layer-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+  .tag {
+    display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 4px;
+    font-weight: 500; font-family: var(--mono); letter-spacing: .03em;
+  }
+  .tag-g { background: var(--green-dim); color: var(--green); }
+  .tag-a { background: var(--amber-dim); color: var(--amber); }
+  .tag-b { background: rgba(91,168,212,0.15); color: var(--blue); }
+  .tag-r { background: var(--red-dim); color: var(--red); }
+  .tag-n { background: var(--bg4); color: var(--text3); }
+
+  /* ─── KPI TABLE ─── */
+  .kpi-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 12px; padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .kpi-row:last-child { border-bottom: none; }
+  .kpi-row-label { color: var(--text2); }
+  .kpi-row-val { font-weight: 500; color: var(--text); font-family: var(--mono); font-size: 11px; }
+
+  /* ─── TABS ─── */
+  .tab-bar { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+  .tab-btn {
+    font-size: 11px; font-weight: 500; padding: 5px 12px;
+    border-radius: 6px; border: 1px solid var(--border);
+    background: transparent; color: var(--text3); cursor: pointer;
+    transition: all .15s; font-family: var(--mono); letter-spacing: .04em;
+  }
+  .tab-btn:hover { color: var(--text); border-color: var(--border-s); }
+  .tab-btn.active { color: var(--green); border-color: var(--green); background: var(--green-bg); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn .2s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ─── MILESTONE ─── */
+  .milestone { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .ms-dot {
+    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700;
+  }
+  .ms-green { background: var(--green-dim); color: var(--green); }
+  .ms-amber { background: var(--amber-dim); color: var(--amber); }
+  .ms-red { background: var(--red-dim); color: var(--red); }
+  .ms-body { font-size: 12px; color: var(--text2); line-height: 1.55; }
+  .ms-body strong { color: var(--text); font-weight: 600; }
+
+  /* ─── TIMELINE ─── */
+  .timeline { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .tl-col { padding: 1rem 1.1rem; border-right: 1px solid var(--border); }
+  .tl-col:last-child { border-right: none; }
+  .tl-header { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  /* ─── BULLET INSIGHT ─── */
+  .insight-list { list-style: none; padding: 0; }
+  .insight-list li { font-size: 12px; color: var(--text2); line-height: 1.6; padding: 4px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; }
+  .insight-list li:last-child { border-bottom: none; }
+  .insight-list li::before { content: '—'; color: var(--text3); flex-shrink: 0; font-family: var(--mono); }
+
+  /* ─── DIVIDER ─── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── FOOTER ─── */
+  .footer { border-top: 1px solid var(--border); padding: 1.5rem 2.5rem; display: flex; justify-content: space-between; align-items: center; }
+  .footer-note { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .g4 { grid-template-columns: 1fr 1fr; }
+    .g3 { grid-template-columns: 1fr; }
+    .g2 { grid-template-columns: 1fr; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-kpis { justify-content: flex-start; }
+    .hkpi { text-align: left; }
+    .timeline { grid-template-columns: 1fr; }
+    .tl-col { border-right: none; border-bottom: 1px solid var(--border); }
+    .tl-col:last-child { border-bottom: none; }
+  }
+  @media (max-width: 600px) {
+    .main { padding: 1rem 1rem 3rem; }
+    .site-header { padding: 0 1rem; }
+    .g4 { grid-template-columns: 1fr; }
+    .nav-tabs { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">
+    <span class="logo-dot"></span>
+    EDP Strategic Dashboard
+  </div>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="scrollTo('#value-chain')">Value Chain</button>
+    <button class="nav-tab" onclick="scrollTo('#growth-levers')">Growth & Margins</button>
+    <button class="nav-tab" onclick="scrollTo('#strategy')">Strategy</button>
+  </nav>
+  <div class="header-meta">FY 2024 · February 2025</div>
+</header>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero reveal">
+    <div>
+      <div class="hero-eyebrow">EDP — Energias de Portugal, S.A.</div>
+      <h1 class="hero-title">Integrated <em>energy</em><br>utility analysis</h1>
+      <p class="hero-sub">Value chain mapping, growth and margin drivers, and strategic milestones — built from EDP's FY2024 results report and investor filings.</p>
+    </div>
+    <div class="hero-kpis">
+      <div class="hkpi">
+        <div class="hkpi-val">€4.95Bn</div>
+        <div class="hkpi-label">Recurring EBITDA</div>
+      </div>
+      <div class="hkpi">
+        <div class="hkpi-val">95%</div>
+        <div class="hkpi-label">Renewable generation</div>
+      </div>
+      <div class="hkpi">
+        <div class="hkpi-val">BBB</div>
+        <div class="hkpi-label">S&P credit rating</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 1 · VALUE CHAIN
+  ════════════════════════════════════════ -->
+  <section class="section reveal" id="value-chain">
+    <div class="section-label"><span>01</span> Value chain — who makes money & why</div>
+
+    <!-- Top metrics -->
+    <div class="g4 metrics-row" style="grid-template-columns: repeat(4,1fr);">
+      <div class="mc"><div class="mc-label">Group revenue</div><div class="mc-value">~€15B</div><div class="mc-sub flat">FY2024 est.</div></div>
+      <div class="mc"><div class="mc-label">Recurring EBITDA</div><div class="mc-value">€4,954m</div><div class="mc-sub flat">−1% YoY · flat ex-FX</div></div>
+      <div class="mc"><div class="mc-label">Reported net profit</div><div class="mc-value">€801m</div><div class="mc-sub neg">−16% YoY</div></div>
+      <div class="mc"><div class="mc-label">Recurring net profit</div><div class="mc-value">€1,393m</div><div class="mc-sub pos">+8% YoY</div></div>
+    </div>
+
+    <!-- EBITDA bars -->
+    <div class="bar-section">
+      <div class="bar-section-label">EBITDA by segment · FY2024 (€m)</div>
+      <div class="bar-row"><div class="bar-label">Wind & Solar (EDPR)</div><div class="bar-track"><div class="bar-fill" style="width:32%;background:#5cdb8e;"></div></div><div class="bar-val">1,537</div></div>
+      <div class="bar-row"><div class="bar-label">Hydro + C&EM Iberia</div><div class="bar-track"><div class="bar-fill" style="width:31%;background:#3db876;"></div></div><div class="bar-val">1,482</div></div>
+      <div class="bar-row"><div class="bar-label">Networks Iberia</div><div class="bar-track"><div class="bar-fill" style="width:18%;background:#5ba8d4;"></div></div><div class="bar-val">860</div></div>
+      <div class="bar-row"><div class="bar-label">Networks Brazil</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:#4090c0;"></div></div><div class="bar-val">730</div></div>
+      <div class="bar-row"><div class="bar-label">Hydro + C&EM Brazil</div><div class="bar-track"><div class="bar-fill" style="width:4%;background:#2a6e5a;"></div></div><div class="bar-val">184</div></div>
+      <div class="bar-row"><div class="bar-label">Holdings / Other</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:#3a4a3a;"></div></div><div class="bar-val">−40</div></div>
+    </div>
+
+    <!-- Value chain layers -->
+    <div style="margin-bottom: 10px; font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .08em; text-transform: uppercase;">Value chain layers</div>
+
+    <div class="vc-layer" style="border-color: var(--green);">
+      <div class="vc-layer-title">Generation — renewables + hydro &nbsp;<span style="color:var(--green);font-family:var(--mono);font-size:11px;">~69% of EBITDA</span></div>
+      <div class="vc-layer-desc">Dominant layer. Wind/solar earns merchant & PPA/CfD revenues (avg. €58.9/MWh in 2024). Hydro provides flexible baseload + ancillary services. Asset rotation gains (€179m in 2024) recycle capital. Margin power comes from near-zero marginal cost vs. wholesale price. EDPR is the 4th largest renewables producer globally with 19.3 GW installed.</div>
+      <div class="pill-row">
+        <span class="tag tag-g">EDPR 4th globally</span>
+        <span class="tag tag-g">19.3 GW installed</span>
+        <span class="tag tag-g">+3.8 GW added 2024</span>
+        <span class="tag tag-a">Avg. price −3% YoY → €58.9/MWh</span>
+      </div>
+    </div>
+
+    <div class="vc-layer" style="border-color: var(--blue);">
+      <div class="vc-layer-title">Electricity networks &nbsp;<span style="color:var(--blue);font-family:var(--mono);font-size:11px;">~33% of EBITDA · growing</span></div>
+      <div class="vc-layer-desc">Regulated returns on a RAB of €7.2Bn across Portugal, Spain and Brazil. Tariffs set by ERSE/CNMC/ANEEL with WACC-linked returns and inflation linkage. Distribution concessions provide long-duration earnings visibility to 2030+. Networks contributed 43% of recurring net profit in 2024 — the most stable cash engine in the group.</div>
+      <div class="pill-row">
+        <span class="tag tag-b">RAB €7.2Bn</span>
+        <span class="tag tag-b">EBITDA +7% YoY</span>
+        <span class="tag tag-b">43% of recurring net profit</span>
+        <span class="tag tag-b">Brazil demand +7%</span>
+      </div>
+    </div>
+
+    <div class="vc-layer" style="border-color: var(--text3);">
+      <div class="vc-layer-title">Retail / Clients & Energy Management &nbsp;<span style="color:var(--text3);font-family:var(--mono);font-size:11px;">bundled into generation segment</span></div>
+      <div class="vc-layer-desc">~4.7m Iberian electricity clients + active energy trading. Thin margins but captures the final-mile customer relationship. Hedging strategy (60% of generation hedged) protects against spot price volatility. Switching costs for end customers are low; moat rests on brand and integrated billing rather than structural lock-in.</div>
+      <div class="pill-row">
+        <span class="tag tag-n">~4.7m contracts</span>
+        <span class="tag tag-n">Gas + electricity bundling</span>
+        <span class="tag tag-n">60% generation hedged</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="g2" style="margin-top: 1rem;">
+      <div class="card">
+        <div class="card-title">Control points &amp; 40%+ margin sources</div>
+        <ul class="insight-list">
+          <li>Hydro concessions in Portugal — irreplaceable geography, >60-yr visibility, EBITDA margins >70%</li>
+          <li>Distribution RAB — regulated WACC guarantee, inflation-linked tariffs, near-zero competitive risk</li>
+          <li>Wind/solar with long-term CfDs/PPAs (10-20yr) — price locked, volume upside from additions</li>
+          <li>North America wind PPA backlog — premium pricing, IRA tax equity structures providing cost edge</li>
+          <li>Asset rotation flywheel — sell minority stake, crystallise gain, recycle into new project IRR</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Where new entrants are blocked</div>
+        <ul class="insight-list">
+          <li>Distribution concessions require regulatory award — impossible to enter without licence from regulator</li>
+          <li>Permitting for new renewables: 12-24 months in Portugal/Spain, creating a significant lead-time moat</li>
+          <li>Hydro dam sites: geographically finite, all major Iberian sites already licensed and occupied</li>
+          <li>Offshore turbine OEMs (top-3 hold ~65% share): 12-24m lead times create turbine supply lock-in</li>
+          <li>Data standards and SCADA control systems in networks are proprietary, creating switching friction</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 2 · GROWTH & MARGINS
+  ════════════════════════════════════════ -->
+  <section class="section reveal" id="growth-levers">
+    <div class="section-label"><span>02</span> Growth &amp; margin levers — which 2-3 variables drive 80% of results</div>
+
+    <div class="g4 metrics-row" style="grid-template-columns: repeat(4,1fr);">
+      <div class="mc"><div class="mc-label">Gross investment 2024</div><div class="mc-value">€5.4Bn</div><div class="mc-sub flat">96% energy transition</div></div>
+      <div class="mc"><div class="mc-label">FFO / net debt</div><div class="mc-value">21.5%</div><div class="mc-sub pos">vs. target 21%</div></div>
+      <div class="mc"><div class="mc-label">Net debt</div><div class="mc-value">€15.6Bn</div><div class="mc-sub flat">ND/EBITDA 3.5×</div></div>
+      <div class="mc"><div class="mc-label">Cost of debt</div><div class="mc-value">4.5%</div><div class="mc-sub pos">−53bps YoY</div></div>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="showTab('g','t1')">Growth drivers</button>
+      <button class="tab-btn" onclick="showTab('g','t2')">Margin tree</button>
+      <button class="tab-btn" onclick="showTab('g','t3')">Sensitivities</button>
+      <button class="tab-btn" onclick="showTab('g','t4')">Leading KPIs</button>
+    </div>
+
+    <div id="g-t1" class="tab-content active">
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Volume = capacity additions</div>
+          <div class="kpi-row"><span class="kpi-row-label">New capacity added 2024</span><span class="kpi-row-val pos">+3.8 GW (record)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Total installed (EBITDA+Eq. MW)</span><span class="kpi-row-val">31,920 MW</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Installed capacity growth</span><span class="kpi-row-val pos">+17% YoY</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Group electricity generation</span><span class="kpi-row-val pos">57,479 GWh (+12% YoY)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Brazil distribution demand</span><span class="kpi-row-val pos">+7% in 2024</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Capex plan 2025-26 (revised)</span><span class="kpi-row-val">€4.4Bn/yr avg.</span></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Mix shift (technology &amp; geography)</div>
+          <div class="kpi-row"><span class="kpi-row-label">Solar weight in new additions 2024</span><span class="kpi-row-val pos">74% of gross GW adds</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Solar share of generation</span><span class="kpi-row-val pos">15% (vs. 8% in 2023)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Networks share of rec. net profit</span><span class="kpi-row-val pos">43% (structurally rising)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Coal revenues</span><span class="kpi-row-val pos">0.3% (was 6.8% in 2021)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">North America EBITDA growth</span><span class="kpi-row-val pos">+47% YoY</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Asset rotation gains</span><span class="kpi-row-val neg">€179m (vs. €460m in 2023)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="g-t2" class="tab-content">
+      <div class="card" style="max-width: 700px;">
+        <div class="card-title">P&L margin tree · FY2024 (€m)</div>
+        <div class="bar-row" style="margin-bottom:12px;"><div class="bar-label">Gross profit</div><div class="bar-track" style="height:10px;"><div class="bar-fill" style="width:100%;background:#5cdb8e;"></div></div><div class="bar-val">8,772</div></div>
+        <div class="bar-row"><div class="bar-label">Less: OPEX</div><div class="bar-track"><div class="bar-fill" style="width:22%;background:#e05c5c;"></div></div><div class="bar-val">−1,949</div></div>
+        <div class="bar-row" style="margin-bottom:12px;"><div class="bar-label">= EBITDA</div><div class="bar-track" style="height:10px;"><div class="bar-fill" style="width:55%;background:#3db876;"></div></div><div class="bar-val">4,801</div></div>
+        <div class="bar-row"><div class="bar-label">Less: D&A + impairmts</div><div class="bar-track"><div class="bar-fill" style="width:27%;background:#e05c5c;"></div></div><div class="bar-val">−2,373</div></div>
+        <div class="bar-row"><div class="bar-label">= EBIT</div><div class="bar-track"><div class="bar-fill" style="width:28%;background:#5ba8d4;"></div></div><div class="bar-val">2,262</div></div>
+        <div class="bar-row"><div class="bar-label">Less: net financials</div><div class="bar-track"><div class="bar-fill" style="width:10%;background:#e05c5c;"></div></div><div class="bar-val">−882</div></div>
+        <div class="bar-row"><div class="bar-label">Less: taxes + NCI</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:#e05c5c;"></div></div><div class="bar-val">−579</div></div>
+        <div class="bar-row" style="margin-bottom:12px;"><div class="bar-label">= Net profit (rep.)</div><div class="bar-track" style="height:10px;"><div class="bar-fill" style="width:9%;background:#f4b942;"></div></div><div class="bar-val">801</div></div>
+        <p style="font-size:11px;color:var(--text3);font-family:var(--mono);line-height:1.6;">
+          Key insight: D&A absorbs ~49% of EBITDA — driven by the large renewable build-out — creating a structural wedge between net profit and cash. FFO/ND at 21.5% implies FFO ~€3.4Bn, far above reported net profit.
+          OPEX discipline: −2% YoY despite activity expansion; EDPR adj. OPEX/MW −9% YoY.
+        </p>
+      </div>
+    </div>
+
+    <div id="g-t3" class="tab-content">
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Price sensitivities</div>
+          <div class="kpi-row"><span class="kpi-row-label">Spain spot price change 2024</span><span class="kpi-row-val neg">−28% YoY (partially hedged)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">EDPR avg. selling price</span><span class="kpi-row-val">€58.9/MWh (−3% YoY)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">~€5/MWh price swing impact</span><span class="kpi-row-val">~±€180m EBITDA est.</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Hydro volumes (+16% vs avg. year)</span><span class="kpi-row-val pos">~€200m+ EBITDA uplift</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">BRL devaluation FX impact</span><span class="kpi-row-val neg">−€72m EBITDA</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Cost of debt −53bps (to 4.5%)</span><span class="kpi-row-val pos">~€80m financial savings</span></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Unit economics by segment</div>
+          <div class="kpi-row"><span class="kpi-row-label">Wind/Solar EBITDA/MWh (est.)</span><span class="kpi-row-val">~€42/MWh</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Networks regulated WACC target</span><span class="kpi-row-val">5–7% return on RAB</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Networks EBITDA/RAB (€1.59Bn/€7.2Bn)</span><span class="kpi-row-val">~22%</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Hydro EBITDA margin (est.)</span><span class="kpi-row-val pos">>70%</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">EDPR adj. OPEX/avg. MW</span><span class="kpi-row-val pos">−9% YoY</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Target project IRR vs. WACC</span><span class="kpi-row-val pos">WACC + 250bps (revised up)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="g-t4" class="tab-content">
+      <div class="g3">
+        <div class="card">
+          <div class="card-title">Operational KPIs</div>
+          <div class="kpi-row"><span class="kpi-row-label">GW under construction</span><span class="kpi-row-val">>4 GW</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Renewable resource index 2024</span><span class="kpi-row-val">98% of LT average</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Smart meters deployed</span><span class="kpi-row-val">>7.6m</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Network capex acceptance rate</span><span class="kpi-row-val pos">High (regulatory)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Scope 1+2 emissions intensity</span><span class="kpi-row-val pos">29 gCO₂/kWh (−64% YoY)</span></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Financial KPIs</div>
+          <div class="kpi-row"><span class="kpi-row-label">FFO / net debt</span><span class="kpi-row-val pos">21.5% (target ≥21%)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">ND / EBITDA</span><span class="kpi-row-val">3.5× (BBB anchor)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Asset rotation closed 2024</span><span class="kpi-row-val">€1.5Bn total</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Dividend 2024</span><span class="kpi-row-val pos">€0.20/sh (+3%)</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Share buyback announced</span><span class="kpi-row-val">€100m</span></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Sector-specific watch</div>
+          <div class="kpi-row"><span class="kpi-row-label">RAB growth rate (GRR proxy)</span><span class="kpi-row-val">Target +5-7%/yr</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">PPA/CfD pipeline</span><span class="kpi-row-val">>30 GW backlog</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Iberian spot vs. hedge book</span><span class="kpi-row-val neg">Key swing factor</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">Capacity commissioning timing</span><span class="kpi-row-val">+2.5 GW in Q4'24 alone</span></div>
+          <div class="kpi-row"><span class="kpi-row-label">EDPR rec. EBITDA excl. AR gains</span><span class="kpi-row-val pos">+9% YoY in recurrent terms</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 3 · STRATEGY
+  ════════════════════════════════════════ -->
+  <section class="section reveal" id="strategy">
+    <div class="section-label"><span>03</span> Strategy decoded — concrete milestones to track quarterly</div>
+
+    <div class="g4 metrics-row" style="grid-template-columns: repeat(4,1fr);">
+      <div class="mc"><div class="mc-label">Target rec. EBITDA 2026</div><div class="mc-value">€5.7Bn</div><div class="mc-sub flat">+6% AAGR 2022-26</div></div>
+      <div class="mc"><div class="mc-label">Target rec. net income 2026</div><div class="mc-value">€1.4-1.5Bn</div><div class="mc-sub flat">+12-14% AAGR</div></div>
+      <div class="mc"><div class="mc-label">Target FFO/ND 2026</div><div class="mc-value">21%</div><div class="mc-sub flat">BBB credit maintained</div></div>
+      <div class="mc"><div class="mc-label">Renewables by 2030</div><div class="mc-value">100%</div><div class="mc-sub pos">of generation target</div></div>
+    </div>
+
+    <div class="g2" style="margin-bottom: 1.5rem;">
+      <div class="card">
+        <div class="card-title">Where to play / how to win</div>
+        <div class="milestone">
+          <div class="ms-dot ms-green">✓</div>
+          <div class="ms-body"><strong>Integrated utility model:</strong> hydro flexibility buffers merchant price risk for EDPR, while regulated networks anchor ~€1.6Bn of stable EBITDA with near-zero earnings volatility. No pure-play peer has this combination.</div>
+        </div>
+        <div class="milestone">
+          <div class="ms-dot ms-green">✓</div>
+          <div class="ms-body"><strong>Asset rotation flywheel:</strong> sell minority stakes in operating projects → recycle into new development → repeat. €1.5Bn closed in 2024. Sustains growth without proportional leverage increase. Targets WACC+250bps on new projects.</div>
+        </div>
+        <div class="milestone">
+          <div class="ms-dot ms-green">✓</div>
+          <div class="ms-body"><strong>Geography diversification:</strong> Europe (Iberia, 58% of EBITDA) + Brazil (18%) + North America (18%) + APAC (2%) smooths weather, regulatory and currency risk. NA EBITDA up +47% in 2024.</div>
+        </div>
+        <div class="milestone">
+          <div class="ms-dot ms-amber">!</div>
+          <div class="ms-body"><strong>Capex discipline reset:</strong> plan cut from €6.2Bn to €4.4Bn/yr for 2025-26. Fewer but higher-IRR projects. Less volume, more return quality. Networks' share rising to ~25% of capex.</div>
+        </div>
+        <div class="milestone">
+          <div class="ms-dot ms-green">✓</div>
+          <div class="ms-body"><strong>Moat renewal — electrification tailwinds:</strong> EV growth, heat pump adoption, and data-centre demand structurally lift distribution volumes 2-4%/yr. Each kWh of new demand flows through EDP's grid RAB.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">What can break the model</div>
+        <div class="milestone">
+          <div class="ms-dot ms-red">✗</div>
+          <div class="ms-body"><strong>Offshore setbacks:</strong> €147m Ocean Winds impairment + €420m Colombia exit in 2024. Offshore and frontier markets carry binary project risk. Reported net profit (€801m) diverged severely from recurring (€1,393m).</div>
+        </div>
+        <div class="milestone">
+          <div class="ms-dot ms-red">✗</div>
+          <div class="ms-body"><strong>Iberian price collapse:</strong> Spain spot −28% in 2024 already strained EDPR. ~€5/MWh sustained drop ≈ ~€180m EBITDA swing. If hedging ratios fall or PPAs underperform, the wind/solar segment is highly exposed.</div>
+        </div>
+        <div class="milestone">
+          <div class="ms-dot ms-amber">!</div>
+          <div class="ms-body"><strong>Portuguese concession renewal:</strong> low-voltage auction could strip €1.2-1.3Bn of RAB from EDP's regulated base. New government task force reviewing the process — outcome by mid-2025 expected.</div>
+        </div>
+        <div class="milestone">
+          <div class="ms-dot ms-amber">!</div>
+          <div class="ms-body"><strong>BRL/Brazil macro:</strong> 12% of debt denominated in BRL. Devaluation cost −€72m EBITDA in 2024. Brazil networks (+18% EBITDA) partially offsets, but FX remains a structural unhedged swing.</div>
+        </div>
+        <div class="milestone">
+          <div class="ms-dot ms-amber">!</div>
+          <div class="ms-body"><strong>Higher-for-longer rates:</strong> net debt at €15.6Bn at 4.5% average cost. Each 50bps rate move on floating or refinancing debt is ~€75m in annual financial charges.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12-quarter roadmap -->
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">12-quarter milestone roadmap</div>
+    <div class="timeline">
+      <div class="tl-col">
+        <div class="tl-header">Short term · 0-4 quarters</div>
+        <div class="kpi-row"><span class="kpi-row-label">New GW additions 2025</span><span class="kpi-row-val">~2 GW target</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">Share buyback</span><span class="kpi-row-val pos">€100m in progress</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">Portugal concession outcome</span><span class="kpi-row-val neg">Watch regulatory</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">EDPR rec. EBITDA (excl. AR)</span><span class="kpi-row-val">Target +9% run-rate</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">Coal exit completion</span><span class="kpi-row-val">Target end 2025</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">FFO/ND</span><span class="kpi-row-val">Maintain ≥21%</span></div>
+      </div>
+      <div class="tl-col">
+        <div class="tl-header">Medium term · 4-8 quarters</div>
+        <div class="kpi-row"><span class="kpi-row-label">Recurring EBITDA 2026</span><span class="kpi-row-val">€5.7Bn target</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">Recurring net income 2026</span><span class="kpi-row-val">€1.4-1.5Bn</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">Networks RAB growth</span><span class="kpi-row-val">+5-7%/yr</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">ND/EBITDA path</span><span class="kpi-row-val">Target deleverage to ~3×</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">Ocean Winds resolution</span><span class="kpi-row-val neg">Post-impairment rebuild</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">IRA tax equity deployment</span><span class="kpi-row-val pos">US pipeline ramp</span></div>
+      </div>
+      <div class="tl-col">
+        <div class="tl-header">Long term · 8-12 quarters</div>
+        <div class="kpi-row"><span class="kpi-row-label">Renewables target</span><span class="kpi-row-val">100% gen. by 2030</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">Brazil concessions</span><span class="kpi-row-val">Visibility to 2030+</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">Offshore wind maturation</span><span class="kpi-row-val">OW ramp post-2025</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">Net income AAGR 2022-26</span><span class="kpi-row-val">+12-14% target</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">EBITDA AAGR 2022-26</span><span class="kpi-row-val">+6% target</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">Scope 1+2 net zero</span><span class="kpi-row-val">2040 target</span></div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="g2">
+      <div class="card">
+        <div class="card-title" style="color:var(--green);">What deepens the moat at scale</div>
+        <ul class="insight-list">
+          <li>Hydro portfolio — irreplaceable; adds optionality and storage value as grid volatility rises with higher renewables penetration</li>
+          <li>Integrated utility profile — hydro backstops EDPR's merchant price risk; cross-sell gas/electricity builds retention</li>
+          <li>IRA tax equity structures in the US — structural cost advantage vs. European-only peers in North America capex</li>
+          <li>RAB compounding — each € of network capex earns a regulated return, then qualifies for tariff recovery next cycle</li>
+          <li>Scale in procurement — large turbine/inverter orders command volume discounts and supply chain priority in constrained market</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--red);">What tightens at scale</div>
+        <ul class="insight-list">
+          <li>Best wind/solar sites increasingly scarce — higher land lease costs, community acceptance concessions now required in most markets</li>
+          <li>Grid connection queues growing — 12-24 month permitting delays in Portugal/Spain already slowing commissioning</li>
+          <li>Offshore requires JV structures (Ocean Winds) to share capital intensity — dilutes project-level economics</li>
+          <li>Regulatory sensitivity — the larger EDP becomes, the more politically exposed its tariff renegotiations become in Portugal and Brazil</li>
+          <li>28-country footprint management complexity — Colombia exit (€420m impairment) illustrates execution risk of frontier markets</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-note">EDP — Energias de Portugal, S.A. &nbsp;·&nbsp; Based on FY2024 Results Report (26 Feb 2025) &nbsp;·&nbsp; For informational purposes only</div>
+  <div class="footer-note">EDP.LS &nbsp;·&nbsp; EDPFY &nbsp;·&nbsp; PTEDP0AM0009</div>
+</footer>
+
+<script>
+  function showTab(group, id) {
+    document.querySelectorAll('[id^="' + group + '-"]').forEach(el => {
+      el.classList.remove('active');
+    });
+    document.getElementById(group + '-' + id).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + id + "'"));
+    });
+  }
+
+  function scrollTo(id) {
+    const el = document.querySelector(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Animate bars on scroll
+  const barObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.bar-fill').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0';
+          setTimeout(() => { bar.style.width = w; }, 100);
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.bar-section').forEach(el => barObserver.observe(el));
+</script>
+
+</body>
+</html>

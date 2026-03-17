@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cleaning Up — Inside Europe's Largest AI Data Centre | Ep235: Robert Dunn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<!-- Home screen icon for iPad/iPhone -->
+<link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="StartCampus">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --ink:#1a1a18;--ink2:#3a3a36;--ink3:#6b6b64;--ink4:#9a9a90;
+  --paper:#f5f2ec;--paper2:#ede9e0;--paper3:#e2ddd2;--rule:#d4cfc4;
+  --blue:#1a4f8a;--blue-l:rgba(26,79,138,0.12);
+  --red:#c0392b;--red-l:rgba(192,57,43,0.12);
+  --green:#2d6a35;--green-l:rgba(45,106,53,0.1);
+  --amber:#b5600a;--amber-l:rgba(181,96,10,0.1);
+  --sw:252px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Poppins',sans-serif;background:var(--paper);color:var(--ink);font-size:15.5px;line-height:1.65;display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sw);background:var(--ink);display:flex;flex-direction:column;z-index:200;}
+.sb-brand{padding:1.5rem 1.25rem 1.1rem;border-bottom:1px solid rgba(255,255,255,0.07);}
+.sb-eye{font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#555550;margin-bottom:0.45rem;}
+.sb-title{font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;line-height:1.4;color:#f0ede6;}
+.sb-title em{font-style:italic;color:#c8b97a;}
+.sb-nav{flex:1;padding:0.6rem 0;overflow-y:auto;scrollbar-width:none;}
+.sb-nav::-webkit-scrollbar{display:none;}
+.sb-section{font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#3a3a36;padding:0.7rem 1.25rem 0.25rem;}
+.nav-item{display:flex;align-items:center;gap:0.7rem;padding:0.6rem 1.25rem;cursor:pointer;transition:background 0.15s;border-left:3px solid transparent;user-select:none;}
+.nav-item:hover{background:rgba(255,255,255,0.05);}
+.nav-item.active{background:rgba(255,255,255,0.09);border-left-color:#c8b97a;}
+.nav-num{font-size:10px;font-weight:700;color:#3a3a36;width:16px;flex-shrink:0;text-align:right;}
+.nav-item.active .nav-num{color:#c8b97a;}
+.nav-lbl{font-size:13px;font-weight:500;color:#888780;line-height:1.35;}
+.nav-item.active .nav-lbl{color:#f0ede6;}
+.sb-foot{padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07);font-size:11px;color:#3a3a36;line-height:1.6;}
+
+.sb-title-link{text-decoration:none;display:block;}
+.sb-title-link:hover .sb-title{color:#e8d99a;}
+.sb-email{font-size:11px;color:#f0ede6;margin-top:0.4rem;letter-spacing:0.02em;}
+.sb-podcast-link{display:block;margin-top:0.6rem;font-size:10px;font-weight:600;color:#c8b97a;text-decoration:none;letter-spacing:0.03em;}
+.sb-podcast-link:hover{text-decoration:underline;}
+/* MOBILE BAR */
+.mbar{display:none;position:fixed;top:0;left:0;right:0;background:var(--ink);z-index:300;flex-direction:column;padding:0;}
+.mbar-top{display:flex;align-items:center;padding:0.6rem 1rem;gap:0.75rem;border-bottom:1px solid rgba(255,255,255,0.07);}
+.mbar-brand{flex:1;overflow:hidden;}
+.mbar-eye{font-size:8px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#555550;margin-bottom:1px;}
+.mbar-title{font-family:'Libre Baskerville',serif;font-size:12px;color:#f0ede6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;}
+.mbar-email{font-size:9px;color:#f0ede6;margin-top:1px;opacity:0.7;}
+.mbar-chapter{padding:0.35rem 1rem;background:rgba(255,255,255,0.04);}
+.mbar-chapter-label{font-size:10px;font-weight:600;color:#888780;letter-spacing:0.05em;}
+.burger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:4px;flex-shrink:0;}
+.burger span{display:block;width:20px;height:2px;background:#888780;border-radius:2px;}
+.mob-dropdown{display:none;position:fixed;top:0;left:0;right:0;background:var(--ink);z-index:299;border-bottom:1px solid rgba(255,255,255,0.1);padding:0.4rem 0 0.8rem;}
+.mob-dropdown.open{display:block;}
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .mbar{display:flex;}
+  .main{margin-left:0!important;margin-top:90px;}
+  .ph{padding:1.25rem 1rem 1.25rem;}
+  .ph-title{font-size:22px!important;line-height:1.25;}
+  .ph-sub{font-size:13px;}
+  .pb{padding:1rem 1rem 3rem;}
+}
+
+/* MAIN */
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;}
+
+/* PAGE VISIBILITY */
+.page{display:none;flex-direction:column;}
+.page.active{display:flex;}
+
+/* PAGE HEADER */
+.ph{background:var(--ink);color:var(--paper);padding:3rem 3rem 2.5rem;position:relative;overflow:hidden;}
+.ph::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.04) 39px,rgba(255,255,255,0.04) 40px);}
+.ph-eye{font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#555550;margin-bottom:0.75rem;position:relative;}
+.ph-eye a{color:#c8b97a;text-decoration:none;font-weight:600;}
+.ph-eye a:hover{text-decoration:underline;}
+.ph-title{font-family:'Libre Baskerville',serif;font-size:42px;font-weight:700;line-height:1.2;letter-spacing:-0.02em;position:relative;margin-bottom:0.9rem;}
+.ph-title em{font-style:italic;color:#c8b97a;}
+.ph-sub{font-size:15px;color:#888780;max-width:640px;position:relative;line-height:1.75;}
+@media(max-width:900px){.ph{padding:2rem 2rem 1.75rem;}.ph-title{font-size:32px;}}
+@media(max-width:768px){.ph{padding:1.5rem;}.ph-title{font-size:26px;}}
+
+/* PAGE BODY */
+.pb{padding:2rem 3rem 3rem;max-width:1060px;width:100%;}
+@media(max-width:768px){.pb{padding:1.25rem 1rem 3rem;}}
+
+/* METRICS */
+.mrow{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:1.75rem;}
+.mrow.five{grid-template-columns:repeat(5,1fr);}
+@media(max-width:700px){.mrow,.mrow.five{grid-template-columns:repeat(2,1fr);}}
+.metric{background:var(--paper);padding:1.1rem 1.4rem;}
+.mv{font-family:'Libre Baskerville',serif;font-size:30px;font-weight:700;letter-spacing:-0.03em;line-height:1.1;margin-bottom:0.3rem;}
+.ml{font-size:13px;color:var(--ink3);line-height:1.45;}
+.metric.blue .mv{color:var(--blue);}
+.metric.red .mv{color:var(--red);}
+.metric.green .mv{color:var(--green);}
+.metric.amber .mv{color:var(--amber);}
+
+/* GRID */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+@media(max-width:680px){.two-col,.three-col{grid-template-columns:1fr;}}
+
+/* CARD */
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:1.25rem;}
+.ct{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:0.25rem;}
+.cd{font-size:13px;color:var(--ink3);margin-bottom:0.85rem;line-height:1.6;}
+.sp{height:1.25rem;}
+.stitle{font-family:'Libre Baskerville',serif;font-size:19px;font-weight:700;margin:1.75rem 0 0.85rem;}
+.stitle:first-child{margin-top:0;}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:0.6rem;}
+.legend span{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3);}
+.ld{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.ll{width:18px;height:0;border-top:2.5px dashed var(--red);}
+.lb{width:10px;height:10px;border-radius:2px;border:1.5px solid var(--blue);background:var(--blue-l);}
+
+/* CHART */
+.cw{position:relative;height:230px;}
+.cw.tall{height:250px;}
+
+/* BANNER */
+.banner{border-radius:6px;padding:0.9rem 1.1rem;margin-bottom:1rem;font-size:14px;line-height:1.65;border-left:3px solid;}
+.banner.red{background:var(--red-l);border-color:var(--red);}
+.banner.amber{background:var(--amber-l);border-color:var(--amber);}
+.banner.green{background:var(--green-l);border-color:var(--green);}
+.banner.blue{background:var(--blue-l);border-color:var(--blue);}
+.banner strong{font-weight:600;}
+
+/* BULLET LIST */
+.blist{list-style:none;}
+.blist li{padding:0.5rem 0;border-bottom:1px solid var(--rule);font-size:14px;display:flex;gap:10px;align-items:flex-start;line-height:1.5;}
+.blist li:last-child{border-bottom:none;}
+.bi{font-size:14px;flex-shrink:0;margin-top:1px;}
+.bm{font-weight:600;color:var(--ink);}
+.bs{font-size:13px;color:var(--ink3);}
+
+/* VERDICT */
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.25rem;}
+@media(max-width:680px){.vgrid{grid-template-columns:1fr;}}
+.vc{border-radius:8px;padding:1rem 1.1rem;border:1px solid;}
+.vc.gv{background:var(--green-l);border-color:rgba(45,106,53,0.25);}
+.vc.av{background:var(--amber-l);border-color:rgba(181,96,10,0.25);}
+.vc.rv{background:var(--red-l);border-color:rgba(192,57,43,0.25);}
+.vi{font-size:18px;margin-bottom:0.3rem;}
+.vl{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.2rem;}
+.vc.gv .vl{color:var(--green);}
+.vc.av .vl{color:var(--amber);}
+.vc.rv .vl{color:var(--red);}
+.vt{font-size:15px;font-weight:600;margin-bottom:0.3rem;}
+.vx{font-size:13.5px;color:var(--ink2);line-height:1.6;}
+
+/* FIRM */
+.fgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:1rem;}
+@media(max-width:680px){.fgrid{grid-template-columns:1fr 1fr;}}
+.fc{background:var(--paper2);border-radius:6px;padding:0.75rem;}
+.fs{font-size:13px;font-weight:600;margin-bottom:3px;}
+.ft{height:4px;background:var(--rule);border-radius:2px;margin:4px 0 5px;}
+.ff{height:100%;border-radius:2px;}
+.fp{font-size:15px;font-weight:700;margin-bottom:3px;}
+.fp.ok{color:var(--green);}
+.fp.pt{color:var(--amber);}
+.fp.zr{color:var(--red);}
+.fp.fl{color:#8b1a1a;}
+.fx{font-size:12px;color:var(--ink3);line-height:1.5;}
+
+/* OPP */
+.ogrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin-bottom:1.25rem;}
+.oc{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:1rem 1.1rem;position:relative;}
+.oc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:8px 8px 0 0;}
+.oc.o1::before{background:var(--blue);}
+.oc.o2::before{background:var(--green);}
+.oc.o3::before{background:var(--amber);}
+.oc.o4::before{background:#7b3fa0;}
+.oc.o5::before{background:var(--red);}
+.oc.o6::before{background:#1a7a6e;}
+.oi{font-size:20px;margin-bottom:0.35rem;}
+.ot{font-size:15px;font-weight:600;margin-bottom:0.2rem;}
+.oh{font-size:11.5px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink4);margin-bottom:0.4rem;}
+.ox{font-size:13.5px;color:var(--ink2);line-height:1.6;}
+.otag{display:inline-block;margin-top:0.5rem;font-size:11px;font-weight:600;letter-spacing:0.05em;padding:2px 8px;border-radius:20px;background:var(--paper2);color:var(--ink3);border:1px solid var(--rule);}
+
+/* PREP TABLE */
+.ptable{width:100%;border-collapse:collapse;font-size:14px;}
+.ptable th{text-align:left;padding:0.55rem 0.8rem;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);background:var(--paper2);border-bottom:1px solid var(--rule);}
+.ptable td{padding:0.7rem 0.8rem;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.6;}
+.ptable tr:last-child td{border-bottom:none;}
+.ptable tr:hover td{background:var(--paper2);}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+.pr{background:var(--red-l);color:var(--red);}
+.pa{background:var(--amber-l);color:var(--amber);}
+.pg{background:var(--green-l);color:var(--green);}
+.pb2{background:var(--blue-l);color:var(--blue);}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-eye">Cleaning Up · Ep235 · Liebreich &amp; Dunn</div>
+    <a href="https://podcasts.apple.com/us/podcast/inside-europes-largest-ai-data-centre-a-green-giant/id1524683327?i=1000738559252" target="_blank" class="sb-title-link">
+      <div class="sb-title">Inside Europe's Largest AI Data Centre: <em>A Green Giant Rises</em></div>
+    </a>
+    <a href="https://podcasts.apple.com/us/podcast/inside-europes-largest-ai-data-centre-a-green-giant/id1524683327?i=1000738559252" target="_blank" class="sb-podcast-link">🎙 Listen on Apple Podcasts ↗</a>
+    <div class="sb-email">luis.mendes.sp@gmail.com</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section">Chapters</div>
+    <div class="nav-item active" onclick="show('p1',this)"><span class="nav-num">01</span><span class="nav-lbl">The Campus</span></div>
+    <div class="nav-item" onclick="show('p2',this)"><span class="nav-num">02</span><span class="nav-lbl">Electricity Reality</span></div>
+    <div class="nav-item" onclick="show('p3',this)"><span class="nav-num">03</span><span class="nav-lbl">The Baseload Problem</span></div>
+    <div class="nav-item" onclick="show('p4',this)"><span class="nav-num">04</span><span class="nav-lbl">Can Portugal Handle It?</span></div>
+    <div class="nav-item" onclick="show('p5',this)"><span class="nav-num">05</span><span class="nav-lbl">Preparation &amp; Opportunities</span></div>
+  </nav>
+  <div class="sb-foot">Sources: REN 2024 · PNEC 2030 · IEEFA · StartCampus / Cleaning Up Podcast · ENTSO-E · Macedo Vitorino 2025</div>
+</aside>
+
+<!-- MOBILE BAR -->
+<div class="mbar">
+  <div class="mbar-top">
+    <button class="burger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+    <div class="mbar-brand">
+      <div class="mbar-eye">Cleaning Up · Ep235 · Liebreich &amp; Dunn</div>
+      <div class="mbar-title">Inside Europe's Largest AI Data Centre</div>
+      <div class="mbar-email">luis.mendes.sp@gmail.com</div>
+    </div>
+  </div>
+  <div class="mbar-chapter"><span class="mbar-chapter-label" id="mtitle">Chapter 01 · The Campus</span></div>
+</div>
+<div class="mob-dropdown" id="mobNav">
+  <div class="nav-item" onclick="show('p1',this,1)"><span class="nav-num">01</span><span class="nav-lbl">The Campus</span></div>
+  <div class="nav-item" onclick="show('p2',this,1)"><span class="nav-num">02</span><span class="nav-lbl">Electricity Reality</span></div>
+  <div class="nav-item" onclick="show('p3',this,1)"><span class="nav-num">03</span><span class="nav-lbl">The Baseload Problem</span></div>
+  <div class="nav-item" onclick="show('p4',this,1)"><span class="nav-num">04</span><span class="nav-lbl">Can Portugal Handle It?</span></div>
+  <div class="nav-item" onclick="show('p5',this,1)"><span class="nav-num">05</span><span class="nav-lbl">Preparation &amp; Opportunities</span></div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- PAGE 1 -->
+<div class="page active" id="p1">
+<div class="ph">
+  <div class="ph-eye">Chapter 01 · StartCampus Sines, Portugal</div>
+  <h1 class="ph-title">The Campus</h1>
+  <p class="ph-sub">Built on the bones of a decommissioned 3 GW coal plant on Portugal's Atlantic coast, StartCampus is turning a stranded industrial asset into the continent's most powerful AI infrastructure hub.</p>
+  <p class="ph-sub">Built on the bones of a decommissioned 3 GW coal plant on Portugal's Atlantic coast, StartCampus is turning a stranded industrial asset into the continent's most powerful AI infrastructure hub.</p>
+</div>
+<div class="pb">
+  <div class="mrow">
+    <div class="metric blue"><div class="mv">1.2 GW</div><div class="ml">Total IT load — all 6 buildings</div></div>
+    <div class="metric"><div class="mv">6</div><div class="ml">Buildings across 64 ha site</div></div>
+    <div class="metric green"><div class="mv">29 MW</div><div class="ml">Phase 1, live Sept 2023</div></div>
+    <div class="metric amber"><div class="mv">~€50B</div><div class="ml">Total investment incl. customer equipment</div></div>
+    <div class="metric"><div class="mv">~1.1</div><div class="ml">PUE — seawater cooling</div></div>
+    <div class="metric"><div class="mv">99.999%</div><div class="ml">Uptime SLA target</div></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="ct">Why Sines? Inherited advantages</div>
+      <div class="cd">The former Pegão coal plant left behind infrastructure that takes a decade to build from scratch.</div>
+      <ul class="blist">
+        <li><span class="bi">⚡</span><div><div class="bm">400 kV direct grid connection</div><div class="bs">EU average wait for new HV connection: 7–10 years. Sines had it on day one.</div></div></li>
+        <li><span class="bi">🌊</span><div><div class="bm">Seawater cooling permits pre-authorised</div><div class="bs">Titanium heat exchangers drawing from the Atlantic. PUE ~1.1 vs industry avg 1.3.</div></div></li>
+        <li><span class="bi">🏭</span><div><div class="bm">64 ha pre-zoned industrial land</div><div class="bs">No rezoning battles. Planning compressed to ~18 months per building vs 3–5 years greenfield.</div></div></li>
+        <li><span class="bi">🚢</span><div><div class="bm">Atlantic deepwater port next door</div><div class="bs">Direct shipping for multi-tonne server racks. No overland logistics bottleneck.</div></div></li>
+        <li><span class="bi">🌐</span><div><div class="bm">Subsea cable landing station nearby</div><div class="bs">Low-latency links to North America and Africa — critical for hyperscaler workloads.</div></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ct">Technical architecture</div>
+      <div class="cd">Power flows from transmission grid down to each rack through four voltage transformation steps.</div>
+      <ul class="blist">
+        <li><span class="bi">🔌</span><div><div class="bm">Power chain: 400 kV → 150 kV → 22 kV → 400 V AC</div><div class="bs">Future megawatt racks will shift to medium-voltage DC at rack level to cut conversion losses.</div></div></li>
+        <li><span class="bi">🧊</span><div><div class="bm">Primary cooling: Atlantic seawater</div><div class="bs">Air cooling viable to ~30 kW/rack. Current GPU racks: 130 kW. Future ~1 MW/rack requires direct liquid cooling.</div></div></li>
+        <li><span class="bi">🔋</span><div><div class="bm">Resilience: N+1 / N+2 redundancy</div><div class="bs">UPS bridges 5–10 min. HVO generators with 24h on-site storage. Proven during April 2025 Iberian blackout — zero downtime.</div></div></li>
+        <li><span class="bi">🌱</span><div><div class="bm">Energy model: buy, don't build</div><div class="bs">Long-term PPAs across solar, wind, hydro. Per GW consumed, equivalent new renewable capacity must be sponsored.</div></div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sp"></div>
+  <div class="card">
+    <div class="ct">Buildout timeline — 6 buildings to 2030</div>
+    <div class="cd">Each building requires a 10+ year anchor tenant (hyperscaler or neo-cloud) to secure project finance. Microsoft announced a $10B investment post-recording. Staggered delivery reduces grid impact pressure.</div>
+    <div class="cw" style="height:175px;margin-top:0.6rem;"><canvas id="c1"></canvas></div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+<div class="ph">
+  <div class="ph-eye">Chapter 02 · Portugal's Grid in Numbers</div>
+  <h1 class="ph-title">Electricity Reality <em>2024</em></h1>
+  <p class="ph-sub">A record year for renewables — but with record import dependency too. The numbers look healthy annually. The hourly picture is more complicated.</p>
+</div>
+<div class="pb">
+  <div class="mrow">
+    <div class="metric green"><div class="mv">51.4 TWh</div><div class="ml">Total consumption 2024 (+1.3% YoY)</div></div>
+    <div class="metric green"><div class="mv">71%</div><div class="ml">Renewable share — historic record</div></div>
+    <div class="metric amber"><div class="mv">10.5 TWh</div><div class="ml">Net imports — also record high</div></div>
+    <div class="metric"><div class="mv">+37%</div><div class="ml">Solar growth YoY (5.1 TWh total)</div></div>
+    <div class="metric"><div class="mv">+24%</div><div class="ml">Hydro growth YoY (wet year)</div></div>
+    <div class="metric red"><div class="mv">~1979</div><div class="ml">Gas use at lowest since this year</div></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="ct">2024 electricity mix — Portugal</div>
+      <div class="cd">Renewables at 71%, a national record. But 20% came via imports — Portugal's grid leans on Spain during peak demand or low-wind periods.</div>
+      <div class="cw"><canvas id="c2a"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">1.2 GW campus demand vs. existing sources</div>
+      <div class="cd">Each bar shows a source's full 2024 output. The dashed line is the campus's annual draw at 90% load factor — it exceeds solar and gas entirely.</div>
+      <div class="legend">
+        <span><span class="ld" style="background:var(--blue);"></span>2024 generation (TWh)</span>
+        <span><span class="ll"></span>Data centre demand (~9.5 TWh/yr)</span>
+      </div>
+      <div class="cw"><canvas id="c2b"></canvas></div>
+    </div>
+  </div>
+  <div class="sp"></div>
+  <div class="banner amber"><strong>Record imports signal structural strain.</strong> In 2017 Portugal was a net electricity <em>exporter</em> to Spain (+2.7 TWh). By 2024 it imported 10.5 TWh — a 20% share of total consumption. Adding 9.5 TWh of constant campus demand without new domestic firm generation will deepen this dependency further.</div>
+</div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+<div class="ph">
+  <div class="ph-eye">Chapter 03 · The Mismatch</div>
+  <h1 class="ph-title">The Baseload Problem</h1>
+  <p class="ph-sub">Data centres run at 90–100% load factor, 24 hours a day, 365 days a year. Renewables are intermittent. Annual PPA accounting and physical hourly clean energy delivery are very different things.</p>
+</div>
+<div class="pb">
+  <div class="mrow">
+    <div class="metric red"><div class="mv">~50%</div><div class="ml">Hours renewables meet DC demand without storage</div></div>
+    <div class="metric amber"><div class="mv">~85%</div><div class="ml">Carbon-free hours even with 100% annual PPA</div></div>
+    <div class="metric"><div class="mv">13 MW</div><div class="ml">Grid battery storage in Portugal (Apr 2025)</div></div>
+    <div class="metric blue"><div class="mv">1,200 MW</div><div class="ml">Continuous campus draw at full build-out</div></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="ct">The daily mismatch — a typical summer day</div>
+      <div class="cd">Solar and wind output swings wildly. Data centre load stays flat. The gap is filled by gas turbines or Spanish imports.</div>
+      <div class="cw tall"><canvas id="c3a"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">Seasonal clean energy coverage (estimated %)</div>
+      <div class="cd">Winter is wet and windy — Portugal's best season. Summer is the crunch: dry reservoirs, calm nights, peak cooling demand from the campus itself.</div>
+      <div class="cw tall"><canvas id="c3b"></canvas></div>
+    </div>
+  </div>
+  <div class="sp"></div>
+  <div class="three-col">
+    <div class="card">
+      <div class="ct">🔆 Best case: Jan–Apr</div>
+      <div style="font-family:'Libre Baskerville',serif;font-size:26px;font-weight:700;color:var(--green);margin:0.4rem 0;">~90% clean</div>
+      <div style="font-size:13px;color:var(--ink3);">Wet season, full reservoirs, strong Atlantic winds. Gas rarely needed. Best months to claim near-100% renewable delivery.</div>
+    </div>
+    <div class="card">
+      <div class="ct">☁️ Mid-season: Oct–Dec</div>
+      <div style="font-family:'Libre Baskerville',serif;font-size:26px;font-weight:700;color:var(--amber);margin:0.4rem 0;">~73% clean</div>
+      <div style="font-size:13px;color:var(--ink3);">Variable rainfall and wind. Hydro partially recharged. Still gas-dependent on calm nights.</div>
+    </div>
+    <div class="card">
+      <div class="ct">☀️ Worst case: Jul–Sep</div>
+      <div style="font-family:'Libre Baskerville',serif;font-size:26px;font-weight:700;color:var(--red);margin:0.4rem 0;">~60% clean</div>
+      <div style="font-size:13px;color:var(--ink3);">Dry reservoirs, solar daytime-only, calm nights. Up to 40% of campus hours backed by gas or imports.</div>
+    </div>
+  </div>
+  <div class="sp"></div>
+  <div class="banner amber"><strong>Why PPAs don't fully solve this.</strong> Annual bookkeeping balances on paper. Physical hourly delivery does not. When the sun sets and the wind drops, the campus draws from Portugal's four gas CCGTs or Spanish imports — regardless of how many MW of solar PPA the operator holds. "100% renewable" is an accounting claim, not a physical grid reality at every hour of the year.</div>
+</div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+<div class="ph">
+  <div class="ph-eye">Chapter 04 · Grid Capacity Assessment</div>
+  <h1 class="ph-title">Can Portugal's Grid Handle It?</h1>
+  <p class="ph-sub">Three layers of analysis, three different answers — from manageable over the long run to a structural deficit at worst-case hours that cannot be solved without new firm generation.</p>
+</div>
+<div class="pb">
+  <div class="banner red"><strong>The key arithmetic.</strong> Firm capacity at worst-case hours: gas 4.4 GW + partial hydro ~2.5 GW + biomass 0.7 GW = <strong>~7.6 GW</strong>. Current national peak demand: <strong>8.8 GW</strong>. Headroom before the campus: <strong>~1.2 GW</strong> — exactly equal to its full draw. Any dry summer night at full load means Portugal must import from Spain or curtail other consumers.</div>
+  <div class="vgrid">
+    <div class="vc gv"><div class="vi">✅</div><div class="vl">Green — manageable</div><div class="vt">Annual energy volume</div><div class="vx">PPAs + Portugal's 2030 renewable targets (20.8 GW solar, 12.6 GW wind) can match annual volume if build-out accelerates. Staggered campus delivery gives 6 years of runway.</div></div>
+    <div class="vc av"><div class="vi">⚠️</div><div class="vl">Amber — tight</div><div class="vt">Peak demand headroom</div><div class="vx">Portugal already at record import dependency (20% of 2024 supply). Adding 1.2 GW constant load (~14% of national peak) without new firm generation pushes imports structurally higher.</div></div>
+    <div class="vc rv"><div class="vi">🔴</div><div class="vl">Red — critical gap</div><div class="vt">Firm night/summer power</div><div class="vx">Gas + constrained hydro + biomass ≈ 7.6 GW at worst hours vs. 8.8 GW existing peak. Campus adds 1.2 GW. Only gas expansion, long-duration storage, or SMRs bridge this — realistically mid-2030s.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct">Installed capacity vs. firm availability at worst-case hours</div>
+    <div class="cd">Night in summer, dry year — solar = 0, wind weak, hydro reservoirs partially depleted. The red bars show what is actually dispatchable on demand.</div>
+    <div class="legend">
+      <span><span class="lb"></span>Installed capacity (GW)</span>
+      <span><span class="ld" style="background:var(--red);"></span>Firm available — worst case (GW)</span>
+    </div>
+    <div class="cw tall"><canvas id="c4"></canvas></div>
+    <div class="fgrid">
+      <div class="fc"><div class="fs">Hydro — 8.8 GW</div><div class="ft"><div class="ff" style="width:28%;background:var(--blue);"></div></div><div class="fp pt">~2.5 GW firm</div><div class="fx">Depends on rainfall. After a dry summer, reservoirs are depleted. Only run-of-river plants + pumped hydro with stored water are guaranteed.</div></div>
+      <div class="fc"><div class="fs">Wind — 5.4 GW</div><div class="ft"><div class="ff" style="width:19%;background:var(--green);"></div></div><div class="fp pt">~1.0 GW firm</div><div class="fx">Intermittent. On a calm summer night it may produce 15–20% of nameplate with no ability to dispatch on demand.</div></div>
+      <div class="fc"><div class="fs">Solar PV — 5.7 GW</div><div class="ft"><div class="ff" style="width:0%;"></div></div><div class="fp zr">0 GW firm</div><div class="fx">Zero at night — every night, without exception. No storage = no firm power between sunset and sunrise.</div></div>
+      <div class="fc"><div class="fs">Natural gas — 4.4 GW</div><div class="ft"><div class="ff" style="width:100%;background:var(--red);"></div></div><div class="fp fl">4.4 GW firm</div><div class="fx">Fully dispatchable on command. Turbines ramp in minutes. All 4.4 GW available any hour, any season. Portugal's only true insurance policy today.</div></div>
+      <div class="fc"><div class="fs">Biomass — 0.7 GW</div><div class="ft"><div class="ff" style="width:100%;background:var(--green);"></div></div><div class="fp ok">0.7 GW firm</div><div class="fx">Runs near-baseload. Not weather-dependent. Small but reliable — the only renewable source truly firm 24/7.</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="p5">
+<div class="ph">
+  <div class="ph-eye">Chapter 05 · Policy &amp; Investment</div>
+  <h1 class="ph-title">Preparation &amp; Opportunities</h1>
+  <p class="ph-sub">The campus is coming whether the grid is ready or not. The question is whether Portugal captures the upside — or becomes deeply dependent on Spanish imports and fossil backstop power.</p>
+</div>
+<div class="pb">
+  <div class="mrow five">
+    <div class="metric blue"><div class="mv">€3.5B</div><div class="ml">Grid hardening commitment to 2030</div></div>
+    <div class="metric blue"><div class="mv">2 GW</div><div class="ml">Battery storage target by 2030 (PNEC)</div></div>
+    <div class="metric green"><div class="mv">10 GW</div><div class="ml">Offshore wind longer-term ambition</div></div>
+    <div class="metric amber"><div class="mv">5.5 GW</div><div class="ml">Green hydrogen electrolyser target 2030</div></div>
+    <div class="metric green"><div class="mv">€29B/yr</div><div class="ml">Annual energy investment needed (PNEC 2030)</div></div>
+  </div>
+
+  <div class="stitle">Priority action matrix — what Portugal must do</div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table class="ptable">
+      <thead><tr><th>Action</th><th>Why it matters</th><th>Timeline</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Scale battery storage to 2 GW+</strong><br><span style="font-size:12px;color:var(--ink3);">Standalone BESS auctions + co-located solar storage</span></td><td>Bridges the 4–6 hour solar gap each evening. Extends clean delivery from ~50% to ~65% of hours.</td><td>2025–2027</td><td><span class="pill pa">In progress</span></td></tr>
+        <tr><td><strong>Launch offshore wind auctions</strong><br><span style="font-size:12px;color:var(--ink3);">2 GW by 2030; framework approved Apr 2025</span></td><td>Night-time wind is the most valuable asset for data centre baseload. Offshore wind blows at night unlike solar.</td><td>2026–2032</td><td><span class="pill pb2">Framework approved</span></td></tr>
+        <tr><td><strong>Accelerate grid interconnection</strong><br><span style="font-size:12px;color:var(--ink3);">Iberian + Morocco links; +20% redundancy by 2027</span></td><td>Reduces import risk concentration on Spain. Morocco link could carry Saharan solar overnight via HVDC.</td><td>2026–2028</td><td><span class="pill pa">Planned</span></td></tr>
+        <tr><td><strong>Grid modernisation — €3.5B programme</strong><br><span style="font-size:12px;color:var(--ink3);">Smart substations, power electronics, SCADA digitalisation</span></td><td>Prevents cascading failures like April 2025. Enables demand response and VPP integration at campus scale.</td><td>2025–2030</td><td><span class="pill pg">Funded &amp; active</span></td></tr>
+        <tr><td><strong>Long-duration storage (LDES)</strong><br><span style="font-size:12px;color:var(--ink3);">Pumped hydro expansion, iron-air batteries, H₂ storage</span></td><td>Only technology that bridges multi-day low-wind/low-hydro periods. Critical as gas is phased out by 2040.</td><td>2028–2035</td><td><span class="pill pr">Planning stage</span></td></tr>
+        <tr><td><strong>Regulatory reform: 24/7 CFE matching</strong><br><span style="font-size:12px;color:var(--ink3);">Move DC renewable obligations from annual to hourly</span></td><td>Incentivises hyperscalers to contract for night-time generation (offshore wind, storage), not just cheap daytime solar.</td><td>2025–2027</td><td><span class="pill pr">Not yet started</span></td></tr>
+        <tr><td><strong>Explore clean firm power (SMRs)</strong><br><span style="font-size:12px;color:var(--ink3);">Small modular reactors; no current Portuguese nuclear policy</span></td><td>The only technology that permanently closes the summer night gap. Poland and Netherlands already advancing SMR plans.</td><td>2035+</td><td><span class="pill pr">No policy yet</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="stitle">Business &amp; investment opportunities</div>
+  <p style="font-size:14px;color:var(--ink3);margin-bottom:1.1rem;line-height:1.7;">The StartCampus build-out is the largest single demand signal the Portuguese energy market has ever seen. It creates a predictable, long-duration revenue anchor for sectors that have struggled to attract capital at scale.</p>
+  <div class="ogrid">
+    <div class="oc o1"><div class="oi">🔆</div><div class="ot">Solar + storage hybrid parks</div><div class="oh">Now → 2028 · Highest certainty</div><div class="ox">Solar alone can't deliver night-time power — but solar + co-located BESS hybrid parks can. PNEC 2030 targets 20.8 GW solar (up from ~6 GW today). Every GWp paired with 4h storage is financeable against a campus PPA anchor.</div><span class="otag">PPA revenue · EPC · BESS supply chain</span></div>
+    <div class="oc o2"><div class="oi">🌊</div><div class="ot">Floating offshore wind</div><div class="oh">2026–2032 · High strategic value</div><div class="ox">Portugal has 131 GW of offshore wind potential, 89% requiring floating foundations. Unlike solar, offshore wind generates at night. Framework approved April 2025. The campus sits directly below the Sines maritime zone in the spatial plan.</div><span class="otag">Floating foundations · Port logistics · O&amp;M</span></div>
+    <div class="oc o3"><div class="oi">🔋</div><div class="ot">Grid-scale battery storage (BESS)</div><div class="oh">2025–2027 · Active market now</div><div class="ox">Portugal's grid storage: ~13 MW vs a 2 GW 2030 target. Post-blackout BESS auctions target 750 MW by end 2025. Revenue stacking via capacity payments + day-ahead arbitrage + ancillary services creates a compelling investment case.</div><span class="otag">BESS development · Grid services · Ancillary market</span></div>
+    <div class="oc o4"><div class="oi">💧</div><div class="ot">Green hydrogen hub at Sines</div><div class="oh">2027–2032 · Emerging</div><div class="ox">Portugal targets 5.5 GW of electrolysers by 2030. Electrolysers absorb surplus midday solar. Green H₂ stored and reconverted provides long-duration firm power for multi-day low-wind events. Sines port already handles LNG — natural hub candidate.</div><span class="otag">Electrolyser supply · H₂ storage · Port infrastructure</span></div>
+    <div class="oc o5"><div class="oi">🏗️</div><div class="ot">Grid infrastructure &amp; smart grid tech</div><div class="oh">2025–2030 · €3.5B committed</div><div class="ox">REN's grid cannot absorb 1.2 GW of new constant load without significant upgrade of transmission corridors between Sines and Lisbon/Porto. Post-blackout plan commits €3.5B to substation automation and power electronics.</div><span class="otag">EPC · Grid equipment · Smart substation</span></div>
+    <div class="oc o6"><div class="oi">📊</div><div class="ot">24/7 CFE energy management platforms</div><div class="oh">2025–2028 · Software-first</div><div class="ox">Hyperscaler tenants have committed to 24/7 carbon-free energy matching by 2030. This requires real-time matching, certificate management, and demand-flexibility services. Portugal lacks this regulatory infrastructure — a greenfield software opportunity.</div><span class="otag">Energy software · VPP aggregation · CFE certificates</span></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+    <div class="banner green" style="margin:0;"><strong>If Portugal gets this right:</strong> It becomes Europe's preferred AI infrastructure hub. The €50B campus investment catalyses a further €15–20B in grid and generation infrastructure, turning Sines into a new kind of industrial port city.</div>
+    <div class="banner red" style="margin:0;"><strong>If Portugal gets this wrong:</strong> The campus draws gas power on every dry summer night. Import dependence on Spain deepens. Hyperscaler tenants miss their 24/7 CFE commitments. The opportunity migrates to Scotland or Norway.</div>
+  </div>
+
+</div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+const IDS = ['p1','p2','p3','p4','p5'];
+const TITLES = ['Chapter 01 · The Campus','Chapter 02 · Electricity Reality','Chapter 03 · The Baseload Problem','Chapter 04 · Can Portugal Handle It?','Chapter 05 · Preparation & Opportunities'];
+const done = {};
+
+function show(id, el, mob) {
+  IDS.forEach(p => document.getElementById(p).classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // update sidebar
+  document.querySelectorAll('.sidebar .nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.mob-dropdown .nav-item').forEach(n => n.classList.remove('active'));
+  const idx = IDS.indexOf(id);
+  document.querySelectorAll('.sidebar .nav-item')[idx]?.classList.add('active');
+  document.querySelectorAll('.mob-dropdown .nav-item')[idx]?.classList.add('active');
+  document.getElementById('mtitle').textContent = TITLES[idx];
+  if (mob) toggleMob(true);
+  document.querySelector('.main').scrollTo(0,0);
+  window.scrollTo(0,0);
+  if (!done[id]) { done[id]=true; initCharts(id); }
+}
+
+function toggleMob(close) {
+  const n = document.getElementById('mobNav');
+  const mbar = document.querySelector('.mbar');
+  if (close) { n.classList.remove('open'); return; }
+  n.style.top = mbar.offsetHeight + 'px';
+  n.classList.toggle('open');
+}
+// Adjust main top margin to match mobile bar height
+function fixMobileMargin() {
+  const mbar = document.querySelector('.mbar');
+  const main = document.querySelector('.main');
+  if (window.innerWidth <= 768) {
+    main.style.marginTop = mbar.offsetHeight + 'px';
+  } else {
+    main.style.marginTop = '';
+  }
+}
+window.addEventListener('resize', fixMobileMargin);
+window.addEventListener('load', fixMobileMargin);
+
+Chart.defaults.font.family = "'Poppins',sans-serif";
+Chart.defaults.font.size = 11;
+const gc='rgba(0,0,0,0.07)', tc='#6b6b64';
+
+function initCharts(id) {
+  if (id==='p1') {
+    new Chart(document.getElementById('c1'),{type:'bar',data:{labels:['Bldg 1\n29 MW','Bldg 2\n200 MW','Bldg 3\n200 MW','Bldg 4\n200 MW','Bldg 5\n200 MW','Bldg 6\n371 MW'],datasets:[{label:'Cumulative IT load (MW)',data:[29,229,429,629,829,1200],backgroundColor:['#2d6a35','#1a4f8a','#1a4f8a','#1a4f8a','#1a4f8a','#1a4f8a'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'Cumulative: '+ctx.parsed.y+' MW'}}},scales:{x:{ticks:{font:{size:10},color:tc},grid:{display:false}},y:{ticks:{color:tc,callback:v=>v+' MW'},grid:{color:gc}}}}});
+  }
+  if (id==='p2') {
+    new Chart(document.getElementById('c2a'),{type:'doughnut',data:{labels:['Hydro','Wind','Solar','Biomass','Natural gas','Imports'],datasets:[{data:[14.4,13.9,5.1,3.1,5.1,10.5],backgroundColor:['#1a4f8a','#2d6a35','#e8a020','#5c7a2d','#c0392b','#888780'],borderWidth:2,borderColor:'#f5f2ec'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{size:11},color:tc,padding:10,boxWidth:12}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.parsed.toFixed(1)+' TWh ('+Math.round(ctx.parsed/51.4*100)+'%)'}}}}});
+    new Chart(document.getElementById('c2b'),{type:'bar',data:{labels:['Hydro','Wind','Solar','Biomass','Gas','Imports'],datasets:[{label:'Generation (TWh)',data:[14.4,13.9,5.1,3.1,5.1,10.5],backgroundColor:'#1a4f8a',borderRadius:3,order:2},{label:'Data centre demand',data:[9.5,9.5,9.5,9.5,9.5,9.5],type:'line',borderColor:'#c0392b',borderWidth:2,borderDash:[6,4],pointRadius:0,fill:false,order:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.type==='line'?'Data centre: 9.5 TWh/yr':ctx.parsed.y.toFixed(1)+' TWh'}}},scales:{x:{ticks:{color:tc},grid:{display:false}},y:{ticks:{color:tc,callback:v=>v+' TWh'},grid:{color:gc}}}}});
+  }
+  if (id==='p3') {
+    const hrs=Array.from({length:24},(_,i)=>i+':00');
+    new Chart(document.getElementById('c3a'),{type:'line',data:{labels:hrs,datasets:[{label:'Solar (GW)',data:[0,0,0,0,0,0.2,1.5,4.5,7.2,9.1,10.3,10.8,10.5,9.8,8.6,6.4,3.8,1.2,0.1,0,0,0,0,0],borderColor:'#e8a020',backgroundColor:'rgba(232,160,32,0.15)',fill:true,tension:0.4,pointRadius:0,borderWidth:2},{label:'Wind (GW)',data:[3.2,3.5,3.1,2.8,3.0,3.3,2.9,2.5,2.2,2.0,1.8,1.6,1.5,1.7,2.0,2.3,2.6,2.9,3.1,3.0,2.8,2.9,3.1,3.2],borderColor:'#2d6a35',backgroundColor:'rgba(45,106,53,0.1)',fill:true,tension:0.4,pointRadius:0,borderWidth:2},{label:'DC demand (GW)',data:Array(24).fill(9.5),borderColor:'#c0392b',borderDash:[6,4],pointRadius:0,borderWidth:2.5,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},color:tc,boxWidth:12,padding:10}},tooltip:{mode:'index',intersect:false}},scales:{x:{ticks:{color:tc,maxTicksLimit:12},grid:{display:false}},y:{ticks:{color:tc,callback:v=>v+' GW'},grid:{color:gc},max:12}}}});
+    new Chart(document.getElementById('c3b'),{type:'bar',data:{labels:['Jan–Feb','Mar–Apr','May–Jun','Jul–Aug','Sep','Oct–Nov','Dec'],datasets:[{label:'Clean energy hours (%)',data:[92,88,80,58,62,73,85],backgroundColor:'#2d6a35',borderRadius:3},{label:'Gas/import hours (%)',data:[8,12,20,42,38,27,15],backgroundColor:'rgba(192,57,43,0.6)',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},color:tc,boxWidth:12,padding:10}}},scales:{x:{stacked:true,ticks:{color:tc,font:{size:10}},grid:{display:false}},y:{stacked:true,ticks:{color:tc,callback:v=>v+'%'},grid:{color:gc},max:100}}}});
+  }
+  if (id==='p4') {
+    new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Hydro','Wind','Solar PV','Natural gas','Biomass'],datasets:[{label:'Installed (GW)',data:[8.8,5.4,5.7,4.4,0.7],backgroundColor:'rgba(26,79,138,0.2)',borderColor:'#1a4f8a',borderWidth:1.5,borderRadius:3},{label:'Firm available — worst case (GW)',data:[2.5,1.0,0,4.4,0.7],backgroundColor:'#c0392b',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:tc},grid:{display:false}},y:{ticks:{color:tc,callback:v=>v+' GW'},grid:{color:gc}}}}});
+  }
+}
+
+// Init page 1 on load
+done['p1']=true; initCharts('p1');
+</script>
+</body>
+</html>

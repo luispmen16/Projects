@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>AI² Square — Strategic Intelligence Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: #0a0f1a; }
+    body { font-family: 'Poppins', 'Helvetica Neue', sans-serif; color: #e2e8f0; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { height: 3px; width: 3px; background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+    button { font-family: 'Poppins', sans-serif; }
+    #root { height: 100%; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+const FONT = "'Poppins', 'Helvetica Neue', sans-serif";
+const fs = (n) => `${n + 2}px`;
+
+const SECTIONS = [
+  { id: 1, label: "What is AI Square", short: "Overview" },
+  { id: 2, label: "Maintenance Maturity", short: "Maintenance" },
+  { id: 3, label: "Real Value", short: "Value" },
+  { id: 4, label: "Industry × Levers", short: "Matrix" },
+  { id: 5, label: "Capability Gaps", short: "Gaps" },
+  { id: 6, label: "Winning Strategy", short: "Strategy" },
+  { id: 7, label: "Pricing Models", short: "Pricing" },
+  { id: 8, label: "Revenue to 2035", short: "Revenue" },
+];
+
+const MAINTENANCE_LEVELS = [
+  { level: 1, label: "Reactive", color: "#6b7280", current: false,
+    desc: "Fix it after it breaks. Unplanned stops, emergency repairs, no data visibility. Every stopped hour is pure cost with no warning whatsoever." },
+  { level: 2, label: "Preventive", color: "#94a3b8", current: false,
+    desc: "Fixed calendar schedules — replace parts every 6 months regardless of actual condition. Reduces catastrophic failures but creates costly over-maintenance and still misses random failures that occur between scheduled checks." },
+  { level: 3, label: "Condition-Based Monitoring", color: "#0ea5e9", current: true,
+    desc: "Real-time signal ingestion from machines. Threshold alerts trigger when a value exceeds a defined limit. AI Square today: detects deviations as they happen, logs root cause (event + machine + operator), and guides corrective action via playbooks. The limitation: the machine has already stopped or degraded before the system reacts." },
+  { level: 4, label: "Predictive Maintenance (PdM)", color: "#f59e0b", current: false,
+    desc: "ML models learn each machine's healthy fingerprint from vibration, temperature, pressure and acoustic signals. The system forecasts failure 7–30 days ahead, calculates Remaining Useful Life (RUL), and schedules intervention during planned downtime windows. Deloitte benchmark: 70–75% reduction in unexpected breakdowns." },
+  { level: 5, label: "Prescriptive / Autonomous", color: "#22c55e", current: false,
+    desc: "AI agents monitor, diagnose, decide and act — without human intervention for routine cases. Auto-generated work orders, autonomous parameter adjustments (slow machine before failure triggers), self-healing protocols and continuous model retraining. Critically: the AI agents themselves are monitored via health dashboards — drift detection, accuracy tracking and automated redeployment ensure the AI layer stays accurate and operational over time." },
+];
+
+const TO_LEVEL5 = [
+  { icon: "📡", title: "Vibration & acoustic sensor connectors",
+    desc: "OPC UA / MQTT adapters for bearing wear frequency, gear mesh analysis, and motor current signature. These signals provide 30+ days of advance warning for mechanical failures — without them, ML models work only on indirect proxy indicators like temperature." },
+  { icon: "🧠", title: "Per-asset ML health models",
+    desc: "Each machine type needs its own baseline healthy fingerprint trained on months of normal operation data. Isolation Forest for unsupervised anomaly detection; LSTM networks for time-series degradation regression. Models must auto-retrain as operating conditions shift — static models degrade within 3–6 months." },
+  { icon: "📈", title: "Degradation trend / RUL forecasting engine",
+    desc: "The shift from 'this reading is abnormal' to 'this bearing will reach critical threshold in 11 days at current degradation rate'. Remaining Useful Life calculation enables maintenance scheduling during planned downtime — the core economic value that justifies the Level 4 investment." },
+  { icon: "🔧", title: "CMMS / ERP maintenance integration",
+    desc: "Predictions are only valuable if they trigger action in existing workflows. Integration with SAP PM, IBM Maximo, UpKeep and Fiix auto-generates work orders, reserves spare parts from inventory, and blocks production schedule slots — closing the prediction-to-action loop without manual copy-paste." },
+  { icon: "🤖", title: "Autonomous AI agent layer with self-monitoring",
+    desc: "Level 5 agents execute corrective actions: reduce machine to 80% load when bearing temperature trajectory is critical, trigger cooldown protocol, escalate only when intervention fails. A dedicated Agent Operations Dashboard monitors each agent's health — prediction accuracy, drift metrics, response latency, and automatic redeployment when performance degrades." },
+];
+
+const RESEARCH_DATA = [
+  { source: "McKinsey", cat: "Downtime", metric: "Machine downtime reduction", range: "30–50%", ctx: "Digital manufacturing at scale across industrial sectors" },
+  { source: "McKinsey", cat: "Throughput", metric: "Production volume increase", range: "20–25%", ctx: "Big data and advanced analytics applied to scheduling" },
+  { source: "McKinsey", cat: "Labour", metric: "Labour productivity improvement", range: "15–30%", ctx: "Industry 4.0 levers; reduced manual data collection work" },
+  { source: "McKinsey", cat: "Defects", metric: "Quality cost reduction (scrap/rework)", range: "10–20%", ctx: "SPC + real-time advanced process control (APC)" },
+  { source: "McKinsey", cat: "EBIT", metric: "EBIT margin improvement", range: "+5–8 pts", ctx: "Full digital transformation across the enterprise" },
+  { source: "Deloitte", cat: "Downtime", metric: "Unexpected breakdowns eliminated", range: "70–75%", ctx: "Predictive maintenance vs. reactive / preventive baseline" },
+  { source: "Deloitte", cat: "Downtime", metric: "Maintenance cost savings", range: "25–30%", ctx: "Condition-based vs. fixed-schedule maintenance spend" },
+  { source: "Aberdeen", cat: "Throughput", metric: "OEE improvement", range: "18%", ctx: "Real-time analytics applied to manufacturing operations" },
+  { source: "Siemens 2024", cat: "Downtime", metric: "Annual cost to Fortune 500 globally", range: "$1.4T/yr", ctx: "11% of total revenues — up 62% since 2019" },
+  { source: "Siemens 2024", cat: "Downtime", metric: "Automotive: cost per idle hour", range: "$2.3M/hr", ctx: "Single idle production line — up from $1.3M in 2019" },
+  { source: "Industry avg", cat: "Defects", metric: "Scrap & rework as % of revenue", range: "2.2%", ctx: "Average manufacturer; higher in pharma and electronics" },
+  { source: "Industry avg", cat: "Returns", metric: "3-year ROI on real-time analytics", range: ">300%", ctx: "Comprehensive platform implementations across industrial sectors" },
+];
+
+const VALUE_CALCS = [
+  {
+    lever: "Downtime", color: "#ef4444",
+    sector: "Automotive — assembly plant",
+    intro: "Downtime is the most immediately quantifiable industrial loss. Every stopped production hour has a precise revenue cost. This calculation is conservative — it excludes emergency repair premiums, contractual penalties, and customer churn. Net savings deduct sensor hardware maintenance, AI agent operational costs, and platform licence fees.",
+    example: {
+      title: "Automotive assembly plant — €1B annual revenue",
+      lines: [
+        { l: "Annual revenue", v: "€1,000M" },
+        { l: "Production hours/yr (3 shifts, 330 days)", v: "7,920 hrs" },
+        { l: "Revenue per production hour", v: "€126,000/hr" },
+        { l: "Unplanned downtime — industry average 800 hrs/yr", v: "800 hrs/yr" },
+        { l: "Current annual downtime cost", v: "€100.8M/yr" },
+        { l: "AI Square + PdM: 30% downtime reduction", v: "−240 hrs saved" },
+        { l: "Gross value recovered", v: "€30.2M/yr" },
+        { l: "Sensor hardware + calibration (50 machines)", v: "−€500K/yr" },
+        { l: "AI Square platform licence + AI agent operations", v: "−€600K/yr" },
+      ],
+      net: "€29.1M/yr net", roi: "48× ROI on software cost",
+    },
+  },
+  {
+    lever: "Defects", color: "#f59e0b",
+    sector: "Pharma — batch manufacturing",
+    intro: "Defect costs are systematically underestimated — the visible scrap pile is only 20–30% of total quality cost. Hidden costs include rework consuming planned capacity, regulatory holds, and recall exposure. The Rule of Ten: a defect caught at incoming inspection costs €1; at final inspection €10; reaching the customer €100+.",
+    example: {
+      title: "Pharmaceutical manufacturer — batch defect & recall prevention",
+      lines: [
+        { l: "Average cost per failed batch (equipment + regulatory hold)", v: "€1.5M/batch" },
+        { l: "Equipment-caused batch failures per year", v: "8 failures" },
+        { l: "Annual batch failure cost", v: "€12M/yr" },
+        { l: "Scrap & rework on non-failed batches (est. 1.8% revenue)", v: "€3.6M/yr" },
+        { l: "Total annual quality cost", v: "€15.6M/yr" },
+        { l: "AI Square real-time defect detection — 65% failure reduction", v: "€10.1M recovered" },
+        { l: "GMP-validated sensor infrastructure + calibration", v: "−€400K/yr" },
+        { l: "AI Square quality module + ML model + compliance agent ops", v: "−€300K/yr" },
+      ],
+      net: "€9.4M/yr net", roi: "13× ROI on total investment",
+    },
+  },
+  {
+    lever: "Energy", color: "#22c55e",
+    sector: "Steel & cement — process industry",
+    intro: "Energy is a board-level issue — ESG mandates, carbon pricing, and energy cost volatility have elevated it from operational footnote to strategic priority. AI Square already tracks total energy cost per site. The missing layer is granularity: per-machine, per-product, per-shift cost linked to production context, plus the AI agent that acts on opportunities autonomously.",
+    example: {
+      title: "Cement plant — €20M annual energy bill",
+      lines: [
+        { l: "Annual energy spend (kiln, grinding, logistics)", v: "€20M" },
+        { l: "Estimated avoidable waste (idle equipment, off-peak gaps)", v: "~18% = €3.6M" },
+        { l: "McKinsey benchmark: 12–20% reduction in process industry", v: "€2.8M potential" },
+        { l: "AI Square process optimisation — conservative 12%", v: "€2.4M recovered" },
+        { l: "Process instrumentation + submeter hardware maintenance", v: "−€200K/yr" },
+        { l: "AI Square energy module + AI energy agent operations", v: "−€250K/yr" },
+        { l: "Carbon credit value (verified Scope 2 reduction)", v: "+€120K/yr" },
+      ],
+      net: "€2.07M/yr net", roi: "4.6× ROI on platform investment",
+    },
+  },
+  {
+    lever: "Labour", color: "#8b5cf6",
+    sector: "Logistics — distribution centre",
+    intro: "Labour savings from digitalization are not headcount cuts — they are recovery of time from low-value firefighting and manual data work, redeployed to higher-value improvement. Deloitte finds paper-based instructions alone cause 45% of downtime events. The AI agent layer automates routine coordination tasks entirely, compounding the savings over time.",
+    example: {
+      title: "Large distribution centre — €30M annual labour cost",
+      lines: [
+        { l: "Annual warehouse + operations labour cost", v: "€30M" },
+        { l: "Idle time between task waves (est. 18%)", v: "€5.4M wasted" },
+        { l: "Manual counting & paper-based processes (est. 8%)", v: "€2.4M wasted" },
+        { l: "Total recoverable labour waste", v: "€7.8M" },
+        { l: "AI Square + AI coordination agent — 20% improvement", v: "€1.56M recovered" },
+        { l: "IoT task-tracking hardware + network maintenance", v: "−€60K/yr" },
+        { l: "AI Square logistics module + AI coordination agent ops", v: "−€120K/yr" },
+      ],
+      net: "€1.38M/yr net", roi: "7.7× ROI on platform investment",
+    },
+  },
+  {
+    lever: "Throughput", color: "#0ea5e9",
+    sector: "Agriculture — large cooperative",
+    intro: "Throughput is the compound multiplier of all other levers — less downtime means more running hours, better quality means less capacity consumed by rework, better scheduling means the same assets produce more. In agriculture, this translates directly to yield per hectare from the same land and equipment.",
+    example: {
+      title: "Agricultural cooperative — 50,000 hectares under management",
+      lines: [
+        { l: "Total area under management", v: "50,000 ha" },
+        { l: "Average crop revenue per hectare", v: "€1,200/ha" },
+        { l: "Total annual crop revenue", v: "€60M" },
+        { l: "Current yield gap vs. potential (FAO benchmark: 12%)", v: "€7.2M unrealised" },
+        { l: "AI Square precision scheduling — 8% yield improvement", v: "€4.8M recovered" },
+        { l: "Field sensor network + IoT hardware maintenance", v: "−€300K/yr" },
+        { l: "AI Square agriculture module + AI field agent operations", v: "−€200K/yr" },
+      ],
+      net: "€4.3M/yr net", roi: "8.6× ROI on platform investment",
+    },
+  },
+];
+
+const MATRIX_INDUSTRIES = [
+  { id: "mfg", label: "Manufacturing", sub: "All industrial sectors globally" },
+  { id: "raw", label: "Raw Materials QC", sub: "Incoming goods & supplier quality" },
+  { id: "food", label: "Food & Pharma", sub: "Compliance, cold chain, batch traceability" },
+  { id: "agri", label: "Agriculture", sub: "Field operations, irrigation, yield" },
+  { id: "energy", label: "Energy & Utilities", sub: "Grid, industrial energy consumption" },
+  { id: "logi", label: "Logistics & Warehousing", sub: "DC operations, OTIF, fulfilment" },
+];
+
+const MATRIX_LEVERS = [
+  { key: "Downtime", color: "#ef4444" },
+  { key: "Defects", color: "#f59e0b" },
+  { key: "Energy", color: "#22c55e" },
+  { key: "Labour", color: "#8b5cf6" },
+  { key: "Throughput", color: "#0ea5e9" },
+];
+
+const MATRIX_CELLS = {
+  mfg: {
+    Downtime:   { v:"hi",  loss:"$1.4T", rec:"30–50%", note:"Global Fortune 500 loss per Siemens 2024 report. Average plant: 800 hrs/yr unplanned at a cost that ranges from $39K/hr (light manufacturing) to $2.3M/hr (automotive). Every 1% OEE improvement at a €1B plant = €10M in recovered revenue — before any cost savings." },
+    Defects:    { v:"hi",  loss:"$374B", rec:"10–20%", note:"Average 2.2% of global manufacturing revenue ($17T) lost to scrap and rework. Electronics and automotive face the highest rates. The hidden quality cost — warranty claims, returns, rework capacity consumed — adds 3–5× the visible scrap cost. AI Square's real-time process data closes the root-cause loop." },
+    Energy:     { v:"med", loss:"$200B", rec:"15–20%", note:"Manufacturing consumes 25% of global electricity. 15–20% of this is wasted through idle equipment running off-cycle, sub-optimal shift scheduling and poor process temperature control. Per-unit energy tracking — the granular view AI Square currently lacks — is what unlocks targeted optimisation." },
+    Labour:     { v:"med", loss:"$150B", rec:"15–30%", note:"Deloitte: 45% of downtime caused by paper-based processes. Engineers average 12 hrs/week on manual data collection — 3 FTE equivalent in a typical facility. AI Square automates data capture and enables AI agents to handle routine shift coordination, redeploying human effort to continuous improvement." },
+    Throughput: { v:"hi",  loss:"$500B", rec:"10–30%", note:"McKinsey: 20–25% production volume increase achievable from advanced analytics on the same asset base. OEE improvements compound multiplicatively — a 5% improvement in availability AND performance AND quality results in a 16% OEE improvement. AI Square's integrated view enables this compound effect." },
+  },
+  raw: {
+    Downtime:   { v:"med", loss:"$60B",  rec:"20–35%", note:"Defective incoming batches discovered mid-production stop lines without warning — no early signal exists in reactive systems. AI Square at the goods receipt station detects out-of-spec batches before they enter production. Up to 35% of production downtime traces directly to supplier variability that was never caught at the source." },
+    Defects:    { v:"hi",  loss:"$120B", rec:"15–25%", note:"The Rule of Ten: a defect caught at incoming inspection costs €1. The same defect at final inspection costs €10. Reaching the customer costs €100+. AI Square can correlate supplier batch characteristics with downstream defect rates in real time — surfacing the connection that manual quality reports miss until weeks later." },
+    Energy:     { v:"low", loss:"$10B",  rec:"5–10%",  note:"Energy wasted processing out-of-spec raw materials that are ultimately scrapped — including all the heating, cooling, machining and handling energy invested in units that never ship. Secondary lever — the primary value in this row is defect cascade prevention." },
+    Labour:     { v:"med", loss:"$30B",  rec:"10–20%", note:"Manual incoming inspection, quarantine documentation management, and supplier complaint workflows consume significant QC engineer time. AI Square digitizes these workflows and AI agents handle routine supplier notifications, freeing engineers for higher-value analysis." },
+    Throughput: { v:"med", loss:"$40B",  rec:"10–20%", note:"Production lines run at reduced speed or with elevated defect rates when substandard materials are in process — even before anyone realises the batch is problematic. Real-time supplier quality data enables proactive production scheduling adjustments rather than reactive firefighting." },
+  },
+  food: {
+    Downtime:   { v:"hi",  loss:"$100B", rec:"25–40%", note:"A single pharma batch failure costs €500K–€5M in direct costs (destroyed product, investigation time, regulatory hold, revalidation). Food lines: 50% downtime reduction documented on bottling. Compliance-related production holds add 2–3× the direct cost in idle facility expense. PdM prevents most equipment-caused batch failures before the process is compromised." },
+    Defects:    { v:"hi",  loss:"$160B", rec:"10–20%", note:"Global food waste: $1 trillion annually, a significant proportion preventable with real-time monitoring of storage and processing conditions. Pharmaceutical recalls average $600M impact per event. GMP and HACCP compliance requires complete process data — exactly the event-machine-parameter record that AI Square generates and which supports both defect prevention and regulatory evidence." },
+    Energy:     { v:"med", loss:"$30B",  rec:"10–15%", note:"Pharmaceutical cleanrooms and food processing facilities are energy-intensive. Over-refrigeration (running cold storage colder than required), inefficient sterilisation cycles, and non-optimised HVAC are common sources of 15–20% energy waste. Per-unit energy tracking links these costs directly to specific products and batches." },
+    Labour:     { v:"med", loss:"$40B",  rec:"15–25%", note:"Manual batch record creation is one of the largest hidden labour costs in pharmaceutical manufacturing — 4–8 hours per batch in paper-based operations, purely on documentation. AI Square auto-generates structured batch records from production events, cutting documentation time by 70%+ and making regulatory submissions faster." },
+    Throughput: { v:"med", loss:"$50B",  rec:"10–20%", note:"Capacity lost to over-cautious scheduling (buffer time added before and after holds to be safe), manual review queues for batch release, and revalidation cycles following any process change. Digitization compresses these buffers significantly — each hour saved in batch cycle time is additional revenue-generating capacity." },
+  },
+  agri: {
+    Downtime:   { v:"med", loss:"$80B",  rec:"15–30%", note:"Equipment failure during a harvest window (wheat: 7–14 days; maize: 10–20 days) can destroy an entire season's financial outcome — a combine down for two critical days cannot be made up. PdM on harvesting equipment, irrigation pumps and tractors prevents most mechanical failures before they occur in the highest-value operating windows." },
+    Defects:    { v:"hi",  loss:"$400B", rec:"10–20%", note:"FAO estimates $400B in preventable global crop yield gap — the difference between actual farmer yield and the yield achievable with optimal management. Causes: irrigation timing that misses critical crop stages, pest and disease detected too late to treat effectively, soil nutrient deficiency not caught until yield loss is visible. Real-time field sensor data addresses all three root causes." },
+    Energy:     { v:"hi",  loss:"$120B", rec:"20–30%", note:"Agriculture is the world's largest water consumer, and irrigation pumping is the largest single energy cost on most farms. Over-irrigation wastes both water and pumping energy — precision agriculture reduces input use 15–25% per hectare with no yield loss. As energy costs rise and water scarcity intensifies, this lever becomes increasingly material to farm profitability and sustainability compliance." },
+    Labour:     { v:"low", loss:"$30B",  rec:"10–15%", note:"Manual field scouting (walking fields to identify problems), paper-based spray and irrigation records, and unoptimised crew scheduling across multiple fields. Digitization value is real but secondary to yield and energy savings in this sector. Remote monitoring via drone and sensor networks reduces the physical scouting burden significantly." },
+    Throughput: { v:"hi",  loss:"$200B", rec:"5–15%",  note:"Yield uplift from optimised planting windows, precision irrigation timing, and harvest scheduling: 5–15% more output per hectare on the same land. At global scale, a 5% yield improvement represents $80–100B in additional agricultural output. AI Square's production order logic maps directly to crop stage management — the abstraction is the same." },
+  },
+  energy: {
+    Downtime:   { v:"hi",  loss:"$150B", rec:"30–50%", note:"US grid alone loses $150B/yr to power outages. A single substation failure can cost $50M–$500M in direct and indirect losses. Industrial facility downtime from energy supply interruption compounds manufacturing losses. PdM on transformers, switchgear, and generation equipment has demonstrated 40–60% reduction in unplanned outages in documented utility implementations." },
+    Defects:    { v:"low", loss:"$20B",  rec:"5–10%",  note:"Transmission losses, metering inaccuracies and billing errors. Lower relevance in this sector — the term 'defect' maps less directly than in manufacturing. Primary value levers for energy operators are in the downtime and energy waste columns, which together represent $450B in recoverable annual losses." },
+    Energy:     { v:"hi",  loss:"$300B", rec:"15–25%", note:"IEA estimates $300B/yr in avoidable industrial energy waste globally from sub-optimal generation scheduling, transmission inefficiencies and facility operations. AI Square's energy intelligence layer — per-asset consumption, per-shift benchmarking, carbon overlay, and autonomous demand-response via AI agents — is the missing link for industrial energy operators trying to optimise in real time." },
+    Labour:     { v:"med", loss:"$40B",  rec:"10–20%", note:"Field crew dispatch inefficiency, manual meter reading (still prevalent in industrial grid contexts), and reactive rather than planned maintenance of grid infrastructure all represent recoverable labour cost. AI agents can handle routine monitoring, anomaly classification and dispatch recommendations autonomously — escalating only genuine emergencies." },
+    Throughput: { v:"med", loss:"$80B",  rec:"10–20%", note:"Curtailment losses on renewable generation assets (wind and solar capacity wasted due to grid constraints or forecast errors), and demand-supply mismatch penalties in real-time energy markets. Better forecasting and AI-driven dispatch recovers meaningful generation capacity and reduces balancing costs." },
+  },
+  logi: {
+    Downtime:   { v:"hi",  loss:"$90B",  rec:"20–35%", note:"Dock downtime, conveyor failures and sorter stoppages cascade directly into missed shipment windows and SLA breaches that trigger financial penalties. Each unplanned DC stop is more expensive than its direct cost suggests — every downstream order misses its window. PdM on conveyor systems and dock levellers delivers fast, measurable ROI in high-velocity DCs." },
+    Defects:    { v:"med", loss:"$50B",  rec:"10–20%", note:"Picking errors (1–3% of picks industry average), goods damaged in transit or handling, and OTIF failures (5–8% of orders at large retailers) each trigger penalty charges, return handling costs and re-delivery expense. AI Square's real-time order tracking flags at-risk orders before the shipment window closes — enabling intervention rather than post-breach penalty management." },
+    Energy:     { v:"med", loss:"$40B",  rec:"10–20%", note:"DC lighting, refrigeration (cold chain), conveyor systems and forklift charging infrastructure represent 3–5% of DC operating cost. AI Square's energy module plus smart scheduling (charge overnight, run peak-consuming equipment off-peak, auto-dim lighting in inactive zones) creates meaningful operational savings — especially in large ambient-temperature and cold-chain DCs." },
+    Labour:     { v:"hi",  loss:"$120B", rec:"15–25%", note:"Labour is 50–70% of total DC operating cost. Idle time between task waves, inefficient pick paths, manual inventory cycle counts and unoptimised shift allocation across zones all represent recoverable capacity. AI Square's real-time throughput view enables shift-by-shift labour optimisation — and AI coordination agents can dynamically reassign work zones as order velocity changes across the shift." },
+    Throughput: { v:"hi",  loss:"$80B",  rec:"10–20%", note:"Dock throughput gaps directly cause SLA breaches, lost retail compliance scores and, for 3PLs, contract renewals at risk. AI Square's orders-at-risk engine already models this logic for manufacturing production orders — the same architecture applied to DC operations: which shipments are at risk of missing the collection window, what needs to happen in the next 90 minutes, and which dock should be prioritised." },
+  },
+};
+
+const GAPS = [
+  { lever: "Downtime", color: "#ef4444", effort: "High",
+    intro: "AI Square currently detects and logs downtime as it happens. To forecast and prevent it, five distinct capabilities must be built — each additive on the existing signal pipeline.",
+    items: [
+      { t: "Vibration & acoustic sensor connectors", d: "The current signal library covers OPC UA process variables (temperature, pressure, cycle time). Mechanical failure prediction requires dedicated vibration sensor adapters for ICP accelerometers and acoustic emission sensors. Bearing wear and gear mesh frequency analysis provide 30+ days advance warning — without these signals, ML models work only on indirect proxy indicators that give at most 24–48 hours notice." },
+      { t: "Per-asset ML health models", d: "Each machine type needs its own baseline healthy fingerprint trained on months of normal operational data. Isolation Forest for unsupervised anomaly detection identifies deviations from normal patterns; LSTM networks perform time-series degradation regression for trend forecasting. These models must auto-retrain as operating conditions change (new operators, new products, seasonal temperature variation) — a static model degrades within 3–6 months without retraining." },
+      { t: "Remaining Useful Life (RUL) forecasting engine", d: "The economic value of predictive maintenance comes from maintenance scheduling during planned downtime windows — not from emergency response. This requires a dedicated RUL regression layer that translates degradation trends into specific time forecasts: 'this bearing will reach the critical vibration threshold in 11 days at the current rate of degradation'. This enables the maintenance team to plan rather than react." },
+      { t: "CMMS / work-order write-back integration", d: "Predictions have no operational value unless they trigger action in existing maintenance workflows. Integration with SAP PM, IBM Maximo, UpKeep and Fiix auto-generates work orders with the right priority, reserves the correct spare parts from inventory, and blocks appropriate production schedule slots — closing the prediction-to-action loop without anyone having to copy-paste a forecast into a different system." },
+      { t: "Autonomous AI agent layer with self-monitoring", d: "Level 5 requires agents that execute: reduce machine to 80% load when bearing temperature trajectory approaches critical threshold, trigger cooldown protocol, escalate only when autonomous intervention fails to arrest degradation. The agent ecosystem needs its own monitoring layer — an Agent Operations Dashboard tracking prediction accuracy, model drift, response latency and automatic redeployment when an agent's performance degrades below threshold." },
+    ],
+  },
+  { lever: "Defects", color: "#f59e0b", effort: "High",
+    intro: "AI Square currently tracks quality events and the OEE quality rate. Per-unit traceability, statistical process control and predictive quality scoring require a deeper data model and several new connectors that don't currently exist in the platform.",
+    items: [
+      { t: "Unit-level genealogy data model", d: "Current model: event → machine → operator → order. Required model: individual unit → set of process parameters it experienced at each production step → quality outcome. This schema enables questions like 'why did unit #4471 fail?' and 'which combination of temperature variance and feed rate predicts failure with 85% accuracy?' — a significant but well-defined data model extension." },
+      { t: "Statistical Process Control (SPC) charts", d: "Xbar-R charts, CUSUM and EWMA control charts need to be native in the AI Square UI. These are the universal language of quality management in manufacturing — operators and quality engineers expect them as standard. Without SPC, AI Square cannot serve as the quality system of record and must be supplemented by standalone QMS tools." },
+      { t: "Vision / inline inspection connector", d: "Camera-based inspection systems from Cognex, Keyence and Sick generate the richest per-unit defect data available — but currently have no AI Square integration. This connector enables pass/fail data, defect classification images and dimensional measurements to enter the unit genealogy model and feed the ML quality prediction engine, closing the loop between inline inspection and process data." },
+      { t: "ML quality prediction score per unit", d: "Once unit genealogy, process parameters and quality outcomes are linked in the data model, an ML classification model can predict the probability that the unit currently in process will be defective — before it reaches final inspection. This enables real-time intervention (adjust process parameter, flag operator, slow line) rather than end-of-line rejection of already-completed units." },
+      { t: "Supplier-to-defect correlation engine", d: "Automatically correlates incoming raw material batch characteristics (from the goods receipt QC module) with downstream defect rates by line, shift and product. When supplier batch B-2041 from Supplier X correlates with a 3× defect spike on Line 7 for Product A, the system surfaces this pattern without requiring a quality engineer to run a manual analysis — closing the supplier quality feedback loop in real time." },
+    ],
+  },
+  { lever: "Energy", color: "#22c55e", effort: "Medium",
+    intro: "AI Square already monitors total facility energy cost as a KPI. The gaps are granularity — per-machine, per-product, per-shift cost breakdown — and the strategic overlay: carbon accounting, tariff optimisation and the AI agent that acts on energy opportunities autonomously.",
+    items: [
+      { t: "Smart meter & submeter connectors", d: "Total facility energy is already captured from utility billing or site-level meters. Machine-level energy requires smart meters installed on individual circuits or Motor Control Centre (MCC) panels. The connector library needs Modbus TCP and IEC 61850 adapters for industrial metering hardware from Schneider PowerLogic, Siemens SENTRON, ABB Ability and others — a connector integration effort, not a platform architecture change." },
+      { t: "Energy cost per unit (granular breakdown)", d: "The most actionable energy metric: €X of energy consumed to produce one unit of product Y on machine M during shift S. This enables product-level profitability analysis, identification of which products are loss-making due to energy cost, and targeted process optimisation on the specific machine-product-shift combinations with highest energy intensity. Currently absent from the platform." },
+      { t: "Carbon / Scope 2 emissions overlay", d: "Carbon intensity per kWh varies by grid region and changes by hour of day as the generation mix shifts between fossil and renewable sources. Integrating real-time carbon intensity data (available via APIs from grid operators and providers like ElectricityMaps) transforms AI Square's energy data into Scope 2 emissions data — creating the sustainability reporting module that boards, investors and EU CSRD regulations increasingly require." },
+      { t: "Tariff & demand-response integration", d: "Connect to electricity tariff schedules (time-of-use rates, peak/off-peak windows) and grid demand-response signals. An AI energy agent can then shift energy-intensive operations autonomously to off-peak windows — it knows the production schedule, the flexibility window, the tariff curve and the machine availability, and acts without requiring a human decision for routine optimisation." },
+      { t: "AI energy agent with health monitoring", d: "An autonomous agent monitors energy consumption in real time, detects anomalies (a machine consuming 40% more energy than its established baseline), proposes corrective actions, and executes schedule shifts within pre-approved parameters. The agent's performance — energy saved per week, actions taken, accuracy of anomaly flags — is reported on a dedicated agent health dashboard alongside model drift metrics." },
+    ],
+  },
+  { lever: "Labour", color: "#8b5cf6", effort: "Medium",
+    intro: "Labour optimisation builds on the real-time visibility already in AI Square — the machine status, order progress and shift timeline are all already captured. What's missing is the operator-level tracking layer and the AI agent that handles routine coordination decisions autonomously.",
+    items: [
+      { t: "Operator utilisation tracking model", d: "Current data captures machine events and links them to an operator ID. Missing: what is that operator doing between machine interactions? A lightweight task-assignment model — operator checked in to Task T at Time X, checked out at Time Y, next task assigned at Time Z — unlocks labour analytics without requiring time-and-motion studies. This is the data that enables idle time quantification and optimisation." },
+      { t: "Labour cost per unit produced", d: "The complement of energy cost per unit. Combined, these two metrics deliver a full variable cost per unit — the data that product profitability analysis, pricing decisions and make-vs-buy evaluations require. Neither is currently available at granular level in AI Square, but both can be derived from data the platform already captures with additional calculation logic." },
+      { t: "Structured digital shift handover workflow", d: "Unstructured verbal handovers between shifts are a major source of information loss and repeat downtime — the incoming shift has no structured record of what issues are open, which machines are at risk, and what actions are pending. A 10-minute structured digital handover (issues open, machines flagged, playbooks in progress) prevents hours of lost context and repeated diagnosis every shift change." },
+      { t: "AI coordination agent", d: "An agent that reads the production schedule, current labour allocation, real-time machine status and incoming order priority — and recommends (or with pre-approval, autonomously executes) reallocation of operators to priority tasks. The agent monitors its own performance: shift targets achieved, SLA adherence rate, operator idle time reduction — all visible on the Agent Operations Dashboard." },
+    ],
+  },
+  { lever: "Throughput", color: "#0ea5e9", effort: "High",
+    intro: "Throughput is the compound outcome of fixing downtime, defects and energy simultaneously. The AI Square engine already tracks OEE and flags orders at risk. The missing capabilities are the scheduling intelligence and constraint management tools that translate visibility into proactive capacity optimisation.",
+    items: [
+      { t: "Advanced production scheduling engine", d: "Current AI Square can identify that an order is at risk. Missing: a scheduling engine that proactively resequences production to avoid the risk — simultaneously considering machine availability, operator allocation, material availability, customer priority and energy cost per slot. This is a constrained optimisation problem that AI agents are well-suited to solve continuously as conditions change." },
+      { t: "Constraint / bottleneck identification (Theory of Constraints)", d: "The system should automatically identify which machine, workcentre or process step is the binding constraint on total throughput at any given moment — and focus all improvement recommendations on that constraint. Improving non-constraint resources creates no throughput improvement. This focus mechanism is what separates a useful analytics platform from a noise-generating one in a factory context." },
+      { t: "Multi-line load balancing optimisation", d: "For factories with multiple parallel production lines or flexible workcells, AI Square should recommend how to balance the order load across lines in real time — based on current OEE per line, operator skill level, order mix, downstream capacity and energy cost. An AI agent can run this optimisation continuously, adjusting recommendations as conditions change through the shift." },
+      { t: "Digital twin for scenario planning", d: "A simulation layer built on the real-time data model already in AI Square that answers operational questions: 'what would happen to throughput next week if Machine M3 fails?' or 'can we accept this emergency order without compromising existing commitments?' Running scenarios on a digital twin before committing to operational decisions is the highest-value application of the data AI Square already holds." },
+    ],
+  },
+];
+
+const STRATEGY_PHASES = [
+  { phase: "Phase 1 — 2025–2026", title: "Deepen Downtime", color: "#ef4444",
+    focus: "Build the predictive layer on the existing signal pipeline. Highest ROI, fastest deployment, clearest customer value — this is the module that proves the platform can do more than detect.",
+    actions: [
+      "Add vibration / thermal sensor connectors (OPC UA, MQTT adapters for accelerometers)",
+      "Build per-asset ML health model — Isolation Forest anomaly detection + LSTM RUL regression",
+      "Launch 'Days to Failure' dashboard widget visible to maintenance and operations simultaneously",
+      "Integrate with SAP PM, IBM Maximo, UpKeep — auto-generate work orders from predictions",
+      "Deploy first AI maintenance agent with autonomous parameter adjustment capability",
+      "Launch Agent Operations Dashboard — accuracy, drift, latency and health for all agents",
+      "Price as Predictive Maintenance Module: +€20–40K/site/yr on base licence",
+    ],
+    resources: "2 ML engineers, 1 integration specialist, 1 AI agent developer — 6 months to first customer deployment",
+  },
+  { phase: "Phase 2 — 2026–2027", title: "Add Defect Intelligence", color: "#f59e0b",
+    focus: "Per-unit quality traceability and ML quality prediction — the quality module that mid-market manufacturers currently lack entirely. Opens the quality manager and VP Operations relationship.",
+    actions: [
+      "Unit genealogy data model — process parameters mapped to quality outcomes per unit",
+      "SPC charts (Xbar-R, CUSUM, EWMA) natively embedded in AI Square UI",
+      "Vision system connector — Cognex / Keyence REST API integration",
+      "ML quality prediction score per unit — real-time defect probability before final inspection",
+      "Supplier-to-defect correlation engine — closes the raw materials quality loop automatically",
+      "AI quality agent — monitors SPC control limits, triggers alerts, adjusts thresholds autonomously",
+    ],
+    resources: "2 quality-domain engineers, 1 data scientist, 1 ML ops engineer — 9 months",
+  },
+  { phase: "Phase 3 — 2027–2028", title: "Energy as Strategic Differentiator", color: "#22c55e",
+    focus: "Granular energy per unit, Scope 2 carbon accounting, AI-driven demand response. This becomes a board-level proposition — linking OT data to ESG reporting, carbon pricing and energy cost management simultaneously.",
+    actions: [
+      "Smart meter and submeter connector library (Modbus TCP, IEC 61850)",
+      "Energy cost per unit — per machine × shift × product — full variable cost picture",
+      "Scope 2 emissions tracker with real-time carbon intensity overlay by grid region",
+      "Tariff / demand-response integration — AI agent shifts loads to off-peak autonomously",
+      "Carbon ROI dashboard for ESG and board-level sustainability reporting",
+      "Agent health reporting for energy agent integrated into Agent Operations Dashboard",
+    ],
+    resources: "1 energy domain specialist, 1 integration engineer, 1 AI agent developer — 6 months",
+  },
+  { phase: "Scale — 2028+", title: "Platform, Verticals & AI Agent Ecosystem", color: "#8b5cf6",
+    focus: "A generic configurable asset model unlocks agriculture, logistics and energy as new verticals. AI agents become the scalable operating layer — each new site adds incremental agent instances, not headcount.",
+    actions: [
+      "Generic configurable asset hierarchy replacing machine-only model — field, dock, zone, substation all become 'assets'",
+      "Agriculture vertical module — field → zone → sensor → crop stage → yield forecast",
+      "Logistics vertical module — dock → DC zone → carrier → OTIF prediction engine",
+      "SI / partner channel programme — certified resellers trained on full platform + agent stack",
+      "AI Square Marketplace — third-party connectors and domain-specific agent templates",
+      "AI Agent Ecosystem — domain agents for each vertical, monitored centrally on shared Agent Operations Dashboard",
+    ],
+    resources: "Full product team expansion (10–15 engineers), partner programme budget €2–3M, geographic expansion investment",
+  },
+];
+
+const PRICING_MODELS = [
+  { model: "Per Site", type: "Flat SaaS subscription", range: "€20–80K/site/yr",
+    pros: ["Simple billing", "Predictable ARR", "Easy SME budget approval"],
+    cons: ["Doesn't scale with large sites", "Misses upside at €1B+ plants", "No value alignment — customer may cancel if ROI unclear"],
+    rec: false, note: "Appropriate for land-and-expand with SMEs. Underprices the product dramatically at enterprise scale." },
+  { model: "Per Machine", type: "Usage-based SaaS", range: "€200–800/machine/yr",
+    pros: ["Scales with plant size", "Customers start small and expand", "Clear asset-level cost justification"],
+    cons: ["Variable revenue complicates forecasting", "Customers minimise machine count to reduce cost", "Complex billing for multi-site enterprise agreements"],
+    rec: false, note: "Works well mid-market. Enterprise customers will push back on machine-count billing at scale." },
+  { model: "Value Share", type: "Outcome-based only", range: "5–15% of verified savings",
+    pros: ["Eliminates ROI objection entirely", "Huge upside on large industrial sites", "Perfect value alignment"],
+    cons: ["Measurement and attribution disputes", "Long sales cycles with complex baseline agreements", "Customer distrust on savings calculation methodology"],
+    rec: false, note: "Best reserved for lighthouse enterprise accounts where savings are large enough to justify measurement investment." },
+  { model: "Platform Base + Performance Module", type: "Fixed + Variable hybrid  ✦ Recommended", range: "€40–120K base + €15–50K/module + 2–5% verified savings share (capped)",
+    pros: ["Predictable base revenue covers AI agent ops + sensor monitoring costs", "Variable component captures value at large sites", "Scales to enterprise without repricing", "Value-aligned without pure outcome risk", "Cap on variable (3× base) removes customer budget uncertainty", "Separate AI agent managed service fee creates new revenue line"],
+    cons: ["More complex to sell than flat SaaS", "Requires savings baseline agreement and measurement methodology at contract signing", "Needs internal audit capability to verify savings claims"],
+    rec: true, note: "The base licence explicitly covers: (1) platform SaaS, (2) AI agent operations and monitoring, (3) sensor hardware maintenance and calibration SLA, (4) security and uptime guarantee. This makes costs transparent and removes the 'hidden cost' objection. The variable component (2–5% of verified annual savings, capped at 3× base) is near-pure gross margin above the base. Total customer cost is typically 3–8% of value recovered — a self-evident ROI." },
+];
+
+const REV_YEARS = [2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035];
+const REV_SCENARIOS = {
+  base:       [0.8, 2.0, 4.5, 9.0, 16, 26, 40, 58, 78, 100, 125],
+  aggressive: [1.2, 3.5, 9.0, 20, 38, 65, 105, 155, 210, 270, 340],
+  enterprise: [1.5, 5.0, 14, 32, 62, 110, 175, 260, 350, 440, 540],
+};
+const REV_COLORS = { base: "#0ea5e9", aggressive: "#f59e0b", enterprise: "#22c55e" };
+const REV_LABELS = { base: "Base", aggressive: "Aggressive", enterprise: "Enterprise-Led" };
+
+const REV_MILESTONES = {
+  base: [
+    "First 15–40 SME sites. Downtime module live. Build 5 published case studies. Fixed pricing only.",
+    "Add Defect + Energy modules. First mid-market accounts (€100–500M revenue). Avg ARR €120K.",
+    "3 verticals. Partner channel contributes 30% of new bookings. Geographic expansion begins.",
+    "350–500 sites. Full module stack. AI agent managed service as separate revenue line. Platform marketplace.",
+  ],
+  aggressive: [
+    "10 SME + 3 mid-market accounts. Fixed + variable pricing activated from first contract. Avg ARR €90K.",
+    "5–8 large industrial accounts (€500M–€2B revenue). Variable savings share drives ARR uplift.",
+    "20+ large accounts. AI agent managed service upsell €30–80K/site. EU expansion then LatAm.",
+    "200+ sites + 40 large accounts. AI agent platform as separate P&L line. Strategic partnership or minority investment.",
+  ],
+  enterprise: [
+    "2–3 lighthouse enterprise groups (€1B+ revenue, 5–15 plants). Subsidised pricing to prove group-level ROI.",
+    "8 enterprise groups live under framework agreements. Variable component activates at group level.",
+    "15 enterprise groups + 80 mid-market. Full stack including AI agent ops service. Potential series B / strategic investment.",
+    "25 enterprise groups averaging €12–20M ARR each. 150 mid-market. IPO window opens. AI agent platform becomes core valuation driver.",
+  ],
+};
+
+const REV_ASSUMPTIONS = {
+  base: [
+    "SME and mid-market focus only. No enterprise accounts (>€500M revenue customers).",
+    "Pricing: base SaaS €40–80K/site/yr. Modules add €15–25K each. No variable component.",
+    "AI agent managed service included in base licence — no separate upsell.",
+    "Conservative growth: organic only, no partner channel, single geographic market.",
+    "Avg ARR per site grows from €50K (2025) to €250K (2035) as module adoption increases.",
+  ],
+  aggressive: [
+    "Mix: 60% SME/mid-market + 40% large industrial accounts (€500M–€2B revenue).",
+    "Pricing: base €60–120K + modules + 3% verified savings share capped at 3× base.",
+    "Large account example: €1B revenue factory, 30% downtime reduction = €30M saved. 3% share = €900K variable on €120K base.",
+    "AI agent managed service upsell: €30–80K/site/yr for autonomous agent package.",
+    "Partner channel from 2027. Geographic expansion: Iberia → EU → LatAm 2029–2031.",
+  ],
+  enterprise: [
+    "Strategy: target 20–30 industrial groups with €1B+ revenue and 5–20 plants each.",
+    "Group deal: enterprise framework agreement covering all plants. Avg group contract: €3–8M ARR.",
+    "Pricing: base €80–150K/plant + full module stack + 4–5% verified savings share at group level.",
+    "Group example: 10-plant group, avg €300M revenue/plant, 30% downtime reduction = €180M saved across group. 4% share = €7.2M variable.",
+    "AI agent ops is a separate managed service contract: €50–150K/group/yr covering all agent monitoring, retraining and redeployment.",
+    "Revenue per enterprise group (2035 est.): €12–22M ARR including variable savings share.",
+  ],
+};
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+
+function Badge({ text, color }) {
+  return <span style={{ background: color + "22", color, border: `1px solid ${color}55`, borderRadius: 20, padding: "3px 11px", fontSize: fs(11), fontWeight: 600, whiteSpace: "nowrap", fontFamily: FONT }}>{text}</span>;
+}
+
+function Card({ children, style = {} }) {
+  return <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.10)", borderRadius: 14, padding: "16px", fontFamily: FONT, ...style }}>{children}</div>;
+}
+
+function SectionTitle({ num, title }) {
+  return (
+    <div style={{ marginBottom: 22 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <span style={{ background: "linear-gradient(135deg,#0ea5e9,#6366f1)", borderRadius: 9, width: 33, height: 33, display: "flex", alignItems: "center", justifyContent: "center", fontSize: fs(13), fontWeight: 700, color: "#fff", flexShrink: 0, fontFamily: FONT }}>{num}</span>
+        <h2 style={{ margin: 0, fontSize: fs(19), fontWeight: 700, color: "#f1f5f9", letterSpacing: -0.4, fontFamily: FONT }}>{title}</h2>
+      </div>
+      <div style={{ height: 2, background: "linear-gradient(90deg,#0ea5e9,transparent)", marginTop: 11, borderRadius: 2 }} />
+    </div>
+  );
+}
+
+function Intro({ text }) {
+  return (
+    <div style={{ background: "rgba(14,165,233,0.08)", border: "1px solid rgba(14,165,233,0.2)", borderRadius: 12, padding: "14px 16px", marginBottom: 20 }}>
+      <p style={{ margin: 0, fontSize: fs(13), color: "#94a3b8", lineHeight: 1.75, fontFamily: FONT }}>{text}</p>
+    </div>
+  );
+}
+
+// ─── SECTIONS ────────────────────────────────────────────────────────────────
+
+function S1() {
+  return (
+    <div>
+      <Intro text="AI Square is a Portuguese industrial digitalization company that transforms disconnected factory signals into real-time, actionable production intelligence. Their platform connects to existing machines, sensors and ERP systems — without replacing them — and gives operations teams a live view of everything happening on the shop floor, from a single machine to a multi-site operation. Founded on the principle of simplicity first, AI Square deploys in days rather than months and is designed for the operators, supervisors and managers who actually run production — not just the IT team." />
+      <Card style={{ marginBottom: 14 }}>
+        <div style={{ fontSize: fs(11), fontWeight: 700, color: "#475569", marginBottom: 12, letterSpacing: 1 }}>THE FOUR CORE CAPABILITIES</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          {[
+            ["📡","Ingest","#0ea5e9","Connects to OPC UA, MQTT, REST APIs, ERP, MES and SCADA without replacing existing infrastructure. Hardware-agnostic — any machine, any brand, any age."],
+            ["🔄","Normalize","#6366f1","Translates raw signals into a common data model: events, losses, quality outcomes and energy — comparable across machines, lines and sites."],
+            ["🚨","Alert","#f59e0b","Real-time anomaly detection with full context. Flags orders at risk before they impact the plan. Every alert includes the event, the machine, the operator and the probable cause."],
+            ["🎯","Act","#22c55e","AI assistant answers natural language queries with visual evidence. Guided playbooks direct operators to the correct corrective action. Decisions are informed by data, not guessed."],
+          ].map(([icon,title,color,desc]) => (
+            <div key={title} style={{ background: color+"11", borderRadius: 10, padding: 14, border: `1px solid ${color}33` }}>
+              <div style={{ fontSize: 20, marginBottom: 6 }}>{icon}</div>
+              <div style={{ fontSize: fs(13), fontWeight: 700, color, marginBottom: 5, fontFamily: FONT }}>{title}</div>
+              <div style={{ fontSize: fs(11), color: "#64748b", lineHeight: 1.55, fontFamily: FONT }}>{desc}</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
+        {[
+          { v:"8%", l:"factories using commercial MES", s:"54% still on spreadsheets" },
+          { v:"$5T", l:"annual losses at stake globally", s:"vs. $16.6B software market" },
+          { v:"Days", l:"to deploy, not months", s:"vs. 12–18 months for Siemens/SAP" },
+          { v:"10–50×", l:"value-to-price ratio", s:"Typical ROI across implementations" },
+        ].map(m => (
+          <Card key={m.v} style={{ textAlign: "center", padding: 14 }}>
+            <div style={{ fontSize: fs(22), fontWeight: 800, color: "#0ea5e9", lineHeight: 1, fontFamily: FONT }}>{m.v}</div>
+            <div style={{ fontSize: fs(11), color: "#e2e8f0", marginTop: 5, fontWeight: 600, fontFamily: FONT }}>{m.l}</div>
+            <div style={{ fontSize: fs(10), color: "#475569", marginTop: 3, fontFamily: FONT }}>{m.s}</div>
+          </Card>
+        ))}
+      </div>
+      <Card>
+        <div style={{ fontSize: fs(11), fontWeight: 700, color: "#475569", marginBottom: 12, letterSpacing: 1 }}>WHY AI SQUARE WINS AGAINST INCUMBENTS</div>
+        {[
+          ["⚡","Speed to value","Live in days not months. No IT transformation required. First ROI evidence visible within 4–8 weeks of go-live."],
+          ["🔓","Hardware-agnostic","Works with Siemens, Fanuc, Mitsubishi, Bosch — any machine that generates a signal. No hardware lock-in."],
+          ["🤖","AI-native from day one","Natural language queries return visual insights and recommended next action. Not a dashboard — an intelligent operating system."],
+          ["📐","No-code configurator","Operations teams adjust KPIs, alert rules and downtime reasons themselves. IT is not in the critical path."],
+          ["🏭","Built for the shop floor","UX designed for operators, not data scientists. Operators see their machine; managers see the helicopter view; executives see the P&L impact."],
+        ].map(([icon,strong,rest]) => (
+          <div key={strong} style={{ display:"flex", gap:10, marginBottom:11, alignItems:"flex-start" }}>
+            <span style={{ fontSize:16, flexShrink:0, marginTop:2 }}>{icon}</span>
+            <div style={{ fontSize:fs(12), color:"#94a3b8", lineHeight:1.55, fontFamily:FONT }}>
+              <strong style={{ color:"#e2e8f0" }}>{strong}</strong> — {rest}
+            </div>
+          </div>
+        ))}
+      </Card>
+    </div>
+  );
+}
+
+function S2() {
+  return (
+    <div>
+      <Intro text="The maintenance maturity ladder describes five distinct approaches to managing industrial equipment health — from reactive firefighting to autonomous AI-driven prevention. Each level has a fundamentally different cost profile, data requirement, and business outcome. Understanding exactly where AI Square sits today, and what is required at each step forward, is the foundation for the predictive maintenance product roadmap." />
+      <div style={{ marginBottom: 18 }}>
+        {MAINTENANCE_LEVELS.map(l => (
+          <div key={l.level} style={{ display:"flex", alignItems:"stretch", marginBottom:11, borderRadius:13, overflow:"hidden", border: l.current ? `2px solid ${l.color}` : "1px solid rgba(255,255,255,0.08)" }}>
+            <div style={{ width:54, background: l.current ? l.color : l.color+"22", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+              <div style={{ fontSize:fs(18), fontWeight:800, color: l.current ? "#fff" : l.color, fontFamily:FONT }}>{l.level}</div>
+            </div>
+            <div style={{ flex:1, padding:"13px 15px", background: l.current ? l.color+"15" : "rgba(255,255,255,0.02)" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:9, marginBottom:7, flexWrap:"wrap" }}>
+                <span style={{ fontSize:fs(14), fontWeight:700, color: l.current ? l.color : "#e2e8f0", fontFamily:FONT }}>{l.label}</span>
+                {l.current && <Badge text="AI Square today" color={l.color} />}
+              </div>
+              <p style={{ margin:0, fontSize:fs(12), color: l.current ? "#94a3b8" : "#64748b", lineHeight:1.65, fontFamily:FONT }}>{l.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <Card>
+        <div style={{ fontSize:fs(11), fontWeight:700, color:"#22c55e", marginBottom:14, letterSpacing:1 }}>WHAT AI SQUARE NEEDS TO REACH LEVEL 5</div>
+        {TO_LEVEL5.map((item,i) => (
+          <div key={i} style={{ marginBottom:14, paddingBottom:14, borderBottom: i<TO_LEVEL5.length-1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
+            <div style={{ display:"flex", gap:11, alignItems:"flex-start" }}>
+              <span style={{ fontSize:20, flexShrink:0, marginTop:2 }}>{item.icon}</span>
+              <div>
+                <div style={{ fontSize:fs(13), fontWeight:700, color:"#e2e8f0", marginBottom:5, fontFamily:FONT }}>{item.title}</div>
+                <div style={{ fontSize:fs(12), color:"#64748b", lineHeight:1.65, fontFamily:FONT }}>{item.desc}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </Card>
+    </div>
+  );
+}
+
+function S3() {
+  return (
+    <div>
+      <Intro text="The economic case for industrial digitalization is among the strongest in enterprise software — because the losses it recovers are orders of magnitude larger than the software cost itself. Every benchmark figure comes from published research by McKinsey, Deloitte, Aberdeen Group, and Siemens. All net savings calculations below deduct sensor hardware maintenance, AI agent operational costs, and platform licence fees — providing the true economic picture that a CFO needs to approve a capital expenditure." />
+      <Card style={{ marginBottom:22 }}>
+        <div style={{ fontSize:fs(11), fontWeight:700, color:"#475569", marginBottom:14, letterSpacing:1 }}>RESEARCH-BACKED IMPROVEMENT RANGES</div>
+        {RESEARCH_DATA.map((r,i) => {
+          const cc = { Downtime:"#ef4444", Throughput:"#0ea5e9", Labour:"#8b5cf6", Defects:"#f59e0b", EBIT:"#22c55e", Returns:"#22c55e" };
+          const c = cc[r.cat]||"#94a3b8";
+          return (
+            <div key={i} style={{ display:"flex", gap:10, alignItems:"flex-start", padding:"11px 0", borderBottom: i<RESEARCH_DATA.length-1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+              <div style={{ width:82, flexShrink:0 }}>
+                <div style={{ fontSize:fs(11), fontWeight:700, color:c, fontFamily:FONT, lineHeight:1.3 }}>{r.source}</div>
+                <div style={{ marginTop:4, display:"inline-block", background:c+"18", border:`1px solid ${c}44`, borderRadius:6, padding:"2px 8px", fontSize:fs(9), color:c, fontWeight:700, fontFamily:FONT }}>{r.cat}</div>
+              </div>
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:fs(12), fontWeight:600, color:"#e2e8f0", marginBottom:3, fontFamily:FONT }}>{r.metric}</div>
+                <div style={{ fontSize:fs(11), color:"#64748b", fontFamily:FONT, lineHeight:1.4 }}>{r.ctx}</div>
+              </div>
+              <div style={{ flexShrink:0, minWidth:74, textAlign:"right", fontSize:fs(15), fontWeight:800, color:"#22c55e", fontFamily:FONT }}>{r.range}</div>
+            </div>
+          );
+        })}
+      </Card>
+      <div style={{ fontSize:fs(11), fontWeight:700, color:"#475569", marginBottom:14, letterSpacing:1 }}>NET VALUE CALCULATIONS — ONE EXAMPLE PER LEVER</div>
+      {VALUE_CALCS.map(vc => {
+        const ex = vc.example;
+        return (
+          <div key={vc.lever} style={{ marginBottom:26 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:6, flexWrap:"wrap" }}>
+              <div style={{ width:4, height:28, background:vc.color, borderRadius:2, flexShrink:0 }} />
+              <span style={{ fontSize:fs(17), fontWeight:700, color:vc.color, fontFamily:FONT }}>{vc.lever}</span>
+              <span style={{ fontSize:fs(11), color:"#475569", fontFamily:FONT }}>— {vc.sector}</span>
+            </div>
+            <p style={{ margin:"0 0 12px", fontSize:fs(12), color:"#64748b", lineHeight:1.7, fontFamily:FONT }}>{vc.intro}</p>
+            <Card style={{ borderLeft:`3px solid ${vc.color}` }}>
+              <div style={{ fontSize:fs(14), fontWeight:700, color:"#e2e8f0", marginBottom:12, fontFamily:FONT }}>{ex.title}</div>
+              {ex.lines.map((ln,li) => {
+                const isCost = ln.v.startsWith("−");
+                const isPlus = ln.v.startsWith("+");
+                const isLast = li===ex.lines.length-1;
+                return (
+                  <div key={li} style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", padding: isLast?"8px 0 3px":"5px 0", borderTop: isLast?"1px solid rgba(255,255,255,0.12)" : li>0?"1px solid rgba(255,255,255,0.04)":"none", marginTop: isLast?5:0 }}>
+                    <span style={{ fontSize:fs(11), color: isLast?"#e2e8f0":"#94a3b8", fontFamily:FONT, lineHeight:1.4, paddingRight:10 }}>{ln.l}</span>
+                    <span style={{ fontSize: isLast?fs(13):fs(12), fontWeight: isLast?700:500, color: isCost?"#ef4444": isPlus?"#22c55e": isLast?"#22c55e":"#e2e8f0", fontFamily:FONT, flexShrink:0 }}>{ln.v}</span>
+                  </div>
+                );
+              })}
+              <div style={{ marginTop:12, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:8 }}>
+                <div style={{ background:"#22c55e18", border:"1px solid #22c55e55", borderRadius:10, padding:"7px 15px", fontSize:fs(14), fontWeight:800, color:"#22c55e", fontFamily:FONT }}>{ex.net}</div>
+                <Badge text={ex.roi} color="#0ea5e9" />
+              </div>
+            </Card>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// Summary matrix data — loss values in $B for the totals table
+const MATRIX_LOSS_NUM = {
+  mfg:    { Downtime:1400, Defects:374, Energy:200,  Labour:150,  Throughput:500  },
+  raw:    { Downtime:60,   Defects:120, Energy:10,   Labour:30,   Throughput:40   },
+  food:   { Downtime:100,  Defects:160, Energy:30,   Labour:40,   Throughput:50   },
+  agri:   { Downtime:80,   Defects:400, Energy:120,  Labour:30,   Throughput:200  },
+  energy: { Downtime:150,  Defects:20,  Energy:300,  Labour:40,   Throughput:80   },
+  logi:   { Downtime:90,   Defects:50,  Energy:40,   Labour:120,  Throughput:80   },
+};
+// Conservative recoverable % midpoints
+const MATRIX_REC_PCT = {
+  mfg:    { Downtime:40, Defects:15, Energy:17, Labour:22, Throughput:20 },
+  raw:    { Downtime:27, Defects:20, Energy:7,  Labour:15, Throughput:15 },
+  food:   { Downtime:32, Defects:15, Energy:12, Labour:20, Throughput:15 },
+  agri:   { Downtime:22, Defects:15, Energy:25, Labour:12, Throughput:10 },
+  energy: { Downtime:40, Defects:7,  Energy:20, Labour:15, Throughput:15 },
+  logi:   { Downtime:27, Defects:15, Energy:15, Labour:20, Throughput:15 },
+};
+
+function SummaryMatrix() {
+  const levers = MATRIX_LEVERS.map(l => l.key);
+  const industries = MATRIX_INDUSTRIES;
+
+  // Compute row totals (loss) and recoverable
+  const rowLoss = (id) => levers.reduce((s,l) => s + MATRIX_LOSS_NUM[id][l], 0);
+  const rowRec  = (id) => levers.reduce((s,l) => s + Math.round(MATRIX_LOSS_NUM[id][l] * MATRIX_REC_PCT[id][l] / 100), 0);
+  // Column totals
+  const colLoss = (l) => industries.reduce((s,ind) => s + MATRIX_LOSS_NUM[ind.id][l], 0);
+  const colRec  = (l) => industries.reduce((s,ind) => s + Math.round(MATRIX_LOSS_NUM[ind.id][l] * MATRIX_REC_PCT[ind.id][l] / 100), 0);
+  // Grand totals
+  const grandLoss = industries.reduce((s,ind) => s + rowLoss(ind.id), 0);
+  const grandRec  = industries.reduce((s,ind) => s + rowRec(ind.id), 0);
+
+  const fmt = (n) => n >= 1000 ? `$${(n/1000).toFixed(1)}T` : `$${n}B`;
+  const fmtRec = (n) => n >= 1000 ? `$${(n/1000).toFixed(1)}T` : `$${n}B`;
+
+  const leverColors = { Downtime:"#ef4444", Defects:"#f59e0b", Energy:"#22c55e", Labour:"#8b5cf6", Throughput:"#0ea5e9" };
+  const impactColor = (id, l) => {
+    const v = MATRIX_CELLS[id][l].v;
+    return v==="hi" ? "#22c55e33" : v==="med" ? "#f59e0b22" : "rgba(255,255,255,0.03)";
+  };
+
+  return (
+    <div style={{ marginTop:28 }}>
+      <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
+        <div style={{ width:4, height:26, background:"linear-gradient(#0ea5e9,#6366f1)", borderRadius:2 }} />
+        <span style={{ fontSize:fs(15), fontWeight:700, color:"#e2e8f0", fontFamily:FONT }}>Summary — Annual Loss & Recoverable Value ($B)</span>
+      </div>
+      <p style={{ margin:"0 0 14px", fontSize:fs(12), color:"#64748b", lineHeight:1.65, fontFamily:FONT }}>
+        All figures in USD billions. Loss = estimated annual global economic loss. Rec = conservative recoverable value with full digitalization. Cell shading indicates impact level: green = high, amber = medium, dim = low.
+      </p>
+      <div style={{ overflowX:"auto", borderRadius:12, border:"1px solid rgba(255,255,255,0.10)" }}>
+        <table style={{ borderCollapse:"collapse", width:"100%", minWidth:520, fontFamily:FONT }}>
+          <thead>
+            <tr style={{ background:"rgba(255,255,255,0.05)" }}>
+              <th style={{ textAlign:"left", padding:"10px 10px", fontSize:fs(10), fontWeight:700, color:"#475569", letterSpacing:0.5, borderBottom:"1px solid rgba(255,255,255,0.10)", minWidth:90, whiteSpace:"nowrap" }}>INDUSTRY</th>
+              {levers.map(l => (
+                <th key={l} style={{ textAlign:"center", padding:"10px 6px", fontSize:fs(10), fontWeight:700, color:leverColors[l], letterSpacing:0.3, borderBottom:"1px solid rgba(255,255,255,0.10)", whiteSpace:"nowrap", borderLeft:"1px solid rgba(255,255,255,0.06)" }}>{l}</th>
+              ))}
+              <th style={{ textAlign:"center", padding:"10px 8px", fontSize:fs(10), fontWeight:700, color:"#94a3b8", letterSpacing:0.3, borderBottom:"1px solid rgba(255,255,255,0.10)", whiteSpace:"nowrap", borderLeft:"1px solid rgba(255,255,255,0.14)", background:"rgba(255,255,255,0.04)" }}>ROW TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {industries.map((ind, ri) => (
+              <tr key={ind.id} style={{ borderBottom:"1px solid rgba(255,255,255,0.06)" }}>
+                <td style={{ padding:"9px 10px", verticalAlign:"middle" }}>
+                  <div style={{ fontSize:fs(11), fontWeight:700, color:"#e2e8f0", fontFamily:FONT, lineHeight:1.3 }}>{ind.label}</div>
+                  <div style={{ fontSize:fs(9), color:"#475569", fontFamily:FONT }}>{ind.sub.split(",")[0]}</div>
+                </td>
+                {levers.map(l => {
+                  const loss = MATRIX_LOSS_NUM[ind.id][l];
+                  const rec  = Math.round(loss * MATRIX_REC_PCT[ind.id][l] / 100);
+                  return (
+                    <td key={l} style={{ textAlign:"center", padding:"8px 6px", background:impactColor(ind.id,l), borderLeft:"1px solid rgba(255,255,255,0.06)", verticalAlign:"middle" }}>
+                      <div style={{ fontSize:fs(12), fontWeight:700, color:"#e2e8f0", fontFamily:FONT, lineHeight:1.2 }}>{fmt(loss)}</div>
+                      <div style={{ fontSize:fs(9), color:"#22c55e", fontWeight:600, fontFamily:FONT, marginTop:2 }}>rec {fmtRec(rec)}</div>
+                    </td>
+                  );
+                })}
+                <td style={{ textAlign:"center", padding:"8px 8px", borderLeft:"1px solid rgba(255,255,255,0.14)", background:"rgba(255,255,255,0.04)", verticalAlign:"middle" }}>
+                  <div style={{ fontSize:fs(13), fontWeight:800, color:"#e2e8f0", fontFamily:FONT, lineHeight:1.2 }}>{fmt(rowLoss(ind.id))}</div>
+                  <div style={{ fontSize:fs(10), color:"#22c55e", fontWeight:700, fontFamily:FONT, marginTop:2 }}>rec {fmtRec(rowRec(ind.id))}</div>
+                </td>
+              </tr>
+            ))}
+            {/* Column totals row */}
+            <tr style={{ background:"rgba(14,165,233,0.08)", borderTop:"2px solid rgba(255,255,255,0.14)" }}>
+              <td style={{ padding:"10px 10px" }}>
+                <div style={{ fontSize:fs(11), fontWeight:700, color:"#0ea5e9", fontFamily:FONT }}>COLUMN TOTAL</div>
+              </td>
+              {levers.map(l => (
+                <td key={l} style={{ textAlign:"center", padding:"10px 6px", borderLeft:"1px solid rgba(255,255,255,0.06)", verticalAlign:"middle" }}>
+                  <div style={{ fontSize:fs(13), fontWeight:800, color:"#e2e8f0", fontFamily:FONT, lineHeight:1.2 }}>{fmt(colLoss(l))}</div>
+                  <div style={{ fontSize:fs(10), color:"#22c55e", fontWeight:700, fontFamily:FONT, marginTop:2 }}>rec {fmtRec(colRec(l))}</div>
+                </td>
+              ))}
+              <td style={{ textAlign:"center", padding:"10px 8px", borderLeft:"2px solid rgba(14,165,233,0.5)", background:"rgba(14,165,233,0.12)", verticalAlign:"middle" }}>
+                <div style={{ fontSize:fs(15), fontWeight:800, color:"#0ea5e9", fontFamily:FONT, lineHeight:1.2 }}>{fmt(grandLoss)}</div>
+                <div style={{ fontSize:fs(11), color:"#22c55e", fontWeight:700, fontFamily:FONT, marginTop:3 }}>rec {fmtRec(grandRec)}</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {/* Grand total callout */}
+      <div style={{ marginTop:12, borderRadius:12, padding:"14px 16px", background:"rgba(34,197,94,0.08)", border:"1px solid rgba(34,197,94,0.25)", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
+        <div>
+          <div style={{ fontSize:fs(11), fontWeight:700, color:"#22c55e", fontFamily:FONT, letterSpacing:0.5 }}>TOTAL RECOVERABLE VALUE</div>
+          <div style={{ fontSize:fs(11), color:"#64748b", fontFamily:FONT, marginTop:2 }}>Conservative midpoint — full digitalization across all levers</div>
+        </div>
+        <div style={{ textAlign:"right" }}>
+          <div style={{ fontSize:fs(26), fontWeight:800, color:"#22c55e", fontFamily:FONT, lineHeight:1 }}>{fmtRec(grandRec)}</div>
+          <div style={{ fontSize:fs(10), color:"#475569", fontFamily:FONT, marginTop:2 }}>per year, globally</div>
+        </div>
+      </div>
+      <div style={{ marginTop:10, display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8 }}>
+        {[
+          { label:"Total loss pool", val:fmt(grandLoss), color:"#94a3b8" },
+          { label:"Recovery rate (avg)", val:`${Math.round(grandRec/grandLoss*100)}%`, color:"#0ea5e9" },
+          { label:"vs. SW market ($16.6B)", val:`${Math.round(grandRec/16.6)}×`, color:"#f59e0b" },
+        ].map(m => (
+          <Card key={m.label} style={{ textAlign:"center", padding:"12px 8px" }}>
+            <div style={{ fontSize:fs(16), fontWeight:800, color:m.color, fontFamily:FONT, lineHeight:1 }}>{m.val}</div>
+            <div style={{ fontSize:fs(9), color:"#475569", fontFamily:FONT, marginTop:4, lineHeight:1.3 }}>{m.label}</div>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function S4() {
+  return (
+    <div>
+      <Intro text="This matrix maps six target industries against the five value levers. Each cell shows the estimated annual global loss, the realistic recovery rate achievable with digitalization, and the specific mechanism by which AI Square creates that value. This is the real market size — not software licence fees, but the annual economic losses that AI Square's platform can recover for its customers. The summary dollar matrix at the bottom totals every cell to show the full opportunity." />
+      {MATRIX_INDUSTRIES.map(ind => (
+        <div key={ind.id} style={{ marginBottom:20 }}>
+          <div style={{ marginBottom:10, paddingBottom:8, borderBottom:"1px solid rgba(255,255,255,0.08)" }}>
+            <div style={{ fontSize:fs(16), fontWeight:700, color:"#e2e8f0", fontFamily:FONT }}>{ind.label}</div>
+            <div style={{ fontSize:fs(12), color:"#475569", fontFamily:FONT }}>{ind.sub}</div>
+          </div>
+          {MATRIX_LEVERS.map(lev => {
+            const cell = MATRIX_CELLS[ind.id][lev.key];
+            const bg = { hi:"rgba(34,197,94,0.10)", med:"rgba(245,158,11,0.08)", low:"rgba(107,114,128,0.07)" };
+            const bd = { hi:"rgba(34,197,94,0.35)", med:"rgba(245,158,11,0.3)", low:"rgba(107,114,128,0.2)" };
+            return (
+              <div key={lev.key} style={{ background:bg[cell.v], border:`1px solid ${bd[cell.v]}`, borderRadius:11, padding:"12px 14px", marginBottom:8 }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:9, gap:10 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
+                    <div style={{ width:8, height:8, borderRadius:"50%", background:lev.color, flexShrink:0 }} />
+                    <span style={{ fontSize:fs(13), fontWeight:700, color:lev.color, fontFamily:FONT }}>{lev.key}</span>
+                    <Badge text={cell.v==="hi"?"High impact":cell.v==="med"?"Medium":"Low"} color={cell.v==="hi"?"#22c55e":cell.v==="med"?"#f59e0b":"#6b7280"} />
+                  </div>
+                  <div style={{ textAlign:"right", flexShrink:0 }}>
+                    <div style={{ fontSize:fs(15), fontWeight:800, color:"#e2e8f0", fontFamily:FONT }}>{cell.loss}</div>
+                    <div style={{ fontSize:fs(11), color:"#22c55e", fontWeight:600, fontFamily:FONT }}>rec. {cell.rec}</div>
+                  </div>
+                </div>
+                <p style={{ margin:0, fontSize:fs(12), color:"#94a3b8", lineHeight:1.65, fontFamily:FONT }}>{cell.note}</p>
+              </div>
+            );
+          })}
+        </div>
+      ))}
+      <SummaryMatrix />
+    </div>
+  );
+}
+
+function S5() {
+  return (
+    <div>
+      <Intro text="AI Square's core engine — signal ingestion, event normalization, real-time alerting, AI assistant, and playbooks — already works and already delivers value. What's missing is domain-specific capability for each value lever. The gaps below describe exactly what needs to be built, why it matters technically, and how each capability connects to the economic value in Section 3. Every lever also requires AI agent operations infrastructure: agents that act autonomously must themselves be monitored, health-checked and redeployed when they drift — this is a cross-cutting requirement, not an afterthought." />
+      {GAPS.map((g,gi) => (
+        <div key={g.lever} style={{ marginBottom:24 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:9, flexWrap:"wrap" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+              <div style={{ width:10, height:10, borderRadius:"50%", background:g.color }} />
+              <span style={{ fontSize:fs(17), fontWeight:700, color:g.color, fontFamily:FONT }}>{g.lever}</span>
+            </div>
+            <Badge text={g.effort+" build effort"} color={g.effort==="High"?"#ef4444":"#f59e0b"} />
+          </div>
+          <p style={{ margin:"0 0 13px", fontSize:fs(12), color:"#64748b", lineHeight:1.65, fontFamily:FONT }}>{g.intro}</p>
+          <div style={{ borderLeft:`2px solid ${g.color}44`, paddingLeft:14 }}>
+            {g.items.map((item,ii) => (
+              <div key={ii} style={{ marginBottom:14, paddingBottom:14, borderBottom: ii<g.items.length-1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+                <div style={{ fontSize:fs(13), fontWeight:700, color:"#e2e8f0", marginBottom:5, fontFamily:FONT }}>
+                  <span style={{ color:g.color, marginRight:7 }}>✗</span>{item.t}
+                </div>
+                <p style={{ margin:0, fontSize:fs(12), color:"#94a3b8", lineHeight:1.65, fontFamily:FONT }}>{item.d}</p>
+              </div>
+            ))}
+          </div>
+          {gi<GAPS.length-1 && <div style={{ height:1, background:"rgba(255,255,255,0.07)", marginTop:8 }} />}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function S6() {
+  return (
+    <div>
+      <Intro text="The strategy concentrates investment on three levers — Downtime, Defects, and Energy — because they represent $2.5T in annual recoverable losses, are signal-driven (AI Square's structural advantage), carry proven ROI benchmarks from independent research, and avoid the regulatory validation overhead of pharma or the geo-spatial complexity of agriculture at this stage. Each phase is designed to be self-financing: the revenue from Phase 1 funds Phase 2, and so on. AI agents become the scalable operating layer that allows AI Square to serve hundreds of sites without proportional headcount growth." />
+      <Card style={{ marginBottom:18, borderLeft:"3px solid #0ea5e9" }}>
+        <div style={{ fontSize:fs(12), fontWeight:700, color:"#0ea5e9", marginBottom:8, letterSpacing:1 }}>WHY THESE THREE LEVERS</div>
+        <p style={{ margin:0, fontSize:fs(12), color:"#94a3b8", lineHeight:1.75, fontFamily:FONT }}>
+          These three levers cover every conversation from shop floor operator ("why did the machine stop?") to operations manager ("what is our OEE this week?") to CFO ("what is our energy cost per unit compared to last quarter?") to the board ("what is our Scope 2 carbon trajectory?"). A single platform that answers all four levels of the organisation creates switching costs that no point solution can match. Labour and Throughput improvements come as compound by-products of fixing these three — they don't require separate product investments.
+        </p>
+      </Card>
+      {STRATEGY_PHASES.map((ph,i) => (
+        <div key={i} style={{ marginBottom:20 }}>
+          <div style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
+            <div style={{ width:4, background:ph.color, borderRadius:2, flexShrink:0, alignSelf:"stretch", minHeight:80 }} />
+            <div style={{ flex:1 }}>
+              <div style={{ fontSize:fs(11), color:ph.color, fontWeight:700, marginBottom:3, letterSpacing:0.5, fontFamily:FONT }}>{ph.phase}</div>
+              <div style={{ fontSize:fs(16), fontWeight:700, color:"#e2e8f0", marginBottom:5, fontFamily:FONT }}>{ph.title}</div>
+              <p style={{ margin:"0 0 12px", fontSize:fs(12), color:"#64748b", fontFamily:FONT, lineHeight:1.55 }}>{ph.focus}</p>
+              <Card style={{ padding:"12px 14px", marginBottom:10 }}>
+                {ph.actions.map((a,j) => (
+                  <div key={j} style={{ display:"flex", gap:9, marginBottom:9, alignItems:"flex-start" }}>
+                    <span style={{ color:ph.color, fontSize:fs(13), fontWeight:700, flexShrink:0, lineHeight:1.5 }}>→</span>
+                    <span style={{ fontSize:fs(12), color:"#94a3b8", lineHeight:1.55, fontFamily:FONT }}>{a}</span>
+                  </div>
+                ))}
+              </Card>
+              <div style={{ background:"rgba(255,255,255,0.04)", borderRadius:9, padding:"9px 13px", fontSize:fs(11), color:"#64748b", fontFamily:FONT, lineHeight:1.5 }}>
+                <strong style={{ color:"#475569" }}>Resources required: </strong>{ph.resources}
+              </div>
+            </div>
+          </div>
+          {i<STRATEGY_PHASES.length-1 && <div style={{ height:1, background:"rgba(255,255,255,0.06)", margin:"14px 0 6px" }} />}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function S7() {
+  return (
+    <div>
+      <Intro text="Pricing for an industrial AI platform must reflect two structural realities: first, the value delivered is 10–50× the software cost — so a pure SaaS subscription dramatically underprices the product and leaves enormous value on the table. Second, industrial customers need budget certainty — a purely variable model is difficult to get through procurement and finance. The recommended model combines a fixed base that covers all operational costs (platform, AI agent operations, sensor monitoring) with a variable performance component tied to verified savings — providing predictable revenue for AI Square and a clear ROI alignment for the customer." />
+      <Card style={{ marginBottom:18, borderLeft:"3px solid #22c55e" }}>
+        <div style={{ fontSize:fs(12), fontWeight:700, color:"#22c55e", marginBottom:9, letterSpacing:1 }}>WHERE DOES SYSTEM MAINTENANCE LIVE IN THE PRICING?</div>
+        <p style={{ margin:"0 0 10px", fontSize:fs(12), color:"#94a3b8", lineHeight:1.75, fontFamily:FONT }}>
+          Three operational cost categories must be explicitly included in the base licence — not hidden in implementation fees or invoiced as extras: <strong style={{ color:"#e2e8f0" }}>(1) Sensor hardware maintenance and calibration</strong> — sensors drift over time, connectors fail, and firmware updates are required on a schedule; <strong style={{ color:"#e2e8f0" }}>(2) AI agent operations</strong> — agents require continuous monitoring (are they running? are predictions still accurate? has the model drifted from the production reality?), periodic retraining, and redeployment when performance falls below threshold; <strong style={{ color:"#e2e8f0" }}>(3) Platform uptime and security SLA</strong> — OT-grade security, 99.9% uptime, and regular penetration testing are non-negotiable in industrial environments.
+        </p>
+        <p style={{ margin:0, fontSize:fs(12), color:"#94a3b8", lineHeight:1.75, fontFamily:FONT }}>
+          Making these costs explicit builds trust, removes the hidden cost objection that industrial buyers always raise, and positions AI Square as a managed operational partner rather than a software vendor. The net savings calculations in Section 3 already deduct all three categories — customers see the real number. AI agents that self-monitor and auto-retrain reduce these operational costs over time, creating a compounding margin advantage as the platform scales.
+        </p>
+      </Card>
+      {PRICING_MODELS.map(p => (
+        <Card key={p.model} style={{ marginBottom:12, border: p.rec ? "2px solid #22c55e" : "1px solid rgba(255,255,255,0.10)" }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:10, gap:10, flexWrap:"wrap" }}>
+            <div>
+              <div style={{ display:"flex", alignItems:"center", gap:9, flexWrap:"wrap", marginBottom:3 }}>
+                <span style={{ fontSize:fs(15), fontWeight:700, color: p.rec?"#22c55e":"#e2e8f0", fontFamily:FONT }}>{p.model}</span>
+                {p.rec && <Badge text="✦ Recommended" color="#22c55e" />}
+              </div>
+              <div style={{ fontSize:fs(11), color:"#475569", fontFamily:FONT }}>{p.type}</div>
+            </div>
+            <div style={{ fontSize:fs(13), fontWeight:800, color:"#0ea5e9", fontFamily:FONT, textAlign:"right", maxWidth:180 }}>{p.range}</div>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:10 }}>
+            <div>
+              <div style={{ fontSize:fs(10), fontWeight:700, color:"#22c55e", marginBottom:5, letterSpacing:1 }}>PROS</div>
+              {p.pros.map((pr,i) => <div key={i} style={{ fontSize:fs(11), color:"#94a3b8", marginBottom:5, fontFamily:FONT, lineHeight:1.4 }}>+ {pr}</div>)}
+            </div>
+            <div>
+              <div style={{ fontSize:fs(10), fontWeight:700, color:"#ef4444", marginBottom:5, letterSpacing:1 }}>CONS</div>
+              {p.cons.map((c,i) => <div key={i} style={{ fontSize:fs(11), color:"#94a3b8", marginBottom:5, fontFamily:FONT, lineHeight:1.4 }}>− {c}</div>)}
+            </div>
+          </div>
+          <div style={{ background:"rgba(255,255,255,0.04)", borderRadius:9, padding:"10px 12px", fontSize:fs(12), color:"#64748b", fontFamily:FONT, lineHeight:1.6 }}>{p.note}</div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+function S8() {
+  const [sc, setSc] = useState("aggressive");
+  const data = REV_SCENARIOS[sc];
+  const color = REV_COLORS[sc];
+  const maxVal = Math.max(...REV_SCENARIOS.enterprise);
+  const barH = 165;
+
+  return (
+    <div>
+      <Intro text="Revenue projections are built on the fixed + variable pricing model, targeting a deliberate mix of SME, mid-market and enterprise industrial accounts. The enterprise-led scenario is the most aggressive: AI Square deliberately pursues large industrial groups with €500M–€5B revenue and multiple plants, where a single group framework agreement can generate €3–8M ARR with the variable savings share component — a completely different revenue trajectory than SME-only growth. All scenarios treat AI agent operations as a billable managed service component included in the base licence." />
+      <div style={{ display:"flex", gap:8, marginBottom:16 }}>
+        {Object.keys(REV_SCENARIOS).map(s => (
+          <button key={s} onClick={() => setSc(s)} style={{
+            flex:1, background: sc===s ? REV_COLORS[s] : "rgba(255,255,255,0.05)",
+            border:`1px solid ${REV_COLORS[s]}55`, borderRadius:10, padding:"9px 6px",
+            fontSize:fs(12), fontWeight:700, color: sc===s ? "#fff" : REV_COLORS[s],
+            cursor:"pointer", fontFamily:FONT,
+          }}>{REV_LABELS[s]}</button>
+        ))}
+      </div>
+      <Card style={{ marginBottom:14 }}>
+        <div style={{ fontSize:fs(11), fontWeight:700, color:"#475569", marginBottom:12, letterSpacing:1 }}>ARR EVOLUTION (€M) — {REV_LABELS[sc].toUpperCase()}</div>
+        <div style={{ display:"flex", alignItems:"flex-end", gap:4, height:barH+32 }}>
+          {REV_YEARS.map((yr,i) => {
+            const val = data[i];
+            const h = Math.max(5, (val/maxVal)*barH);
+            return (
+              <div key={yr} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center" }}>
+                <div style={{ fontSize:9, color, marginBottom:2, height:16, display:"flex", alignItems:"flex-end", fontFamily:FONT, fontWeight:700, textAlign:"center" }}>
+                  {val>=100?`€${Math.round(val)}`:val>=10?`€${val}`:`€${val}`}
+                </div>
+                <div style={{ width:"100%", height:h, borderRadius:"4px 4px 0 0", background:`linear-gradient(to top, ${color}, ${color}77)` }} />
+                <div style={{ fontSize:9, color:"#475569", marginTop:4, fontFamily:FONT }}>{yr===2025?"'25":`'${String(yr).slice(2)}`}</div>
+              </div>
+            );
+          })}
+        </div>
+      </Card>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:14 }}>
+        <Card style={{ textAlign:"center", border:`1px solid ${color}55` }}>
+          <div style={{ fontSize:fs(28), fontWeight:800, color, fontFamily:FONT, lineHeight:1 }}>€{data[10]}M</div>
+          <div style={{ fontSize:fs(11), color:"#94a3b8", marginTop:5, fontFamily:FONT }}>ARR by 2035</div>
+        </Card>
+        <Card style={{ textAlign:"center", border:`1px solid ${color}55` }}>
+          <div style={{ fontSize:fs(26), fontWeight:800, color, fontFamily:FONT, lineHeight:1 }}>{sc==="enterprise"?"~25":sc==="aggressive"?"200+":"400+"}</div>
+          <div style={{ fontSize:fs(11), color:"#94a3b8", marginTop:5, fontFamily:FONT }}>{sc==="enterprise"?"enterprise groups":"sites active"}</div>
+        </Card>
+      </div>
+      <Card style={{ marginBottom:14 }}>
+        <div style={{ fontSize:fs(11), fontWeight:700, color:"#475569", marginBottom:12, letterSpacing:1 }}>MILESTONES — {REV_LABELS[sc].toUpperCase()}</div>
+        {[["2025–26","Land & Prove",data[1]],["2027–28","Expand Modules",data[3]],["2030","Scale Platform",data[5]],["2035","Market Leader",data[10]]].map(([yr,title,val],i) => (
+          <div key={yr} style={{ display:"flex", gap:12, marginBottom:12, alignItems:"flex-start" }}>
+            <div style={{ flexShrink:0, width:52 }}>
+              <div style={{ fontSize:fs(11), fontWeight:700, color, fontFamily:FONT }}>{yr}</div>
+            </div>
+            <div style={{ flex:1, borderLeft:`2px solid ${color}44`, paddingLeft:12 }}>
+              <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4, flexWrap:"wrap", gap:4 }}>
+                <span style={{ fontSize:fs(14), fontWeight:700, color:"#e2e8f0", fontFamily:FONT }}>{title}</span>
+                <span style={{ fontSize:fs(15), fontWeight:800, color, fontFamily:FONT }}>€{val}M ARR</span>
+              </div>
+              <div style={{ fontSize:fs(12), color:"#64748b", lineHeight:1.55, fontFamily:FONT }}>{REV_MILESTONES[sc][i]}</div>
+            </div>
+          </div>
+        ))}
+      </Card>
+      <Card>
+        <div style={{ fontSize:fs(11), fontWeight:700, color:"#475569", marginBottom:10, letterSpacing:1 }}>PRICING ASSUMPTIONS — {REV_LABELS[sc].toUpperCase()}</div>
+        {REV_ASSUMPTIONS[sc].map((a,i) => (
+          <div key={i} style={{ display:"flex", gap:9, marginBottom:10, alignItems:"flex-start" }}>
+            <span style={{ color, fontSize:fs(13), fontWeight:700, flexShrink:0, lineHeight:1.5 }}>→</span>
+            <span style={{ fontSize:fs(12), color:"#94a3b8", lineHeight:1.65, fontFamily:FONT }}>{a}</span>
+          </div>
+        ))}
+        <div style={{ marginTop:14, paddingTop:12, borderTop:"1px solid rgba(255,255,255,0.08)" }}>
+          <div style={{ fontSize:fs(11), fontWeight:700, color:"#475569", marginBottom:8, letterSpacing:1 }}>GROSS MARGIN TRAJECTORY</div>
+          <p style={{ margin:0, fontSize:fs(12), color:"#64748b", lineHeight:1.75, fontFamily:FONT }}>
+            AI agents reduce the marginal cost of serving additional sites — agents monitor, alert and act without requiring proportional human headcount growth. As the agent library matures and self-monitoring reduces intervention requirements, gross margin on incremental ARR improves from approximately 60% in 2025–27 to 75–80% by 2030+. The fixed base licence covers all agent ops costs; the variable savings share is near-pure gross margin above the base — making large enterprise accounts disproportionately valuable to the income statement.
+          </p>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+const SECTION_COMPONENTS = [S1, S2, S3, S4, S5, S6, S7, S8];
+
+function App() {
+  const [active, setActive] = useState(1);
+  const ActiveSection = SECTION_COMPONENTS[active - 1];
+  return (
+    <div style={{ minHeight:"100vh", background:"#0a0f1a", fontFamily:FONT, color:"#e2e8f0", maxWidth:768, margin:"0 auto" }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');*{box-sizing:border-box;}::-webkit-scrollbar{height:3px;width:3px;background:transparent;}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:3px;}button{font-family:'Poppins',sans-serif!important;}`}</style>
+      <div style={{ background:"rgba(10,15,26,0.97)", backdropFilter:"blur(12px)", borderBottom:"1px solid rgba(255,255,255,0.08)", padding:"14px 16px 10px", position:"sticky", top:0, zIndex:100 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:10 }}>
+          <div style={{ width:37, height:37, borderRadius:9, background:"linear-gradient(135deg,#0ea5e9,#6366f1)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:fs(13), fontWeight:800, color:"#fff", flexShrink:0, letterSpacing:-0.5 }}>AI<sup style={{fontSize:"8px",verticalAlign:"super",lineHeight:0}}>2</sup></div>
+          <div>
+            <div style={{ fontSize:fs(15), fontWeight:800, color:"#f1f5f9", letterSpacing:-0.4 }}>AI Square</div>
+            <div style={{ fontSize:fs(10), color:"#334155" }}>Strategic Intelligence Dashboard · 2025</div>
+          </div>
+        </div>
+        <div style={{ display:"flex", gap:5, overflowX:"auto", paddingBottom:3 }}>
+          {SECTIONS.map(s => (
+            <button key={s.id} onClick={() => setActive(s.id)} style={{ background: active===s.id ? "linear-gradient(135deg,#0ea5e9,#6366f1)" : "rgba(255,255,255,0.05)", border: active===s.id ? "none" : "1px solid rgba(255,255,255,0.08)", borderRadius:20, padding:"5px 13px", fontSize:fs(11), fontWeight: active===s.id?700:500, color: active===s.id?"#fff":"#64748b", cursor:"pointer", whiteSpace:"nowrap", flexShrink:0 }}>{s.id}. {s.short}</button>
+          ))}
+        </div>
+      </div>
+      <div style={{ padding:"22px 16px 90px" }}>
+        <SectionTitle num={active} title={SECTIONS[active-1].label} />
+        <ActiveSection />
+      </div>
+      <div style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:768, background:"rgba(10,15,26,0.98)", backdropFilter:"blur(12px)", borderTop:"1px solid rgba(255,255,255,0.08)", display:"flex", justifyContent:"space-between", alignItems:"center", padding:"10px 12px 14px" }}>
+        <button onClick={() => setActive(Math.max(1,active-1))} disabled={active===1} style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.10)", borderRadius:11, padding:"9px 18px", color: active===1?"#334155":"#94a3b8", fontSize:fs(12), fontWeight:600, cursor: active===1?"default":"pointer" }}>← Prev</button>
+        <div style={{ display:"flex", gap:6, alignItems:"center" }}>
+          {SECTIONS.map(s => (
+            <div key={s.id} onClick={() => setActive(s.id)} style={{ width: active===s.id?18:7, height:7, borderRadius:4, background: active===s.id?"#0ea5e9":"rgba(255,255,255,0.15)", cursor:"pointer", transition:"all 0.2s" }} />
+          ))}
+        </div>
+        <button onClick={() => setActive(Math.min(8,active+1))} disabled={active===8} style={{ background: active===8?"rgba(255,255,255,0.03)":"linear-gradient(135deg,#0ea5e9,#6366f1)", border:"none", borderRadius:11, padding:"9px 18px", color: active===8?"#334155":"#fff", fontSize:fs(12), fontWeight:600, cursor: active===8?"default":"pointer" }}>Next →</button>
+      </div>
+    </div>
+  );
+}
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>AI&#178; Square &#8212; Strategic Intelligence Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0a0f1a}
+body{font-family:'Poppins','Helvetica Neue',sans-serif;color:#e2e8f0;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{height:3px;width:3px;background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+button{font-family:'Poppins',sans-serif;cursor:pointer}
+#root{height:100%}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+(function(){
+"use strict";
+var e=React.createElement;
+var useState=React.useState;
+
+// ── constants ────────────────────────────────────────────────────────────────
+var F="'Poppins','Helvetica Neue',sans-serif";
+var fs=function(n){return(n+2)+"px"};
+
+var SECTIONS=[
+  {id:1,label:"What is AI Square",    short:"Overview"},
+  {id:2,label:"Maintenance Maturity", short:"Maintenance"},
+  {id:3,label:"Real Value",           short:"Value"},
+  {id:4,label:"Industry x Levers",   short:"Matrix"},
+  {id:5,label:"Capability Gaps",      short:"Gaps"},
+  {id:6,label:"Winning Strategy",     short:"Strategy"},
+  {id:7,label:"Pricing Models",       short:"Pricing"},
+  {id:8,label:"Revenue to 2035",      short:"Revenue"}
+];
+
+var MAINT=[
+  {level:1,label:"Reactive",color:"#6b7280",current:false,
+   desc:"Fix it after it breaks. Unplanned stops, emergency repairs, no data visibility. Every stopped hour is pure cost with no warning."},
+  {level:2,label:"Preventive",color:"#94a3b8",current:false,
+   desc:"Fixed calendar schedules — replace parts every 6 months regardless of actual condition. Reduces catastrophic failures but creates over-maintenance and still misses random failures between checks."},
+  {level:3,label:"Condition-Based Monitoring",color:"#0ea5e9",current:true,
+   desc:"Real-time signal ingestion from machines. Threshold alerts fire when a value exceeds a defined limit. AI Square today: detects deviations as they happen, logs root cause (event + machine + operator), guides corrective action via playbooks. The limitation: the machine has already stopped or degraded before the system reacts."},
+  {level:4,label:"Predictive Maintenance (PdM)",color:"#f59e0b",current:false,
+   desc:"ML models learn each machine's healthy fingerprint from vibration, temperature, pressure and acoustic signals. Forecasts failure 7-30 days ahead, calculates Remaining Useful Life (RUL), and schedules intervention during planned windows. Deloitte benchmark: 70-75% reduction in unexpected breakdowns."},
+  {level:5,label:"Prescriptive / Autonomous",color:"#22c55e",current:false,
+   desc:"AI agents monitor, diagnose, decide and act without human intervention for routine cases. Auto-generated work orders, autonomous parameter adjustments, self-healing protocols and continuous retraining. The agents themselves are monitored via health dashboards — drift detection, accuracy tracking and automated redeployment keep the AI layer accurate and operational."}
+];
+
+var TOLV5=[
+  {icon:"📡",title:"Vibration & acoustic sensor connectors",desc:"OPC UA/MQTT adapters for bearing wear, gear mesh analysis and motor current signature — 30+ days advance warning. Without them, ML models rely only on indirect proxy indicators like temperature."},
+  {icon:"🧠",title:"Per-asset ML health models",desc:"Each machine type needs its own baseline trained on months of operational data. Isolation Forest for anomaly detection; LSTM for degradation regression. Models must auto-retrain as conditions shift — static models degrade within 3-6 months."},
+  {icon:"📈",title:"Degradation trend / RUL forecasting engine",desc:"The shift from 'this reading is abnormal' to 'this bearing will fail in 11 days at current degradation rate'. RUL enables maintenance scheduling during planned windows — the core economic value of Level 4."},
+  {icon:"🔧",title:"CMMS / ERP maintenance integration",desc:"Predictions only create value if they trigger action. Integration with SAP PM, IBM Maximo, UpKeep and Fiix auto-generates work orders, reserves spare parts and blocks production slots — closing the prediction-to-action loop."},
+  {icon:"🤖",title:"Autonomous AI agent layer with self-monitoring",desc:"Level 5 agents execute corrective actions autonomously. An Agent Operations Dashboard tracks accuracy, drift, latency and triggers automatic redeployment when performance degrades below threshold."}
+];
+
+var RESEARCH=[
+  {source:"McKinsey",    cat:"Downtime",   metric:"Machine downtime reduction",            range:"30-50%",   ctx:"Digital manufacturing at scale across industrial sectors"},
+  {source:"McKinsey",    cat:"Throughput", metric:"Production volume increase",             range:"20-25%",   ctx:"Big data and advanced analytics applied to scheduling"},
+  {source:"McKinsey",    cat:"Labour",     metric:"Labour productivity improvement",        range:"15-30%",   ctx:"Industry 4.0 levers; reduced manual data collection"},
+  {source:"McKinsey",    cat:"Defects",    metric:"Quality cost reduction (scrap/rework)",  range:"10-20%",   ctx:"SPC + real-time advanced process control"},
+  {source:"McKinsey",    cat:"EBIT",       metric:"EBIT margin improvement",                range:"+5-8 pts", ctx:"Full digital transformation across the enterprise"},
+  {source:"Deloitte",    cat:"Downtime",   metric:"Unexpected breakdowns eliminated",       range:"70-75%",   ctx:"Predictive vs. reactive / preventive maintenance"},
+  {source:"Deloitte",    cat:"Downtime",   metric:"Maintenance cost savings",               range:"25-30%",   ctx:"Condition-based vs. fixed-schedule maintenance spend"},
+  {source:"Aberdeen",    cat:"Throughput", metric:"OEE improvement",                       range:"18%",      ctx:"Real-time analytics applied to manufacturing"},
+  {source:"Siemens 2024",cat:"Downtime",   metric:"Annual cost to Fortune 500 globally",    range:"$1.4T/yr", ctx:"11% of total revenues - up 62% since 2019"},
+  {source:"Siemens 2024",cat:"Downtime",   metric:"Automotive: cost per idle hour",         range:"$2.3M/hr", ctx:"Single idle production line"},
+  {source:"Ind. avg",    cat:"Defects",    metric:"Scrap & rework as % of revenue",         range:"2.2%",     ctx:"Average manufacturer; higher in pharma and electronics"},
+  {source:"Ind. avg",    cat:"Returns",    metric:"3-year ROI on real-time analytics",      range:">300%",    ctx:"Comprehensive platform implementations"}
+];
+
+var VCALCS=[
+  {lever:"Downtime",color:"#ef4444",sector:"Automotive — assembly plant",
+   intro:"Downtime is the most immediately quantifiable industrial loss. Every stopped production hour has a precise revenue cost. Net savings deduct sensor hardware maintenance, AI agent costs and platform fees.",
+   ex:{title:"Automotive assembly plant — 1B EUR annual revenue",
+     lines:[
+       {l:"Annual revenue",v:"1,000M EUR"},
+       {l:"Production hours/yr (3 shifts, 330 days)",v:"7,920 hrs"},
+       {l:"Revenue per production hour",v:"126,000 EUR/hr"},
+       {l:"Unplanned downtime — industry average 800 hrs/yr",v:"800 hrs/yr"},
+       {l:"Current annual downtime cost",v:"100.8M EUR/yr"},
+       {l:"AI Square + PdM: 30% downtime reduction",v:"-240 hrs saved"},
+       {l:"Gross value recovered",v:"30.2M EUR/yr"},
+       {l:"Sensor hardware + calibration (50 machines)",v:"-500K EUR/yr"},
+       {l:"AI Square platform licence + AI agent operations",v:"-600K EUR/yr"}
+     ],net:"29.1M EUR/yr net",roi:"48x ROI on software cost"}},
+  {lever:"Defects",color:"#f59e0b",sector:"Pharma — batch manufacturing",
+   intro:"Defect costs are systematically underestimated — the visible scrap pile is only 20-30% of total quality cost. The Rule of Ten: a defect caught at incoming inspection costs 1 EUR; at final inspection 10 EUR; reaching the customer 100 EUR+.",
+   ex:{title:"Pharmaceutical manufacturer — batch defect & recall prevention",
+     lines:[
+       {l:"Average cost per failed batch (equipment + regulatory hold)",v:"1.5M EUR/batch"},
+       {l:"Equipment-caused batch failures per year",v:"8 failures"},
+       {l:"Annual batch failure cost",v:"12M EUR/yr"},
+       {l:"Scrap & rework on non-failed batches (est. 1.8% revenue)",v:"3.6M EUR/yr"},
+       {l:"Total annual quality cost",v:"15.6M EUR/yr"},
+       {l:"AI Square real-time defect detection — 65% failure reduction",v:"10.1M EUR recovered"},
+       {l:"GMP-validated sensor infrastructure + calibration",v:"-400K EUR/yr"},
+       {l:"AI Square quality module + ML model + compliance agent ops",v:"-300K EUR/yr"}
+     ],net:"9.4M EUR/yr net",roi:"13x ROI on total investment"}},
+  {lever:"Energy",color:"#22c55e",sector:"Steel & cement — process industry",
+   intro:"Energy is a board-level issue — ESG mandates, carbon pricing and energy cost volatility have elevated it from operational footnote to strategic priority. AI Square already tracks total energy cost per site. The missing layer is per-machine, per-product, per-shift granularity plus the AI agent that acts autonomously.",
+   ex:{title:"Cement plant — 20M EUR annual energy bill",
+     lines:[
+       {l:"Annual energy spend (kiln, grinding, logistics)",v:"20M EUR"},
+       {l:"Estimated avoidable waste (idle equipment, off-peak gaps)",v:"~18% = 3.6M EUR"},
+       {l:"McKinsey benchmark: 12-20% reduction in process industry",v:"2.8M EUR potential"},
+       {l:"AI Square process optimisation — conservative 12%",v:"2.4M EUR recovered"},
+       {l:"Process instrumentation + submeter hardware maintenance",v:"-200K EUR/yr"},
+       {l:"AI Square energy module + AI energy agent operations",v:"-250K EUR/yr"},
+       {l:"Carbon credit value (verified Scope 2 reduction)",v:"+120K EUR/yr"}
+     ],net:"2.07M EUR/yr net",roi:"4.6x ROI on platform investment"}},
+  {lever:"Labour",color:"#8b5cf6",sector:"Logistics — distribution centre",
+   intro:"Labour savings from digitalization are not headcount cuts — they are recovery of time from low-value firefighting and manual data work. Deloitte finds paper-based instructions alone cause 45% of downtime events. AI agents automate routine coordination entirely.",
+   ex:{title:"Large distribution centre — 30M EUR annual labour cost",
+     lines:[
+       {l:"Annual warehouse + operations labour cost",v:"30M EUR"},
+       {l:"Idle time between task waves (est. 18%)",v:"5.4M EUR wasted"},
+       {l:"Manual counting & paper-based processes (est. 8%)",v:"2.4M EUR wasted"},
+       {l:"Total recoverable labour waste",v:"7.8M EUR"},
+       {l:"AI Square + AI coordination agent — 20% improvement",v:"1.56M EUR recovered"},
+       {l:"IoT task-tracking hardware + network maintenance",v:"-60K EUR/yr"},
+       {l:"AI Square logistics module + AI coordination agent ops",v:"-120K EUR/yr"}
+     ],net:"1.38M EUR/yr net",roi:"7.7x ROI on platform investment"}},
+  {lever:"Throughput",color:"#0ea5e9",sector:"Agriculture — large cooperative",
+   intro:"Throughput is the compound multiplier of all other levers — less downtime means more running hours, better quality means less capacity consumed by rework. In agriculture this translates directly to yield per hectare from the same land.",
+   ex:{title:"Agricultural cooperative — 50,000 hectares under management",
+     lines:[
+       {l:"Total area under management",v:"50,000 ha"},
+       {l:"Average crop revenue per hectare",v:"1,200 EUR/ha"},
+       {l:"Total annual crop revenue",v:"60M EUR"},
+       {l:"Current yield gap vs. potential (FAO benchmark: 12%)",v:"7.2M EUR unrealised"},
+       {l:"AI Square precision scheduling — 8% yield improvement",v:"4.8M EUR recovered"},
+       {l:"Field sensor network + IoT hardware maintenance",v:"-300K EUR/yr"},
+       {l:"AI Square agriculture module + AI field agent operations",v:"-200K EUR/yr"}
+     ],net:"4.3M EUR/yr net",roi:"8.6x ROI on platform investment"}}
+];
+
+var INDS=[
+  {id:"mfg", label:"Manufacturing",         sub:"All industrial sectors globally"},
+  {id:"raw", label:"Raw Materials QC",       sub:"Incoming goods & supplier quality"},
+  {id:"food",label:"Food & Pharma",          sub:"Compliance, cold chain, batch traceability"},
+  {id:"agri",label:"Agriculture",            sub:"Field operations, irrigation, yield"},
+  {id:"nrg", label:"Energy & Utilities",     sub:"Grid, industrial energy consumption"},
+  {id:"logi",label:"Logistics & Warehousing",sub:"DC operations, OTIF, fulfilment"}
+];
+var LEVERS=[
+  {key:"Downtime",  color:"#ef4444"},
+  {key:"Defects",   color:"#f59e0b"},
+  {key:"Energy",    color:"#22c55e"},
+  {key:"Labour",    color:"#8b5cf6"},
+  {key:"Throughput",color:"#0ea5e9"}
+];
+var MC={
+  mfg:{
+    Downtime:  {v:"hi", loss:"$1.4T",rec:"30-50%",note:"Global Fortune 500 loss per Siemens 2024. Average plant: 800 hrs/yr unplanned. Automotive: $2.3M/hr. Every 1% OEE improvement at a 1B EUR plant = 10M EUR recovered revenue."},
+    Defects:   {v:"hi", loss:"$374B",rec:"10-20%",note:"Average 2.2% of global manufacturing revenue ($17T) lost to scrap and rework. Hidden quality costs — warranty, returns, rework capacity — add 3-5x the visible scrap cost."},
+    Energy:    {v:"med",loss:"$200B",rec:"15-20%",note:"Manufacturing consumes 25% of global electricity. 15-20% wasted through idle equipment, sub-optimal scheduling and poor process temperature control."},
+    Labour:    {v:"med",loss:"$150B",rec:"15-30%",note:"Deloitte: 45% of downtime caused by paper-based processes. Engineers average 12 hrs/week on manual data — 3 FTE equivalent per facility."},
+    Throughput:{v:"hi", loss:"$500B",rec:"10-30%",note:"McKinsey: 20-25% production volume increase achievable on the same asset base. OEE improvements compound multiplicatively."}
+  },
+  raw:{
+    Downtime:  {v:"med",loss:"$60B", rec:"20-35%",note:"Defective incoming batches discovered mid-production stop lines without warning. Up to 35% of production downtime traces to supplier variability never caught at source."},
+    Defects:   {v:"hi", loss:"$120B",rec:"15-25%",note:"Rule of Ten: defect caught at incoming = 1 EUR. At final inspection = 10 EUR. Reaching the customer = 100 EUR+. AI Square correlates supplier batches with downstream defect rates in real time."},
+    Energy:    {v:"low",loss:"$10B", rec:"5-10%", note:"Energy wasted processing out-of-spec materials that are ultimately scrapped. Secondary lever — primary value is defect cascade prevention."},
+    Labour:    {v:"med",loss:"$30B", rec:"10-20%",note:"Manual incoming inspection, quarantine documentation and supplier complaint workflows. AI agents handle routine notifications, freeing engineers for higher-value analysis."},
+    Throughput:{v:"med",loss:"$40B", rec:"10-20%",note:"Lines run at reduced speed or with elevated defect rates when substandard materials are in process — before anyone realises the batch is problematic."}
+  },
+  food:{
+    Downtime:  {v:"hi", loss:"$100B",rec:"25-40%",note:"Single pharma batch failure: 500K-5M EUR. Food lines: 50% downtime reduction documented on bottling. Compliance-related holds add 2-3x the direct cost. PdM prevents most equipment-caused batch failures."},
+    Defects:   {v:"hi", loss:"$160B",rec:"10-20%",note:"Global food waste: $1T annually. Pharma recalls average $600M impact per event. GMP and HACCP compliance requires complete process data — exactly what AI Square generates."},
+    Energy:    {v:"med",loss:"$30B", rec:"10-15%",note:"Pharmaceutical cleanrooms and food processing are energy-intensive. Over-refrigeration, inefficient sterilisation cycles and non-optimised HVAC represent 15-20% avoidable waste."},
+    Labour:    {v:"med",loss:"$40B", rec:"15-25%",note:"Manual batch record creation: 4-8 hours per batch in paper-based pharma operations. AI Square auto-generates structured records, cutting documentation time by 70%+."},
+    Throughput:{v:"med",loss:"$50B", rec:"10-20%",note:"Capacity lost to over-cautious scheduling, manual review queues for batch release and revalidation cycles. Digitization compresses these buffers significantly."}
+  },
+  agri:{
+    Downtime:  {v:"med",loss:"$80B", rec:"15-30%",note:"Equipment failure during a harvest window (wheat: 7-14 days) can destroy an entire season. PdM on harvesting equipment and irrigation pumps prevents most mechanical failures."},
+    Defects:   {v:"hi", loss:"$400B",rec:"10-20%",note:"FAO estimates $400B in preventable global crop yield gap. Causes: irrigation timing misses critical stages, pest/disease detected too late, soil nutrient deficiency missed. Real-time field sensors address all three."},
+    Energy:    {v:"hi", loss:"$120B",rec:"20-30%",note:"Agriculture is the world's largest water consumer. Over-irrigation wastes both water and pumping energy. Precision agriculture reduces input use 15-25% per hectare with no yield loss."},
+    Labour:    {v:"low",loss:"$30B", rec:"10-15%",note:"Manual field scouting, paper-based spray and irrigation records, unoptimised crew scheduling. Digitization value is real but secondary to yield and energy savings."},
+    Throughput:{v:"hi", loss:"$200B",rec:"5-15%", note:"Yield uplift from optimised planting windows, precision irrigation and harvest scheduling: 5-15% more output per hectare. 5% global improvement = $80-100B additional output."}
+  },
+  nrg:{
+    Downtime:  {v:"hi", loss:"$150B",rec:"30-50%",note:"US grid alone loses $150B/yr to outages. Single substation failure: $50M-$500M. PdM on transformers and switchgear demonstrates 40-60% reduction in unplanned outages."},
+    Defects:   {v:"low",loss:"$20B", rec:"5-10%", note:"Transmission losses, metering inaccuracies and billing errors. Primary value levers for energy operators are downtime and energy waste — together $450B recoverable."},
+    Energy:    {v:"hi", loss:"$300B",rec:"15-25%",note:"IEA: $300B/yr in avoidable industrial energy waste from sub-optimal generation scheduling and facility operations. AI Square's energy intelligence layer plus AI demand-response agents is the missing link."},
+    Labour:    {v:"med",loss:"$40B", rec:"10-20%",note:"Field crew dispatch inefficiency, manual meter reading, reactive vs. planned grid maintenance. AI agents handle routine monitoring and dispatch autonomously."},
+    Throughput:{v:"med",loss:"$80B", rec:"10-20%",note:"Curtailment losses on renewable assets (wind/solar capacity wasted due to grid constraints), demand-supply mismatch penalties. Better forecasting recovers meaningful capacity."}
+  },
+  logi:{
+    Downtime:  {v:"hi", loss:"$90B", rec:"20-35%",note:"Dock downtime, conveyor failures and sorter stoppages cascade into missed shipment windows and SLA breaches. PdM on conveyor systems and dock levellers delivers fast, measurable ROI."},
+    Defects:   {v:"med",loss:"$50B", rec:"10-20%",note:"Picking errors (1-3% of picks), OTIF failures (5-8% of orders) trigger penalties and re-delivery costs. AI Square flags at-risk orders before the shipment window closes."},
+    Energy:    {v:"med",loss:"$40B", rec:"10-20%",note:"DC lighting, refrigeration, conveyors and forklift charging: 3-5% of DC operating cost. Smart scheduling (charge overnight, dim lighting in inactive zones) creates meaningful savings."},
+    Labour:    {v:"hi", loss:"$120B",rec:"15-25%",note:"Labour is 50-70% of DC operating cost. Idle time, inefficient pick paths, manual cycle counts. AI coordination agents dynamically reassign work zones as order velocity changes."},
+    Throughput:{v:"hi", loss:"$80B", rec:"10-20%",note:"Dock throughput gaps cause SLA breaches and contract risk for 3PLs. AI Square's orders-at-risk engine applied to DCs: which shipments miss the collection window and what needs to happen in the next 90 minutes."}
+  }
+};
+
+var MLOSS={
+  mfg:{Downtime:1400,Defects:374,Energy:200,Labour:150,Throughput:500},
+  raw:{Downtime:60,  Defects:120,Energy:10, Labour:30, Throughput:40},
+  food:{Downtime:100,Defects:160,Energy:30, Labour:40, Throughput:50},
+  agri:{Downtime:80, Defects:400,Energy:120,Labour:30, Throughput:200},
+  nrg:{Downtime:150, Defects:20, Energy:300,Labour:40, Throughput:80},
+  logi:{Downtime:90, Defects:50, Energy:40, Labour:120,Throughput:80}
+};
+var MREC={
+  mfg:{Downtime:40,Defects:15,Energy:17,Labour:22,Throughput:20},
+  raw:{Downtime:27,Defects:20,Energy:7, Labour:15,Throughput:15},
+  food:{Downtime:32,Defects:15,Energy:12,Labour:20,Throughput:15},
+  agri:{Downtime:22,Defects:15,Energy:25,Labour:12,Throughput:10},
+  nrg:{Downtime:40, Defects:7, Energy:20,Labour:15,Throughput:15},
+  logi:{Downtime:27,Defects:15,Energy:15,Labour:20,Throughput:15}
+};
+
+var GAPS=[
+  {lever:"Downtime",color:"#ef4444",effort:"High",
+   intro:"AI Square currently detects and logs downtime as it happens. To forecast and prevent it, five distinct capabilities must be built — each additive on the existing signal pipeline.",
+   items:[
+     {t:"Vibration & acoustic sensor connectors",d:"Mechanical failure prediction requires dedicated vibration adapters for ICP accelerometers and acoustic emission sensors. Bearing wear analysis provides 30+ days advance warning — without these, ML models work only on indirect proxy indicators giving at most 24-48 hours notice."},
+     {t:"Per-asset ML health models",d:"Each machine type needs its own healthy baseline trained on months of operational data. Isolation Forest for anomaly detection; LSTM for degradation regression. Models must auto-retrain as conditions change — static models degrade within 3-6 months."},
+     {t:"Remaining Useful Life (RUL) forecasting engine",d:"Translates degradation trends into specific time forecasts: 'this bearing will reach critical threshold in 11 days'. Enables maintenance scheduling during planned downtime — the core economic value of predictive maintenance."},
+     {t:"CMMS / work-order write-back integration",d:"Integration with SAP PM, IBM Maximo, UpKeep and Fiix auto-generates work orders, reserves spare parts and blocks production slots — closing the prediction-to-action loop without manual copy-paste."},
+     {t:"Autonomous AI agent layer with self-monitoring",d:"Level 5 agents execute corrective actions autonomously. An Agent Operations Dashboard tracks accuracy, drift, latency and triggers automatic redeployment when performance degrades below threshold."}
+   ]},
+  {lever:"Defects",color:"#f59e0b",effort:"High",
+   intro:"AI Square currently tracks quality events and OEE quality rate. Per-unit traceability, statistical process control and predictive quality scoring require a deeper data model and several new connectors.",
+   items:[
+     {t:"Unit-level genealogy data model",d:"Current: event to machine to operator to order. Required: unit to process parameters at each step to quality outcome. Enables 'why did unit #4471 fail?' and 'which parameter combination predicts failure?'"},
+     {t:"Statistical Process Control (SPC) charts",d:"Xbar-R, CUSUM and EWMA control charts natively in the AI Square UI. These are the universal language of quality management — without SPC, AI Square cannot serve as the quality system of record."},
+     {t:"Vision / inline inspection connector",d:"Camera-based inspection (Cognex, Keyence, Sick) generates the richest per-unit defect data. This connector closes the loop between inline inspection results and the process data model."},
+     {t:"ML quality prediction score per unit",d:"Once unit genealogy and quality outcomes are linked, an ML model predicts defect probability before final inspection — enabling real-time intervention rather than end-of-line rejection."},
+     {t:"Supplier-to-defect correlation engine",d:"Automatically correlates incoming batch characteristics with downstream defect rates. When supplier batch B-2041 correlates with a 3x defect spike on Line 7, the system surfaces it without manual analysis."}
+   ]},
+  {lever:"Energy",color:"#22c55e",effort:"Medium",
+   intro:"AI Square already monitors total facility energy cost. The gaps are granularity — per-machine, per-product, per-shift cost — and the strategic overlay: carbon accounting, tariff optimisation and autonomous AI agents.",
+   items:[
+     {t:"Smart meter & submeter connectors",d:"Machine-level energy requires Modbus TCP / IEC 61850 adapters for industrial metering hardware (Schneider PowerLogic, Siemens SENTRON, ABB Ability). A connector integration effort, not an architecture change."},
+     {t:"Energy cost per unit",d:"The most actionable energy metric: X EUR of energy consumed to produce one unit of product Y on machine M during shift S. Enables product-level profitability analysis. Currently absent from the platform."},
+     {t:"Carbon / Scope 2 emissions overlay",d:"Integrating real-time carbon intensity data transforms energy data into Scope 2 emissions data — creating the sustainability reporting module that EU CSRD regulations and boards increasingly require."},
+     {t:"Tariff & demand-response integration",d:"An AI energy agent shifts energy-intensive operations to off-peak windows autonomously — it knows the production schedule, tariff curve and flexibility window, and acts without human instruction."},
+     {t:"AI energy agent with health monitoring",d:"The agent monitors consumption anomalies and executes schedule shifts within pre-approved parameters. Agent performance — energy saved per week, accuracy — is reported on the Agent Operations Dashboard."}
+   ]},
+  {lever:"Labour",color:"#8b5cf6",effort:"Medium",
+   intro:"Labour optimisation builds on the real-time visibility already in AI Square — machine status, order progress and shift timeline are already captured. Missing: operator-level tracking and AI agent coordination.",
+   items:[
+     {t:"Operator utilisation tracking model",d:"What is the operator doing between machine interactions? A lightweight task-assignment model unlocks labour analytics without time-and-motion studies — enabling idle time quantification."},
+     {t:"Labour cost per unit produced",d:"The complement of energy cost per unit. Together they deliver a full variable cost per unit — the data that product profitability and make-vs-buy decisions require."},
+     {t:"Structured digital shift handover workflow",d:"Verbal handovers are a major source of information loss and repeat downtime. A 10-minute structured digital handover prevents hours of lost context every shift change."},
+     {t:"AI coordination agent",d:"Reads the production schedule, labour allocation, machine status and order priority — recommends or autonomously executes reallocation of operators to priority tasks. Monitors its own shift-target performance."}
+   ]},
+  {lever:"Throughput",color:"#0ea5e9",effort:"High",
+   intro:"Throughput is the compound outcome of fixing downtime, defects and energy. AI Square tracks OEE and flags orders at risk. Missing: scheduling intelligence and constraint management for proactive capacity optimisation.",
+   items:[
+     {t:"Advanced production scheduling engine",d:"Missing: a scheduling engine that proactively resequences production when risk is detected — considering machine availability, operator allocation, material availability, customer priority and energy cost per slot simultaneously."},
+     {t:"Constraint / bottleneck identification (Theory of Constraints)",d:"The system should automatically identify which step is the binding constraint on throughput at any moment and focus all improvement recommendations there. Improving non-constraint resources creates no throughput gain."},
+     {t:"Multi-line load balancing optimisation",d:"For factories with multiple parallel lines, AI Square should balance order load across lines in real time based on current OEE, operator skill, order mix and energy cost. An AI agent can run this continuously."},
+     {t:"Digital twin for scenario planning",d:"A simulation layer answering: 'what happens to throughput if Machine M3 fails next week?' or 'can we accept this emergency order without missing existing commitments?' — the highest-value application of the data AI Square already holds."}
+   ]}
+];
+
+var STRAT=[
+  {phase:"Phase 1 — 2025-2026",title:"Deepen Downtime",color:"#ef4444",
+   focus:"Build the predictive layer on the existing signal pipeline. Highest ROI, fastest deployment, clearest customer value.",
+   actions:["Add vibration / thermal sensor connectors (OPC UA, MQTT adapters for accelerometers)","Build per-asset ML health model — Isolation Forest anomaly detection + LSTM RUL regression","Launch Days to Failure dashboard widget visible to maintenance and operations simultaneously","Integrate with SAP PM, IBM Maximo, UpKeep — auto-generate work orders from predictions","Deploy first AI maintenance agent with autonomous parameter adjustment capability","Launch Agent Operations Dashboard — accuracy, drift, latency and health for all agents","Price as Predictive Maintenance Module: +20-40K EUR/site/yr on base licence"],
+   res:"2 ML engineers, 1 integration specialist, 1 AI agent developer — 6 months to first customer deployment"},
+  {phase:"Phase 2 — 2026-2027",title:"Add Defect Intelligence",color:"#f59e0b",
+   focus:"Per-unit quality traceability and ML quality prediction — the quality module mid-market manufacturers currently lack entirely.",
+   actions:["Unit genealogy data model — process parameters mapped to quality outcomes per unit","SPC charts (Xbar-R, CUSUM, EWMA) natively embedded in AI Square UI","Vision system connector — Cognex / Keyence REST API integration","ML quality prediction score per unit — real-time defect probability before final inspection","Supplier-to-defect correlation engine — closes the raw materials quality loop automatically","AI quality agent — monitors SPC control limits, triggers alerts, adjusts thresholds autonomously"],
+   res:"2 quality-domain engineers, 1 data scientist, 1 ML ops engineer — 9 months"},
+  {phase:"Phase 3 — 2027-2028",title:"Energy as Strategic Differentiator",color:"#22c55e",
+   focus:"Granular energy per unit, Scope 2 carbon accounting, AI-driven demand response — a board-level proposition.",
+   actions:["Smart meter and submeter connector library (Modbus TCP, IEC 61850)","Energy cost per unit — per machine x shift x product — full variable cost picture","Scope 2 emissions tracker with real-time carbon intensity overlay by grid region","Tariff / demand-response integration — AI agent shifts loads to off-peak autonomously","Carbon ROI dashboard for ESG and board-level sustainability reporting","Agent health reporting integrated into Agent Operations Dashboard"],
+   res:"1 energy domain specialist, 1 integration engineer, 1 AI agent developer — 6 months"},
+  {phase:"Scale — 2028+",title:"Platform, Verticals & AI Agent Ecosystem",color:"#8b5cf6",
+   focus:"A generic configurable asset model unlocks agriculture, logistics and energy as new verticals. AI agents become the scalable operating layer.",
+   actions:["Generic configurable asset hierarchy — field, dock, zone, substation all become assets","Agriculture vertical module — field to zone to sensor to crop stage to yield forecast","Logistics vertical module — dock to DC zone to carrier to OTIF prediction engine","SI / partner channel programme — certified resellers trained on full platform + agent stack","AI Square Marketplace — third-party connectors and domain-specific agent templates","AI Agent Ecosystem — domain agents for each vertical, monitored centrally"],
+   res:"Full product team expansion (10-15 engineers), partner programme budget 2-3M EUR, geographic expansion"}
+];
+
+var PRICING=[
+  {model:"Per Site",type:"Flat SaaS subscription",range:"20-80K EUR/site/yr",rec:false,
+   pros:["Simple billing","Predictable ARR","Easy SME budget approval"],
+   cons:["Doesn't scale with large sites","Misses upside at 1B+ EUR plants","No value alignment"],
+   note:"Appropriate for land-and-expand with SMEs. Underprices the product dramatically at enterprise scale."},
+  {model:"Per Machine",type:"Usage-based SaaS",range:"200-800 EUR/machine/yr",rec:false,
+   pros:["Scales with plant size","Customers start small and expand","Clear asset-level cost justification"],
+   cons:["Variable revenue complicates forecasting","Customers minimise machine count","Complex billing at scale"],
+   note:"Works well mid-market. Enterprise customers push back on machine-count billing."},
+  {model:"Value Share",type:"Outcome-based only",range:"5-15% of verified savings",rec:false,
+   pros:["Eliminates ROI objection","Huge upside on large sites","Perfect value alignment"],
+   cons:["Measurement and attribution disputes","Long sales cycles","Customer distrust on methodology"],
+   note:"Best reserved for lighthouse enterprise accounts where savings justify measurement investment."},
+  {model:"Platform Base + Performance Module",type:"Fixed + Variable hybrid — Recommended",
+   range:"40-120K EUR base + 15-50K/module + 2-5% verified savings share (capped)",rec:true,
+   pros:["Predictable base covers AI agent ops + sensor monitoring","Variable captures value at large sites","Scales to enterprise without repricing","Value-aligned without pure outcome risk","Cap (3x base) removes budget uncertainty","AI agent managed service is separate revenue line"],
+   cons:["More complex to sell than flat SaaS","Requires savings baseline at contract signing","Needs internal audit capability"],
+   note:"The base licence covers: (1) platform SaaS, (2) AI agent operations and monitoring, (3) sensor hardware maintenance SLA, (4) security and uptime guarantee. Variable component (2-5% of verified savings, capped at 3x base) is near-pure gross margin. Total customer cost: typically 3-8% of value recovered."}
+];
+
+var RYRS=[2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035];
+var RSCEN={
+  base:       [0.8,2,4.5,9,16,26,40,58,78,100,125],
+  aggressive: [1.2,3.5,9,20,38,65,105,155,210,270,340],
+  enterprise: [1.5,5,14,32,62,110,175,260,350,440,540]
+};
+var RCOLORS={base:"#0ea5e9",aggressive:"#f59e0b",enterprise:"#22c55e"};
+var RLABELS={base:"Base",aggressive:"Aggressive",enterprise:"Enterprise-Led"};
+var RMILES={
+  base:[
+    "First 15-40 SME sites. Downtime module live. Build 5 case studies. Fixed pricing only.",
+    "Add Defect + Energy modules. First mid-market accounts (100-500M EUR revenue). Avg ARR 120K EUR.",
+    "3 verticals. Partner channel contributes 30% of new bookings. Geographic expansion begins.",
+    "350-500 sites. Full module stack. AI agent managed service as separate revenue line."
+  ],
+  aggressive:[
+    "10 SME + 3 mid-market accounts. Fixed + variable pricing from first contract. Avg ARR 90K EUR.",
+    "5-8 large industrial accounts (500M-2B EUR revenue). Variable savings share drives ARR uplift.",
+    "20+ large accounts. AI agent managed service upsell 30-80K EUR/site. EU expansion then LatAm.",
+    "200+ sites + 40 large accounts. AI agent platform as separate P&L line."
+  ],
+  enterprise:[
+    "2-3 lighthouse enterprise groups (1B+ EUR revenue, 5-15 plants). Subsidised pricing to prove group-level ROI.",
+    "8 enterprise groups live under framework agreements. Variable component activates at group level.",
+    "15 enterprise groups + 80 mid-market. Full stack including AI agent ops service.",
+    "25 enterprise groups averaging 12-20M EUR ARR each. 150 mid-market. IPO window opens."
+  ]
+};
+var RASSUMP={
+  base:[
+    "SME and mid-market focus only. No enterprise accounts (>500M EUR revenue customers).",
+    "Pricing: base SaaS 40-80K EUR/site/yr. Modules add 15-25K EUR each. No variable component.",
+    "AI agent managed service included in base licence — no separate upsell.",
+    "Conservative growth: organic only, no partner channel, single geographic market.",
+    "Avg ARR per site grows from 50K EUR (2025) to 250K EUR (2035) as module adoption increases."
+  ],
+  aggressive:[
+    "Mix: 60% SME/mid-market + 40% large industrial accounts (500M-2B EUR revenue).",
+    "Pricing: base 60-120K EUR + modules + 3% verified savings share capped at 3x base.",
+    "Large account example: 1B EUR revenue factory, 30% downtime reduction = 30M EUR saved. 3% share = 900K EUR variable on 120K EUR base.",
+    "AI agent managed service upsell: 30-80K EUR/site/yr for autonomous agent package.",
+    "Partner channel from 2027. Geographic expansion: Iberia to EU to LatAm 2029-2031."
+  ],
+  enterprise:[
+    "Strategy: target 20-30 industrial groups with 1B+ EUR revenue and 5-20 plants each.",
+    "Group deal: enterprise framework agreement covering all plants. Avg group contract: 3-8M EUR ARR.",
+    "Pricing: base 80-150K EUR/plant + full module stack + 4-5% verified savings share at group level.",
+    "Group example: 10-plant group, 30% downtime reduction = 180M EUR saved. 4% share = 7.2M EUR variable.",
+    "AI agent ops is a separate managed service contract: 50-150K EUR/group/yr.",
+    "Revenue per enterprise group (2035 est.): 12-22M EUR ARR including variable savings share."
+  ]
+};
+
+// ── helpers ──────────────────────────────────────────────────────────────────
+function s(style){return style;}
+
+function Badge(props){
+  var color=props.color,text=props.text;
+  return e("span",{style:{background:color+"22",color:color,border:"1px solid "+color+"55",borderRadius:20,padding:"3px 11px",fontSize:fs(11),fontWeight:600,whiteSpace:"nowrap",fontFamily:F}},text);
+}
+
+function Card(props){
+  var base={background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.10)",borderRadius:14,padding:"16px",fontFamily:F};
+  var merged=Object.assign({},base,props.style||{});
+  return e("div",{style:merged},props.children);
+}
+
+function SecTitle(props){
+  return e("div",{style:{marginBottom:22}},
+    e("div",{style:{display:"flex",alignItems:"center",gap:12}},
+      e("span",{style:{background:"linear-gradient(135deg,#0ea5e9,#6366f1)",borderRadius:9,width:33,height:33,display:"flex",alignItems:"center",justifyContent:"center",fontSize:fs(13),fontWeight:700,color:"#fff",flexShrink:0}},props.num),
+      e("h2",{style:{margin:0,fontSize:fs(19),fontWeight:700,color:"#f1f5f9",letterSpacing:-0.4}},props.title)
+    ),
+    e("div",{style:{height:2,background:"linear-gradient(90deg,#0ea5e9,transparent)",marginTop:11,borderRadius:2}})
+  );
+}
+
+function Intro(props){
+  return e("div",{style:{background:"rgba(14,165,233,0.08)",border:"1px solid rgba(14,165,233,0.2)",borderRadius:12,padding:"14px 16px",marginBottom:20}},
+    e("p",{style:{margin:0,fontSize:fs(13),color:"#94a3b8",lineHeight:1.75,fontFamily:F}},props.text)
+  );
+}
+
+// ── S1 ───────────────────────────────────────────────────────────────────────
+function S1(){
+  var pillars=[
+    ["📡","Ingest","#0ea5e9","Connects to OPC UA, MQTT, REST APIs, ERP, MES and SCADA without replacing existing infrastructure. Hardware-agnostic — any machine, any brand, any age."],
+    ["🔄","Normalize","#6366f1","Translates raw signals into a common data model: events, losses, quality outcomes and energy — comparable across machines, lines and sites."],
+    ["🚨","Alert","#f59e0b","Real-time anomaly detection with full context. Flags orders at risk before they impact the plan. Every alert includes the event, the machine, the operator and the probable cause."],
+    ["🎯","Act","#22c55e","AI assistant answers natural language queries with visual evidence. Guided playbooks direct operators to the correct corrective action. Decisions are informed by data, not guessed."]
+  ];
+  var metrics=[
+    {v:"8%",    l:"factories using commercial MES", s:"54% still on spreadsheets"},
+    {v:"$5T",   l:"annual losses at stake globally",s:"vs. $16.6B software market"},
+    {v:"Days",  l:"to deploy, not months",           s:"vs. 12-18 months for Siemens/SAP"},
+    {v:"10-50x",l:"value-to-price ratio",            s:"Typical ROI across implementations"}
+  ];
+  var wins=[
+    ["⚡","Speed to value","Live in days not months. No IT transformation required. First ROI evidence visible within 4-8 weeks of go-live."],
+    ["🔓","Hardware-agnostic","Works with Siemens, Fanuc, Mitsubishi, Bosch — any machine that generates a signal. No hardware lock-in."],
+    ["🤖","AI-native from day one","Natural language queries return visual insights and recommended next action. Not a dashboard — an intelligent operating system."],
+    ["📐","No-code configurator","Operations teams adjust KPIs, alert rules and downtime reasons themselves. IT is not in the critical path."],
+    ["🏭","Built for the shop floor","UX designed for operators, not data scientists. Operators see their machine; managers see the helicopter view; executives see the P&L impact."]
+  ];
+  return e("div",null,
+    e(Intro,{text:"AI Square is a Portuguese industrial digitalization company that transforms disconnected factory signals into real-time, actionable production intelligence. Their platform connects to existing machines, sensors and ERP systems without replacing them — giving operations teams a live view of everything on the shop floor. Founded on the principle of simplicity first, AI Square deploys in days rather than months and is designed for operators, supervisors and managers, not just the IT team."}),
+    e(Card,{style:{marginBottom:14}},
+      e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#475569",marginBottom:12,letterSpacing:1}},"THE FOUR CORE CAPABILITIES"),
+      e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
+        pillars.map(function(p){
+          return e("div",{key:p[1],style:{background:p[2]+"11",borderRadius:10,padding:14,border:"1px solid "+p[2]+"33"}},
+            e("div",{style:{fontSize:20,marginBottom:6}},p[0]),
+            e("div",{style:{fontSize:fs(13),fontWeight:700,color:p[2],marginBottom:5}},p[1]),
+            e("div",{style:{fontSize:fs(11),color:"#64748b",lineHeight:1.55}},p[3])
+          );
+        })
+      )
+    ),
+    e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}},
+      metrics.map(function(m){
+        return e(Card,{key:m.v,style:{textAlign:"center",padding:14}},
+          e("div",{style:{fontSize:fs(22),fontWeight:800,color:"#0ea5e9",lineHeight:1}},m.v),
+          e("div",{style:{fontSize:fs(11),color:"#e2e8f0",marginTop:5,fontWeight:600}},m.l),
+          e("div",{style:{fontSize:fs(10),color:"#475569",marginTop:3}},m.s)
+        );
+      })
+    ),
+    e(Card,null,
+      e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#475569",marginBottom:12,letterSpacing:1}},"WHY AI SQUARE WINS AGAINST INCUMBENTS"),
+      wins.map(function(w){
+        return e("div",{key:w[1],style:{display:"flex",gap:10,marginBottom:11,alignItems:"flex-start"}},
+          e("span",{style:{fontSize:16,flexShrink:0,marginTop:2}},w[0]),
+          e("div",{style:{fontSize:fs(12),color:"#94a3b8",lineHeight:1.55}},
+            e("strong",{style:{color:"#e2e8f0"}},w[1])," — ",w[2]
+          )
+        );
+      })
+    )
+  );
+}
+
+// ── S2 ───────────────────────────────────────────────────────────────────────
+function S2(){
+  return e("div",null,
+    e(Intro,{text:"The maintenance maturity ladder describes five distinct approaches to managing industrial equipment health — from reactive firefighting to autonomous AI-driven prevention. Each level has a fundamentally different cost profile, data requirement, and business outcome. Understanding exactly where AI Square sits today, and what each step forward requires, is the foundation for the predictive maintenance product roadmap."}),
+    e("div",{style:{marginBottom:18}},
+      MAINT.map(function(l){
+        return e("div",{key:l.level,style:{display:"flex",alignItems:"stretch",marginBottom:11,borderRadius:13,overflow:"hidden",border:l.current?"2px solid "+l.color:"1px solid rgba(255,255,255,0.08)"}},
+          e("div",{style:{width:54,background:l.current?l.color:l.color+"22",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}},
+            e("div",{style:{fontSize:fs(18),fontWeight:800,color:l.current?"#fff":l.color}},l.level)
+          ),
+          e("div",{style:{flex:1,padding:"13px 15px",background:l.current?l.color+"15":"rgba(255,255,255,0.02)"}},
+            e("div",{style:{display:"flex",alignItems:"center",gap:9,marginBottom:7,flexWrap:"wrap"}},
+              e("span",{style:{fontSize:fs(14),fontWeight:700,color:l.current?l.color:"#e2e8f0"}},l.label),
+              l.current?e(Badge,{text:"AI Square today",color:l.color}):null
+            ),
+            e("p",{style:{margin:0,fontSize:fs(12),color:l.current?"#94a3b8":"#64748b",lineHeight:1.65}},l.desc)
+          )
+        );
+      })
+    ),
+    e(Card,null,
+      e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#22c55e",marginBottom:14,letterSpacing:1}},"WHAT AI SQUARE NEEDS TO REACH LEVEL 5"),
+      TOLV5.map(function(item,i){
+        return e("div",{key:i,style:{marginBottom:14,paddingBottom:14,borderBottom:i<TOLV5.length-1?"1px solid rgba(255,255,255,0.06)":"none"}},
+          e("div",{style:{display:"flex",gap:11,alignItems:"flex-start"}},
+            e("span",{style:{fontSize:20,flexShrink:0,marginTop:2}},item.icon),
+            e("div",null,
+              e("div",{style:{fontSize:fs(13),fontWeight:700,color:"#e2e8f0",marginBottom:5}},item.title),
+              e("div",{style:{fontSize:fs(12),color:"#64748b",lineHeight:1.65}},item.desc)
+            )
+          )
+        );
+      })
+    )
+  );
+}
+
+// ── S3 ───────────────────────────────────────────────────────────────────────
+function S3(){
+  var cc={Downtime:"#ef4444",Throughput:"#0ea5e9",Labour:"#8b5cf6",Defects:"#f59e0b",EBIT:"#22c55e",Returns:"#22c55e"};
+  return e("div",null,
+    e(Intro,{text:"The economic case for industrial digitalization is among the strongest in enterprise software — because the losses it recovers are orders of magnitude larger than the software cost. Every benchmark figure comes from published research by McKinsey, Deloitte, Aberdeen Group, and Siemens. All net savings deduct sensor hardware maintenance, AI agent operational costs, and platform licence fees — the true economic picture a CFO needs."}),
+    e(Card,{style:{marginBottom:22}},
+      e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#475569",marginBottom:14,letterSpacing:1}},"RESEARCH-BACKED IMPROVEMENT RANGES"),
+      RESEARCH.map(function(r,i){
+        var c=cc[r.cat]||"#94a3b8";
+        return e("div",{key:i,style:{display:"flex",gap:10,alignItems:"flex-start",padding:"11px 0",borderBottom:i<RESEARCH.length-1?"1px solid rgba(255,255,255,0.05)":"none"}},
+          e("div",{style:{width:82,flexShrink:0}},
+            e("div",{style:{fontSize:fs(11),fontWeight:700,color:c,lineHeight:1.3}},r.source),
+            e("div",{style:{marginTop:4,display:"inline-block",background:c+"18",border:"1px solid "+c+"44",borderRadius:6,padding:"2px 8px",fontSize:fs(9),color:c,fontWeight:700}},r.cat)
+          ),
+          e("div",{style:{flex:1}},
+            e("div",{style:{fontSize:fs(12),fontWeight:600,color:"#e2e8f0",marginBottom:3}},r.metric),
+            e("div",{style:{fontSize:fs(11),color:"#64748b",lineHeight:1.4}},r.ctx)
+          ),
+          e("div",{style:{flexShrink:0,minWidth:74,textAlign:"right",fontSize:fs(15),fontWeight:800,color:"#22c55e"}},r.range)
+        );
+      })
+    ),
+    e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#475569",marginBottom:14,letterSpacing:1}},"NET VALUE CALCULATIONS — ONE EXAMPLE PER LEVER"),
+    VCALCS.map(function(vc){
+      var ex=vc.ex;
+      return e("div",{key:vc.lever,style:{marginBottom:26}},
+        e("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6,flexWrap:"wrap"}},
+          e("div",{style:{width:4,height:28,background:vc.color,borderRadius:2,flexShrink:0}}),
+          e("span",{style:{fontSize:fs(17),fontWeight:700,color:vc.color}},vc.lever),
+          e("span",{style:{fontSize:fs(11),color:"#475569"}},"— "+vc.sector)
+        ),
+        e("p",{style:{margin:"0 0 12px",fontSize:fs(12),color:"#64748b",lineHeight:1.7}},vc.intro),
+        e(Card,{style:{borderLeft:"3px solid "+vc.color}},
+          e("div",{style:{fontSize:fs(14),fontWeight:700,color:"#e2e8f0",marginBottom:12}},ex.title),
+          ex.lines.map(function(ln,li){
+            var isCost=ln.v[0]==="-";
+            var isPlus=ln.v[0]==="+";
+            var isLast=li===ex.lines.length-1;
+            return e("div",{key:li,style:{display:"flex",justifyContent:"space-between",alignItems:"baseline",padding:isLast?"8px 0 3px":"5px 0",borderTop:isLast?"1px solid rgba(255,255,255,0.12)":li>0?"1px solid rgba(255,255,255,0.04)":"none",marginTop:isLast?5:0}},
+              e("span",{style:{fontSize:fs(11),color:isLast?"#e2e8f0":"#94a3b8",lineHeight:1.4,paddingRight:10}},ln.l),
+              e("span",{style:{fontSize:isLast?fs(13):fs(12),fontWeight:isLast?700:500,color:isCost?"#ef4444":isPlus?"#22c55e":isLast?"#22c55e":"#e2e8f0",flexShrink:0}},ln.v)
+            );
+          }),
+          e("div",{style:{marginTop:12,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}},
+            e("div",{style:{background:"#22c55e18",border:"1px solid #22c55e55",borderRadius:10,padding:"7px 15px",fontSize:fs(14),fontWeight:800,color:"#22c55e"}},ex.net),
+            e(Badge,{text:ex.roi,color:"#0ea5e9"})
+          )
+        )
+      );
+    })
+  );
+}
+
+// ── S4 summary matrix ────────────────────────────────────────────────────────
+function SumMatrix(){
+  var lkeys=LEVERS.map(function(l){return l.key;});
+  function rowLoss(id){return lkeys.reduce(function(s,l){return s+MLOSS[id][l];},0);}
+  function rowRec(id){return lkeys.reduce(function(s,l){return s+Math.round(MLOSS[id][l]*MREC[id][l]/100);},0);}
+  function colLoss(l){return INDS.reduce(function(s,i){return s+MLOSS[i.id][l];},0);}
+  function colRec(l){return INDS.reduce(function(s,i){return s+Math.round(MLOSS[i.id][l]*MREC[i.id][l]/100);},0);}
+  var gLoss=INDS.reduce(function(s,i){return s+rowLoss(i.id);},0);
+  var gRec= INDS.reduce(function(s,i){return s+rowRec(i.id);},0);
+  function fmt(n){return n>=1000?"$"+(n/1000).toFixed(1)+"T":"$"+n+"B";}
+  var lc={Downtime:"#ef4444",Defects:"#f59e0b",Energy:"#22c55e",Labour:"#8b5cf6",Throughput:"#0ea5e9"};
+  function ic(id,l){var v=MC[id][l].v;return v==="hi"?"#22c55e33":v==="med"?"#f59e0b22":"rgba(255,255,255,0.03)";}
+
+  return e("div",{style:{marginTop:28}},
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:14}},
+      e("div",{style:{width:4,height:26,background:"linear-gradient(#0ea5e9,#6366f1)",borderRadius:2}}),
+      e("span",{style:{fontSize:fs(15),fontWeight:700,color:"#e2e8f0"}},"Summary — Annual Loss & Recoverable Value ($B)")
+    ),
+    e("p",{style:{margin:"0 0 14px",fontSize:fs(12),color:"#64748b",lineHeight:1.65}},"All figures in USD billions. Loss = estimated annual global economic loss. Rec = conservative recoverable value. Green cells = high impact, amber = medium, dim = low."),
+    e("div",{style:{overflowX:"auto",borderRadius:12,border:"1px solid rgba(255,255,255,0.10)"}},
+      e("table",{style:{borderCollapse:"collapse",width:"100%",minWidth:520,fontFamily:F}},
+        e("thead",null,
+          e("tr",{style:{background:"rgba(255,255,255,0.05)"}},
+            e("th",{style:{textAlign:"left",padding:"10px",fontSize:fs(10),fontWeight:700,color:"#475569",letterSpacing:0.5,borderBottom:"1px solid rgba(255,255,255,0.10)",minWidth:90}},"INDUSTRY"),
+            lkeys.map(function(l){
+              return e("th",{key:l,style:{textAlign:"center",padding:"10px 6px",fontSize:fs(10),fontWeight:700,color:lc[l],letterSpacing:0.3,borderBottom:"1px solid rgba(255,255,255,0.10)",whiteSpace:"nowrap",borderLeft:"1px solid rgba(255,255,255,0.06)"}},l);
+            }),
+            e("th",{style:{textAlign:"center",padding:"10px 8px",fontSize:fs(10),fontWeight:700,color:"#94a3b8",borderBottom:"1px solid rgba(255,255,255,0.10)",whiteSpace:"nowrap",borderLeft:"1px solid rgba(255,255,255,0.14)",background:"rgba(255,255,255,0.04)"}},"TOTAL")
+          )
+        ),
+        e("tbody",null,
+          INDS.map(function(ind){
+            return e("tr",{key:ind.id,style:{borderBottom:"1px solid rgba(255,255,255,0.06)"}},
+              e("td",{style:{padding:"9px 10px",verticalAlign:"middle"}},
+                e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#e2e8f0",lineHeight:1.3}},ind.label),
+                e("div",{style:{fontSize:"9px",color:"#475569"}},ind.sub.split(",")[0])
+              ),
+              lkeys.map(function(l){
+                var loss=MLOSS[ind.id][l];
+                var rec=Math.round(loss*MREC[ind.id][l]/100);
+                return e("td",{key:l,style:{textAlign:"center",padding:"8px 6px",background:ic(ind.id,l),borderLeft:"1px solid rgba(255,255,255,0.06)",verticalAlign:"middle"}},
+                  e("div",{style:{fontSize:fs(12),fontWeight:700,color:"#e2e8f0",lineHeight:1.2}},fmt(loss)),
+                  e("div",{style:{fontSize:"9px",color:"#22c55e",fontWeight:600,marginTop:2}},"rec "+fmt(rec))
+                );
+              }),
+              e("td",{style:{textAlign:"center",padding:"8px",borderLeft:"1px solid rgba(255,255,255,0.14)",background:"rgba(255,255,255,0.04)",verticalAlign:"middle"}},
+                e("div",{style:{fontSize:fs(13),fontWeight:800,color:"#e2e8f0",lineHeight:1.2}},fmt(rowLoss(ind.id))),
+                e("div",{style:{fontSize:fs(10),color:"#22c55e",fontWeight:700,marginTop:2}},"rec "+fmt(rowRec(ind.id)))
+              )
+            );
+          }),
+          e("tr",{style:{background:"rgba(14,165,233,0.08)",borderTop:"2px solid rgba(255,255,255,0.14)"}},
+            e("td",{style:{padding:"10px"}},e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#0ea5e9"}},"COLUMN TOTAL")),
+            lkeys.map(function(l){
+              return e("td",{key:l,style:{textAlign:"center",padding:"10px 6px",borderLeft:"1px solid rgba(255,255,255,0.06)",verticalAlign:"middle"}},
+                e("div",{style:{fontSize:fs(13),fontWeight:800,color:"#e2e8f0",lineHeight:1.2}},fmt(colLoss(l))),
+                e("div",{style:{fontSize:fs(10),color:"#22c55e",fontWeight:700,marginTop:2}},"rec "+fmt(colRec(l)))
+              );
+            }),
+            e("td",{style:{textAlign:"center",padding:"10px 8px",borderLeft:"2px solid rgba(14,165,233,0.5)",background:"rgba(14,165,233,0.12)",verticalAlign:"middle"}},
+              e("div",{style:{fontSize:fs(15),fontWeight:800,color:"#0ea5e9",lineHeight:1.2}},fmt(gLoss)),
+              e("div",{style:{fontSize:fs(11),color:"#22c55e",fontWeight:700,marginTop:3}},"rec "+fmt(gRec))
+            )
+          )
+        )
+      )
+    ),
+    e("div",{style:{marginTop:12,borderRadius:12,padding:"14px 16px",background:"rgba(34,197,94,0.08)",border:"1px solid rgba(34,197,94,0.25)",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10}},
+      e("div",null,
+        e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#22c55e",letterSpacing:0.5}},"TOTAL RECOVERABLE VALUE"),
+        e("div",{style:{fontSize:fs(11),color:"#64748b",marginTop:2}},"Conservative midpoint — full digitalization across all levers")
+      ),
+      e("div",{style:{textAlign:"right"}},
+        e("div",{style:{fontSize:fs(26),fontWeight:800,color:"#22c55e",lineHeight:1}},fmt(gRec)),
+        e("div",{style:{fontSize:fs(10),color:"#475569",marginTop:2}},"per year, globally")
+      )
+    ),
+    e("div",{style:{marginTop:10,display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}},
+      [{label:"Total loss pool",val:fmt(gLoss),color:"#94a3b8"},{label:"Recovery rate (avg)",val:Math.round(gRec/gLoss*100)+"%",color:"#0ea5e9"},{label:"vs. SW market ($16.6B)",val:Math.round(gRec/16.6)+"x",color:"#f59e0b"}].map(function(m){
+        return e(Card,{key:m.label,style:{textAlign:"center",padding:"12px 8px"}},
+          e("div",{style:{fontSize:fs(16),fontWeight:800,color:m.color,lineHeight:1}},m.val),
+          e("div",{style:{fontSize:"9px",color:"#475569",marginTop:4,lineHeight:1.3}},m.label)
+        );
+      })
+    )
+  );
+}
+
+function S4(){
+  return e("div",null,
+    e(Intro,{text:"This matrix maps six target industries against the five value levers. Each cell shows the estimated annual global loss, the realistic recovery rate achievable with digitalization, and the specific mechanism by which AI Square creates that value. This is the real market size — not software licence fees, but the annual economic losses that AI Square can recover. The summary dollar matrix at the bottom totals every cell."}),
+    INDS.map(function(ind){
+      return e("div",{key:ind.id,style:{marginBottom:20}},
+        e("div",{style:{marginBottom:10,paddingBottom:8,borderBottom:"1px solid rgba(255,255,255,0.08)"}},
+          e("div",{style:{fontSize:fs(16),fontWeight:700,color:"#e2e8f0"}},ind.label),
+          e("div",{style:{fontSize:fs(12),color:"#475569"}},ind.sub)
+        ),
+        LEVERS.map(function(lev){
+          var cell=MC[ind.id][lev.key];
+          var bg={hi:"rgba(34,197,94,0.10)",med:"rgba(245,158,11,0.08)",low:"rgba(107,114,128,0.07)"};
+          var bd={hi:"rgba(34,197,94,0.35)",med:"rgba(245,158,11,0.3)",low:"rgba(107,114,128,0.2)"};
+          return e("div",{key:lev.key,style:{background:bg[cell.v],border:"1px solid "+bd[cell.v],borderRadius:11,padding:"12px 14px",marginBottom:8}},
+            e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:9,gap:10}},
+              e("div",{style:{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}},
+                e("div",{style:{width:8,height:8,borderRadius:"50%",background:lev.color,flexShrink:0}}),
+                e("span",{style:{fontSize:fs(13),fontWeight:700,color:lev.color}},lev.key),
+                e(Badge,{text:cell.v==="hi"?"High impact":cell.v==="med"?"Medium":"Low",color:cell.v==="hi"?"#22c55e":cell.v==="med"?"#f59e0b":"#6b7280"})
+              ),
+              e("div",{style:{textAlign:"right",flexShrink:0}},
+                e("div",{style:{fontSize:fs(15),fontWeight:800,color:"#e2e8f0"}},cell.loss),
+                e("div",{style:{fontSize:fs(11),color:"#22c55e",fontWeight:600}},"rec. "+cell.rec)
+              )
+            ),
+            e("p",{style:{margin:0,fontSize:fs(12),color:"#94a3b8",lineHeight:1.65}},cell.note)
+          );
+        })
+      );
+    }),
+    e(SumMatrix,null)
+  );
+}
+
+// ── S5 ───────────────────────────────────────────────────────────────────────
+function S5(){
+  return e("div",null,
+    e(Intro,{text:"AI Square's core engine — signal ingestion, event normalization, real-time alerting, AI assistant, and playbooks — already works and already delivers value. What's missing is domain-specific capability for each value lever. Every lever also requires AI agent operations infrastructure: agents that act autonomously must be monitored, health-checked and redeployed when they drift — a cross-cutting requirement, not an afterthought."}),
+    GAPS.map(function(g,gi){
+      return e("div",{key:g.lever,style:{marginBottom:24}},
+        e("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:9,flexWrap:"wrap"}},
+          e("div",{style:{width:10,height:10,borderRadius:"50%",background:g.color}}),
+          e("span",{style:{fontSize:fs(17),fontWeight:700,color:g.color}},g.lever),
+          e(Badge,{text:g.effort+" build effort",color:g.effort==="High"?"#ef4444":"#f59e0b"})
+        ),
+        e("p",{style:{margin:"0 0 13px",fontSize:fs(12),color:"#64748b",lineHeight:1.65}},g.intro),
+        e("div",{style:{borderLeft:"2px solid "+g.color+"44",paddingLeft:14}},
+          g.items.map(function(item,ii){
+            return e("div",{key:ii,style:{marginBottom:14,paddingBottom:14,borderBottom:ii<g.items.length-1?"1px solid rgba(255,255,255,0.05)":"none"}},
+              e("div",{style:{fontSize:fs(13),fontWeight:700,color:"#e2e8f0",marginBottom:5}},
+                e("span",{style:{color:g.color,marginRight:7}},"x"),item.t
+              ),
+              e("p",{style:{margin:0,fontSize:fs(12),color:"#94a3b8",lineHeight:1.65}},item.d)
+            );
+          })
+        ),
+        gi<GAPS.length-1?e("div",{style:{height:1,background:"rgba(255,255,255,0.07)",marginTop:8}}):null
+      );
+    })
+  );
+}
+
+// ── S6 ───────────────────────────────────────────────────────────────────────
+function S6(){
+  return e("div",null,
+    e(Intro,{text:"The strategy concentrates on three levers — Downtime, Defects, and Energy — because they represent $2.5T in annual recoverable losses, are signal-driven (AI Square's structural advantage), carry proven ROI benchmarks, and avoid regulatory validation overhead of pharma or the geo-spatial complexity of agriculture at this stage. Each phase is designed to be self-financing. AI agents become the scalable operating layer that allows AI Square to serve hundreds of sites without proportional headcount growth."}),
+    e(Card,{style:{marginBottom:18,borderLeft:"3px solid #0ea5e9"}},
+      e("div",{style:{fontSize:fs(12),fontWeight:700,color:"#0ea5e9",marginBottom:8,letterSpacing:1}},"WHY THESE THREE LEVERS"),
+      e("p",{style:{margin:0,fontSize:fs(12),color:"#94a3b8",lineHeight:1.75}},"These three levers cover every conversation from shop floor operator to CFO to the board. A single platform that answers all four levels of the organisation creates switching costs no point solution can match. Labour and Throughput improvements come as compound by-products.")
+    ),
+    STRAT.map(function(ph,i){
+      return e("div",{key:i,style:{marginBottom:20}},
+        e("div",{style:{display:"flex",gap:12,alignItems:"flex-start"}},
+          e("div",{style:{width:4,background:ph.color,borderRadius:2,flexShrink:0,alignSelf:"stretch",minHeight:80}}),
+          e("div",{style:{flex:1}},
+            e("div",{style:{fontSize:fs(11),color:ph.color,fontWeight:700,marginBottom:3,letterSpacing:0.5}},ph.phase),
+            e("div",{style:{fontSize:fs(16),fontWeight:700,color:"#e2e8f0",marginBottom:5}},ph.title),
+            e("p",{style:{margin:"0 0 12px",fontSize:fs(12),color:"#64748b",lineHeight:1.55}},ph.focus),
+            e(Card,{style:{padding:"12px 14px",marginBottom:10}},
+              ph.actions.map(function(a,j){
+                return e("div",{key:j,style:{display:"flex",gap:9,marginBottom:9,alignItems:"flex-start"}},
+                  e("span",{style:{color:ph.color,fontSize:fs(13),fontWeight:700,flexShrink:0,lineHeight:1.5}},"→"),
+                  e("span",{style:{fontSize:fs(12),color:"#94a3b8",lineHeight:1.55}},a)
+                );
+              })
+            ),
+            e("div",{style:{background:"rgba(255,255,255,0.04)",borderRadius:9,padding:"9px 13px",fontSize:fs(11),color:"#64748b",lineHeight:1.5}},
+              e("strong",{style:{color:"#475569"}},"Resources required: "),ph.res
+            )
+          )
+        ),
+        i<STRAT.length-1?e("div",{style:{height:1,background:"rgba(255,255,255,0.06)",margin:"14px 0 6px"}}):null
+      );
+    })
+  );
+}
+
+// ── S7 ───────────────────────────────────────────────────────────────────────
+function S7(){
+  return e("div",null,
+    e(Intro,{text:"Pricing for an industrial AI platform must reflect two structural realities: first, the value delivered is 10-50x the software cost; second, industrial customers need budget certainty. The recommended model combines a fixed base covering all operational costs (platform, AI agent operations, sensor monitoring) with a variable performance component tied to verified savings."}),
+    e(Card,{style:{marginBottom:18,borderLeft:"3px solid #22c55e"}},
+      e("div",{style:{fontSize:fs(12),fontWeight:700,color:"#22c55e",marginBottom:9,letterSpacing:1}},"WHERE DOES SYSTEM MAINTENANCE LIVE IN THE PRICING?"),
+      e("p",{style:{margin:"0 0 10px",fontSize:fs(12),color:"#94a3b8",lineHeight:1.75}},
+        "Three operational cost categories must be explicitly included in the base licence: ",
+        e("strong",{style:{color:"#e2e8f0"}},"(1) Sensor hardware maintenance and calibration"),
+        " — sensors drift, connectors fail, firmware updates are required; ",
+        e("strong",{style:{color:"#e2e8f0"}},"(2) AI agent operations"),
+        " — agents require continuous monitoring, periodic retraining and redeployment when performance falls below threshold; ",
+        e("strong",{style:{color:"#e2e8f0"}},"(3) Platform uptime and security SLA"),
+        " — 99.9% uptime and OT-grade security."
+      ),
+      e("p",{style:{margin:0,fontSize:fs(12),color:"#94a3b8",lineHeight:1.75}},"Making these explicit builds trust, removes the hidden cost objection, and positions AI Square as a managed operational partner. All net savings in Section 3 already deduct these costs. AI agents that self-monitor and auto-retrain reduce operational costs over time — a compounding margin advantage as the platform scales.")
+    ),
+    PRICING.map(function(p){
+      return e(Card,{key:p.model,style:{marginBottom:12,border:p.rec?"2px solid #22c55e":"1px solid rgba(255,255,255,0.10)"}},
+        e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10,gap:10,flexWrap:"wrap"}},
+          e("div",null,
+            e("div",{style:{display:"flex",alignItems:"center",gap:9,flexWrap:"wrap",marginBottom:3}},
+              e("span",{style:{fontSize:fs(15),fontWeight:700,color:p.rec?"#22c55e":"#e2e8f0"}},p.model),
+              p.rec?e(Badge,{text:"Recommended",color:"#22c55e"}):null
+            ),
+            e("div",{style:{fontSize:fs(11),color:"#475569"}},p.type)
+          ),
+          e("div",{style:{fontSize:fs(13),fontWeight:800,color:"#0ea5e9",textAlign:"right",maxWidth:180}},p.range)
+        ),
+        e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:10}},
+          e("div",null,
+            e("div",{style:{fontSize:fs(10),fontWeight:700,color:"#22c55e",marginBottom:5,letterSpacing:1}},"PROS"),
+            p.pros.map(function(pr,i){return e("div",{key:i,style:{fontSize:fs(11),color:"#94a3b8",marginBottom:5,lineHeight:1.4}},"+  "+pr);})
+          ),
+          e("div",null,
+            e("div",{style:{fontSize:fs(10),fontWeight:700,color:"#ef4444",marginBottom:5,letterSpacing:1}},"CONS"),
+            p.cons.map(function(c,i){return e("div",{key:i,style:{fontSize:fs(11),color:"#94a3b8",marginBottom:5,lineHeight:1.4}},"−  "+c);})
+          )
+        ),
+        e("div",{style:{background:"rgba(255,255,255,0.04)",borderRadius:9,padding:"10px 12px",fontSize:fs(12),color:"#64748b",lineHeight:1.6}},p.note)
+      );
+    })
+  );
+}
+
+// ── S8 ───────────────────────────────────────────────────────────────────────
+function S8(){
+  var ref=React.useState("aggressive");
+  var sc=ref[0],setSc=ref[1];
+  var data=RSCEN[sc];
+  var color=RCOLORS[sc];
+  var maxVal=Math.max.apply(null,RSCEN.enterprise);
+  var barH=165;
+  return e("div",null,
+    e(Intro,{text:"Revenue projections are built on the fixed + variable pricing model, targeting a mix of SME, mid-market and enterprise industrial accounts. The enterprise-led scenario is the most aggressive: AI Square deliberately pursues large industrial groups with 500M-5B EUR revenue and multiple plants, where a single group framework agreement can generate 3-8M EUR ARR. All scenarios treat AI agent operations as a billable managed service component in the base licence."}),
+    e("div",{style:{display:"flex",gap:8,marginBottom:16}},
+      Object.keys(RSCEN).map(function(s){
+        return e("button",{key:s,onClick:function(){setSc(s);},style:{flex:1,background:sc===s?RCOLORS[s]:"rgba(255,255,255,0.05)",border:"1px solid "+RCOLORS[s]+"55",borderRadius:10,padding:"9px 6px",fontSize:fs(12),fontWeight:700,color:sc===s?"#fff":RCOLORS[s]}},RLABELS[s]);
+      })
+    ),
+    e(Card,{style:{marginBottom:14}},
+      e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#475569",marginBottom:12,letterSpacing:1}},"ARR EVOLUTION (EUR M) — "+RLABELS[sc].toUpperCase()),
+      e("div",{style:{display:"flex",alignItems:"flex-end",gap:4,height:(barH+32)+"px"}},
+        RYRS.map(function(yr,i){
+          var val=data[i];
+          var h=Math.max(5,(val/maxVal)*barH);
+          return e("div",{key:yr,style:{flex:1,display:"flex",flexDirection:"column",alignItems:"center"}},
+            e("div",{style:{fontSize:"9px",color:color,marginBottom:2,height:16,display:"flex",alignItems:"flex-end",fontWeight:700}},"E"+val),
+            e("div",{style:{width:"100%",height:h+"px",borderRadius:"4px 4px 0 0",background:"linear-gradient(to top,"+color+","+color+"77"}}),
+            e("div",{style:{fontSize:"9px",color:"#475569",marginTop:4}},yr===2025?"'25":"'"+String(yr).slice(2))
+          );
+        })
+      )
+    ),
+    e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}},
+      e(Card,{style:{textAlign:"center",border:"1px solid "+color+"55"}},
+        e("div",{style:{fontSize:fs(28),fontWeight:800,color:color,lineHeight:1}},"EUR "+data[10]+"M"),
+        e("div",{style:{fontSize:fs(11),color:"#94a3b8",marginTop:5}},"ARR by 2035")
+      ),
+      e(Card,{style:{textAlign:"center",border:"1px solid "+color+"55"}},
+        e("div",{style:{fontSize:fs(26),fontWeight:800,color:color,lineHeight:1}},sc==="enterprise"?"~25":sc==="aggressive"?"200+":"400+"),
+        e("div",{style:{fontSize:fs(11),color:"#94a3b8",marginTop:5}},sc==="enterprise"?"enterprise groups":"sites active")
+      )
+    ),
+    e(Card,{style:{marginBottom:14}},
+      e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#475569",marginBottom:12,letterSpacing:1}},"MILESTONES — "+RLABELS[sc].toUpperCase()),
+      [["2025-26","Land & Prove",data[1]],["2027-28","Expand Modules",data[3]],["2030","Scale Platform",data[5]],["2035","Market Leader",data[10]]].map(function(row,i){
+        var yr=row[0],title=row[1],val=row[2];
+        return e("div",{key:yr,style:{display:"flex",gap:12,marginBottom:12,alignItems:"flex-start"}},
+          e("div",{style:{flexShrink:0,width:52}},e("div",{style:{fontSize:fs(11),fontWeight:700,color:color}},yr)),
+          e("div",{style:{flex:1,borderLeft:"2px solid "+color+"44",paddingLeft:12}},
+            e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:4,flexWrap:"wrap",gap:4}},
+              e("span",{style:{fontSize:fs(14),fontWeight:700,color:"#e2e8f0"}},title),
+              e("span",{style:{fontSize:fs(15),fontWeight:800,color:color}},"EUR "+val+"M ARR")
+            ),
+            e("div",{style:{fontSize:fs(12),color:"#64748b",lineHeight:1.55}},RMILES[sc][i])
+          )
+        );
+      })
+    ),
+    e(Card,null,
+      e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#475569",marginBottom:10,letterSpacing:1}},"PRICING ASSUMPTIONS — "+RLABELS[sc].toUpperCase()),
+      RASSUMP[sc].map(function(a,i){
+        return e("div",{key:i,style:{display:"flex",gap:9,marginBottom:10,alignItems:"flex-start"}},
+          e("span",{style:{color:color,fontSize:fs(13),fontWeight:700,flexShrink:0,lineHeight:1.5}},">"),
+          e("span",{style:{fontSize:fs(12),color:"#94a3b8",lineHeight:1.65}},a)
+        );
+      }),
+      e("div",{style:{marginTop:14,paddingTop:12,borderTop:"1px solid rgba(255,255,255,0.08)"}},
+        e("div",{style:{fontSize:fs(11),fontWeight:700,color:"#475569",marginBottom:8,letterSpacing:1}},"GROSS MARGIN TRAJECTORY"),
+        e("p",{style:{margin:0,fontSize:fs(12),color:"#64748b",lineHeight:1.75}},"AI agents reduce the marginal cost of serving additional sites. Gross margin on incremental ARR improves from ~60% in 2025-27 to 75-80% by 2030+. The variable savings share is near-pure gross margin above the base — making large enterprise accounts disproportionately valuable to the income statement.")
+      )
+    )
+  );
+}
+
+// ── APP ──────────────────────────────────────────────────────────────────────
+var SEC_FNS=[S1,S2,S3,S4,S5,S6,S7,S8];
+
+function App(){
+  var ref=React.useState(1);
+  var active=ref[0],setActive=ref[1];
+  var AS=SEC_FNS[active-1];
+  return e("div",{style:{minHeight:"100vh",background:"#0a0f1a",color:"#e2e8f0",maxWidth:768,margin:"0 auto",fontFamily:F}},
+    e("div",{style:{background:"rgba(10,15,26,0.97)",backdropFilter:"blur(12px)",borderBottom:"1px solid rgba(255,255,255,0.08)",padding:"14px 16px 10px",position:"sticky",top:0,zIndex:100}},
+      e("div",{style:{display:"flex",alignItems:"center",gap:12,marginBottom:10}},
+        e("div",{style:{width:37,height:37,borderRadius:9,background:"linear-gradient(135deg,#0ea5e9,#6366f1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:fs(13),fontWeight:800,color:"#fff",flexShrink:0}},"AI²"),
+        e("div",null,
+          e("div",{style:{fontSize:fs(15),fontWeight:800,color:"#f1f5f9",letterSpacing:-0.4}},"AI Square"),
+          e("div",{style:{fontSize:fs(10),color:"#334155"}},"Strategic Intelligence Dashboard · 2025")
+        )
+      ),
+      e("div",{style:{display:"flex",gap:5,overflowX:"auto",paddingBottom:3}},
+        SECTIONS.map(function(s){
+          return e("button",{key:s.id,onClick:function(){setActive(s.id);},style:{background:active===s.id?"linear-gradient(135deg,#0ea5e9,#6366f1)":"rgba(255,255,255,0.05)",border:active===s.id?"none":"1px solid rgba(255,255,255,0.08)",borderRadius:20,padding:"5px 13px",fontSize:fs(11),fontWeight:active===s.id?700:500,color:active===s.id?"#fff":"#64748b",whiteSpace:"nowrap",flexShrink:0}},s.id+". "+s.short);
+        })
+      )
+    ),
+    e("div",{style:{padding:"22px 16px 90px"}},
+      e(SecTitle,{num:active,title:SECTIONS[active-1].label}),
+      e(AS,null)
+    ),
+    e("div",{style:{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:768,background:"rgba(10,15,26,0.98)",backdropFilter:"blur(12px)",borderTop:"1px solid rgba(255,255,255,0.08)",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 12px 14px"}},
+      e("button",{onClick:function(){setActive(Math.max(1,active-1));},disabled:active===1,style:{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.10)",borderRadius:11,padding:"9px 18px",color:active===1?"#334155":"#94a3b8",fontSize:fs(12),fontWeight:600}},"← Prev"),
+      e("div",{style:{display:"flex",gap:6,alignItems:"center"}},
+        SECTIONS.map(function(s){
+          return e("div",{key:s.id,onClick:function(){setActive(s.id);},style:{width:active===s.id?18:7,height:7,borderRadius:4,background:active===s.id?"#0ea5e9":"rgba(255,255,255,0.15)",cursor:"pointer",transition:"all 0.2s"}});
+        })
+      ),
+      e("button",{onClick:function(){setActive(Math.min(8,active+1));},disabled:active===8,style:{background:active===8?"rgba(255,255,255,0.03)":"linear-gradient(135deg,#0ea5e9,#6366f1)",border:"none",borderRadius:11,padding:"9px 18px",color:active===8?"#334155":"#fff",fontSize:fs(12),fontWeight:600}},"Next →")
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(e(App,null));
+})();
+</script>
+</body>
+</html>

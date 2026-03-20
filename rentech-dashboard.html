@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Acquired — Renaissance Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #ffffff;
+  --bg: #f7f7f5;
+  --bg2: #efefec;
+  --border: #e2e2de;
+  --text: #111111;
+  --text-2: #555555;
+  --text-3: #888888;
+  --gold: #b8860b;
+  --gold-light: #d4a017;
+  --gold-bg: #fdf8ee;
+  --gold-border: #e8d08a;
+  --navy: #0d1f3c;
+  --navy-light: #1a3461;
+  --green: #1a6b3a;
+  --green-bg: #edf7f1;
+  --green-light: #27a060;
+  --red: #b91c1c;
+  --red-bg: #fef2f2;
+  --blue: #1e3a8a;
+  --blue-bg: #eff6ff;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior: smooth; }
+body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+
+header { background:var(--white); border-bottom:1px solid var(--border); padding:14px 20px; position:sticky; top:0; z-index:200; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.header-show { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.25em; color:var(--text-3); text-transform:uppercase; }
+.header-title { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; color:var(--text); line-height:1.2; }
+.header-title span { color:var(--gold); }
+.listen-btn { display:flex; align-items:center; gap:6px; background:var(--navy); color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.06em; padding:9px 14px; border-radius:var(--radius-sm); text-decoration:none; white-space:nowrap; flex-shrink:0; font-weight:500; transition:background 0.2s; }
+.listen-btn:hover { background:var(--navy-light); }
+
+.hero { background:var(--navy); padding:36px 20px 32px; color:#fff; }
+.hero-badge { display:inline-flex; align-items:center; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:4px 12px; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.65); text-transform:uppercase; margin-bottom:16px; }
+.hero h1 { font-family:'Playfair Display',serif; font-size:36px; font-weight:900; line-height:1.05; color:#fff; margin-bottom:10px; }
+.hero h1 em { font-style:italic; color:#e8c97a; }
+.hero-desc { font-size:14px; color:rgba(255,255,255,0.6); line-height:1.65; margin-bottom:28px; font-weight:300; }
+.kpi-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.kpi-card { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.10); border-radius:var(--radius-sm); padding:14px 16px; }
+.kpi-value { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; color:#e8c97a; line-height:1; margin-bottom:4px; }
+.kpi-label { font-family:'IBM Plex Mono',monospace; font-size:10px; color:rgba(255,255,255,0.5); letter-spacing:0.08em; text-transform:uppercase; }
+
+.chapter-nav { background:var(--white); border-bottom:1px solid var(--border); padding:0 20px; display:flex; gap:2px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; position:sticky; top:57px; z-index:100; }
+.chapter-nav::-webkit-scrollbar { display:none; }
+.nav-btn { display:flex; align-items:center; gap:5px; padding:13px 12px; font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-3); border:none; background:transparent; cursor:pointer; white-space:nowrap; border-bottom:2px solid transparent; transition:color 0.2s,border-color 0.2s; text-decoration:none; -webkit-appearance:none; }
+.nav-btn:hover,.nav-btn.active { color:var(--navy); border-bottom-color:var(--navy); }
+
+main { padding:0 0 40px; max-width:680px; margin:0 auto; }
+
+.section { padding:28px 20px 0; scroll-margin-top:115px; }
+.section-header { display:flex; align-items:center; gap:10px; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+.section-icon { width:36px; height:36px; background:var(--navy); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.section-num { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.25em; text-transform:uppercase; color:var(--text-3); }
+.section-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--text); line-height:1.2; }
+
+.card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:10px; box-shadow:var(--shadow); }
+.card-label { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.25em; text-transform:uppercase; color:var(--text-3); margin-bottom:6px; }
+.card p { font-size:14px; color:var(--text-2); line-height:1.7; font-weight:300; }
+
+.timeline { display:flex; flex-direction:column; }
+.tl-item { display:grid; grid-template-columns:52px 20px 1fr; gap:0 12px; }
+.tl-year { font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:500; color:var(--gold); text-align:right; padding-top:3px; line-height:1.2; }
+.tl-spine { display:flex; flex-direction:column; align-items:center; }
+.tl-dot { width:8px; height:8px; border-radius:50%; background:var(--navy); border:2px solid var(--white); outline:1px solid var(--navy); flex-shrink:0; margin-top:4px; }
+.tl-line { width:1px; flex:1; background:var(--border); margin:4px 0; }
+.tl-item:last-child .tl-line { display:none; }
+.tl-body { padding-bottom:20px; }
+.tl-body h3 { font-size:14px; font-weight:600; color:var(--text); margin-bottom:3px; line-height:1.3; }
+.tl-body p { font-size:13px; color:var(--text-2); line-height:1.6; font-weight:300; }
+
+.pillar-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:10px; box-shadow:var(--shadow); display:flex; gap:14px; align-items:flex-start; }
+.pillar-num-badge { width:32px; height:32px; background:var(--navy); color:#fff; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:15px; font-weight:700; font-style:italic; flex-shrink:0; }
+.pillar-body h3 { font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px; }
+.pillar-body p { font-size:13px; color:var(--text-2); line-height:1.65; font-weight:300; }
+
+.return-row { margin-bottom:12px; }
+.return-meta { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; }
+.return-year-label { font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-2); font-weight:500; }
+.return-pct { font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:500; }
+.return-pct.gold { color:var(--gold); }
+.return-pct.green { color:var(--green); }
+.bar-track { height:8px; background:var(--bg2); border-radius:4px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:4px; background:linear-gradient(90deg,#c8a835,var(--gold-light)); }
+.bar-fill.green-fill { background:linear-gradient(90deg,var(--green),var(--green-light)); }
+.return-divider { border:none; border-top:1px dashed var(--border); margin:16px 0; }
+
+.sharpe-section-label { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-3); padding:8px 0 12px; }
+.sharpe-row { margin-bottom:14px; }
+.sharpe-meta { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; }
+.sharpe-name { font-size:13px; font-weight:400; color:var(--text-2); }
+.sharpe-val { font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:500; }
+.sharpe-track { height:10px; background:var(--bg2); border-radius:5px; overflow:hidden; }
+.sharpe-fill { height:100%; border-radius:5px; }
+.s-baseline { background:#d1d5db; }
+.s-peer { background:#93c5fd; }
+.s-rtech { background:var(--gold-light); }
+.s-best { background:linear-gradient(90deg,var(--green),var(--green-light)); }
+
+.fund-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; margin-bottom:10px; box-shadow:var(--shadow); display:flex; align-items:flex-start; gap:14px; }
+.fund-rank { width:28px; height:28px; border-radius:50%; background:var(--bg2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:500; color:var(--text-3); flex-shrink:0; margin-top:2px; }
+.fund-body { flex:1; }
+.fund-name { font-size:14px; font-weight:600; color:var(--text); margin-bottom:2px; }
+.fund-sub { font-size:12px; color:var(--text-3); margin-bottom:8px; font-family:'IBM Plex Mono',monospace; }
+.fund-tags { display:flex; flex-wrap:wrap; gap:6px; }
+.tag { display:inline-flex; padding:3px 9px; border-radius:20px; font-size:11px; font-family:'IBM Plex Mono',monospace; font-weight:500; }
+.tag-green { background:var(--green-bg); color:var(--green); border:1px solid #bbddc9; }
+.tag-gold { background:var(--gold-bg); color:var(--gold); border:1px solid var(--gold-border); }
+.tag-blue { background:var(--blue-bg); color:var(--blue); border:1px solid #bfdbfe; }
+.tag-gray { background:var(--bg2); color:var(--text-2); border:1px solid var(--border); }
+.vs-medallion { background:var(--red-bg); border:1px solid #fecaca; border-radius:var(--radius-sm); padding:10px 14px; margin-top:10px; font-size:12px; color:var(--red); font-family:'IBM Plex Mono',monospace; line-height:1.5; }
+
+.fee-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+.fee-cell { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); }
+.fee-cell-label { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-3); margin-bottom:4px; }
+.fee-cell-value { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:var(--gold); line-height:1.1; margin-bottom:4px; }
+.fee-cell-note { font-size:12px; color:var(--text-2); line-height:1.5; font-weight:300; }
+
+.moat-row { display:flex; gap:12px; align-items:flex-start; padding:14px 0; border-bottom:1px solid var(--border); }
+.moat-row:last-child { border-bottom:none; padding-bottom:0; }
+.moat-icon-wrap { width:34px; height:34px; background:var(--gold-bg); border:1px solid var(--gold-border); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.moat-row h3 { font-size:14px; font-weight:600; color:var(--text); margin-bottom:3px; }
+.moat-row p { font-size:13px; color:var(--text-2); line-height:1.6; font-weight:300; }
+
+.pull-quote { background:var(--gold-bg); border-left:3px solid var(--gold); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:16px 18px; margin:0 0 16px; }
+.pull-quote blockquote { font-family:'Playfair Display',serif; font-size:16px; font-style:italic; color:var(--text); line-height:1.5; margin-bottom:6px; }
+.pull-quote cite { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-3); letter-spacing:0.1em; font-style:normal; }
+
+.people-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.person-card { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; display:flex; gap:10px; align-items:flex-start; }
+.person-initial { width:32px; height:32px; background:var(--navy); color:#fff; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:13px; font-weight:700; flex-shrink:0; }
+.person-name { font-size:13px; font-weight:600; color:var(--text); line-height:1.2; margin-bottom:2px; }
+.person-role { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-3); line-height:1.4; }
+
+.fp-intro { background:var(--navy); border-radius:var(--radius); padding:20px; margin-bottom:16px; color:#fff; }
+.fp-intro h3 { font-family:'Playfair Display',serif; font-size:17px; font-style:italic; color:#e8c97a; margin-bottom:8px; }
+.fp-intro p { font-size:13px; color:rgba(255,255,255,0.7); line-height:1.65; font-weight:300; }
+
+.fp-phase-label { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:var(--text-3); padding:16px 0 8px; display:flex; align-items:center; gap:10px; }
+.fp-phase-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.fp-step { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:10px; box-shadow:var(--shadow); position:relative; overflow:hidden; }
+.fp-step::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; }
+.fp-step.assumption::before { background:var(--gold-light); }
+.fp-step.truth::before { background:var(--green-light); }
+.fp-step.action::before { background:var(--navy); }
+.fp-step-type { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.25em; text-transform:uppercase; margin-bottom:6px; }
+.fp-step.assumption .fp-step-type { color:var(--gold); }
+.fp-step.truth .fp-step-type { color:var(--green); }
+.fp-step.action .fp-step-type { color:var(--navy); }
+.fp-step h3 { font-size:14px; font-weight:600; color:var(--text); margin-bottom:5px; line-height:1.35; }
+.fp-step p { font-size:13px; color:var(--text-2); line-height:1.65; font-weight:300; }
+.fp-step ul { margin:8px 0 0 16px; font-size:13px; color:var(--text-2); line-height:1.7; font-weight:300; }
+.fp-step li { margin-bottom:2px; }
+
+.fp-warning { background:#fffbeb; border:1px solid #fcd34d; border-radius:var(--radius-sm); padding:14px 16px; margin-top:16px; font-size:13px; color:#92400e; line-height:1.65; }
+.fp-warning strong { font-weight:600; color:#78350f; }
+
+footer { background:var(--white); border-top:1px solid var(--border); padding:20px; margin-top:16px; text-align:center; }
+.footer-note { font-size:12px; color:var(--text-3); margin-bottom:12px; line-height:1.5; }
+.footer-link { display:inline-flex; align-items:center; gap:6px; background:var(--navy); color:#fff; text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.05em; padding:11px 20px; border-radius:var(--radius-sm); transition:background 0.2s; }
+.footer-link:hover { background:var(--navy-light); }
+
+@media(min-width:600px){
+  .hero{padding:48px 32px 40px;}
+  .hero h1{font-size:46px;}
+  .kpi-grid{grid-template-columns:repeat(3,1fr);}
+  .section{padding:36px 32px 0;}
+  footer{padding:28px 32px;}
+  .chapter-nav{padding:0 32px;}
+  header{padding:16px 32px;}
+}
+@media(min-width:900px){
+  .kpi-grid{grid-template-columns:repeat(5,1fr);}
+  .kpi-value{font-size:22px;}
+  .people-grid{grid-template-columns:repeat(3,1fr);}
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.hero{animation:fadeIn 0.4s ease both;}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="header-show">Acquired · S14 · Ep 3</div>
+    <div class="header-title">Acquired — <span>Renaissance Tech</span></div>
+  </div>
+  <a class="listen-btn" href="https://podcasts.apple.com/us/podcast/renaissance-technologies/id1050462261?i=1000649514382" target="_blank" rel="noopener">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+    Apple Podcasts
+  </a>
+</header>
+
+<section class="hero">
+  <div class="hero-badge">Greatest Investment Track Record in History</div>
+  <h1>Renaissance<br><em>Technologies</em></h1>
+  <p class="hero-desc">How codebreakers, physicists, and speech recognition researchers built the most profitable fund ever — and kept it secret from the world.</p>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-value">66%</div><div class="kpi-label">Gross / Year</div></div>
+    <div class="kpi-card"><div class="kpi-value">40%</div><div class="kpi-label">Net / Year</div></div>
+    <div class="kpi-card"><div class="kpi-value">34 yrs</div><div class="kpi-label">Track Record</div></div>
+    <div class="kpi-card"><div class="kpi-value">$60B</div><div class="kpi-label">Carry Paid Out</div></div>
+    <div class="kpi-card"><div class="kpi-value">7.5</div><div class="kpi-label">Peak Sharpe</div></div>
+  </div>
+</section>
+
+<nav class="chapter-nav" id="chapNav">
+  <button class="nav-btn active" data-target="ch1" onclick="jumpTo('ch1')">I · Timeline</button>
+  <button class="nav-btn" data-target="ch2" onclick="jumpTo('ch2')">II · Strategy</button>
+  <button class="nav-btn" data-target="ch3" onclick="jumpTo('ch3')">III · Returns</button>
+  <button class="nav-btn" data-target="ch5" onclick="jumpTo('ch5')">IV · Remuneration</button>
+  <button class="nav-btn" data-target="ch6" onclick="jumpTo('ch6')">V · Build One</button>
+</nav>
+
+<main>
+
+<!-- I TIMELINE -->
+<section class="section" id="ch1">
+  <div class="section-header">
+    <div class="section-icon">📅</div>
+    <div class="section-meta">
+      <div class="section-num">Chapter I</div>
+      <div class="section-title">Timeline</div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:16px;"><p>From Cold War codebreaker to the greatest investor in history — a 50-year journey built on one radical insight: <strong>signal processing is signal processing</strong>, regardless of domain.</p></div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-year">1938</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>Jim Simons Born, Newton MA</h3><p>Mathematical ability from age 4. MIT undergrad in 3 years, Berkeley PhD in theoretical math. Elected high school class president — the extroverted mathematician.</p></div></div>
+    <div class="tl-item"><div class="tl-year">1964</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>The Paper That Became Renaissance</h3><p>At the NSA's civilian codebreaking unit (IDA), Simons publishes the probabilistic market trading blueprint — 24 years before the fund exists.</p></div></div>
+    <div class="tl-item"><div class="tl-year">1967</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>Fired for Vietnam Op-Ed</h3><p>Writes New York Times piece opposing the war. Doubles down with Newsweek. Fired at 30 with wife and three children.</p></div></div>
+    <div class="tl-item"><div class="tl-year">1968</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>Chairs Stony Brook Math Dept</h3><p>Builds one of the world's top math departments with Rockefeller funding. Assembles the talent base that later builds Medallion. Develops the Chern–Simons theory.</p></div></div>
+    <div class="tl-item"><div class="tl-year">1978</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>Leaves Academia · Founds Monometrics</h3><p>Opens in a Long Island strip mall next to a pizza joint. The math world is shocked: "He sold his soul to the devil."</p></div></div>
+    <div class="tl-item"><div class="tl-year">1982</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>Renaissance Technologies Founded</h3><p>With Howard Morgan: 50% quant trading + 50% venture capital. Howard later spins out the VC work — it becomes First Round Capital, a 50x fund.</p></div></div>
+    <div class="tl-item"><div class="tl-year">1988</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>Medallion Fund Launched</h3><p>Named after the collective mathematical prizes of the team. The greatest investment vehicle in history begins with ~$27M AUM.</p></div></div>
+    <div class="tl-item"><div class="tl-year">1990</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>77.8% Gross · Year One</h3><p>Berlekamp buys out Ax and cracks the key insight: trade far more frequently. Apply Kelly Criterion bet sizing. The machine begins to work.</p></div></div>
+    <div class="tl-item"><div class="tl-year">1993</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>Brown & Mercer Join from IBM</h3><p>Peter Brown (PhD adviser: Geoffrey Hinton) and Bob Mercer arrive from IBM speech recognition. They build the unified all-asset model and the equities engine.</p></div></div>
+    <div class="tl-item"><div class="tl-year">2000</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>128% Gross — Tech Bubble Bursts</h3><p>Markets collapse. Medallion soars. Proof of true uncorrelation: the model earns most precisely when human investors are most afraid.</p></div></div>
+    <div class="tl-item"><div class="tl-year">2003</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>Medallion Closes to All Outsiders</h3><p>All external investors expelled. Carry raised to 44%. The fund becomes exclusively employees and select alumni. AUM capped intentionally.</p></div></div>
+    <div class="tl-item"><div class="tl-year">2008</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>152% Gross — Financial Crisis</h3><p>The financial world melts down. Medallion's two best years are 2007–08. The thesis is validated across every conceivable market environment.</p></div></div>
+    <div class="tl-item"><div class="tl-year">2009</div><div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h3>Simons Retires · Brown & Mercer Lead</h3><p>AUM raised from $5B to $10B with no performance drop. The Peter/Bob era (2010–2022) averages 77.3% gross — better than Simons' own era.</p></div></div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-label" style="margin-bottom:12px;">Key People</div>
+    <div class="people-grid">
+      <div class="person-card"><div class="person-initial">JS</div><div><div class="person-name">Jim Simons</div><div class="person-role">Founder · ~$30B net worth</div></div></div>
+      <div class="person-card"><div class="person-initial">PB</div><div><div class="person-name">Peter Brown</div><div class="person-role">Co-CEO · IBM NLP</div></div></div>
+      <div class="person-card"><div class="person-initial">BM</div><div><div class="person-name">Bob Mercer</div><div class="person-role">Former Co-CEO</div></div></div>
+      <div class="person-card"><div class="person-initial">SS</div><div><div class="person-name">Sandor Strauss</div><div class="person-role">Data Infrastructure</div></div></div>
+      <div class="person-card"><div class="person-initial">EB</div><div><div class="person-name">Elwyn Berlekamp</div><div class="person-role">Kelly Criterion</div></div></div>
+      <div class="person-card"><div class="person-initial">HM</div><div><div class="person-name">Howard Morgan</div><div class="person-role">Co-founder · First Round</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- II STRATEGY -->
+<section class="section" id="ch2">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <div class="section-meta">
+      <div class="section-num">Chapter II</div>
+      <div class="section-title">Strategy</div>
+    </div>
+  </div>
+  <div class="pull-quote">
+    <blockquote>"We're right 50.7% of the time — and we make billions that way."</blockquote>
+    <cite>— Bob Mercer, Co-CEO · Renaissance Technologies</cite>
+  </div>
+  <div class="pillar-card"><div class="pillar-num-badge">1</div><div class="pillar-body"><h3>Signal Processing, Not Investing</h3><p>The model never reads a balance sheet or forms a thesis. It treats markets as data streams — identical to NSA codebreaking and IBM speech recognition. The math is the same. Only the input differs. No one at Medallion could tell you what stocks they own at any moment.</p></div></div>
+  <div class="pillar-card"><div class="pillar-num-badge">2</div><div class="pillar-body"><h3>One Model for Everything</h3><p>Brown & Mercer's pivotal contribution: a single unified model for currencies, commodities, and equities. Every researcher sees all the code. Every improvement benefits everyone equally. No other major quant fund operates this way — all peers use siloed teams.</p></div></div>
+  <div class="pillar-card"><div class="pillar-num-badge">3</div><div class="pillar-body"><h3>Hidden Markov Models</h3><p>Identify the "state" a market is in and predict future states from observed patterns — without needing to explain why. The same foundation underpins modern large language models. Peter Brown's PhD adviser was Geoffrey Hinton (the godfather of deep learning).</p></div></div>
+  <div class="pillar-card"><div class="pillar-num-badge">4</div><div class="pillar-body"><h3>Trade What No Human Would</h3><p>The model finds correlations no analyst could dream up — including relationships that make zero intuitive sense but are statistically persistent. When you trade the unintuitive, there are no competitors on the same side. This is the true alpha source.</p></div></div>
+  <div class="pillar-card"><div class="pillar-num-badge">5</div><div class="pillar-body"><h3>Kelly Criterion & Bet Sizing</h3><p>A 50.7% edge is worthless in 1 trade. Across 150,000 daily trades with optimal Kelly sizing: billions. Never bet so much that a losing streak destroys the fund. Berlekamp's insight: trade frequency × small edge = compounding dominance.</p></div></div>
+  <div class="pillar-card"><div class="pillar-num-badge">6</div><div class="pillar-body"><h3>Volatility Is the Harvest</h3><p>Best years: 2000 (+128%), 2007 (+136%), 2008 (+152%), 2020 (+149%). When humans panic-sell, the unemotional model buys at the right price. Renaissance is the house in a casino — market crises maximise the edge against panicking humans.</p></div></div>
+</section>
+
+<!-- III RETURNS -->
+<section class="section" id="ch3">
+  <div class="section-header">
+    <div class="section-icon">📈</div>
+    <div class="section-meta">
+      <div class="section-num">Chapter III</div>
+      <div class="section-title">Returns</div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:10px;">
+    <div class="card-label">Medallion Fund · Gross Annual Returns</div>
+    <p style="font-size:12px;margin-top:4px;">Green bars = years the broader market was deeply negative. Medallion's strongest performance coincides precisely with market crises — proof of true uncorrelation.</p>
+  </div>
+  <div class="card">
+    <div class="return-row"><div class="return-meta"><span class="return-year-label">1990 · Year 1</span><span class="return-pct gold">77.8%</span></div><div class="bar-track"><div class="bar-fill" style="width:55%"></div></div></div>
+    <div class="return-row"><div class="return-meta"><span class="return-year-label">1991</span><span class="return-pct gold">54.3%</span></div><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div></div>
+    <div class="return-row"><div class="return-meta"><span class="return-year-label">1994</span><span class="return-pct gold">93%</span></div><div class="bar-track"><div class="bar-fill" style="width:66%"></div></div></div>
+    <hr class="return-divider">
+    <div class="return-row"><div class="return-meta"><span class="return-year-label">2000 ↑ Tech Bust</span><span class="return-pct green">128%</span></div><div class="bar-track"><div class="bar-fill green-fill" style="width:91%"></div></div></div>
+    <div class="return-row"><div class="return-meta"><span class="return-year-label">2007</span><span class="return-pct green">136%</span></div><div class="bar-track"><div class="bar-fill green-fill" style="width:97%"></div></div></div>
+    <div class="return-row"><div class="return-meta"><span class="return-year-label">2008 ↑ Financial Crisis</span><span class="return-pct green">152%</span></div><div class="bar-track"><div class="bar-fill green-fill" style="width:100%"></div></div></div>
+    <hr class="return-divider">
+    <div class="return-row"><div class="return-meta"><span class="return-year-label">2020 ↑ Pandemic</span><span class="return-pct green">149%</span></div><div class="bar-track"><div class="bar-fill green-fill" style="width:100%"></div></div></div>
+    <div class="return-row"><div class="return-meta"><span class="return-year-label">2024</span><span class="return-pct gold">30%</span></div><div class="bar-track"><div class="bar-fill" style="width:21%"></div></div></div>
+    <hr class="return-divider">
+    <div class="return-row"><div class="return-meta"><span class="return-year-label" style="font-weight:600;">Lifetime Avg · Gross</span><span class="return-pct gold" style="font-weight:600;">66%</span></div><div class="bar-track"><div class="bar-fill" style="width:47%"></div></div></div>
+    <div class="return-row"><div class="return-meta"><span class="return-year-label" style="font-weight:600;">Lifetime Avg · Net</span><span class="return-pct gold" style="font-weight:600;">40%</span></div><div class="bar-track"><div class="bar-fill" style="width:28%"></div></div></div>
+  </div>
+
+  <!-- SHARPE BASE-100 -->
+  <div class="card" style="margin-top:10px;">
+    <div class="card-label">Sharpe Ratio Comparison · Base-100 Scale</div>
+
+    <!-- WHAT IS SHARPE -->
+    <div style="background:var(--blue-bg);border:1px solid #bfdbfe;border-radius:var(--radius-sm);padding:12px 14px;margin:8px 0 16px;">
+      <p style="font-size:12px;color:var(--blue);line-height:1.65;margin-bottom:0;"><strong>What is Sharpe Ratio?</strong> Return earned per unit of risk taken. Formula: (Fund Return − Risk-Free Rate) ÷ Volatility. A ratio of 1.0 means you're earning 1 unit of return per unit of risk. Above 2.0 is considered exceptional for any fund. Above 3.0 is almost unheard of over a long track record.</p>
+    </div>
+
+    <!-- LEGEND -->
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:6px;"><div style="width:14px;height:8px;border-radius:3px;background:#d1d5db;"></div><span style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text-3);">Market index</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><div style="width:14px;height:8px;border-radius:3px;background:#93c5fd;"></div><span style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text-3);">Peer funds</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><div style="width:14px;height:8px;border-radius:3px;background:var(--gold-light);"></div><span style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text-3);">Medallion</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><div style="width:14px;height:8px;border-radius:3px;background:var(--green-light);"></div><span style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text-3);">Medallion peak</span></div>
+    </div>
+
+    <!-- SCALE NOTE -->
+    <p style="font-size:11px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;margin-bottom:14px;">Scale: 100 = Medallion peak (7.5 in 2004). Each bar shows actual Sharpe value + its position on that scale.</p>
+
+    <div class="sharpe-section-label">Market & Industry Benchmarks</div>
+
+    <div class="sharpe-row">
+      <div class="sharpe-meta"><span class="sharpe-name">S&P 500 · long-run avg</span><span class="sharpe-val" style="color:#9ca3af;">0.49 · 7/100</span></div>
+      <div class="sharpe-track"><div class="sharpe-fill s-baseline" style="width:7%"></div></div>
+      <p style="font-size:11px;color:var(--text-3);margin-top:3px;">Source: Berkshire/S&P study 1976–2017</p>
+    </div>
+
+    <div class="sharpe-row">
+      <div class="sharpe-meta"><span class="sharpe-name">Average hedge fund</span><span class="sharpe-val" style="color:#9ca3af;">0.86 · 11/100</span></div>
+      <div class="sharpe-track"><div class="sharpe-fill s-baseline" style="width:11%"></div></div>
+      <p style="font-size:11px;color:var(--text-3);margin-top:3px;">Source: BarclayHedge 5-year avg to 2021</p>
+    </div>
+
+    <div class="sharpe-section-label">Best Competing Quant Funds</div>
+
+    <div class="sharpe-row">
+      <div class="sharpe-meta"><span class="sharpe-name">Two Sigma Compass (2009–14)</span><span class="sharpe-val" style="color:#3b82f6;">1.0–1.5 · 17/100</span></div>
+      <div class="sharpe-track"><div class="sharpe-fill s-peer" style="width:17%"></div></div>
+      <p style="font-size:11px;color:var(--text-3);margin-top:3px;">Source: Quora / fund disclosures</p>
+    </div>
+
+    <div class="sharpe-row">
+      <div class="sharpe-meta"><span class="sharpe-name">Citadel Wellington · 2023</span><span class="sharpe-val" style="color:#3b82f6;">2.51 · 33/100</span></div>
+      <div class="sharpe-track"><div class="sharpe-fill s-peer" style="width:33%"></div></div>
+      <p style="font-size:11px;color:var(--text-3);margin-top:3px;">Source: GrowthMind/Morningstar estimates 2023</p>
+    </div>
+
+    <div class="sharpe-section-label">Renaissance Technologies · Medallion Fund</div>
+
+    <div class="sharpe-row">
+      <div class="sharpe-meta"><span class="sharpe-name">Medallion · 1990 (Year 1)</span><span class="sharpe-val" style="color:var(--gold);">2.0 · 27/100</span></div>
+      <div class="sharpe-track"><div class="sharpe-fill s-rtech" style="width:27%"></div></div>
+      <p style="font-size:11px;color:var(--text-3);margin-top:3px;">Source: Acquired podcast / Greg Zuckerman</p>
+    </div>
+
+    <div class="sharpe-row">
+      <div class="sharpe-meta"><span class="sharpe-name">Medallion · 1995–2000</span><span class="sharpe-val" style="color:var(--gold);">2.5 · 33/100</span></div>
+      <div class="sharpe-track"><div class="sharpe-fill s-rtech" style="width:33%"></div></div>
+      <p style="font-size:11px;color:var(--text-3);margin-top:3px;">Source: Acquired podcast / Greg Zuckerman</p>
+    </div>
+
+    <div class="sharpe-row">
+      <div class="sharpe-meta"><span class="sharpe-name">Medallion · With Foreign Mkts added</span><span class="sharpe-val" style="color:var(--green);">6.3 · 84/100</span></div>
+      <div class="sharpe-track"><div class="sharpe-fill s-best" style="width:84%"></div></div>
+      <p style="font-size:11px;color:var(--text-3);margin-top:3px;">Source: Acquired podcast / Greg Zuckerman</p>
+    </div>
+
+    <div class="sharpe-row">
+      <div class="sharpe-meta"><span class="sharpe-name" style="font-weight:600;">Medallion · Lifetime Avg (~1988–2022)</span><span class="sharpe-val" style="color:var(--gold);font-weight:600;">~4.0 · 53/100</span></div>
+      <div class="sharpe-track"><div class="sharpe-fill s-rtech" style="width:53%"></div></div>
+      <p style="font-size:11px;color:var(--text-3);margin-top:3px;">Estimated: weighted avg of reported era values (2.0 → 2.5 → 6.3 → ~7.5 → declining with AUM growth)</p>
+    </div>
+
+    <div class="sharpe-row">
+      <div class="sharpe-meta"><span class="sharpe-name" style="font-weight:600;">Medallion · Peak (2004)</span><span class="sharpe-val" style="color:var(--green);font-weight:600;">7.5 · 100/100</span></div>
+      <div class="sharpe-track"><div class="sharpe-fill s-best" style="width:100%"></div></div>
+      <p style="font-size:11px;color:var(--text-3);margin-top:3px;">Source: Acquired podcast / Greg Zuckerman. Scale ceiling.</p>
+    </div>
+
+    <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px 14px;margin-top:14px;">
+      <p style="font-size:12px;color:var(--text-2);line-height:1.65;"><strong style="color:var(--text);">Key insight:</strong> Citadel's best documented single year (2.51 in 2023) is still below Medallion's worst era (2.0 in 1990). Medallion's lifetime average of ~4.0 has no documented parallel in any fund with a comparable track record length. The S&P 500's long-run Sharpe of 0.49 is the real baseline — Medallion is roughly 8× that, sustained for 34 years.</p>
+    </div>
+  </div>
+</section>
+
+<!-- V REMUNERATION -->
+<section class="section" id="ch5">
+  <div class="section-header">
+    <div class="section-icon">💰</div>
+    <div class="section-meta">
+      <div class="section-num">Chapter V</div>
+      <div class="section-title">Remuneration</div>
+    </div>
+  </div>
+  <div class="fee-grid">
+    <div class="fee-cell"><div class="fee-cell-label">Management Fee</div><div class="fee-cell-value">5%</div><div class="fee-cell-note">Industry: 2%. Top VC: 3%. Set to cover $800K/yr infrastructure costs.</div></div>
+    <div class="fee-cell"><div class="fee-cell-label">Carried Interest</div><div class="fee-cell-value">44%</div><div class="fee-cell-note">Rose: 20% → 36% (2001) → 44% (2002). No external fund charges this.</div></div>
+    <div class="fee-cell"><div class="fee-cell-label">Total Carry</div><div class="fee-cell-value">$60B</div><div class="fee-cell-note">Paid entirely to employees and alumni. All insiders. Jim Simons alone: ~$30B.</div></div>
+    <div class="fee-cell"><div class="fee-cell-label">Median Tenure</div><div class="fee-cell-value">14–16y</div><div class="fee-cell-note">Industry avg: 2–3 yrs. 401K invests directly into Medallion fund.</div></div>
+  </div>
+  <div class="card">
+    <div class="card-label">The Fee Architecture as Incentive Machine</div>
+    <p>Since 2003, there are no outside investors. The GP and LP are the same people. So why charge 44% carry at all?</p>
+    <p style="margin-top:10px;">It functions as a <strong>value transfer mechanism</strong>: ~49% of annual returns flow to current contributors (via fees + carry), while ~51% accrue to the tenured LP base. Newer employees are heavily GP-weighted. Retirees are purely LP. As you age in the firm, your balance shifts from contributor to owner.</p>
+    <p style="margin-top:10px;">Structurally analogous to academic tenure — and it elegantly solves the defection problem. Why leave? The maths says stay.</p>
+  </div>
+  <div class="card" style="margin-top:10px;">
+    <div class="card-label">The Moat</div>
+    <div class="moat-row"><div class="moat-icon-wrap">🏛️</div><div><h3>One Model · Total Collaboration</h3><p>Every researcher sees every line of code. No internal competition. Unique in all of finance.</p></div></div>
+    <div class="moat-row"><div class="moat-icon-wrap">🔬</div><div><h3>400 People vs. 5,000</h3><p>Citadel and peers employ 2,000–5,000. Renaissance manages comparable AUM with ~400. Financial impact per person: incomparable.</p></div></div>
+    <div class="moat-row"><div class="moat-icon-wrap">🗂️</div><div><h3>Cornered Data Resource</h3><p>Strauss began cleaning tick-level data to the 1800s before anyone thought it mattered. That dataset is irreproducible.</p></div></div>
+    <div class="moat-row"><div class="moat-icon-wrap">♾️</div><div><h3>Process Power: 35 Years Deep</h3><p>10M+ lines of code. The model reinvents itself on a ~2-year cycle. No single person holds the full system in their head. Learning compounds.</p></div></div>
+  </div>
+</section>
+
+<!-- VI FIRST PRINCIPLES -->
+<section class="section" id="ch6">
+  <div class="section-header">
+    <div class="section-icon">🧠</div>
+    <div class="section-meta">
+      <div class="section-num">Chapter VI</div>
+      <div class="section-title">How to Build One</div>
+    </div>
+  </div>
+
+  <div class="fp-intro">
+    <h3>First Principles Thinking Applied</h3>
+    <p>Strip every assumption away. Ask: what is fundamentally, probably true here? Ignore what everyone else does. Reconstruct from the ground up. This is how Simons actually built it — he was not copying a fund. He was solving a completely different problem and discovered it also made money.</p>
+  </div>
+
+  <div class="fp-phase-label">Phase 1 · Strip the Assumptions</div>
+
+  <div class="fp-step assumption">
+    <div class="fp-step-type">Assumption to Strip</div>
+    <h3>"You need finance expertise to invest."</h3>
+    <p>Fundamentally true: you need to understand risk, not companies. The market is a stream of data emitting signals. The question is who is better at signal processing — a financier or a physicist? Renaissance answered that 40 years ago. <strong>Hire for signal processing. Finance intuition is a liability, not an asset.</strong></p>
+  </div>
+
+  <div class="fp-step assumption">
+    <div class="fp-step-type">Assumption to Strip</div>
+    <h3>"You need a thesis to make a trade."</h3>
+    <p>Fundamentally true: you need a statistical edge, not a story. Humans are narrative machines — stories make us trade confidently on weak evidence. A model with no opinion, a 50.2% edge, and 100K daily trades is more profitable than a brilliant analyst with 10 annual picks. <strong>Remove the human thesis layer entirely.</strong></p>
+  </div>
+
+  <div class="fp-step assumption">
+    <div class="fp-step-type">Assumption to Strip</div>
+    <h3>"Bigger AUM = bigger profits = better."</h3>
+    <p>Fundamentally true: every strategy has a capacity ceiling. Beyond it, you move markets, slippage destroys the edge, and returns fall. Medallion caps at $10–15B despite infinite institutional demand. <strong>Optimise for returns per dollar, not total dollars. Stay small intentionally.</strong></p>
+  </div>
+
+  <div class="fp-step assumption">
+    <div class="fp-step-type">Assumption to Strip</div>
+    <h3>"You need institutional capital to start."</h3>
+    <p>Fundamentally true: you need capital, but not from LPs. Simons started with $4M from a flooring company exit. The early fund was personal money and friends. <strong>Start with proprietary capital. Prove the edge first. Then decide if outside money is needed at all — it may hurt more than it helps.</strong></p>
+  </div>
+
+  <div class="fp-phase-label">Phase 2 · What Is Fundamentally True</div>
+
+  <div class="fp-step truth">
+    <div class="fp-step-type">Fundamental Truth</div>
+    <h3>Markets are a noisy system — not a random one. There is signal.</h3>
+    <p>Randomness has no pattern. Noise has signal buried in it. Every trade ever executed was made by a human — and humans follow persistent patterns of fear, greed, momentum, and anchoring. That pattern is permanent and exploitable. The question is only whether you have enough data and compute to extract it.</p>
+  </div>
+
+  <div class="fp-step truth">
+    <div class="fp-step-type">Fundamental Truth</div>
+    <h3>A tiny persistent edge × volume × time = extraordinary wealth.</h3>
+    <p>You do not need to be right 70% of the time. You need to be right 50.1% of the time, size bets correctly (Kelly), and repeat 150,000 times a day. The casino doesn't win every hand — it wins every year. <strong>Edge × Volume × Time is the only formula that matters.</strong></p>
+  </div>
+
+  <div class="fp-step truth">
+    <div class="fp-step-type">Fundamental Truth</div>
+    <h3>Talent stays where they own the output of their work.</h3>
+    <p>Competition for the best people is won not by salary but by ownership structure. When a researcher's improvement to the model directly increases their own wealth — not a bonus decided by someone else — incentive alignment is perfect. This is the real secret of the LP/GP architecture.</p>
+  </div>
+
+  <div class="fp-phase-label">Phase 3 · Concrete Build Steps</div>
+
+  <div class="fp-step action">
+    <div class="fp-step-type">Step 1 · Edge Discovery First</div>
+    <h3>Find your domain before your strategy.</h3>
+    <p>What signal processing domain do you already understand deeply? Modern options include:</p>
+    <ul>
+      <li>NLP sentiment from earnings calls, news flow, or social media</li>
+      <li>Satellite imagery (retail traffic, oil inventories, shipping)</li>
+      <li>Options flow as a leading indicator for equity moves</li>
+      <li>Cross-asset correlations in emerging or frontier markets (thinner, less competed)</li>
+      <li>Microstructure patterns in crypto (24/7, highly data-rich, fewer quants)</li>
+    </ul>
+    <p style="margin-top:8px;">Test statistically before trading. Target: Sharpe > 1.5 in backtest with realistic transaction costs before risking live capital.</p>
+  </div>
+
+  <div class="fp-step action">
+    <div class="fp-step-type">Step 2 · Data Infrastructure Before Models</div>
+    <h3>Obsess over data quality above all else.</h3>
+    <p>Strauss built the data layer before the model existed. This is the correct order. Clean, long, granular data is the actual moat — not the algorithm. Start with:</p>
+    <ul>
+      <li>Tick-level price data (Polygon.io, Databento, Refinitiv)</li>
+      <li>Alternative data aligned to your chosen edge</li>
+      <li>A cleaning pipeline that treats every data point as potentially wrong</li>
+      <li>Version-controlled dataset snapshots — reproduce any backtest exactly</li>
+    </ul>
+  </div>
+
+  <div class="fp-step action">
+    <div class="fp-step-type">Step 3 · One Model, Not Many</div>
+    <h3>Unify from day one. Avoid siloed strategies.</h3>
+    <p>Most people build strategy A, then strategy B, and they never communicate. Brown and Mercer proved that everything is correlated — a unified model discovers cross-asset patterns that siloed models miss entirely. Use a single ML framework (XGBoost, LightGBM, or a neural net) treating all asset classes as features of the same prediction problem.</p>
+  </div>
+
+  <div class="fp-step action">
+    <div class="fp-step-type">Step 4 · Kelly Sizing & Kill Switches</div>
+    <h3>Risk management is not optional — it is the business.</h3>
+    <p>Kelly formula: f* = (bp − q) / b. Use half-Kelly in practice to account for model error. Hard rules:</p>
+    <ul>
+      <li>Never risk more than 1–2% of capital per independent trade idea</li>
+      <li>Hard automated kill switch: if daily drawdown exceeds X%, halt trading</li>
+      <li>Every backtest must include realistic slippage — assume you move the market</li>
+      <li>Stress test against 2008 and 2020 scenarios before going live</li>
+    </ul>
+  </div>
+
+  <div class="fp-step action">
+    <div class="fp-step-type">Step 5 · Structure & Talent</div>
+    <h3>Design the incentive structure before you hire.</h3>
+    <p>The LP/GP architecture is not an afterthought — it is the product. Principles:</p>
+    <ul>
+      <li>Every team member must invest their own capital — skin in the game is mandatory</li>
+      <li>Ownership percentage increases with tenure and measurable contribution to the model</li>
+      <li>Hire people who have never worked in finance — no bad habits to unlearn</li>
+      <li>Keep under 20 people until you have a proven, scalable edge</li>
+      <li>Locate deliberately away from financial centres to reduce social contamination</li>
+    </ul>
+  </div>
+
+  <div class="fp-step action">
+    <div class="fp-step-type">Step 6 · The Realistic Roadmap</div>
+    <h3>What a modern bootstrap looks like, phase by phase.</h3>
+    <ul>
+      <li><strong>Year 0–1:</strong> Pick one edge. Collect 5+ years of clean data. Build backtest with realistic costs. Do not trade live until Sharpe > 1.5.</li>
+      <li><strong>Year 1–2:</strong> Live paper trading with $50K–$500K personal capital. Validate live performance matches backtest within 20%.</li>
+      <li><strong>Year 2–3:</strong> Open to 3–5 co-investors who understand the strategy deeply. No institutional capital until you have 3 years live track record.</li>
+      <li><strong>Year 3+:</strong> Scale only strategies that maintain Sharpe as AUM grows. Cap size ruthlessly when returns begin to compress. Develop the next edge in parallel — always.</li>
+    </ul>
+  </div>
+
+  <div class="fp-warning">
+    <strong>The honest constraint:</strong> Renaissance had 25 years of iteration before it worked reliably, Simons' NSA signal processing background, Berlekamp's Kelly mastery, Strauss's decade of data infrastructure, and Brown & Mercer's large-systems engineering from IBM — all converging at the right moment in computing history. The playbook is replicable in principle. In practice, the question is not "can I copy this?" but "what is my equivalent of each of those pieces?" Find your Berlekamp. Find your Strauss. Then find your edge. The sequence matters as much as the ingredients.
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p class="footer-note">Summary of Acquired Podcast · Season 14 Ep 3<br>Sources: Greg Zuckerman "The Man Who Solved the Market" · Hedgeweek · LevelFields · company disclosures</p>
+  <a class="footer-link" href="https://podcasts.apple.com/us/podcast/renaissance-technologies/id1050462261?i=1000649514382" target="_blank" rel="noopener">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+    Listen on Apple Podcasts
+  </a>
+</footer>
+
+<script>
+function jumpTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.getElementById('chapNav').offsetHeight;
+  const headerH = document.querySelector('header').offsetHeight;
+  const top = el.getBoundingClientRect().top + window.pageYOffset - headerH - navH - 4;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.target === id));
+}
+
+const sections = document.querySelectorAll('section[id]');
+const navBtns = document.querySelectorAll('.nav-btn');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+      const active = document.querySelector('.nav-btn.active');
+      if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  });
+}, { threshold: 0.2, rootMargin: '-110px 0px -55% 0px' });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

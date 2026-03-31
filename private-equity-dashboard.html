@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Luis Mendes — PE Sector Strategy 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0e1420;
+  --navy2: #161e2e;
+  --navy3: #1e2a3d;
+  --navy4: #253348;
+  --gold: #c9a84c;
+  --gold2: #e8c878;
+  --gold3: #f5e4b0;
+  --cream: #f2edd8;
+  --cream2: #e8e0c8;
+  --white: #ffffff;
+  --muted: #8a96a8;
+  --muted2: #6a7685;
+  --rule: rgba(201,168,76,0.2);
+  --rule2: rgba(255,255,255,0.08);
+  --teal: #1D9E75;
+  --teal2: #9FE1CB;
+  --coral: #D85A30;
+  --purple: #7F77DD;
+  --amber: #EF9F27;
+  --blue: #378ADD;
+  --rose: #D4537E;
+  --green: #639922;
+  --red: #E24B4A;
+  --dark-teal: #0F6E56;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--navy);
+  color:var(--cream);
+  font-size:18px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+
+/* ═══ NAV ═══ */
+.nav{
+  position:sticky;top:0;z-index:200;
+  background:var(--navy);
+  border-bottom:1px solid var(--rule);
+  padding:0 2rem;
+  display:flex;align-items:stretch;gap:0;
+  overflow-x:auto;
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;
+  font-size:18px;color:var(--gold);
+  padding:1.1rem 1.5rem 1.1rem 0;
+  border-right:1px solid var(--rule);
+  margin-right:1rem;
+  white-space:nowrap;
+  display:flex;align-items:center;
+}
+.nav-tab{
+  font-size:13px;font-weight:500;
+  color:var(--muted);
+  padding:1.1rem 1.2rem;
+  cursor:pointer;border:none;background:none;
+  font-family:'Poppins',sans-serif;
+  border-bottom:3px solid transparent;
+  white-space:nowrap;transition:all .2s;
+  letter-spacing:0.03em;
+}
+.nav-tab:hover{color:var(--cream2);}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.nav-num{
+  display:inline-block;width:22px;height:22px;
+  background:var(--navy3);border-radius:50%;
+  font-size:11px;line-height:22px;text-align:center;
+  margin-right:6px;font-weight:600;
+}
+.nav-tab.active .nav-num{background:var(--gold);color:var(--navy);}
+
+/* ═══ PANELS ═══ */
+.panel{display:none;min-height:calc(100vh - 62px);}
+.panel.active{display:block;}
+
+/* ═══ SECTION SHELL ═══ */
+.section{padding:3rem 2.5rem;max-width:1100px;margin:0 auto;}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:32px;font-weight:600;
+  color:var(--gold);
+  margin-bottom:0.4rem;
+  line-height:1.2;
+}
+.section-subtitle{
+  font-size:17px;color:var(--muted);
+  margin-bottom:2.5rem;
+  line-height:1.5;
+}
+.divider{
+  height:1px;background:var(--rule);
+  margin:2.5rem 0;
+}
+
+/* ═══ CARDS ═══ */
+.card{
+  background:var(--navy2);
+  border:1px solid var(--rule2);
+  border-radius:14px;
+  padding:1.8rem 2rem;
+  margin-bottom:1.5rem;
+}
+.card-title{
+  font-size:13px;font-weight:600;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem;
+}
+.card p{font-size:17px;color:var(--cream2);line-height:1.75;}
+.card p strong{color:var(--cream);font-weight:600;}
+
+/* ═══ CRITERIA GRID (S1) ═══ */
+.criteria-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:2rem;}
+.crit{
+  background:var(--navy3);
+  border:1px solid var(--rule2);
+  border-radius:10px;padding:1.4rem 1.6rem;
+  border-left:4px solid var(--gold);
+}
+.crit-num{font-size:28px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:4px;}
+.crit-title{font-size:16px;font-weight:600;color:var(--cream);margin-bottom:6px;}
+.crit-desc{font-size:15px;color:var(--muted);line-height:1.6;}
+
+/* ═══ PROFILE BLOCK (S1) ═══ */
+.profile-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:2rem;}
+.prof-stat{
+  background:var(--navy3);border-radius:10px;
+  padding:1.4rem;text-align:center;
+  border:1px solid var(--rule2);
+}
+.prof-val{
+  font-family:'Playfair Display',serif;
+  font-size:30px;color:var(--gold);
+  display:block;line-height:1;margin-bottom:4px;
+}
+.prof-lbl{font-size:13px;color:var(--muted);font-weight:500;}
+
+/* ═══ SECTOR CARDS (S2) ═══ */
+.sector-card{
+  background:var(--navy2);
+  border:1px solid var(--rule2);
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:1.2rem;
+  transition:border-color .2s;
+}
+.sector-card:hover{border-color:rgba(201,168,76,0.3);}
+.sc-head{
+  padding:1.4rem 1.8rem;
+  display:flex;align-items:center;gap:14px;
+  cursor:pointer;
+}
+.sc-num{
+  font-family:'Playfair Display',serif;
+  font-size:28px;color:var(--gold2);
+  width:36px;text-align:center;flex-shrink:0;
+}
+.sc-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0;}
+.sc-info{flex:1;}
+.sc-name{font-size:18px;font-weight:600;color:var(--cream);display:block;line-height:1.3;}
+.sc-meta{font-size:14px;color:var(--muted);margin-top:3px;}
+.sc-badges{display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;}
+.badge{
+  font-size:12px;font-weight:600;padding:3px 10px;
+  border-radius:4px;white-space:nowrap;
+}
+.b-green{background:rgba(29,158,117,0.2);color:#5DCAA5;}
+.b-amber{background:rgba(239,159,39,0.2);color:#FAC775;}
+.b-red{background:rgba(226,75,74,0.2);color:#F09595;}
+.b-blue{background:rgba(55,138,221,0.2);color:#85B7EB;}
+.b-purple{background:rgba(127,119,221,0.2);color:#AFA9EC;}
+.b-gold{background:rgba(201,168,76,0.2);color:var(--gold2);}
+.sc-arr{font-size:14px;color:var(--muted);transition:transform .2s;flex-shrink:0;}
+.sector-card.open .sc-arr{transform:rotate(180deg);}
+
+.sc-body{
+  display:none;
+  border-top:1px solid var(--rule2);
+  padding:1.4rem 1.8rem;
+  background:rgba(0,0,0,0.15);
+}
+.sector-card.open .sc-body{display:block;}
+.sc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.2rem;}
+.sc-stat{background:var(--navy3);border-radius:8px;padding:1rem 1.1rem;}
+.sc-stat-label{font-size:12px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.sc-stat-val{font-size:16px;font-weight:600;color:var(--cream);}
+.sc-detail{font-size:16px;color:var(--cream2);line-height:1.7;}
+.sc-detail strong{color:var(--cream);font-weight:600;}
+.sc-examples{margin-top:1rem;}
+.sc-examples-title{font-size:13px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.example-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{
+  font-size:14px;padding:4px 12px;
+  background:var(--navy4);border:1px solid var(--rule2);
+  border-radius:20px;color:var(--cream2);
+}
+
+/* ═══ LIST FILTER ═══ */
+.list-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem;}
+.lf-btn{
+  font-size:14px;font-weight:500;
+  padding:6px 16px;border-radius:20px;
+  border:1px solid var(--rule2);
+  background:transparent;color:var(--muted);
+  cursor:pointer;font-family:'Poppins',sans-serif;
+  transition:all .15s;
+}
+.lf-btn:hover{color:var(--cream);border-color:var(--muted2);}
+.lf-btn.on{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
+/* ═══ VALUE CREATION MATRIX (S3) ═══ */
+.vc-legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:1.5rem;}
+.vc-leg{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);}
+.vc-sq{width:14px;height:14px;border-radius:3px;}
+
+.vc-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--rule2);}
+.vc-table{border-collapse:collapse;width:100%;min-width:700px;}
+.vc-table th{
+  background:var(--navy3);
+  font-size:12px;font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--muted);padding:10px 8px;
+  text-align:center;border-bottom:1px solid var(--rule2);
+  border-right:1px solid var(--rule2);
+  white-space:nowrap;
+}
+.vc-table th:first-child{text-align:left;padding-left:16px;min-width:180px;}
+.vc-table th.new{color:var(--purple);}
+.vc-table td{
+  padding:8px;text-align:center;
+  border-bottom:1px solid var(--rule2);
+  border-right:1px solid var(--rule2);
+  font-size:14px;font-weight:600;
+}
+.vc-table td:first-child{
+  text-align:left;padding-left:16px;
+  font-size:15px;font-weight:500;color:var(--cream2);
+  border-right:2px solid var(--rule);
+}
+.vc-table tr:last-child td{border-bottom:none;}
+.vc-table tr:hover td{background:rgba(255,255,255,0.03);}
+
+/* Cell scores */
+.s5{background:rgba(29,158,117,0.35);color:#9FE1CB;}
+.s4{background:rgba(29,158,117,0.2);color:#5DCAA5;}
+.s3{background:rgba(255,255,255,0.06);color:#8a96a8;}
+.s2{background:rgba(216,90,48,0.15);color:#F0997B;}
+.s1{background:rgba(226,75,74,0.2);color:#F09595;}
+
+/* Weighted score highlight */
+.vc-total{font-size:16px;font-weight:700;}
+.vc-table th.total-h{background:rgba(201,168,76,0.15);color:var(--gold);}
+.vc-table td.total-c{background:rgba(201,168,76,0.1);border-left:2px solid rgba(201,168,76,0.3);}
+
+/* ═══ RANKING TABLE (S4) ═══ */
+.rank-table{width:100%;border-collapse:collapse;}
+.rank-table th{
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);padding:8px 12px;
+  border-bottom:1px solid var(--rule);text-align:center;
+}
+.rank-table th:first-child{text-align:left;width:40px;}
+.rank-table th.name-h{text-align:left;}
+.rank-row td{
+  padding:10px 12px;
+  border-bottom:1px solid var(--rule2);
+  vertical-align:middle;
+}
+.rank-row:hover td{background:rgba(255,255,255,0.03);cursor:pointer;}
+.rank-num{
+  font-family:'Playfair Display',serif;
+  font-size:22px;color:var(--muted2);text-align:center;
+}
+.rank-name-main{font-size:16px;font-weight:600;color:var(--cream);display:block;}
+.rank-name-sub{font-size:13px;color:var(--muted);display:block;margin-top:1px;}
+.rank-score{font-size:18px;font-weight:700;text-align:center;}
+.rank-outlook{text-align:center;}
+.ol-stars{font-size:12px;display:block;line-height:1;letter-spacing:-1px;}
+.ol-lbl{font-size:12px;font-weight:600;display:block;margin-top:2px;}
+.risk-tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:3px;display:inline-block;margin-top:2px;}
+.rt-struct{background:rgba(239,159,39,0.2);color:#FAC775;}
+.rt-cycl{background:rgba(226,75,74,0.15);color:#F09595;}
+
+.tier-divider{
+  padding:10px 12px;
+  background:var(--navy3);
+  border-bottom:1px solid var(--rule2);
+}
+.tier-divider td{padding:10px 12px !important;background:transparent !important;}
+.tier-label{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+.tier-desc{font-size:13px;color:var(--muted);margin-left:10px;}
+
+/* ═══ CONCLUSION (S5) ═══ */
+.conclusion-hero{
+  background:var(--navy3);
+  border:1px solid rgba(201,168,76,0.3);
+  border-radius:16px;padding:2rem 2.5rem;
+  margin-bottom:2rem;
+}
+.conclusion-hero h2{
+  font-family:'Playfair Display',serif;
+  font-size:26px;color:var(--gold);margin-bottom:1rem;
+}
+.conclusion-hero p{font-size:18px;color:var(--cream2);line-height:1.8;}
+.conclusion-hero p strong{color:var(--cream);font-weight:600;}
+
+.top3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-bottom:2rem;}
+.top3-card{
+  background:var(--navy2);
+  border:1px solid var(--rule2);
+  border-radius:12px;padding:1.5rem;
+  border-top:4px solid;
+}
+.top3-rank{font-size:42px;font-weight:700;font-family:'Playfair Display',serif;line-height:1;margin-bottom:8px;}
+.top3-name{font-size:17px;font-weight:600;color:var(--cream);margin-bottom:8px;line-height:1.3;}
+.top3-why{font-size:15px;color:var(--muted);line-height:1.65;}
+.top3-why strong{color:var(--cream2);font-weight:600;}
+
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:2rem;}
+.insight{
+  background:var(--navy3);
+  border-radius:10px;padding:1.5rem;
+  border-left:4px solid var(--gold);
+}
+.insight-title{font-size:15px;font-weight:600;color:var(--gold);margin-bottom:8px;}
+.insight-body{font-size:16px;color:var(--cream2);line-height:1.7;}
+.insight-body strong{color:var(--cream);font-weight:600;}
+
+.action-list{list-style:none;margin-top:0;}
+.action-list li{
+  font-size:17px;color:var(--cream2);
+  padding:1rem 1.2rem 1rem 3rem;
+  border-bottom:1px solid var(--rule2);
+  position:relative;line-height:1.6;
+}
+.action-list li:last-child{border-bottom:none;}
+.action-list li::before{
+  content:attr(data-n);
+  position:absolute;left:0;top:1rem;
+  width:2rem;height:2rem;
+  background:var(--gold);color:var(--navy);
+  border-radius:50%;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Poppins',sans-serif;
+}
+.action-list li strong{color:var(--cream);font-weight:600;}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:768px){
+  body{font-size:16px;}
+  .section{padding:2rem 1.5rem;}
+  .criteria-grid{grid-template-columns:1fr;}
+  .profile-grid{grid-template-columns:1fr 1fr;}
+  .sc-grid{grid-template-columns:1fr 1fr;}
+  .top3{grid-template-columns:1fr;}
+  .insight-grid{grid-template-columns:1fr;}
+  .section-title{font-size:26px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">LM · 2026</div>
+  <button class="nav-tab active" onclick="showPanel(1,this)"><span class="nav-num">1</span>Rationale</button>
+  <button class="nav-tab" onclick="showPanel(2,this)"><span class="nav-num">2</span>Sectors</button>
+  <button class="nav-tab" onclick="showPanel(3,this)"><span class="nav-num">3</span>Value Creation</button>
+  <button class="nav-tab" onclick="showPanel(4,this)"><span class="nav-num">4</span>Ranking</button>
+  <button class="nav-tab" onclick="showPanel(5,this)"><span class="nav-num">5</span>Conclusion</button>
+</nav>
+
+<!-- ════════════════════════════════ PANEL 1 — RATIONALE ════════════════════════════════ -->
+<div class="panel active" id="p1">
+<div class="section">
+
+  <!-- HERO STATEMENT -->
+  <div style="background:linear-gradient(135deg,#161e2e 0%,#1e2a3d 100%);border:1px solid rgba(201,168,76,0.4);border-radius:16px;padding:2.2rem 2.5rem;margin-bottom:2.5rem;border-left:6px solid var(--gold)">
+    <div style="font-size:13px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Core identity</div>
+    <div style="font-family:'Playfair Display',serif;font-size:26px;color:var(--cream);line-height:1.4;margin-bottom:16px">You are not an energy investor.<br>You are a <span style="color:var(--gold)">performance-gap investor</span><br>in multi-plant industrial systems.</div>
+    <div style="font-size:17px;color:var(--muted);line-height:1.75">You buy companies where the gap between <strong style="color:var(--cream2)">actual and best-practice EBITDA</strong> is visible, measurable, and closeable — through benchmarking, energy discipline, ZBB, and better management. Energy is the fastest lever. Benchmarking is the most durable one.</div>
+  </div>
+
+  <!-- THREE PLAYBOOKS -->
+  <div class="card-title" style="margin-bottom:1rem">Three investment playbooks</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:2rem">
+    <div style="background:var(--navy3);border-radius:12px;padding:1.8rem;border-top:4px solid var(--teal)">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:10px">Playbook 1 — High return</div>
+      <div style="font-size:19px;font-weight:600;color:var(--cream);margin-bottom:10px">Energy-intensive industrials · Iberia</div>
+      <div style="font-size:16px;color:var(--muted);line-height:1.7">Energy &gt;10% of cost. Multiple kilns or processing lines. Energy procurement + internal plant benchmarking closes 8–15pp of EBITDA gap. Ceramics, stone, cork, brick, lime.</div>
+      <div style="margin-top:14px;font-size:15px;font-weight:600;color:var(--teal)">Target return: 4–6× invested capital</div>
+    </div>
+    <div style="background:var(--navy3);border-radius:12px;padding:1.8rem;border-top:4px solid var(--amber)">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">Playbook 2 — Balanced</div>
+      <div style="font-size:19px;font-weight:600;color:var(--cream);margin-bottom:10px">Less energy-intensive industrials · Iberia + Europe</div>
+      <div style="font-size:16px;color:var(--muted);line-height:1.7">Energy &lt;10% of cost. Value creation through benchmarking, ZBB, and commercial expansion. Lower cyclicality, lower capex, more defensive cash flows. Waste treatment, agri-food, technical textiles.</div>
+      <div style="margin-top:14px;font-size:15px;font-weight:600;color:var(--amber)">Target return: 3–4× invested capital</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-title">Search Rationale &amp; Selection Criteria</div>
+  <div class="section-subtitle">Why these sectors — and why now. The personal and strategic logic behind the acquisition thesis.</div>
+
+  <!-- Profile -->
+  <div class="card-title">Your profile — what you bring to the table</div>
+  <div class="profile-grid" style="margin-bottom:2rem">
+    <div class="prof-stat"><span class="prof-val">6</span><span class="prof-lbl">Years as Group CFO, BA Glass<br>€1.5bn · 13 plants · 7 countries</span></div>
+    <div class="prof-stat"><span class="prof-val">€1.2bn</span><span class="prof-lbl">Bilateral bank debt<br>personally negotiated</span></div>
+    <div class="prof-stat"><span class="prof-val">Operator</span><span class="prof-lbl">Acquiring without deploying<br>own capital as priority</span></div>
+    <div class="prof-stat"><span class="prof-val">54</span><span class="prof-lbl">Years old — peak operator<br>decade of runway ahead</span></div>
+    <div class="prof-stat"><span class="prof-val">PT+BR</span><span class="prof-lbl">Dual Iberia &amp; LatAm<br>network and residency</span></div>
+    <div class="prof-stat"><span class="prof-val">CFO+</span><span class="prof-lbl">Energy · Debt · Operations<br>multi-plant benchmarking</span></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="card-title">The core thesis</div>
+  <div class="card" style="border-left:4px solid var(--gold)">
+    <p>Acquire <strong>energy-intensive and less energy-intensive industrial companies with multiple production units</strong> where the gap between actual and best-practice EBITDA is driven by poor energy procurement, absence of internal benchmarking, poor operational productivity, and underdeveloped commercial capability. Apply the <strong>BA Glass operational playbook</strong> — internal plant-vs-plant benchmarking, energy procurement, ZBB, management upgrade — to close that gap. Exit to a strategic buyer at a consolidation multiple 2–3 turns above the entry price. Target sectors in <strong>Iberia and Europe</strong> with €20–150m revenue family-owned businesses and a clear succession gap.</p>
+  </div>
+
+  <div class="divider"></div>
+  <div class="card-title">The seven original selection criteria</div>
+  <div class="criteria-grid">
+    <div class="crit"><div class="crit-num">01</div><div class="crit-title">Knowledge edge</div><div class="crit-desc">Your BA Glass + Inditex + GANT direct experience — sectors where your CV gives you a zero learning curve advantage over any financial buyer.</div></div>
+    <div class="crit"><div class="crit-num">02</div><div class="crit-title">Energy lever</div><div class="crit-desc">EBITDA impact available from professional energy management. Sectors where energy is 10–40% of cost and most family operators have done nothing systematic.</div></div>
+    <div class="crit"><div class="crit-num">03</div><div class="crit-title">Export growth potential</div><div class="crit-desc">Ability to grow revenue by expanding internationally. A company going from 20% to 50% export gets re-rated at exit regardless of EBITDA improvement.</div></div>
+    <div class="crit"><div class="crit-num">04</div><div class="crit-title">China protection</div><div class="crit-desc">Structural moat vs Chinese competition — geographic origin, transport cost barrier, regulatory certification, or resource monopoly. Sectors where China cannot easily compete.</div></div>
+    <div class="crit"><div class="crit-num">05</div><div class="crit-title">Demand stability</div><div class="crit-desc">Inverse of end-market cyclicality. Sectors serving food, regulation, or non-cyclical services score highest. Construction-dependent sectors score lowest.</div></div>
+    <div class="crit"><div class="crit-num">06</div><div class="crit-title">Buyer pricing power</div><div class="crit-desc">Inverse of buyer professionalism. Low-sophistication buyers (contractors, tile shops) allow margin sustainability. Professional procurement teams (BASF, Nestlé) erode it.</div></div>
+    <div class="crit"><div class="crit-num">07</div><div class="crit-title">Fragmentation</div><div class="crit-desc">Availability of acquisition targets and buy-and-build potential. Sectors with 50–200 family-owned SMEs give you a platform roll-up opportunity at entry multiples of 3–4x.</div></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="card-title">Four additional criteria added after deeper analysis</div>
+  <div class="criteria-grid">
+    <div class="crit" style="border-left-color:var(--purple)"><div class="crit-num" style="color:var(--purple)">08</div><div class="crit-title">Supplier power</div><div class="crit-desc">Inverse of raw material concentration and input cost volatility. Abundant commoditised inputs (clay, limestone) give you procurement leverage. Scarce single-source inputs (cork bark, specialty chemicals) give suppliers pricing power over you.</div></div>
+    <div class="crit" style="border-left-color:var(--purple)"><div class="crit-num" style="color:var(--purple)">09</div><div class="crit-title">Substitution risk</div><div class="crit-desc">Structural product substitution beyond China — cans replacing glass bottles, screw caps replacing cork, LVT replacing ceramic tiles in some segments. Secular, permanent, and independent of Chinese manufacturing. Must be assessed separately from China competition.</div></div>
+    <div class="crit" style="border-left-color:var(--purple)"><div class="crit-num" style="color:var(--purple)">10</div><div class="crit-title">Capital intensity</div><div class="crit-desc">Inverse of maintenance capex burden. Glass furnaces (€20–50m rebuild every 10 years) and lime kilns consume free cash flow and limit debt service capacity. Asset-light businesses retain more of their EBITDA as distributable cash.</div></div>
+    <div class="crit" style="border-left-color:var(--purple)"><div class="crit-num" style="color:var(--purple)">11</div><div class="crit-title">Exit buyer depth</div><div class="crit-desc">Number and quality of credible strategic acquirers at exit. Glass has four global buyers (Ardagh, Verallia, O-I, Vidrala). Some sectors have one. More buyers competing = higher exit multiple and lower execution risk on the exit itself.</div></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="card-title">The  — why now</div>
+  <div class="card">
+    <p>Spain's industrial electricity traded at <strong>€113/MWh in 2024 vs €270/MWh in France</strong> — a structural cost advantage driven by Iberia's renewable energy build-out (79% renewables by 2030). Spanish manufacturing grew <strong>3.5% in 2024</strong> while Germany contracted 1.6%. For energy-intensive manufacturers, this is not a short-term cycle — it is a permanent competitive cost advantage that will drive export market share gains for the next decade. You are acquiring into a , not just an operational improvement story.</p>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ PANEL 2 — SECTORS ════════════════════════════════ -->
+<div class="panel" id="p2">
+<div class="section">
+  <div class="section-title">The 20 Identified Sectors</div>
+  <div class="section-subtitle">Four lists: Iberia energy-intensive · Iberia non-energy · Europe energy-intensive · Europe non-energy. All €20–150m revenue, family-owned, succession gap. Click any sector to expand.</div>
+
+  <div class="list-filter">
+    <button class="lf-btn on" onclick="filterSectors('all',this)">All 20</button>
+    <button class="lf-btn" onclick="filterSectors('ie',this)">Iberia · Energy</button>
+    <button class="lf-btn" onclick="filterSectors('in',this)">Iberia · Non-energy</button>
+    <button class="lf-btn" onclick="filterSectors('ee',this)">Europe · Energy</button>
+    <button class="lf-btn" onclick="filterSectors('en',this)">Europe · Non-energy</button>
+  </div>
+
+  <div id="sectorList"></div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ PANEL 3 — VALUE CREATION ════════════════════════════════ -->
+<div class="panel" id="p3">
+<div style="display:flex;flex-direction:column;height:calc(100vh - 62px);">
+  <div style="padding:1.2rem 2rem 0.7rem;border-bottom:1px solid rgba(201,168,76,0.2);flex-shrink:0;">
+    <div style="font-family:'Playfair Display',serif;font-size:26px;color:#c9a84c;margin-bottom:3px;">Value Creation Matrix</div>
+    <div style="font-size:15px;color:#8a96a8;">38 levers × 20 sectors · Click any cell for detail · Filter by category or sector</div>
+  </div>
+  <iframe id="vcFrame" style="flex:1;border:none;width:100%;min-height:0;background:#f8f5ef;"></iframe>
+</div>
+</div>
+
+<div class="panel" id="p4">
+<div style="display:flex;flex-direction:column;height:calc(100vh - 62px);">
+  <div style="padding:1.2rem 2rem 0.7rem;border-bottom:1px solid rgba(201,168,76,0.2);flex-shrink:0;">
+    <div style="font-family:'Playfair Display',serif;font-size:26px;color:#c9a84c;margin-bottom:3px;">Full Sector Attractiveness Ranking</div>
+    <div style="font-size:15px;color:#8a96a8;">20 sectors · 11 variables · Scores 1–5 · Click any row for rationale</div>
+  </div>
+  <iframe id="fsmFrame" style="flex:1;border:none;width:100%;min-height:0;background:#f8f5ef;"></iframe>
+</div>
+</div>
+
+<div class="panel" id="p5">
+<div class="section">
+  <div class="section-title">Conclusion</div>
+  <div class="section-subtitle">Synthesis of the value creation analysis and sector ranking. Where to focus. What to do first.</div>
+
+  <div style="background:linear-gradient(135deg,#161e2e 0%,#1e2a3d 100%);border:1px solid rgba(201,168,76,0.45);border-radius:16px;padding:2.2rem 2.5rem;margin-bottom:2rem;border-left:6px solid var(--gold)">
+    <div style="font-family:'Playfair Display',serif;font-size:26px;color:var(--cream);line-height:1.45;margin-bottom:16px">You are not an energy investor.<br>You are a <span style="color:var(--gold)">performance-gap investor</span><br>in multi-plant industrial systems.</div>
+    <div style="font-size:17px;color:var(--muted);line-height:1.8">The sectors that score highest for you are unglamorous energy-intensive industrials where <strong style="color:var(--cream2)">professional management has never arrived, energy costs have never been systematically managed, and no PE firm has built a consolidation platform.</strong> That gap is your entry. Energy is the fastest lever to close it. Benchmarking — plant against plant, shift against shift — is the most durable one.</div>
+  </div>
+
+  <div class="card-title" style="margin-bottom:1rem">The three playbooks — which one and when</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:2rem">
+    <div style="background:var(--navy3);border-radius:12px;padding:1.8rem;border-top:4px solid #1D9E75">
+      <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1D9E75;margin-bottom:8px">Playbook 1 — High return</div>
+      <div style="font-size:18px;font-weight:600;color:var(--cream);margin-bottom:10px;line-height:1.3">Energy-intensive · Iberia</div>
+      <div style="font-size:16px;color:var(--muted);line-height:1.7;margin-bottom:14px">Ceramics Castellón · Natural stone · Lime. Energy lever + internal plant benchmarking + export development. Your primary path.</div>
+      <div style="font-size:14px;font-weight:600;color:#1D9E75">Entry 3–4× · Exit 6–8× · Return 4–6×</div>
+    </div>
+    <div style="background:var(--navy3);border-radius:12px;padding:1.8rem;border-top:4px solid #EF9F27">
+      <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#EF9F27;margin-bottom:8px">Playbook 2 — Balanced</div>
+      <div style="font-size:18px;font-weight:600;color:var(--cream);margin-bottom:10px;line-height:1.3">Non-energy · Iberia + Europe</div>
+      <div style="font-size:16px;color:var(--muted);line-height:1.7;margin-bottom:14px">Waste treatment · Agri-food · Technical textiles. Benchmarking + ZBB + commercial expansion. Lower cyclicality, lower capex, more defensive returns.</div>
+      <div style="font-size:14px;font-weight:600;color:#EF9F27">Lower return · Lower risk · Defensive cash</div>
+    </div>
+  </div>
+
+  <div class="card-title">Top 5 conviction plays — where value creation and ranking converge</div>
+  <div class="top3" id="top3Cards"></div>
+
+  <div class="divider"></div>
+  <div class="card-title">Key insights from the combined analysis</div>
+  <div class="insight-grid">
+    <div class="insight">
+      <div class="insight-title">Energy lever is your primary moat</div>
+      <div class="insight-body">The gap between a family SME on an unmanaged energy contract and a professionally run industrial with PPAs, gas hedging and load shifting is <strong>typically 15–30% of the energy bill</strong>. On a company where energy is 25% of cost, that is 4–8 percentage points of EBITDA. No other single lever produces this magnitude of improvement this quickly. Pamesa's 2024 supplier switch saved €85m in one year. This is your repeatable playbook.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-title">The ranking changes when you weight your skills</div>
+      <div class="insight-body">On equal weights, natural stone and ceramics top the list. When you weight energy lever and capital efficiency — the things you are actually good at — <strong>ceramics Castellón moves to #1</strong>. This matters because sector attractiveness is not abstract. It is personal. A sector that is generically attractive but does not leverage your specific skills is less valuable to you than one that does.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-title">Glass is your safest bet, not your highest return</div>
+      <div class="insight-body">Glass packaging scores highest on knowledge edge (5/5) and exit buyer depth (5/5). You can evaluate a glass target in 48 hours and you know exactly who will buy it from you. But <strong>secular alcohol decline and very high capex</strong> (furnace rebuilds at €20–50m) compress free cash flow. Ceramics and stone offer higher returns. Glass is your fall-back if the right ceramics or stone target does not emerge in year one.</div>
+    </div>
+    <div class="insight">
+      <div class="insight-title">The buy-and-build premium is where the real money is</div>
+      <div class="insight-body">A single ceramics producer at €30m revenue trades at 3–4x EBITDA. A group of four producers with combined €120m revenue, shared energy procurement, internal benchmarking and an established export programme trades at <strong>6–8x EBITDA</strong>. The operational improvement gets you from 8% to 15% EBITDA margin. The consolidation premium multiplies what you get for that margin at exit. Both levers must work simultaneously.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="card-title">The seven actions to take before the end of 2026</div>
+  <div class="card">
+    <ul class="action-list" id="actionList">
+      <li data-n="1"><strong>Build the ceramics Castellón target longlist.</strong> Use ASCER membership list + SABI database. Filter: €10–40m revenue, family-owned, gas-intensive, no successor. Target: 15–20 companies. This is your first platform.</li>
+      <li data-n="2"><strong>Build the natural stone target longlist.</strong> Galicia (granite), Alentejo (marble), Alicante (limestone). Focus on stone processing companies — not quarries. Multiple cutting and polishing facilities. Target: 10 companies.</li>
+      <li data-n="3"><strong>Activate the BA Glass network.</strong> Your 30 direct contacts across energy suppliers, PE firms, bankers and lawyers in glass, ceramics and industrial minerals know exactly which family businesses are succession-challenged. One call surfaces three targets no database will show.</li>
+      <li data-n="4"><strong>Register on BluWave (bluwave.net)</strong> as an industrial operator. Free. Connects you to hundreds of US PE firms with Iberian and European portcos needing fractional CFO support. Generates cash flow and deal flow simultaneously.</li>
+      <li data-n="5"><strong>Contact Magnum Capital (Madrid), MCH Private Equity (Lisbon), and Oxy Capital (Portugal).</strong> These are the Iberian PE firms most likely to have ceramics, stone or cork portcos needing CFO support or a co-investment partner on the next deal.</li>
+      <li data-n="6"><strong>Commission an energy audit report on one target company.</strong> Use your network to get access to one Castellón ceramics SME. Run the energy procurement analysis. Quantify the savings. This becomes your investor pitch deck proof point — not a theoretical thesis but a specific company with a specific EBITDA gap you can close.</li>
+      <li data-n="7"><strong>Decide on the fractional CFO bridge.</strong> You need 18–24 months of cash flow while you source, diligence and close the first acquisition. Two fractional mandates at €15–20k/month each is your bridge. Start with the Bronzegate (London) and Eton Bridge outreach this week.</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+  <div class="card" style="border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.05)">
+    <div class="card-title" style="color:var(--gold2)">The single most important sentence from this entire analysis</div>
+    <p style="font-size:20px;line-height:1.8;font-style:italic;color:var(--cream);">"The best acquisition for you is not the most attractive sector in the abstract. It is the sector where your specific operational skills, your specific network, and your specific knowledge of energy management create a value gap that no financial buyer can see and no other operator can close as fast as you can. That sector is ceramics tiles in Castellón — and you should be there by the end of 2026."</p>
+  </div>
+</div>
+</div>
+
+<script>
+/* ══════════════════════ DATA ══════════════════════ */
+const SECTORS_DATA = [
+  { id:'stone', kpis:'kWh/tonne of finished stone · m²/machine-hour per saw · block yield % (usable vs waste) · polishing line OEE · water recycling % · finishing rework rate',    list:'ie', rank:1,  color:'#1D9E75', name:'Natural stone processing', geo:'Galicia / Alentejo / Alicante',
+    energy:'12–20%', ebitda:'4–8% → 14–18%', multiPlant:true, succession:true, model:'Stone block processing — buys rough blocks from quarries and transforms into slabs, tiles, façade panels. NOT quarrying/extraction.',
+    examples:['Granitos del Louro (ES)','Polimagra (PT)','AIRELIMESTONES (PT)','Inovopedra (PT)','Small Galician granite processors'],
+    badges:[['b-green','Export 80%+'],['b-amber','Frag: Very high'],['b-blue','China: None']],
+    why:'Multiple cutting and polishing facilities give immediate internal benchmarking. 80%+ exports already proven — problem is operational weakness, not market access. No PE consolidation has ever happened at scale in this cluster. Zero China risk on premium origin stone.',
+    scores:{knowledge:3,energy:3,export:5,china:5,stability:4,buyerPower:5,fragmentation:5,supplier:4,substitution:5,capex:2,exitDepth:3}},
+
+  { id:'cer-es', kpis:'kWh/tonne of fired tile · kiln uptime % · first-pass yield % · press OEE · glaze waste % · m²/operator-hour · gas consumption per firing cycle',   list:'ie', rank:2,  color:'#1D9E75', name:'Ceramics tiles — Castellón', geo:'Castellón province, Spain',
+    energy:'20–30%', ebitda:'6–10% → 16–20%', multiPlant:true, succession:true, model:'Ceramic tile manufacturing — kiln-fired floor and wall tiles. Energy-intensive (gas kilns). Multiple press lines and kilns per factory. Identical operational model to glass furnaces.',
+    examples:['105 SME producers in Castellón cluster','Pamesa (€1.1bn — the benchmark)','Geotiles','Navarti','TAU Cerámica'],
+    badges:[['b-green','Export 72%'],['b-red','Energy 20-30%'],['b-amber','105 producers in 30km']],
+    why:'Highest total score in the model. 105 producers within 30km — the most fragmented industrial cluster in Europe. Buyer professionalism is lowest of any sector (contractors, tile shops). Pamesa proved the energy thesis: €85m savings from one gas supplier switch. Your kiln expertise from BA Glass transfers directly.',
+    scores:{knowledge:4,energy:5,export:5,china:3,stability:3,buyerPower:5,fragmentation:5,supplier:3,substitution:4,capex:2,exitDepth:4}},
+
+  { id:'cork',     list:'ie', rank:3,  color:'#1D9E75', name:'Cork processing', geo:'Santa Maria da Feira / Coruche, Portugal',
+    energy:'10–18%', ebitda:'5–8% → 14–18%', multiPlant:true, succession:true, model:'Cork processing — autoclave treatment, granulation, cutting. Transforms harvested cork bark into stoppers, flooring, insulation, and technical composites. NOT cork forest ownership.',
+    examples:['Dozens of family processors below Amorim','Equipar Cork','Corchos Ibéricos','SMEs in Santa Maria da Feira cluster'],
+    badges:[['b-green','Export 95%+'],['b-blue','PT=59% global supply'],['b-amber','Stopper decline risk']],
+    why:'Portugal has 59% of global cork exports — a geographic monopoly that China cannot replicate. Growth story is pivot from wine stoppers (declining) to technical cork for construction, automotive, aerospace. EU building energy regulation is the demand driver — structural, non-cyclical.',
+    scores:{knowledge:3,energy:3,export:5,china:5,stability:4,buyerPower:3,fragmentation:4,supplier:2,substitution:2,capex:3,exitDepth:3}},
+
+  { id:'brick', kpis:'kWh/1000 bricks · kiln uptime % · breakage rate % · output bricks/shift · gas per firing cycle · drying shrinkage consistency',    list:'ie', rank:4,  color:'#1D9E75', name:'Brick and clay — Iberia', geo:'Alentejo (PT) / Extremadura (ES)',
+    energy:'25–40%', ebitda:'4–8% → 14–20%', multiPlant:true, succession:true, model:'Fired clay brick and block manufacturing. Tunnel kiln production. Most energy-intensive clay sector. Highly regional market — transport cost limits export.',
+    examples:['Family brickworks across Alentejo','Cerâmica Vanguarda (PT)','Hispalyt member companies','Regional ES brickworks'],
+    badges:[['b-red','Energy 25-40%'],['b-amber','Construction cycle'],['b-blue','No China risk']],
+    why:'Highest energy intensity in the Iberia list — maximum EBITDA lever. Buyer professionalism is the lowest (construction contractors, builders merchants). No Chinese competition possible. Caveat: requires disciplined cycle timing — enter in recovery (now), exit before rate shock.',
+    scores:{knowledge:3,energy:5,export:1,china:5,stability:2,buyerPower:5,fragmentation:4,supplier:5,substitution:3,capex:2,exitDepth:3}},
+
+  { id:'cer-pt', kpis:'kWh/tonne · kiln uptime % · first-pass yield % · press cycles/hour · gas per firing cycle — identical KPI set to Castellón enabling cross-border benchmarking',   list:'ie', rank:5,  color:'#1D9E75', name:'Ceramics tiles — Aveiro', geo:'Aveiro district, Portugal',
+    energy:'18–28%', ebitda:'6–10% → 15–18%', multiPlant:true, succession:true, model:'Identical to Castellón — kiln-fired ceramic tiles. Natural add-on to a Castellón platform. Cross-border benchmarking is a unique operational advantage.',
+    examples:['25+ SME producers in Aveiro cluster','APICER member companies','Margres','Revigrés','Love Tiles'],
+    badges:[['b-green','Export 60-70%'],['b-red','Energy 18-28%'],['b-gold','Castellón add-on']],
+    why:'Same playbook as Castellón — zero incremental learning required. Buy Castellón first, add Aveiro plants to the group. Cross-border benchmarking between Spanish and Portuguese ceramics producers creates a unique operational intelligence that standalone acquirers cannot replicate.',
+    scores:{knowledge:4,energy:4,export:4,china:3,stability:3,buyerPower:5,fragmentation:4,supplier:3,substitution:4,capex:2,exitDepth:4}},
+
+  { id:'paper', kpis:'kWh per tonne of paper · steam consumption per tonne · broke % (waste paper in process) · paper machine efficiency % · basis weight variation · tonnes/shift',    list:'ie', rank:6,  color:'#1D9E75', name:'Specialty paper / sustainable packaging', geo:'Portugal / Northern Spain',
+    energy:'15–25%', ebitda:'5–8% → 12–16%', multiPlant:false, succession:true, model:'Paper mill manufacturing — pulp to specialty paper, moulded fibre, sustainable packaging. PT is EU\'s 3rd largest pulp producer. EU Packaging Regulation drives demand.',
+    examples:['The Navigator Company (listed — benchmark)','Portucel','Mid-market PT/ES packaging converters','Moulded fibre SMEs'],
+    badges:[['b-green','Export 50-70%'],['b-amber','EU Packaging Directive'],['b-red','Commodity risk']],
+    why:'EU regulation mandating recyclable packaging by 2030 is non-discretionary demand. Iberian energy cost advantage vs German/French competitors is structural. Must filter strictly: only specialty and sustainable grades. Avoid commodity graphic paper.',
+    scores:{knowledge:3,energy:3,export:4,china:3,stability:4,buyerPower:3,fragmentation:3,supplier:3,substitution:2,capex:2,exitDepth:3}},
+
+  { id:'food-ib', kpis:'kg oil extracted per 100kg olives (extraction rate) · litres wine per tonne grapes · bottling line OEE · batch rejection rate · energy per litre output · working capital days',  list:'in', rank:7,  color:'#534AB7', name:'Agri-food processing — Iberia', geo:'Andalucía / Alentejo / Douro',
+    energy:'4–8%', ebitda:'8–12% → 14–18%', multiPlant:true, succession:true, model:'Premium food processing — olive oil mills, wine estates, premium food brands. GI-protected origin products. Export-oriented. Customers: food retail, HoReCa, international distributors. NOT farming or agriculture.',
+    examples:['Regional EVOO mills in Andalucía','Alentejo wine estates','Premium olive oil co-ops','Douro Valley wine groups'],
+    badges:[['b-green','Export 60-90%'],['b-blue','GI protection'],['b-amber','HoReCa risk']],
+    why:'GI-protected products have legal pricing protection no procurement team can negotiate away. China is an export growth market, not a competitor. Most defensive demand in the list — food is non-cyclical. Limitation: no energy lever, commercial-led transformation vs operational.',
+    scores:{knowledge:3,energy:1,export:5,china:5,stability:5,buyerPower:5,fragmentation:4,supplier:3,substitution:5,capex:4,exitDepth:3}},
+
+  { id:'waste-ib', kpis:'kg treated per vehicle-hour · cost per tonne treated · route density (stops/km) · container utilisation % · treatment facility throughput % · regulatory compliance incidents', list:'in', rank:8,  color:'#534AB7', name:'Industrial waste treatment — Iberia', geo:'Portugal + Spain',
+    energy:'6–10%', ebitda:'8–12% → 14–18%', multiPlant:true, succession:true, model:'Regulated waste treatment service — collection, transport, treatment of industrial and hazardous waste. Local by nature: you cannot ship waste to China. Permits are the competitive barrier.',
+    examples:['Ambigroup (PT)','Ambilital (PT)','Regional ES waste processors','Hazardous waste specialists'],
+    badges:[['b-blue','China-proof'],['b-green','Recurring revenue'],['b-amber','Permit barriers']],
+    why:'Regulatory moat grows automatically with every new EU environmental directive. Cannot be competed away by Chinese imports. Municipal contracts are 5-10 year frameworks. Roll-up economics are strong: route density + fixed cost absorption.',
+    scores:{knowledge:2,energy:1,export:1,china:5,stability:5,buyerPower:3,fragmentation:4,supplier:5,substitution:5,capex:3,exitDepth:3}},
+
+  { id:'surface', kpis:'kg zinc used per m² galvanised · bath temperature consistency · throughput kg/hour · rework rate % · chemical consumption per tonne treated · energy per kg processed',  list:'in', rank:9,  color:'#534AB7', name:'Metal surface treatment', geo:'PT + ES industrial zones',
+    energy:'8–12%', ebitda:'5–8% → 10–14%', multiPlant:true, succession:true, model:'Hot-dip galvanising, anodising, powder coating — protects steel structures from corrosion. Regional service — heavy steel cannot be economically shipped for treatment. Local monopoly dynamics.',
+    examples:['Galvanor (PT)','Regional galvanising companies','Industrial coating services PT/ES'],
+    badges:[['b-amber','Transport moat'],['b-red','Automotive exposure'],['b-blue','Construction demand']],
+    why:'Transport cost moat makes this inherently local — Chinese competition impossible. Key risk: automotive buyers have world-class procurement. Must reduce automotive to <15% and grow construction and infrastructure where buyer professionalism is lower.',
+    scores:{knowledge:2,energy:2,export:2,china:4,stability:3,buyerPower:2,fragmentation:3,supplier:3,substitution:3,capex:3,exitDepth:2}},
+
+  { id:'textiles', kpis:'metres produced per loom-hour · ends-down rate · warp efficiency % · energy per kg fabric · defect rate ppm · changeover time per article', list:'in', rank:10, color:'#534AB7', name:'Technical textiles', geo:'Braga / Guimarães (PT) / Catalonia (ES)',
+    energy:'6–10%', ebitda:'6–10% → 12–16%', multiPlant:true, succession:true, model:'Technical textile manufacturing — geotextiles, medical fabrics, automotive textiles, protective wear. Specification-driven, certified grades. NOT fashion or commodity textiles.',
+    examples:['Braga cluster technical textile mills','Geofabrics companies','Medical textile producers','PT automotive fabric suppliers'],
+    badges:[['b-green','Export 70%+'],['b-purple','OEKO-TEX moat'],['b-red','Automotive buyers']],
+    why:'Medical and protective textiles are non-cyclical. EU infrastructure demand for geotextiles is growing. Certification cycles (12–24 months) create switching costs that protect against even sophisticated procurement. Key risk: automotive OEM procurement is relentless on cost.',
+    scores:{knowledge:2,energy:1,export:4,china:3,stability:4,buyerPower:1,fragmentation:3,supplier:3,substitution:3,capex:3,exitDepth:3}},
+
+  { id:'prec', kpis:'OEE per CNC machine · scrap rate % · setup time per job · on-time delivery % · first-pass inspection rate · revenue per machine-hour',     list:'in', rank:11, color:'#534AB7', name:'Precision metalworking — Iberia', geo:'PT industrial parks / Basque Country',
+    energy:'5–9%', ebitda:'6–10% → 12–15%', multiPlant:true, succession:true, model:'Precision machining of industrial components — CNC milling, turning, grinding. Serves aerospace, automotive, medical, industrial machinery. NOT commodity fabrication.',
+    examples:[' Aerospace supply chain in Basque Country','PT precision engineering companies','Industrial park machining hubs'],
+    badges:[['b-blue','Aerospace lock-in'],['b-red','Automotive buyers'],['b-amber','Export 40-70%']],
+    why:'Aerospace qualification creates bilateral lock-in — re-qualification takes 18–24 months and costs the buyer more than your annual price increase. Main risk: automotive buyers run annual cost-reduction programmes regardless of your costs. Reduce automotive below 20%.',
+    scores:{knowledge:2,energy:1,export:3,china:3,stability:3,buyerPower:1,fragmentation:3,supplier:4,substitution:4,capex:3,exitDepth:3}},
+
+  { id:'glass', kpis:'kWh per tonne of glass pulled · furnace pull rate tonnes/day · cullet % in batch · rejection rate % · container weight vs specification · energy cost per 1000 containers',    list:'ee', rank:12, color:'#BA7517', name:'Glass packaging — CEE / Benelux / Italy', geo:'CEE / Benelux / Italy',
+    energy:'20–30%', ebitda:'8–12% → 16–20%', multiPlant:true, succession:true, model:'Glass container manufacturing — furnace-melted glass formed into bottles, jars, vials. Serves food, beverage, pharmaceutical, cosmetics. Identical operational model to BA Glass but in CEE or Italy.',
+    examples:['BA Glass smaller competitors in CEE','Stoelzle (specialty glass)','Small Italian glass groups','Specialty pharmaceutical vial producers'],
+    badges:[['b-red','Furnace €20-50m'],['b-blue','BA Glass expertise'],['b-amber','Secular decline']],
+    why:'Your zero-learning-curve sector. 5/5 knowledge edge, 5/5 exit buyer depth (Ardagh, Verallia, O-I, Vidrala). Critical filter: only pharma/premium spirits/food glass — NOT commodity beer/wine glass which faces secular decline from can and PET substitution.',
+    scores:{knowledge:5,energy:5,export:3,china:4,stability:3,buyerPower:3,fragmentation:3,supplier:3,substitution:2,capex:1,exitDepth:5}},
+
+  { id:'lime', kpis:'tCO₂ per tonne of quicklime · kWh/tonne · kiln availability % · limestone-to-lime conversion ratio · dust emissions mg/Nm³ · output tonne/day per kiln',     list:'ee', rank:13, color:'#BA7517', name:'Lime and calcium carbonate', geo:'France / Germany / Poland / CEE',
+    energy:'30–45%', ebitda:'8–12% → 18–24%', multiPlant:true, succession:true, model:'Lime production — limestone calcined in kilns to produce quicklime and hydrated lime. Serves steel, water treatment, construction, food, environmental. BA Glass direct supply chain.',
+    examples:['Mid-market French lime producers','Polish/CEE quarry-kiln groups','Calcium carbonate processors','Regional players below Lhoist/Omya'],
+    badges:[['b-red','Energy 30-45%'],['b-blue','BA Glass supply chain'],['b-green','Water/food demand']],
+    why:'You bought lime from these companies for 6 years — procurement intelligence no financial buyer has. Kiln operations are identical to glass furnaces. Geographic transport cost creates local monopoly even against professional procurement teams. Diversified end-markets (steel, water, construction, food) provide stability.',
+    scores:{knowledge:4,energy:5,export:3,china:5,stability:4,buyerPower:2,fragmentation:4,supplier:5,substitution:4,capex:2,exitDepth:3}},
+
+  { id:'brick-cee', kpis:'kWh/1000 bricks · kiln uptime % · drying time per batch · breakage rate % · output bricks/shift · gas consumption per firing cycle',list:'ee', rank:14, color:'#BA7517', name:'Brick and clay — CEE', geo:'Poland / Romania / Hungary',
+    energy:'25–40%', ebitda:'5–9% → 14–20%', multiPlant:true, succession:true, model:'Identical to Iberian brick but in Central Eastern Europe. EU cohesion funds driving construction supercycle (€76bn for Poland alone 2021-2027). Former state-owned operations now family/private.',
+    examples:['Family brickworks in Poland','Romanian clay products','CEE clay construction materials','Legacy privatised brickworks'],
+    badges:[['b-red','Energy 25-40%'],['b-green','EU cohesion funds'],['b-amber','Construction cycle']],
+    why:'EU cohesion funds create 5–7 years of above-trend demand visibility. Clay is commodity — maximum supplier power. Wienerberger is your exit route (they specifically acquire CEE brick platforms). Requires building CEE network to access quality targets.',
+    scores:{knowledge:3,energy:5,export:1,china:5,stability:3,buyerPower:5,fragmentation:4,supplier:5,substitution:3,capex:2,exitDepth:3}},
+
+  { id:'tech-cer', kpis:'firing yield % · dimensional tolerance Cpk · energy per kg sintered · kiln loading efficiency % · rework rate % · customer rejection ppm', list:'ee', rank:15, color:'#BA7517', name:'Technical ceramics and refractories', geo:'Germany / Italy / Czech Republic',
+    energy:'20–35%', ebitda:'8–12% → 16–22%', multiPlant:true, succession:true, model:'Technical ceramic components and refractory lining materials. Serves steel furnaces, glass furnaces, semiconductor, medical, aerospace. BA Glass direct supplier chain.',
+    examples:['German Mittelstand technical ceramic companies','Italian refractory producers','Czech legacy ceramic groups','Selb/Bavaria fine ceramics cluster'],
+    badges:[['b-blue','BA Glass supply chain'],['b-amber','German distress'],['b-green','Aerospace lock-in']],
+    why:'Your glass furnaces were lined with these products — you know the economics from the customer side. German Mittelstand distress creates entry at 3–4x EBITDA. Technical qualification cycles (6–18 months) provide pricing protection even against professional procurement.',
+    scores:{knowledge:4,energy:4,export:4,china:3,stability:3,buyerPower:2,fragmentation:4,supplier:3,substitution:4,capex:2,exitDepth:4}},
+
+  { id:'spec-chem', kpis:'batch yield % · cycle time per reactor · energy per tonne · off-spec rate % · raw material utilisation % · cleaning time between batches',list:'ee', rank:16, color:'#BA7517', name:'Specialty chemicals', geo:'Germany / Benelux / France',
+    energy:'15–25%', ebitda:'8–12% → 14–18%', multiPlant:false, succession:true, model:'Specialty process chemicals — water treatment, food processing, pharmaceutical. NOT commodity chemicals. Regulatory qualification creates switching costs.',
+    examples:['German water treatment chemical companies','Food-grade processing aid producers','Pharma excipient manufacturers'],
+    badges:[['b-red','China +140%'],['b-red','Buyer: BASF/Dow level'],['b-amber','Regulatory moat']],
+    why:'Lowest-ranked energy-intensive sector. China imports +140% in 5 years — worst in list. Professional procurement at BASF and Dow is most aggressive in industry. Only viable in narrow regulatory niches (pharma, food, water) where qualification lock-in protects you. Highest execution risk.',
+    scores:{knowledge:2,energy:3,export:4,china:2,stability:3,buyerPower:1,fragmentation:3,supplier:2,substitution:3,capex:3,exitDepth:3}},
+
+  { id:'waste-eu', kpis:'kg treated per vehicle-hour · cost per tonne by waste stream · route density · permit utilisation % · treatment capacity utilisation · compliance audit score', list:'en', rank:17, color:'#993556', name:'Industrial waste treatment — Europe', geo:'Germany / France / Benelux / CEE',
+    energy:'5–9%', ebitda:'10–14% → 16–20%', multiPlant:true, succession:true, model:'Same as Iberian waste but in larger, more regulated European markets. Germany\'s industrial restructuring generates new hazardous waste streams. Platform roll-up with strong exit to Veolia, Suez, Remondis.',
+    examples:['German regional hazardous waste operators','French industrial services SMEs','Benelux environmental services','CEE waste treatment companies'],
+    badges:[['b-blue','China-proof'],['b-green','Regulatory growth'],['b-amber','No energy lever']],
+    why:'Most structurally defensive business in the list. German Mittelstand crisis is counter-cyclically generating new waste. Strong exit buyer universe (Veolia, Remondis). Limitation for you: no energy lever, no export story, knowledge edge is general.',
+    scores:{knowledge:2,energy:1,export:1,china:5,stability:5,buyerPower:3,fragmentation:5,supplier:5,substitution:5,capex:3,exitDepth:4}},
+
+  { id:'stone-eu', kpis:'kWh per m² of finished stone · block utilisation % · saw throughput m²/hour · waste stone % · polishing defect rate · delivery lead time vs order', list:'en', rank:18, color:'#993556', name:'Natural stone — Northern/Central Europe', geo:'Italy (Carrara) / Scandinavia',
+    energy:'8–12%', ebitda:'5–8% → 12–16%', multiPlant:true, succession:true, model:'Same as Iberian stone processing — buys blocks, processes to slabs and finished products. Carrara marble is the globally recognised luxury brand. Art and heritage restoration niche is unique to European markets.',
+    examples:['Carrara marble processors (Tuscany)','Scandinavian granite processors','German limestone processors','Slovenian stone groups'],
+    badges:[['b-green','Carrara brand'],['b-blue','Heritage restoration'],['b-amber','Italian complexity']],
+    why:'Carrara marble processing combines the stone thesis with Italys premium luxury brand positioning globally. Art and heritage restoration is government-funded and non-cyclical — unique to European markets. Italian business environment adds complexity vs Iberia.',
+    scores:{knowledge:3,energy:2,export:4,china:5,stability:4,buyerPower:5,fragmentation:4,supplier:4,substitution:5,capex:3,exitDepth:3}},
+
+  { id:'print', kpis:'sheets/hour per press · makeready time per job · ink consumption per 1000 sheets · waste % · press availability % · job turnaround time',    list:'en', rank:19, color:'#993556', name:'Specialty printing and packaging', geo:'Germany / Benelux / CEE / Italy',
+    energy:'4–8%', ebitda:'6–10% → 12–16%', multiPlant:true, succession:true, model:'Specialty label and packaging printing — pharmaceutical serialisation labels, food traceability, security printing. NOT commercial or graphic printing which is in secular decline.',
+    examples:['German pharma label printers','Benelux security print companies','CEE packaging converters','Italian luxury label printers'],
+    badges:[['b-blue','Pharma serialisation'],['b-amber','Commercial decline'],['b-green','Regulatory demand']],
+    why:'EU FMD pharmaceutical serialisation regulation makes these labels legally mandatory. GMP re-validation costs €200k–500k — procurement cannot switch a validated supplier. Must filter: >50% regulatory-driven revenue. Avoid commercial print.',
+    scores:{knowledge:2,energy:1,export:3,china:3,stability:4,buyerPower:3,fragmentation:4,supplier:3,substitution:3,capex:3,exitDepth:3}},
+
+  { id:'food-eu', kpis:'batch yield % · active ingredient concentration consistency · drying energy per kg · particle size Cpk · shelf-life compliance % · batch rejection rate',  list:'en', rank:20, color:'#993556', name:'Specialty food ingredients — Europe', geo:'France / Germany / Netherlands',
+    energy:'4–8%', ebitda:'10–14% → 16–20%', multiPlant:true, succession:true, model:'Specialty B2B food ingredients — natural flavours, functional proteins, stabilisers, bioactive compounds. Serves food manufacturers and beverage groups. NOT food production or retail.',
+    examples:['French flavour houses','German specialty starch producers','Dutch functional ingredient companies','Italian natural extract producers'],
+    badges:[['b-blue','EFSA moat'],['b-red','Nestlé/Unilever buyers'],['b-green','Clean label growth']],
+    why:'Most defensive B2B market — food manufacturers buy ingredients to make food regardless of economic cycles. 12–18 month qualification creates sticky relationships. Key challenge: Nestlé and Unilever have the most sophisticated procurement in industry. Formulation lock-in is your only protection.',
+    scores:{knowledge:2,energy:1,export:4,china:5,stability:5,buyerPower:1,fragmentation:3,supplier:3,substitution:4,capex:4,exitDepth:4}},
+];
+
+const LIST_NAMES = {ie:'Iberia · Energy',in:'Iberia · Non-energy',ee:'Europe · Energy',en:'Europe · Non-energy'};
+const LIST_COL   = {ie:'#1D9E75',in:'#7F77DD',ee:'#EF9F27',en:'#D4537E'};
+const C11 = ['knowledge','energy','export','china','stability','buyerPower','fragmentation','supplier','substitution','capex','exitDepth'];
+const C11L = ['Know','Energy','Export','China','Stable','Buyer+','Frag','Supp','Sub','Capex','Exit'];
+const C11C = ['#7F77DD','#D85A30','#1D9E75','#3B6D11','#378ADD','#D4537E','#EF9F27','#E24B4A','#D4537E','#639922','#0F6E56'];
+const STRUCT_RISK = {glass:true,cork:true,paper:true,'spec-chem':true};
+const CYCL_RISK   = {'cer-es':true,'cer-pt':true,brick:true,'brick-cee':true};
+const STRUCT_PEN  = {glass:2,cork:3,paper:4,'spec-chem':6};
+
+/* ══ Weighted score for standard ranking ══ */
+function rankScore(s){
+  const sc=s.scores;
+  const w=sc.knowledge*1.5+sc.energy*1.2+sc.export+sc.china+sc.stability+sc.buyerPower+sc.fragmentation+sc.supplier+sc.substitution+sc.capex+sc.exitDepth;
+  let adj=w*(55/58.5);
+  if(STRUCT_RISK[s.id]) adj-=(STRUCT_PEN[s.id]||4);
+  if(CYCL_RISK[s.id])   adj-=1.5;
+  if(sc.stability<=2)   adj-=1;
+  return {raw:Math.round(w), adj:Math.round(adj*10)/10};
+}
+
+/* ══ Weighted score for VALUE CREATION view (energy 2x, capex 1.5x, knowledge 1.5x) ══ */
+function vcScore(s){
+  const sc=s.scores;
+  const w=sc.knowledge*1.5+sc.energy*2.0+sc.export+sc.china+sc.stability+sc.buyerPower+sc.fragmentation+sc.supplier+sc.substitution+sc.capex*1.5+sc.exitDepth;
+  let adj=w*(55/61);
+  if(STRUCT_RISK[s.id]) adj-=(STRUCT_PEN[s.id]||4);
+  if(CYCL_RISK[s.id])   adj-=1.5;
+  if(sc.stability<=2)   adj-=1;
+  return {raw:Math.round(w), adj:Math.round(adj*10)/10};
+}
+
+function outlook(adj){
+  if(adj>=40) return {stars:'●●●●●',lbl:'Strong buy',col:'#5DCAA5'};
+  if(adj>=35) return {stars:'●●●●○',lbl:'Buy',       col:'#1D9E75'};
+  if(adj>=30) return {stars:'●●●○○',lbl:'Selective', col:'#EF9F27'};
+  if(adj>=25) return {stars:'●●○○○',lbl:'Cautious',  col:'#F0997B'};
+  return             {stars:'●○○○○',lbl:'Avoid',     col:'#F09595'};
+}
+
+function scoreClass(v){return v>=5?'s5':v>=4?'s4':v>=3?'s3':v>=2?'s2':'s1';}
+
+/* ══════════ PANEL SWITCHING ══════════ */
+function showPanel(n,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ══════════ SECTOR LIST (P2) ══════════ */
+let sectorFilter='all';
+function filterSectors(v,btn){
+  sectorFilter=v;
+  document.querySelectorAll('#p2 .lf-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderSectors();
+}
+function togSector(id){
+  document.getElementById('sc-'+id).classList.toggle('open');
+}
+function renderSectors(){
+  const el=document.getElementById('sectorList');
+  const items=sectorFilter==='all'?SECTORS_DATA:SECTORS_DATA.filter(s=>s.list===sectorFilter);
+  // Group by list
+  const groups={ie:[],in:[],ee:[],en:[]};
+  items.forEach(s=>groups[s.list].push(s));
+  let html='';
+  ['ie','in','ee','en'].forEach(list=>{
+    if(!groups[list].length) return;
+    const g=groups[list];
+    html+=`<div style="font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:${LIST_COL[list]};margin:1.5rem 0 0.8rem;padding-bottom:6px;border-bottom:1px solid var(--rule2)">${LIST_NAMES[list]}</div>`;
+    g.forEach(s=>{
+      const bgs=s.badges.map(b=>`<span class="badge ${b[0]}">${b[1]}</span>`).join('');
+      html+=`<div class="sector-card" id="sc-${s.id}">
+        <div class="sc-head" onclick="togSector('${s.id}')">
+          <div class="sc-num">${s.rank}</div>
+          <div class="sc-dot" style="background:${s.color}"></div>
+          <div class="sc-info">
+            <span class="sc-name">${s.name}</span>
+            <span class="sc-meta">${s.geo}</span>
+          </div>
+          <div class="sc-badges">${bgs}</div>
+          <div class="sc-arr">▾</div>
+        </div>
+        <div class="sc-body">
+          <div class="sc-grid">
+            <div class="sc-stat"><div class="sc-stat-label">Energy % of cost</div><div class="sc-stat-val">${s.energy}</div></div>
+            <div class="sc-stat"><div class="sc-stat-label">EBITDA gap</div><div class="sc-stat-val">${s.ebitda}</div></div>
+            <div class="sc-stat"><div class="sc-stat-label">Multi-plant</div><div class="sc-stat-val" style="color:${s.multiPlant?'#5DCAA5':'#F09595'}">${s.multiPlant?'Yes — core thesis':'Limited'}</div></div>
+            <div class="sc-stat"><div class="sc-stat-label">Succession gap</div><div class="sc-stat-val" style="color:${s.succession?'#5DCAA5':'#8a96a8'}">${s.succession?'Widespread':'Moderate'}</div></div>
+          </div>
+          <div class="sc-detail" style="margin-bottom:1rem"><strong>Business model:</strong> ${s.model}</div>
+          ${s.kpis?`<div style="background:rgba(29,158,117,0.1);border:1px solid rgba(29,158,117,0.25);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem">
+            <div style="font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#5DCAA5;margin-bottom:6px">Benchmarking KPIs — internal plant-vs-plant</div>
+            <div style="font-size:15px;color:#9FE1CB;line-height:1.65">${s.kpis}</div>
+          </div>`:''}
+          <div class="sc-detail">${s.why}</div>
+          <div class="sc-examples">
+            <div class="sc-examples-title">Example companies / clusters</div>
+            <div class="example-chips">${s.examples.map(e=>`<span class="chip">${e}</span>`).join('')}</div>
+          </div>
+        </div>
+      </div>`;
+    });
+  });
+  el.innerHTML=html;
+}
+renderSectors();
+
+/* ══════════ VALUE CREATION TABLE (P3) ══════════ */
+function renderVC(){ if(!document.getElementById("vcTable")) return;
+  const sorted=[...SECTORS_DATA].sort((a,b)=>vcScore(b).adj-vcScore(a).adj);
+  let html=`<thead><tr>
+    <th style="width:180px">Sector</th>
+    <th style="color:#7F77DD">Know</th>
+    <th style="color:#D85A30;background:rgba(216,90,48,0.1)">Energy×2</th>
+    <th style="color:#1D9E75">Export</th>
+    <th style="color:#3B6D11">China</th>
+    <th style="color:#378ADD">Stable</th>
+    <th style="color:#D4537E">Buyer+</th>
+    <th style="color:#EF9F27">Frag</th>
+    <th style="color:#E24B4A" class="new">Supp★</th>
+    <th style="color:#D4537E" class="new">Sub★</th>
+    <th style="color:#639922;background:rgba(99,153,34,0.1)" class="new">Capex×1.5★</th>
+    <th style="color:#0F6E56" class="new">Exit★</th>
+    <th class="total-h">VC Score</th>
+  </tr></thead><tbody>`;
+  sorted.forEach((s,i)=>{
+    const {adj}=vcScore(s);
+    const ol=outlook(adj);
+    const sc=s.scores;
+    html+=`<tr class="rank-row">
+      <td>
+        <span style="font-size:14px;font-weight:600;color:var(--cream)">${s.name}</span>
+        <span style="display:block;font-size:12px;color:var(--muted)">${LIST_NAMES[s.list]}</span>
+      </td>
+      <td class="${scoreClass(sc.knowledge)}">${sc.knowledge}</td>
+      <td class="${scoreClass(sc.energy)}" style="font-weight:700">${sc.energy}</td>
+      <td class="${scoreClass(sc.export)}">${sc.export}</td>
+      <td class="${scoreClass(sc.china)}">${sc.china}</td>
+      <td class="${scoreClass(sc.stability)}">${sc.stability}</td>
+      <td class="${scoreClass(sc.buyerPower)}">${sc.buyerPower}</td>
+      <td class="${scoreClass(sc.fragmentation)}">${sc.fragmentation}</td>
+      <td class="${scoreClass(sc.supplier)}">${sc.supplier}</td>
+      <td class="${scoreClass(sc.substitution)}">${sc.substitution}</td>
+      <td class="${scoreClass(sc.capex)}" style="font-weight:700">${sc.capex}</td>
+      <td class="${scoreClass(sc.exitDepth)}">${sc.exitDepth}</td>
+      <td class="total-c vc-total" style="color:${ol.col}">${adj}</td>
+    </tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('vcTable').innerHTML=html;
+}
+/* P3 handled by iframe */
+
+/* ══════════ RANKING TABLE (P4) ══════════ */
+let rankFilter='all';
+function filterRanking(v,btn){
+  rankFilter=v;
+  document.querySelectorAll('#p4 .lf-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderRanking();
+}
+function togRank(id){
+  const el=document.getElementById('rexp-'+id);
+  if(el) el.style.display=el.style.display==='table-row'?'none':'table-row';
+}
+function renderRanking(){ if(!document.getElementById("rankTable")) return;
+  const sorted=[...SECTORS_DATA].sort((a,b)=>rankScore(b).adj-rankScore(a).adj);
+  const filtered=rankFilter==='all'?sorted:sorted.filter(s=>s.list===rankFilter);
+  const tiers=[
+    {min:0,max:4, label:'Tier 1 — Strong conviction',color:'#5DCAA5',desc:'Enter with confidence'},
+    {min:4,max:9, label:'Tier 2 — Selective conviction',color:'#378ADD',desc:'Strong with manageable weaknesses'},
+    {min:9,max:14,label:'Tier 3 — Situational',color:'#EF9F27',desc:'Viable with the right specific target'},
+    {min:14,max:20,label:'Tier 4 — Caution',color:'#F09595',desc:'Structural weaknesses vs your profile'},
+  ];
+  let html='<thead><tr>';
+  html+='<th style="width:36px">#</th>';
+  html+='<th class="name-h">Sector</th>';
+  C11L.forEach((l,i)=>`<th style="color:${C11C[i]};font-size:11px">${l}</th>`).forEach(h=>html+=h);
+  html+='<th style="color:var(--gold)">Score</th>';
+  html+='<th>Outlook</th>';
+  html+='</tr></thead><tbody>';
+  let lastTier=-1;
+  filtered.forEach((s,i)=>{
+    const {adj}=rankScore(s);
+    const ol=outlook(adj);
+    const tierIdx=adj>=46?0:adj>=40?1:adj>=34?2:3;
+    if(tierIdx!==lastTier){
+      const t=tiers[tierIdx];
+      html+=`<tr class="tier-divider"><td colspan="15" style="padding:8px 12px;background:var(--navy3);border-bottom:1px solid var(--rule2)">
+        <span class="tier-label" style="color:${t.color}">${t.label}</span>
+        <span class="tier-desc"> — ${t.desc}</span>
+      </td></tr>`;
+      lastTier=tierIdx;
+    }
+    const sc=s.scores;
+    const riskTag=STRUCT_RISK[s.id]?`<span class="risk-tag rt-struct">⚠ Structural</span>`:(CYCL_RISK[s.id]?`<span class="risk-tag rt-cycl">↻ Cyclical</span>`:'');
+    html+=`<tr class="rank-row" onclick="togRank('${s.id}')">
+      <td class="rank-num">${i+1}</td>
+      <td>
+        <span class="rank-name-main">${s.name}</span>
+        <span class="rank-name-sub">${s.geo} · <span style="color:${LIST_COL[s.list]}">${LIST_NAMES[s.list]}</span></span>
+        ${riskTag}
+      </td>
+      ${C11.map((c,ci)=>`<td class="${scoreClass(sc[c])}" style="font-size:14px;font-weight:600">${sc[c]}</td>`).join('')}
+      <td class="rank-score" style="color:${ol.col}">${adj}</td>
+      <td class="rank-outlook">
+        <span class="ol-stars" style="color:${ol.col}">${ol.stars}</span>
+        <span class="ol-lbl" style="color:${ol.col}">${ol.lbl}</span>
+      </td>
+    </tr>
+    <tr id="rexp-${s.id}" style="display:none">
+      <td colspan="15" style="padding:1rem 1.5rem;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--rule2)">
+        <p style="font-size:16px;color:var(--cream2);line-height:1.7">${s.why}</p>
+      </td>
+    </tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('rankTable').innerHTML=html;
+}
+/* P4 handled by iframe */
+
+/* ══════════ TOP 3 CONCLUSION CARDS ══════════ */
+function renderTop3(){
+  const sorted=[...SECTORS_DATA].sort((a,b)=>rankScore(b).adj-rankScore(a).adj);
+  const top5=sorted.slice(0,5);
+  const colors=['#c9a84c','#D3D3D3','#BA7517','#8a96a8','#6a7685'];
+  const border=['#c9a84c','#8a96a8','#BA7517','#6a7685','#3a4550'];
+  const el=document.getElementById('top3Cards');
+  if(!el) return;
+  el.style.gridTemplateColumns='1fr 1fr';
+  el.innerHTML=top5.map((s,i)=>`
+    <div class="top3-card" style="border-top-color:${border[i]}">
+      <div class="top3-rank" style="color:${colors[i]};font-size:32px">#${i+1}</div>
+      <div class="top3-name">${s.name}</div>
+      <div style="font-size:13px;color:${LIST_COL[s.list]};margin-bottom:8px;font-weight:600">${LIST_NAMES[s.list]}</div>
+      <div class="top3-why">${s.why}</div>
+    </div>`).join('');
+}
+renderTop3();
+
+
+/* ══ Iframe loader for panels 3 and 4 ══ */
+const VC_HTML_STR = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Value Creation Matrix — Luis Mendes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0f0e0c;
+  --ink2: #3a3832;
+  --ink3: #7a7670;
+  --paper: #faf8f4;
+  --paper2: #f2efe9;
+  --paper3: #e8e4db;
+  --rule: #d8d3c8;
+  --teal: #0d6e5a; --teal-l: #e1f5ee;
+  --purple: #3d3694; --purple-l: #eeedfe;
+  --amber: #8a4e0a; --amber-l: #faecd8;
+  --coral: #8a3018; --coral-l: #faeae4;
+  --green: #2d6313; --green-l: #eaf3de;
+  --blue: #185fa5; --blue-l: #e6f1fb;
+  --rose: #7a2244; --rose-l: #fbeaf0;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HEADER */
+header {
+  padding: 2rem 2rem 1.2rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  background: rgba(250,248,244,0.97);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+}
+header h1 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 400; }
+header p { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+/* CONTROLS */
+.controls {
+  padding: 0.8rem 2rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  background: var(--paper2);
+  position: sticky;
+  top: 72px;
+  z-index: 99;
+}
+.ctrl-label { font-size: 10px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink3); }
+select, input[type=text] {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  padding: 5px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+select:focus, input[type=text]:focus { outline: none; border-color: var(--ink3); }
+input[type=text] { width: 160px; }
+.btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  background: var(--paper);
+  color: var(--ink2);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn:hover { background: var(--paper3); }
+.btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* LEGEND */
+.legend {
+  padding: 0.6rem 2rem;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: var(--ink3);
+}
+.leg-item { display: flex; align-items: center; gap: 5px; }
+.leg-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+.leg-3 { background: #0d6e5a; }
+.leg-2 { background: #9dd3c8; }
+.leg-1 { background: var(--paper3); }
+.leg-0 { background: var(--paper); border: 1px solid var(--rule); }
+
+/* MATRIX WRAPPER */
+.matrix-wrap {
+  overflow: auto;
+  max-height: calc(100vh - 180px);
+  padding: 0 0 2rem;
+}
+
+/* TABLE */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 100%;
+  font-size: 11px;
+}
+
+/* CORNER */
+.corner {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 50;
+  background: var(--paper2);
+  border-right: 1px solid var(--rule);
+  border-bottom: 2px solid var(--ink);
+  padding: 10px 12px;
+  vertical-align: bottom;
+  min-width: 220px;
+  max-width: 220px;
+  white-space: nowrap;
+}
+.corner-inner { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink3); }
+
+/* SECTOR HEADERS */
+th.sector-th {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--paper2);
+  border-bottom: 2px solid var(--ink);
+  border-right: 0.5px solid var(--rule);
+  padding: 8px 6px;
+  vertical-align: bottom;
+  min-width: 80px;
+  max-width: 80px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: normal;
+  line-height: 1.3;
+}
+th.sector-th:hover { background: var(--paper3); }
+th.sector-th.highlighted { background: #faeeda; }
+.sector-geo { display: block; font-size: 9px; font-weight: 400; color: var(--ink3); margin-top: 3px; }
+.sector-cat-dot { display: block; width: 6px; height: 6px; border-radius: 50%; margin: 4px auto 0; }
+
+/* LEVER ROW HEADER */
+td.lever-th {
+  position: sticky;
+  left: 0;
+  z-index: 20;
+  background: var(--paper);
+  border-right: 1px solid var(--rule);
+  border-bottom: 0.5px solid var(--rule);
+  padding: 7px 10px;
+  min-width: 220px;
+  max-width: 220px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.1s;
+  vertical-align: middle;
+}
+td.lever-th:hover { background: var(--paper2); }
+td.lever-th.highlighted { background: #eeedfe; }
+.lever-cat-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 500;
+  padding: 1px 5px;
+  border-radius: 2px;
+  margin-bottom: 2px;
+  letter-spacing: 0.03em;
+}
+.lever-name-text { display: block; font-size: 11px; line-height: 1.35; }
+
+/* CATEGORY GROUP HEADER */
+tr.cat-header td {
+  background: var(--paper3);
+  border-bottom: 0.5px solid var(--rule);
+  padding: 5px 10px;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink2);
+  position: sticky;
+  left: 0;
+  z-index: 25;
+}
+
+/* CELLS */
+td.cell {
+  border-right: 0.5px solid var(--rule);
+  border-bottom: 0.5px solid var(--rule);
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: transform 0.1s;
+  min-width: 80px;
+  max-width: 80px;
+  height: 32px;
+  padding: 0;
+}
+td.cell:hover { transform: scale(1.15); z-index: 10; position: relative; }
+td.cell.score-3 { background: #0d6e5a; }
+td.cell.score-2 { background: #9dd3c8; }
+td.cell.score-1 { background: #d8ede9; }
+td.cell.score-0 { background: var(--paper); }
+
+td.cell.score-3 .cell-inner { color: white; font-weight: 500; }
+td.cell.score-2 .cell-inner { color: #0a4a3d; font-weight: 500; }
+td.cell.score-1 .cell-inner { color: #4a8a80; }
+td.cell.score-0 .cell-inner { color: var(--rule); }
+
+.cell-inner { font-size: 11px; line-height: 1; display: block; }
+.cell-dot { display: block; width: 20px; height: 20px; border-radius: 50%; margin: 0 auto; }
+.cell-dot.d3 { background: #0d6e5a; }
+.cell-dot.d2 { background: #9dd3c8; }
+.cell-dot.d1 { background: #d8ede9; }
+.cell-dot.d0 { background: transparent; }
+
+/* TOOLTIP */
+#tooltip {
+  display: none;
+  position: fixed;
+  z-index: 200;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 8px;
+  padding: 10px 14px;
+  max-width: 300px;
+  font-size: 12px;
+  line-height: 1.6;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+#tooltip strong { font-weight: 500; display: block; margin-bottom: 4px; font-size: 13px; }
+#tooltip .tip-score { font-size: 10px; margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+#tooltip .tip-why { font-size: 11px; color: rgba(255,255,255,0.75); }
+
+/* STATS BAR */
+.stats-bar {
+  padding: 0.8rem 2rem;
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  flex-wrap: wrap;
+}
+.stat { text-align: left; }
+.stat-num { font-family: 'DM Serif Display', serif; font-size: 1.4rem; line-height: 1; }
+.stat-lbl { font-size: 10px; color: var(--ink3); margin-top: 2px; letter-spacing: 0.03em; }
+.stat-num.c-teal { color: var(--teal); }
+.stat-num.c-purple { color: var(--purple); }
+.stat-num.c-amber { color: var(--amber); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Value Creation Matrix</h1>
+    <p>38 levers × 20 sectors · Click any cell for detail · Filter by category or sector</p>
+  </div>
+  <div style="font-size:11px; color:var(--ink3)">Luis Mendes · Private Equity Acquisition Framework · 2026</div>
+</header>
+
+<div class="controls">
+  <span class="ctrl-label">Filter levers</span>
+  <select id="catFilter" onchange="applyFilters()">
+    <option value="all">All categories</option>
+    <option value="revenue">Revenue growth</option>
+    <option value="margin">Margin & cost</option>
+    <option value="capital">Capital efficiency</option>
+    <option value="people">People & org</option>
+    <option value="commercial">Commercial</option>
+    <option value="strategic">Strategic moves</option>
+    <option value="multiple">Multiple expansion</option>
+  </select>
+  <input type="text" id="leverSearch" placeholder="Search levers..." oninput="applyFilters()">
+  <span class="ctrl-label" style="margin-left:8px">Filter sectors</span>
+  <select id="sectorFilter" onchange="applyFilters()">
+    <option value="all">All sectors</option>
+    <option value="iberia-energy">Iberia · Energy intensive</option>
+    <option value="iberia-nonenergy">Iberia · Non-energy</option>
+    <option value="europe-energy">Europe ex-Iberia · Energy</option>
+    <option value="europe-nonenergy">Europe ex-Iberia · Non-energy</option>
+  </select>
+  <button class="btn" onclick="highlightTop()">Show top opportunities</button>
+  <button class="btn" onclick="clearHighlights()">Clear</button>
+</div>
+
+<div class="stats-bar" id="statsBar">
+  <div class="stat"><div class="stat-num c-teal" id="st-high">–</div><div class="stat-lbl">High impact cells</div></div>
+  <div class="stat"><div class="stat-num c-purple" id="st-med">–</div><div class="stat-lbl">Medium impact cells</div></div>
+  <div class="stat"><div class="stat-num c-amber" id="st-avg">–</div><div class="stat-lbl">Avg score per sector</div></div>
+  <div class="stat"><div class="stat-num" id="st-top-sector" style="font-size:0.95rem; color:var(--teal)">–</div><div class="stat-lbl">Highest scoring sector</div></div>
+</div>
+
+<div class="legend">
+  <span class="ctrl-label">Impact:</span>
+  <div class="leg-item"><div class="leg-dot leg-3"></div><span>High — core lever for this sector</span></div>
+  <div class="leg-item"><div class="leg-dot leg-2"></div><span>Medium — applicable with adaptation</span></div>
+  <div class="leg-item"><div class="leg-dot leg-1"></div><span>Low — marginal application</span></div>
+  <div class="leg-item"><div class="leg-dot leg-0"></div><span>Not applicable</span></div>
+</div>
+
+<div class="matrix-wrap">
+<table id="matrix"></table>
+</div>
+
+<div id="tooltip"></div>
+
+<\x73cript>
+const SECTORS = [
+  { id:'cer-es', kpis:'kWh/tonne of fired tile · kiln uptime % · first-pass yield % · press OEE · glaze waste % · m²/operator-hour · gas consumption per firing cycle', name:'Ceramics tiles ES', geo:'Castellón', list:'iberia-energy', color:'#1D9E75' },
+  { id:'cer-pt', kpis:'kWh/tonne · kiln uptime % · first-pass yield % · press cycles/hour · gas per firing cycle — identical KPI set to Castellón enabling cross-border benchmarking', name:'Ceramics tiles PT', geo:'Aveiro', list:'iberia-energy', color:'#1D9E75' },
+  { id:'stone', kpis:'kWh/tonne of finished stone · m²/machine-hour per saw · block yield % (usable vs waste) · polishing line OEE · water recycling % · finishing rework rate', name:'Natural stone', geo:'Galicia / Alentejo', list:'iberia-energy', color:'#1D9E75' },
+  { id:'cork', name:'Cork processing', geo:'Santa Maria Feira', list:'iberia-energy', color:'#1D9E75' },
+  { id:'brick', kpis:'kWh/1000 bricks · kiln uptime % · breakage rate % · output bricks/shift · gas per firing cycle · drying shrinkage consistency', name:'Brick / clay', geo:'Alentejo / Extremadura', list:'iberia-energy', color:'#1D9E75' },
+  { id:'paper-ib', name:'Specialty paper', geo:'PT / N.Spain', list:'iberia-energy', color:'#1D9E75' },
+  { id:'food-ib', kpis:'kg oil extracted per 100kg olives (extraction rate) · litres wine per tonne grapes · bottling line OEE · batch rejection rate · energy per litre output · working capital days', name:'Agri-food processing', geo:'Andalucía / Alentejo', list:'iberia-nonenergy', color:'#534AB7' },
+  { id:'waste-ib', kpis:'kg treated per vehicle-hour · cost per tonne treated · route density (stops/km) · container utilisation % · treatment facility throughput % · regulatory compliance incidents', name:'Waste treatment', geo:'PT + ES', list:'iberia-nonenergy', color:'#534AB7' },
+  { id:'surface', kpis:'kg zinc used per m² galvanised · bath temperature consistency · throughput kg/hour · rework rate % · chemical consumption per tonne treated · energy per kg processed', name:'Metal surface treat.', geo:'PT + ES', list:'iberia-nonenergy', color:'#534AB7' },
+  { id:'techtext', name:'Technical textiles', geo:'Braga / Catalonia', list:'iberia-nonenergy', color:'#534AB7' },
+  { id:'prec-ib', name:'Precision metalwork', geo:'PT / Basque', list:'iberia-nonenergy', color:'#534AB7' },
+  { id:'lime', kpis:'tCO₂ per tonne of quicklime · kWh/tonne · kiln availability % · limestone-to-lime conversion ratio · dust emissions mg/Nm³ · output tonne/day per kiln', name:'Lime / calc. carb.', geo:'France / CEE', list:'europe-energy', color:'#BA7517' },
+  { id:'tech-cer', kpis:'firing yield % · dimensional tolerance Cpk · energy per kg sintered · kiln loading efficiency % · rework rate % · customer rejection ppm', name:'Technical ceramics', geo:'Germany / Italy', list:'europe-energy', color:'#BA7517' },
+  { id:'brick-cee', kpis:'kWh/1000 bricks · kiln uptime % · drying time per batch · breakage rate % · output bricks/shift · gas consumption per firing cycle', name:'Brick CEE', geo:'Poland / Romania', list:'europe-energy', color:'#BA7517' },
+  { id:'glass', kpis:'kWh per tonne of glass pulled · furnace pull rate tonnes/day · cullet % in batch · rejection rate % · container weight vs specification · energy cost per 1000 containers', name:'Glass packaging', geo:'CEE / Benelux', list:'europe-energy', color:'#BA7517' },
+  { id:'spec-chem', kpis:'batch yield % · cycle time per reactor · energy per tonne · off-spec rate % · raw material utilisation % · cleaning time between batches', name:'Specialty chemicals', geo:'Germany / Benelux', list:'europe-energy', color:'#BA7517' },
+  { id:'waste-eu', kpis:'kg treated per vehicle-hour · cost per tonne by waste stream · route density · permit utilisation % · treatment capacity utilisation · compliance audit score', name:'Industrial waste EU', geo:'Germany / France', list:'europe-nonenergy', color:'#993556' },
+  { id:'stone-eu', kpis:'kWh per m² of finished stone · block utilisation % · saw throughput m²/hour · waste stone % · polishing defect rate · delivery lead time vs order', name:'Stone processing EU', geo:'Italy / Scandinavia', list:'europe-nonenergy', color:'#993556' },
+  { id:'print', kpis:'sheets/hour per press · makeready time per job · ink consumption per 1000 sheets · waste % · press availability % · job turnaround time', name:'Specialty printing', geo:'Germany / Benelux', list:'europe-nonenergy', color:'#993556' },
+  { id:'food-eu', kpis:'batch yield % · active ingredient concentration consistency · drying energy per kg · particle size Cpk · shelf-life compliance % · batch rejection rate', name:'Specialty food ingr.', geo:'France / Germany', list:'europe-nonenergy', color:'#993556' },
+];
+
+const CAT_COLORS = {
+  revenue: '#1D9E75', margin: '#534AB7', capital: '#BA7517',
+  people: '#D85A30', commercial: '#185FA5', strategic: '#993556', multiple: '#3B6D11'
+};
+
+const LEVERS = [
+  { cat:'revenue', name:'Pricing discipline', scores:[2,2,3,2,1,2,3,1,2,2,2,1,2,1,2,2,1,3,2,3], why:['Design-to-value pricing vs cost-plus','Premium/standard tiering opportunity','Origin premium unlocked by consistent pricing','Technical vs commodity pricing gap','Limited by weight/commodity nature','Specialty grades command premiums','GI-protected products support price architecture','Local monopoly pricing power','Tolling rate optimisation','Technical spec pricing','Aerospace/defence pricing power','Industrial contract pricing','Specification-led pricing','Regional monopoly pricing','Vessel/container type premiums','Niche application pricing','Long-term contract pricing','Stone variety premium pricing','Security/compliance value pricing','Functional ingredient value pricing'] },
+  { cat:'revenue', name:'Export development', scores:[3,3,3,3,1,2,3,0,1,3,2,1,3,1,2,2,0,3,2,3], why:['72% exports already — grow to 85%+','60-70% exports — grow to 80%+','80%+ exports — deepen existing markets','95%+ exports — product diversification drives new markets','Heavy/cheap — export limited by freight','50-70% exports — EU packaging regulation demand','60-90% export potential — EU GI premium','Local service — not exportable','Regional by nature','70%+ export potential in technical grades','40-70% export potential in certified specs','50-70% industrial mineral exports','60-80% global technical ceramic exports','10-20% — limited by weight/freight','30-60% specialty glass exports','60-80% — niche protection required','Not applicable — local service','60-80% origin stone exports','40-70% specialty/compliance exports','60-80% EU and global exports'] },
+  { cat:'revenue', name:'New product lines', scores:[3,3,2,3,2,2,3,0,1,3,2,2,3,1,3,3,0,2,3,3], why:['Large format, technical ceramics, surface solutions','Premium porcelain, architectural collections','Finished products vs raw blocks — 3x value add','Technical cork: construction, aerospace, composites','Facing brick, architectural grades','Sustainable packaging, moulded fibre','Premium EVOO, PDO certification, organic','Not applicable — services business','Powder coat, anodising, specialist coatings','Medical, automotive, geotextile grades','Aerospace, defence, medical components','Precipitated calcium carbonate — higher margin','Wear parts, lab ceramics, speciality insulators','Roof tiles, insulation blocks','Pharmaceutical vials, cosmetics, luxury spirits','Specialty process chemicals vs commodity','Not applicable','Custom stone furniture, architecture elements','Security printing, pharma serialisation','Novel ingredients, clean label formulations'] },
+  { cat:'revenue', name:'Customer concentration reduction', scores:[2,2,1,2,1,2,2,2,2,2,2,1,2,1,2,2,2,2,2,2], why:['SMEs often have 2-3 dominant distributors','Family portcos have founder-led key accounts','Often over-reliant on 1-2 stone traders','Amorim dependency risk for stoppers','Construction contractors dominate','Paper converters concentration','Retail chains and food brands concentration','Municipal contracts concentration','Auto sector concentration risk','Few OEM customers dominate','Aerospace Tier 1 concentration','Steel/water treatment customer concentration','Glass furnace and steel customer concentration','Construction developer concentration','Wine/spirits/food customer concentration','Process industry customer concentration','Industrial client concentration','Architectural project concentration','Pharma/food client concentration','Food manufacturer concentration'] },
+  { cat:'revenue', name:'Geographic roll-up', scores:[3,2,2,1,3,2,1,3,3,2,1,3,3,3,2,2,3,2,2,2], why:['Castellón SMEs — perfect roll-up template','Aveiro cluster acquisition candidates','Stone cluster consolidation in Galicia/Alentejo','Below Amorim — fragmented processors','Alentejo/Extremadura regional consolidation','PT/ES paper mill consolidation','Food processing regional consolidation','Route density economics from multi-site','Geographic treatment zone expansion','Braga cluster consolidation','Industrial park cluster roll-up','Multi-kiln group creation across France/CEE','Technical ceramics cluster consolidation','CEE regional brick platform','CEE glass plant consolidation','Geographic market share consolidation','Multi-region waste treatment platform','Stone processing cluster in Carrara/Galicia','Print market consolidation in DACH','Ingredient geographic coverage expansion'] },
+  { cat:'revenue', name:'Digital and e-commerce', scores:[2,2,2,1,1,1,2,1,1,2,2,1,2,1,2,2,1,2,2,2], why:['Online tile configurators for architects','Product visualisation tools','Stone selector and specification tools','Technical cork datasheet portal','Contractor portals','B2B ordering platform','D2C food export platform','Digital job booking system','Online quoting and job management','Technical specification library','Engineering drawing submission portal','Technical data portal for procurement','Ceramic application database','Contractor specification tool','Packaging design portal','MSDS/SDS digital library','Waste stream digital management','Architectural stone library','Print specification portal','Formulation library and technical portal'] },
+
+  { cat:'margin', name:'Energy procurement & hedging', scores:[3,3,2,2,3,3,1,0,2,1,1,3,3,3,3,3,0,2,1,0], why:['Gas 20-30% of cost — core lever','Gas 18-28% — major EBITDA driver','Electricity for cutting/polishing — 12-20%','Autoclave/drying energy — 10-18%','Gas 25-40% — highest impact sector','Steam/heat 15-25% — significant','Cold chain energy — moderate','Not energy-intensive','Chemical bath heating — moderate','Dyeing/finishing energy','Machining energy — limited','Gas 30-45% for lime kilns — maximum impact','Gas 20-35% for ceramic kilns','Gas 25-40% for tunnel kilns','Furnace energy 20-30% — major','Reactor heating 15-25%','Not energy-intensive','Cutting electricity 8-12%','Press/print energy — limited','Drying/processing energy — limited'] },
+  { cat:'margin', name:'Zero-based budgeting', scores:[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2], why:['Overhead bloated in family ceramics firms','SG&A typically unreviewed in family firms','Admin and sales overhead consolidation','Processing overhead rationalisation','Production overhead reduction','Paper mill overhead reduction','Cooperative overhead reduction','Route and overhead optimisation','Chemical and labour overhead review','Production overhead review','Support function consolidation','Group overhead creation — currently zero','Technical support rationalisation','Family business overhead removal','Distribution overhead reduction','Lab and technical overhead review','Multi-site overhead consolidation — major','Processing overhead reduction','Pre-press and plate overhead','R&D and formulation overhead review'] },
+  { cat:'margin', name:'Procurement optimisation', scores:[3,3,2,2,2,3,3,1,3,2,2,3,3,2,2,3,1,2,2,3], why:['Raw materials, glaze, packaging — 3 major categories','Raw materials, colourants, packaging','Abrasives, blades, chemicals — significant','Raw cork, processing aids, packaging','Clay, gas, packaging — consolidated buying','Pulp, energy, chemicals','Olive oil, packaging, logistics','Chemicals, vehicles, PPE','Chemical bath compounds — major','Yarn, dye, finishing chemicals','Tooling, cutting fluid, raw stock','Limestone, energy, packaging','Minerals, binders, packaging','Clay, gas, packaging','Cullet, gas, packaging','Chemical raw materials — major','Vehicle fleet, chemicals, containers','Abrasives, machinery, packaging','Ink, substrate, plates — three major categories','Specialty ingredients, packaging, logistics'] },
+  { cat:'margin', name:'Lean manufacturing / OEE', scores:[3,3,2,2,3,2,2,2,2,3,3,3,3,3,3,2,2,2,2,2], why:['Kiln uptime, press OEE, first-pass yield','Identical playbook to Castellón','Saw utilisation, polishing line throughput','Autoclave batch efficiency, drying cycle','Kiln firing curve optimisation','Paper machine efficiency, broke reduction','Food processing line OEE','Vehicle utilisation and route OEE','Line OEE, bath turnover frequency','Loom OEE, warp beam utilisation','Machine OEE, setup time reduction','Kiln throughput per tonne','Kiln and press OEE — complex parts','Kiln uptime and energy per brick','Furnace campaign length, pull rate','Reactor batch efficiency','Route density and vehicle OEE','Cutting line throughput, waste stone','Press makeready, spoilage reduction','Batch efficiency, yield per batch'] },
+  { cat:'margin', name:'Internal benchmarking', scores:[3,3,3,3,3,3,2,3,3,3,3,3,3,3,3,2,3,3,3,3], why:['Core thesis — plant vs plant KPI comparison','Aveiro cluster — identical logic','Quarry yield, cutting line output, finishing quality','Processing plant efficiency comparison','Kiln energy per tonne across sites','Paper machine efficiency across mills','Mill/estate yield comparison','Route density, treatment cost per tonne','Treatment bath efficiency across sites','Loom OEE and yield comparison','Machine OEE comparison across sites','Kiln efficiency per tonne across quarries','Process consistency across technical grades','Energy per brick across kiln profiles','Furnace efficiency and pull rate comparison','Reactor yield and cycle time','Vehicle and route comparison','Saw yield and finishing quality','Press efficiency and spoilage rates','Batch yield and consistency'] },
+  { cat:'margin', name:'Design to cost', scores:[3,3,2,2,2,2,3,0,1,2,2,2,3,2,2,3,0,2,2,2], why:['Clay body reformulation, firing temp reduction, SKU reduction','Identical to Castellón','Reduce block waste, optimise cut patterns','Cork grade mix optimisation for cost','Clay mix optimisation, reduce firing cycles','Fibre blend optimisation, basis weight review','Recipe optimisation, portion standardisation','Not applicable','Chemical concentration and process review','Fibre blend and finishing chemical reduction','Tooling path and material removal rate','Mineral grade selection and firing temperature','Technical specification tolerance review','Clay body and additive reformulation','Glass formula and cullet ratio optimisation','Synthesis route and solvent review','Not applicable','Cut-to-size yield optimisation','Substrate and ink optimisation','Formulation rationalisation'] },
+  { cat:'margin', name:'Fixed cost absorption', scores:[3,3,2,2,3,3,2,2,2,2,2,3,3,3,3,2,2,2,2,2], why:['65% capacity plants → 85% = major EBITDA lift','Aveiro plants typically under-utilised','Quarry extraction rate and processing utilisation','Cork autoclave loading optimisation','Brick kiln continuous operation','Paper machine capacity utilisation','Food processing seasonal capacity extension','Route density improvement','Treatment line capacity utilisation','Loom utilisation and shift extension','Machining capacity utilisation','Kiln throughput — kilns never idle optimally','Firing cycle and kiln loading optimisation','CEE construction boom drives volume','Furnace capacity — continuous operation key','Reactor utilisation and campaign length','Multi-site route consolidation','Saw line utilisation optimisation','Press and finishing line utilisation','Batch plant utilisation'] },
+  { cat:'margin', name:'SG&A rationalisation', scores:[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2,2,2], why:['Family firms carry legacy admin overhead','Finance function typically underpowered','Multiple separate admin structures','Processing companies have admin bloat','Small companies with over-resourced admin','Paper mills often have legacy union overhead','Family food businesses with owner-centric admin','Waste companies carry operational overhead','Metal treatment firms have lean admin already','Textile firms carry design overhead','Engineering firms carry technical overhead','Multi-quarry companies without shared services','Technical firms carry R&D and sales overhead','Small family brickworks — owner-centric admin','Glass companies have professional management','Chemical companies typically lean already','Multi-depot waste companies — shared services major','Stone processors have fragmented admin','Print firms carry pre-press and admin overlap','Ingredient companies carry R&D and regulatory overhead'] },
+
+  { cat:'capital', name:'Working capital release', scores:[3,3,2,3,2,2,3,2,2,3,2,2,2,2,2,2,2,2,2,3], why:['Tile inventory (slow SKUs) and distributor terms','Aveiro cluster — same working capital issues','Block inventory and receivables discipline','Cork inventory (seasonal harvest) and stopper WC','Brick seasonal demand — inventory management','Paper reel inventory and customer terms','Olive oil seasonal inventory — significant','Service billing terms and vehicle assets','Chemical bath inventory and customer terms','Yarn and WIP inventory — significant','Part inventory and WIP management','Limestone stock and customer payment terms','Ceramic component WIP and customer terms','Brick seasonal inventory management','Cullet stock and container inventory','Chemical raw material inventory','Container and vehicle asset management','Block inventory and customer terms','Paper and ink inventory management','Specialty ingredient shelf life management'] },
+  { cat:'capital', name:'Capex discipline', scores:[3,3,3,3,3,3,2,2,2,2,3,3,3,3,3,3,2,2,2,2], why:['Family firms invest in production without IRR analysis','Aveiro — kiln investment decisions unstructured','Quarry development and saw investment decisions','Autoclave and processing capex governance','Kiln rebuild and tunnel upgrade decisions','Paper machine investment cycles — long and costly','Food plant modernisation — often emotional not analytical','Vehicle fleet investment decisions','Chemical plant and rectifier investment','Loom and dyeing machine investment','CNC machine investment decisions','Kiln and crusher investment governance','Press and kiln technical capex review','Kiln rebuild and extruder investment','Furnace rebuild — major capex event','Reactor and distillation capex','Vehicle and containment capex','Saw and polishing machine investment','Press and pre-press investment','Production vessel and lab capex'] },
+  { cat:'capital', name:'Asset monetisation', scores:[2,2,2,1,2,2,1,1,1,1,1,2,2,2,3,2,2,2,2,1], why:['Factory property in Castellón — significant value','Aveiro industrial land — appreciated','Quarry land rights and processing site value','Cork processing facilities sale-leaseback','Brick plant land value — often large sites','Paper mill site value','Agricultural land assets (estates)','Depot property value','Treatment site value','Textile mill property in Braga','Industrial unit property value','Quarry land and processing site value','German industrial property — high value','CEE industrial land — growing value','Glass plant site — significant infrastructure','Chemical plant site and storage value','Depot network property','Stone processing site value','Print works property','Ingredient plant property'] },
+  { cat:'capital', name:'Debt structure optimisation', scores:[3,3,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,2,2], why:['Post-acquisition refinancing — core lever','Aveiro — same opportunity','Stone companies typically over-pay on credit','Cork processors on short-term debt','Family brickworks on overdraft funding','Paper mills with legacy debt structures','Family food businesses with suboptimal debt','Service businesses with vehicle lease optimisation','Chemical company debt consolidation','Textile mill debt restructuring','Engineering company debt consolidation','Multi-quarry group — bilateral refinancing opportunity','Technical ceramics — growth debt structuring','CEE brick — local to international debt shift','Glass plant — major bilateral refinancing','Chemical plant — sustainability-linked debt','Waste treatment — long asset life debt matching','Stone group refinancing','Print group refinancing','Ingredient company growth financing'] },
+  { cat:'capital', name:'Green capex and EU funding', scores:[3,3,2,3,3,3,2,2,1,2,1,3,3,3,3,2,2,2,1,1], why:['EU Innovation Fund for electric kiln transition — major','Portugal green ceramic grants available','Stone cutting electrification — EU energy grants','Cork drying electrification — biomass grants','Kiln decarbonisation — EU ETS and grants','Paper mill green energy transition grants','Food processing energy efficiency grants','EV fleet grants','Anodising green chemistry grants','Textile sustainability grants','Machining coolant and energy grants','Lime kiln electrification — Innovation Fund eligible','Technical ceramic kiln transition grants','CEE brick kiln modernisation — EU cohesion funds','Furnace electrification feasibility — Innovation Fund','Green chemistry and bio-based grants','EV fleet and facility efficiency grants','Stone cutting electrification grants','Press energy efficiency grants','Bioprocess and green chemistry grants'] },
+  { cat:'capital', name:'Tax structure optimisation', scores:[2,2,2,2,2,2,2,2,2,2,2,3,3,2,3,3,2,2,2,2], why:['PT/ES holding optimisation','PT/ES holding structure','Standard PE holding structure','PT holding — standard','PT/ES holding structure','PT/ES holding structure','PT/ES agricultural holding','PT service holding','PT/ES holding structure','PT/ES holding structure','PT/ES holding structure','France/CEE — multiple jurisdiction optimisation','Germany holding — significant tax efficiency','CEE — attractive tax structures','NL/Luxembourg holding — glass group standard','DACH holding — standard PE structure','Multi-country waste holding','Italy/Scandinavia holding','DACH holding structure','France/Germany holding'] },
+
+  { cat:'people', name:'Management team upgrade', scores:[3,3,2,3,3,2,3,2,2,2,2,3,3,3,2,2,3,2,2,2], why:['Family management to professional CFO/COO','Aveiro — same family business profile','Stone group — commercial and finance upgrade','Cork SME — professional management absent','Brick family firms — owner-operator management','Paper mill — often union/legacy management','Food family business — owner-centric management','Waste SME — owner-operator management','Metal treatment — owner-operator firms','Textile family firms in Braga','Engineering family firm management','Multi-quarry group — professional group management','German Mittelstand — succession gap management','CEE family brickworks management','CEE glass — often ex-state owned management','Chemical Mittelstand management gap','German waste company succession gap','Italian/Scandinavian stone family management','Print Mittelstand succession management','French/German ingredient family firms'] },
+  { cat:'people', name:'Incentive alignment', scores:[3,3,3,3,2,2,3,2,2,2,2,3,3,3,3,3,3,3,3,3], why:['Plant managers with equity changes behaviour','Site managers across Aveiro cluster','Quarry managers and finishing directors','Cork processing plant managers','Kiln operators and logistics managers','Paper machine operators and sales','Mill managers and export team','Route managers and treatment supervisors','Treatment line supervisors','Production and technical managers','Workshop and project managers','Quarry and kiln managers group-wide','Technical directors and plant managers','Plant managers across CEE','Furnace and commercial managers','Plant and commercial managers','Route supervisors and business development','Site managers and commercial team','Production managers and sales directors','R&D and commercial team equity'] },
+  { cat:'people', name:'Culture and performance mgmt', scores:[3,3,2,3,2,2,3,2,2,2,2,3,3,3,2,2,3,2,2,2], why:['Family ceramics — no KPI culture','Aveiro — same cultural pattern','Stone quarry — artisanal culture shift','Cork SME — performance culture absent','Brick firms — production focus only','Paper mill — union legacy culture','Food cooperative — performance culture shift','Waste SME — service culture development','Metal treatment — quality culture focus','Textile production culture shift','Engineering firm performance culture','Multi-quarry performance culture creation','Technical ceramics — quality culture','CEE brick — post-communist work culture shift','Glass — typically more structured already','Chemical — typically performance oriented','Waste multi-site performance culture','Stone — craftsmanship culture development','Print — deadline culture reinforcement','Ingredient — R&D and quality culture'] },
+  { cat:'people', name:'Training and capability', scores:[3,3,2,3,3,3,2,2,2,3,2,3,3,3,3,3,2,2,2,2], why:['Energy awareness, kiln operation, quality control','Same training investment needed','Stone cutting technique and yield optimisation','Cork grading, processing quality, energy awareness','Kiln firing technique and energy optimisation','Paper machine operation and energy awareness','Food safety, quality, sustainable farming','Waste classification and handling safety','Surface treatment quality and chemistry','Textile quality and technical specification','Precision machining and metrology','Kiln operation, energy management, geology','Technical ceramics specification and quality','Kiln operation in CEE — significant gap','Furnace operation and quality standards','Chemical safety, process chemistry','Waste regulation and handling training','Stone quality grading and finishing technique','Print quality and colour management','Ingredient functionality and food science'] },
+  { cat:'people', name:'Workforce restructuring', scores:[2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,2,3,2,2,2], why:['Family ceramics — legacy staffing','Aveiro firms — similar legacy structure','Stone — artisanal workforce is value-creating','Cork — skilled graders are scarce — careful','Brick — kiln operators critical','Paper — union sensitivity required','Food — seasonal workforce management','Waste — driver and operator structure','Metal treatment — batch operator structure','Textile — loom operators critical','Engineering — skilled machinists critical','Multi-quarry group — head office overhead','German technical ceramics — legacy overhead','CEE brick — over-staffed legacy plants','CEE glass — often legacy staffing','Chemical — technical staff are differentiator','German waste — head office consolidation','Stone — skilled craftsmen critical','Print — pre-press digital shift reduces headcount','Ingredient — R&D critical staff retained'] },
+
+  { cat:'commercial', name:'Sales force professionalisation', scores:[3,3,2,3,2,2,3,2,2,3,2,2,3,2,2,2,2,2,2,2], why:['Owner-led sales to structured commercial team','Aveiro — agent-dependent sales model','Stone — agent network to key account management','Cork — stopper sales to technical sales force','Brick — contractor relationship sales','Paper — converter relationship sales','Food — distributor to direct key account','Waste — tender and contract capability','Metal treatment — in-house sales absent','Technical textiles — spec selling required','Engineering — application engineering sales','Mineral sales to structured industrial sales','Technical ceramic specification selling','Construction sector sales force','Glass packaging sales — bottle type expertise','Specialty chemical application selling','Waste tender and contract sales','Architectural and project specification sales','Print sales to marketing procurement','Ingredient application selling to food technologists'] },
+  { cat:'commercial', name:'Customer segmentation', scores:[3,3,3,2,1,2,3,2,2,3,3,2,3,1,2,3,2,3,3,3], why:['Distributor vs architect vs contractor profitability','Same segmentation opportunity','Export market vs domestic profitability','Stopper vs technical cork margin analysis','All construction — limited segmentation','Paper grade and converter profitability','Premium food vs commodity margin analysis','Industrial vs municipal waste profitability','Automotive vs industrial vs architectural customer mix','Medical vs automotive vs geo-textile profitability','Aerospace vs automotive vs general engineering','Steel vs water vs paper customer profitability','Furnace vs wear parts vs lab customer mix','All construction — limited','Container type and customer margin analysis','Process industry vs pharma customer mix','Hazardous vs non-hazardous customer margin','Architectural vs dimensional vs aggregates','Security vs commercial vs publication mix','Pharma vs food vs beverage ingredient profitability'] },
+  { cat:'commercial', name:'Brand and product positioning', scores:[3,3,3,3,1,2,3,1,1,3,2,1,3,1,3,3,1,3,3,3], why:['Premium Spanish tile brand vs commodity','Aveiro design brand — significant opportunity','Origin stone brand — Estremoz, Galician granite','Technical cork brand beyond wine stoppers','Commodity product — positioning limited','Specialty/sustainable paper positioning','PDO and GI food brand development','Service quality brand — limited','Metal finish quality brand — limited','Technical textile certification brand','Aerospace/defence qualification brand','Industrial mineral brand for purity/consistency','Technical ceramic performance brand','Commodity product — positioning limited','Specialty glass type brand (pharma, luxury spirits)','Process industry application brand','Service reliability brand — limited','Named origin stone brand development','Certified/compliant print brand','Clean label ingredient brand'] },
+  { cat:'commercial', name:'Channel strategy', scores:[3,3,3,2,2,2,3,2,2,2,2,2,3,2,2,2,2,3,2,2], why:['Distributor to architect/direct channel','Aveiro — showroom and direct channel opportunity','Agent to key account and direct export','Stopper distributor to technical direct channel','Contractor and builder merchant channel','Paper converter and print house channel','Food retail and restaurant direct channel','Municipal tender and industrial direct channel','Metal fabricator direct channel','OEM and specialist distributor channel','Aerospace/defence tier 1 direct channel','Industrial distributor and direct channel','Technical ceramic OEM direct channel','Construction and developer channel','Glass customer direct and packaging design channel','Process industry and pharma direct channel','Industrial waste contract channel','Architectural showroom and distributor channel','Print buyer direct and agency channel','Food manufacturer and flavour house channel'] },
+  { cat:'commercial', name:'After-sales and recurring revenue', scores:[2,2,2,2,1,1,2,3,3,2,3,1,3,1,3,3,3,2,2,2], why:['Tile maintenance service — limited but growing','Installation service and maintenance','Stone care and maintenance programme','Cork technical support for packaging customers','Brick — no aftermarket opportunity','Paper — roll management service','Food safety audit and technical service','Waste service contract — recurring revenue core','Scheduled maintenance contract opportunity','Technical support and testing service','Maintenance contract and inspection service','Technical service for limestone purity guarantee','Refractory maintenance contract — significant','Brick — no aftermarket opportunity','Container quality inspection service','Technical support and application service','Annual waste service contract — recurring revenue core','Stone maintenance and restoration service','Print management and annual contract','Ingredient technical service retainer'] },
+
+  { cat:'strategic', name:'Buy-and-build consolidation', scores:[3,2,3,3,3,2,2,3,3,2,2,3,3,3,2,2,3,3,2,2], why:['Castellón SME roll-up — core thesis','Add Castellón assets to Aveiro platform','Quarry and processing roll-up in Galicia/Alentejo','Cork processor consolidation below Amorim','Extremadura/Alentejo brick platform','PT/ES paper consolidation','Regional agri-food consolidation','Multi-depot waste platform — recurring revenue','Geographic treatment network roll-up','Braga technical textile cluster consolidation','Industrial park machining hub consolidation','Multi-quarry lime group creation','German/Italian technical ceramics consolidation','CEE brick national platform','CEE glass packaging group','Chemical niche consolidation','German/French waste multi-regional platform','Carrara/Galicia stone processing consolidation','Print DACH consolidation','Ingredient geography expansion by acquisition'] },
+  { cat:'strategic', name:'Carve-out and focus', scores:[2,2,2,2,1,2,2,2,1,1,1,2,2,2,2,2,2,2,2,2], why:['Divest non-tile activities if any','Focus tile vs sanitaryware','Processing vs quarry — separate and focus','Cork stopper vs technical focus decision','Focus on kiln operations vs logistics','Paper vs packaging — focus decision','Olive oil vs wine vs other — focus required','Industrial vs municipal waste focus','Specialist vs general surface treatment','Technical vs commodity textile focus','Aerospace vs general engineering focus','Lime vs calcium carbonate vs other','Technical vs standard ceramic focus','Building brick vs roof tile focus','Container type specialisation focus','Specialty vs commodity chemical focus','Hazardous vs industrial vs municipal focus','Slab vs tile vs dimensional focus','Security vs commercial vs wide format focus','Pharma vs food vs beverage ingredient focus'] },
+  { cat:'strategic', name:'Vertical integration', scores:[2,2,3,2,2,2,2,1,1,2,1,3,2,2,2,2,2,3,1,3], why:['Integrate spray-dried powder supply','Clay body supply integration','Quarry ownership and processing integration','Cork oak supply security','Clay quarry ownership — important in brick','Pulp supply integration','Olive grove or vineyard ownership','Vehicle fleet ownership integration','Chemical supply self-manufacture','Yarn supply integration','Raw material supply integration','Downstream lime product diversification — plasterboard etc.','Raw mineral supply integration','Clay quarry ownership','Cullet collection network own','Chemical intermediate synthesis','Downstream treatment technology ownership','Quarry ownership for processing security','Substrate self-supply','Fermentation or extraction self-supply'] },
+  { cat:'strategic', name:'Technology and digitalisation', scores:[3,3,2,2,2,2,2,2,2,3,3,3,3,2,3,3,2,2,3,2], why:['MES for kiln monitoring, energy dashboard, ERP','Same digital gap as Castellón','IoT on saws, yield monitoring system','Energy monitoring, autoclave IoT, batch tracking','Kiln temperature IoT, energy management system','Paper machine MES, energy monitoring','Food traceability system, farm management software','Route optimisation software, job management','Treatment bath IoT, quality management system','Loom monitoring, production planning, quality','CNC machine monitoring, quality management','Kiln IoT, geology data management, ERP','Process control system, quality MES','Kiln control system, production ERP','Furnace monitoring, container quality system','Reactor control, yield management, ERP','Fleet management, waste tracking system','Saw IoT, yield management system','Print workflow MIS, colour management system','Batch tracking, formulation management, ERP'] },
+  { cat:'strategic', name:'IP and certification', scores:[3,3,3,3,2,2,3,2,2,3,3,2,3,2,3,3,2,3,3,3], why:['EU design registration, carbon certification','Same certification opportunity','Origin certification, quarry quality marks','FSC, carbon-negative certification','CE mark, thermal performance certification','FSC, recycled content certification, PEFC','PDO, organic, carbon-neutral food certifications','ISO waste management certifications','Qualicoat, Qualanod quality marks — major','OEKO-TEX, REACH, technical performance certs','AS9100 aerospace, ISO13485 medical','ISO mineral purity certifications','EN technical ceramic standards','CE mark, thermal performance','Pharmaceutical USP/EP, food contact certifications','REACH, GMP, pharmacopoeia certifications','ISO waste certifications','CE mark, technical stone certifications','PSA, ISO 27001 for security print','EFSA approval, organic, allergen-free certifications'] },
+  { cat:'strategic', name:'ESG and sustainability', scores:[3,3,2,3,3,3,2,3,2,2,2,3,3,3,3,3,3,2,2,2], why:['Electric kiln roadmap — Castellón Hydrogen Valley initiative','Decarbonisation roadmap — EU Innovation Fund eligible','Low carbon stone — solar-powered cutting','Carbon-negative cork — huge ESG story','Kiln decarbonisation roadmap','Sustainable paper and packaging — EU regulation driver','Organic, regenerative, carbon farming story','Circular economy — core value proposition','Chemical recycling, water reuse','Sustainable fibre, chemical reduction','Responsible sourcing, waste reduction','Lime carbon capture — CO2 sequestration potential','Ceramics for clean energy (insulators, fuel cells)','Low-carbon building materials story','Glass circularity — 100% recyclable story','Green chemistry transition','Zero-waste and circular economy leader','Stone low-carbon vs concrete story','Sustainable print and packaging','Natural ingredient, bioprocess story'] },
+
+  { cat:'multiple', name:'Narrative and exit positioning', scores:[3,3,3,3,2,2,3,3,2,3,3,3,3,3,3,3,3,3,3,3], why:['Premium Spanish ceramics platform — Porcelanosa comparable','Portuguese ceramics — Italian strategic buyer interest','Global premium stone brand — Levantina comparable','Technical cork leader — Amorim exit route','Regional brick platform — Wienerberger exit','Specialty paper — sustainable packaging buyer','Iberian premium food brand — strategic exit','European waste services roll-up — Veolia/Suez comparable','Technical surface treatment platform','Technical textile champion — industrial OEM buyer','Aerospace/defence certified machining platform','Industrial minerals group — Imerys/Omya comparable','Technical ceramics specialist — global OEM interest','CEE brick platform — Wienerberger/Etex buyer','CEE glass — glass group strategic exit','Specialty chemical niche — global chemical buyer','European waste services — infrastructure fund exit','Global stone brand — premium construction exit','Print and packaging services DACH consolidation','Specialty ingredient platform — IFF/Givaudan interest'] },
+  { cat:'multiple', name:'Scale and revenue quality', scores:[3,3,2,3,3,2,2,3,3,2,2,3,3,3,2,2,3,2,2,2], why:['€50m → €150m via roll-up = multiple re-rating','Aveiro group to €100m+ tier','Stone group scale to €100m+ from fragmented','Cork platform to mid-market scale','Brick platform at €50m+ — above single-plant discount','Specialty paper to €80m+ platform','Regional food brand to national scale','Waste roll-up to €80m+ = infrastructure multiple','Geographic expansion to €60m+ network','Technical textile group to €80m+','Machining group to €60m+ — defence tier','Mineral group €100m+ = Imerys/Omya comparable','Technical ceramics €80m+ platform','CEE brick €80m+ national platform','CEE glass €100m+ — furnace count matters','Niche chemical €60m+ specialist','Waste €100m+ platform = infrastructure multiples','Stone €100m+ group — global buyer universe','Print €80m+ DACH platform','Ingredient €80m+ platform — M&A premium'] },
+  { cat:'multiple', name:'Recurring revenue growth', scores:[2,2,2,2,1,1,2,3,3,2,3,1,3,1,2,2,3,2,2,2], why:['Framework supply agreements with developers','Long-term supply contracts with project developers','Multi-year supply agreement with stone merchants','Long-term technical supply contracts','Construction framework contract — limited','Paper supply agreement — annual/biennial','Long-term GDO/retail framework agreement','Multi-year municipal waste contract — core','Annual maintenance contract — significant','Multi-year OEM supply agreement','Long-term aerospace/defence supply contract','Industrial supply agreement — annual tenders','Refractory maintenance contract — recurring','Construction sector — cyclical not recurring','Container supply agreement with food/wine brands','Process industry supply agreement — sticky','Annual waste service contract — core business model','Architectural project supply framework','Annual print service contract','Long-term ingredient supply agreement'] },
+  { cat:'multiple', name:'Sector re-rating via ESG/tech', scores:[3,3,2,3,3,3,2,3,2,2,2,3,3,3,3,2,3,3,2,2], why:['Decarbonised ceramic producer — premium vs commodity','Green ceramics positioning','Low-carbon construction materials re-rating','Carbon-negative materials company — highest ESG score','Sustainable building materials — EU taxonomy eligible','Sustainable packaging materials — EU taxonomy eligible','Carbon-neutral food brand positioning','Circular economy infrastructure — ESG premium','Clean surface treatment re-rating','Sustainable industrial textile positioning','Precision manufacturing with low waste positioning','Carbon capture lime potential — ESG re-rating','Advanced ceramics for clean energy sector','Low-carbon construction materials','Glass circularity — 100% recyclable positioning','Green chemistry specialist re-rating','ESG infrastructure asset re-rating','Low-carbon natural stone vs concrete','Sustainable print and FSC re-rating','Natural/clean label ingredient re-rating'] },
+];
+
+const CAT_ORDER = ['revenue','margin','capital','people','commercial','strategic','multiple'];
+const CAT_NAMES = { revenue:'Revenue growth', margin:'Margin & cost', capital:'Capital efficiency', people:'People & org', commercial:'Commercial', strategic:'Strategic moves', multiple:'Multiple expansion' };
+const SCORE_LABELS = { 3:'High', 2:'Medium', 1:'Low', 0:'—' };
+
+let hoveredLever = null;
+let hoveredSector = null;
+let filterCat = 'all';
+let filterList = 'all';
+let filterSearch = '';
+
+function buildMatrix() {
+  const table = document.getElementById('matrix');
+  let html = '<thead><tr>';
+  html += \`<th class="corner"><div class="corner-inner">Lever \\\\ Sector</div></th>\`;
+
+  SECTORS.forEach((s, si) => {
+    if (filterList !== 'all' && s.list !== filterList) return;
+    html += \`<th class="sector-th" id="sh-\${si}" onclick="highlightSector(\${si})" title="\${s.name} — \${s.geo}">
+      \${s.name}
+      <span class="sector-geo">\${s.geo}</span>
+      <span class="sector-cat-dot" style="background:\${s.color}"></span>
+    </th>\`;
+  });
+  html += '</tr></thead><tbody>';
+
+  let lastCat = null;
+  LEVERS.forEach((l, li) => {
+    if (filterCat !== 'all' && l.cat !== filterCat) return;
+    if (filterSearch && !l.name.toLowerCase().includes(filterSearch)) return;
+
+    if (l.cat !== lastCat) {
+      const visibleSectorCount = SECTORS.filter(s => filterList === 'all' || s.list === filterList).length;
+      html += \`<tr class="cat-header"><td colspan="\${visibleSectorCount + 1}" style="left:0">\${CAT_NAMES[l.cat]}</td></tr>\`;
+      lastCat = l.cat;
+    }
+
+    const badge = \`<span class="lever-cat-badge" style="background:\${CAT_COLORS[l.cat]}22; color:\${CAT_COLORS[l.cat]}">\${CAT_NAMES[l.cat]}</span>\`;
+    html += \`<tr id="lr-\${li}">\`;
+    html += \`<td class="lever-th" id="lh-\${li}" onclick="highlightLever(\${li})" title="\${l.name}">
+      \${badge}
+      <span class="lever-name-text">\${l.name}</span>
+    </td>\`;
+
+    SECTORS.forEach((s, si) => {
+      if (filterList !== 'all' && s.list !== filterList) return;
+      const score = l.scores[si];
+      html += \`<td class="cell score-\${score}" id="c-\${li}-\${si}"
+        onmouseenter="showTip(event,\${li},\${si})"
+        onmouseleave="hideTip()"
+        onclick="showDetail(\${li},\${si})">
+        <span class="cell-inner">\${score > 0 ? score === 3 ? '●' : score === 2 ? '◐' : '○' : ''}</span>
+      </td>\`;
+    });
+    html += '</tr>';
+  });
+
+  html += '</tbody>';
+  table.innerHTML = html;
+  updateStats();
+}
+
+function showTip(e, li, si) {
+  const l = LEVERS[li];
+  const s = SECTORS[si];
+  const score = l.scores[si];
+  const tip = document.getElementById('tooltip');
+  tip.innerHTML = \`<strong>\${l.name}</strong>
+    <div class="tip-score" style="color:\${score===3?'#9FE1CB':score===2?'#6db8ad':score===1?'#aaa':'#666'}">\${SCORE_LABELS[score]} impact</div>
+    <div class="tip-why">\${l.why[si]}</div>\`;
+  tip.style.display = 'block';
+  moveTip(e);
+}
+
+function moveTip(e) {
+  const tip = document.getElementById('tooltip');
+  const x = Math.min(e.clientX + 14, window.innerWidth - 320);
+  const y = Math.min(e.clientY + 14, window.innerHeight - 120);
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+}
+document.addEventListener('mousemove', e => {
+  if (document.getElementById('tooltip').style.display === 'block') moveTip(e);
+});
+
+function hideTip() {
+  document.getElementById('tooltip').style.display = 'none';
+}
+
+function highlightLever(li) {
+  document.querySelectorAll('.lever-th').forEach(el => el.classList.remove('highlighted'));
+  const el = document.getElementById('lh-' + li);
+  if (el) el.classList.add('highlighted');
+}
+
+function highlightSector(si) {
+  document.querySelectorAll('.sector-th').forEach(el => el.classList.remove('highlighted'));
+  const el = document.getElementById('sh-' + si);
+  if (el) el.classList.add('highlighted');
+}
+
+function highlightTop() {
+  document.querySelectorAll('.cell').forEach(el => {
+    el.style.opacity = el.classList.contains('score-3') ? '1' : '0.2';
+  });
+}
+
+function clearHighlights() {
+  document.querySelectorAll('.cell').forEach(el => el.style.opacity = '1');
+  document.querySelectorAll('.lever-th, .sector-th').forEach(el => el.classList.remove('highlighted'));
+}
+
+function showDetail(li, si) {
+  const l = LEVERS[li];
+  const s = SECTORS[si];
+  const score = l.scores[si];
+  if (score === 0) return;
+  alert(\`\${l.name}\\n\${s.name} (\${s.geo})\\n\\nImpact: \${SCORE_LABELS[score]}\\n\\n\${l.why[si]}\`);
+}
+
+function updateStats() {
+  const visibleLevers = LEVERS.filter(l =>
+    (filterCat === 'all' || l.cat === filterCat) &&
+    (!filterSearch || l.name.toLowerCase().includes(filterSearch))
+  );
+  const visibleSectors = SECTORS.filter(s => filterList === 'all' || s.list === filterList);
+
+  let high = 0, med = 0, totals = new Array(visibleSectors.length).fill(0);
+  visibleLevers.forEach(l => {
+    visibleSectors.forEach((s, si) => {
+      const score = l.scores[SECTORS.indexOf(s)];
+      if (score === 3) high++;
+      if (score === 2) med++;
+      totals[si] += score;
+    });
+  });
+  const maxTot = Math.max(...totals);
+  const topSectorIdx = totals.indexOf(maxTot);
+
+  document.getElementById('st-high').textContent = high;
+  document.getElementById('st-med').textContent = med;
+  document.getElementById('st-avg').textContent = visibleSectors.length > 0 ? (totals.reduce((a,b)=>a+b,0) / visibleSectors.length / visibleLevers.length).toFixed(1) : '–';
+  document.getElementById('st-top-sector').textContent = visibleSectors[topSectorIdx] ? visibleSectors[topSectorIdx].name : '–';
+}
+
+function applyFilters() {
+  filterCat = document.getElementById('catFilter').value;
+  filterList = document.getElementById('sectorFilter').value;
+  filterSearch = document.getElementById('leverSearch').value.toLowerCase().trim();
+  buildMatrix();
+}
+
+document.addEventListener("DOMContentLoaded", function() { buildMatrix(); });
+<\/script>
+</body>
+</html>
+`;
+const FSM_HTML_STR = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Sector Attractiveness — Luis Mendes 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#111009; --ink2:#3a3830; --ink3:#6e6b62;
+  --paper:#f8f5ef; --paper2:#f0ece3; --paper3:#e4dfd4; --rule:#d5cfc3;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:12px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+
+/* ── HEADER ── */
+.hdr{padding:1.4rem 2rem 1rem;border-bottom:1px solid var(--rule);background:rgba(248,245,239,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:200;display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.hdr h1{font-family:'DM Serif Display',serif;font-size:1.4rem;font-weight:400;}
+.hdr-meta{font-size:10px;color:var(--ink3);}
+
+/* ── VARIABLE KEY ── */
+.vkey{display:grid;grid-template-columns:repeat(11,1fr);border-bottom:1px solid var(--rule);background:var(--paper2);}
+.vk{padding:0.55rem 0.5rem;border-right:0.5px solid var(--rule);text-align:center;}
+.vk:last-child{border-right:none;}
+.vk-bar{height:3px;border-radius:1px;margin:0 auto 4px;width:70%;}
+.vk-name{font-size:9px;font-weight:500;color:var(--ink2);display:block;line-height:1.3;margin-bottom:2px;}
+.vk-desc{font-size:8px;color:var(--ink3);line-height:1.3;}
+.vk-new{font-size:8px;font-weight:500;padding:1px 5px;border-radius:2px;display:inline-block;margin-top:2px;background:#EEEDFE;color:#3d3694;}
+.vk-have{font-size:8px;font-weight:500;padding:1px 5px;border-radius:2px;display:inline-block;margin-top:2px;background:#EAF3DE;color:#2d6313;}
+
+/* ── SCORE LEGEND ── */
+.sleg{display:flex;gap:0;border-bottom:1px solid var(--rule);background:var(--paper);}
+.sleg-lbl{padding:0.45rem 2rem;font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);border-right:0.5px solid var(--rule);white-space:nowrap;display:flex;align-items:center;}
+.sleg-items{display:flex;gap:0;flex:1;}
+.sleg-item{display:flex;align-items:center;gap:6px;padding:0.45rem 1rem;border-right:0.5px solid var(--rule);font-size:10px;color:var(--ink2);}
+.sleg-item:last-child{border-right:none;}
+.sleg-n{font-size:1rem;font-family:'DM Serif Display',serif;line-height:1;width:16px;text-align:center;}
+
+/* ── FILTERS ── */
+.filters{padding:0.55rem 2rem;border-bottom:1px solid var(--rule);display:flex;gap:6px;align-items:center;flex-wrap:wrap;background:var(--paper2);}
+.fl{font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);}
+.fb{font-size:10px;font-weight:500;padding:3px 11px;border:1px solid var(--rule);border-radius:20px;background:var(--paper);color:var(--ink3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.fb:hover{border-color:var(--ink3);color:var(--ink);}
+.fb.on{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+
+/* ── TIER HEADER ── */
+.tier-hdr{padding:0.5rem 2rem;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid var(--rule);border-top:0.5px solid var(--rule);background:var(--paper2);}
+.tier-title{font-family:'DM Serif Display',serif;font-size:0.95rem;}
+.tier-desc{font-size:10px;color:var(--ink3);}
+
+/* ── COL HEADER ── */
+.col-hdr{display:grid;grid-template-columns:40px 18px 1fr 44px 44px 44px 44px 44px 44px 44px 44px 44px 44px 44px 80px 90px 26px;gap:0;padding:0.3rem 2rem;background:var(--paper3);border-bottom:0.5px solid var(--rule);}
+.ch{text-align:center;font-size:8px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:0 2px;line-height:1.3;}
+.ch-name{text-align:left;font-size:8px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;}
+.ch-total{text-align:center;font-size:8px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:0 4px;}
+.ch-out{text-align:center;font-size:8px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:0 4px;}
+
+/* ── SECTOR ROW ── */
+.srow{border-bottom:0.5px solid var(--rule);cursor:pointer;transition:background .1s;}
+.sr-main{display:grid;grid-template-columns:40px 18px 1fr 44px 44px 44px 44px 44px 44px 44px 44px 44px 44px 44px 80px 90px 26px;gap:0;align-items:center;padding:0.75rem 2rem;}
+.srow:hover .sr-main{background:var(--paper2);}
+.sr-rank{font-size:11px;font-weight:500;color:var(--ink);background:var(--paper3);border:0.5px solid var(--rule);border-radius:4px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;margin:0 auto;}
+.sr-dot{width:10px;height:10px;border-radius:2px;margin:0 4px 0 2px;flex-shrink:0;}
+.sr-name{padding-right:8px;}
+.sr-name-main{font-size:12px;font-weight:500;display:block;line-height:1.25;}
+.sr-name-geo{font-size:9px;color:var(--ink3);display:block;margin-top:1px;}
+.sr-badge{font-size:8px;font-weight:500;padding:1px 5px;border-radius:2px;display:inline-block;margin-top:2px;}
+
+/* ── SCORE CELLS ── */
+.sc{text-align:center;padding:0 2px;}
+.sc-val{font-size:12px;font-weight:500;display:block;line-height:1;}
+.sc-bar{height:2px;border-radius:1px;margin:3px auto 0;max-width:28px;}
+
+/* ── DIVIDER between old/new ── */
+.sc.new-var{border-left:0.5px dashed var(--rule);}
+
+/* ── TOTAL ── */
+.sr-total{text-align:center;padding:0 4px;}
+.tot-num{font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400;display:block;line-height:1;}
+.tot-max{font-size:8px;color:var(--ink3);}
+
+/* ── OUTLOOK ── */
+.sr-out{text-align:center;padding:0 4px;}
+.out-stars{display:block;font-size:10px;line-height:1;letter-spacing:-1px;}
+.out-label{font-size:9px;font-weight:500;display:block;margin-top:2px;}
+.out-risk{font-size:8px;font-weight:500;padding:1px 5px;border-radius:2px;display:block;margin-top:2px;text-align:center;}
+
+/* ── EXPAND ── */
+.sr-expand{display:none;border-top:0.5px solid var(--rule);padding:1rem 2rem 1rem calc(2rem + 58px);background:var(--paper2);}
+.srow.open .sr-expand{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.exp-card{background:var(--paper);border:0.5px solid var(--rule);border-radius:6px;padding:0.7rem 0.9rem;}
+.exp-card h5{font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;}
+.exp-card p{font-size:11px;color:var(--ink2);line-height:1.6;}
+.exp-card p strong{color:var(--ink);font-weight:500;}
+.exp-card.hl{border-left:3px solid #8a6c1e;border-radius:0 6px 6px 0;}
+.exp-card.rk{border-left:3px solid #a03020;border-radius:0 6px 6px 0;}
+.sr-arr{font-size:10px;color:var(--ink3);transition:transform .2s;text-align:center;}
+.srow.open .sr-arr{transform:rotate(180deg);}
+
+/* ── NEW VAR SECTION NOTE ── */
+.new-sep{display:flex;align-items:center;gap:8px;padding:0 4px;}
+.new-sep-line{flex:1;height:0.5px;background:var(--rule);}
+.new-sep-lbl{font-size:8px;color:var(--ink3);white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <h1>Full Sector Attractiveness Matrix</h1>
+    <p class="hdr-meta">20 sectors · 11 variables (7 original + 4 new) · Scores 1–5 · Click any row for detail · Luis Mendes 2026</p>
+  </div>
+  <div class="hdr-meta" style="text-align:right">Original 7 criteria + Supplier power · Substitution risk · Capital intensity · Exit buyer depth</div>
+</div>
+
+<div class="vkey">
+  <div class="vk"><div class="vk-bar" style="background:#534AB7"></div><span class="vk-name">Knowledge edge</span><span class="vk-desc">BA Glass + Inditex + GANT direct experience</span><span class="vk-have">Original</span></div>
+  <div class="vk"><div class="vk-bar" style="background:#D85A30"></div><span class="vk-name">Energy lever</span><span class="vk-desc">EBITDA impact from energy management</span><span class="vk-have">Original</span></div>
+  <div class="vk"><div class="vk-bar" style="background:#1D9E75"></div><span class="vk-name">Export growth</span><span class="vk-desc">Revenue growth via export expansion</span><span class="vk-have">Original</span></div>
+  <div class="vk"><div class="vk-bar" style="background:#3B6D11"></div><span class="vk-name">China protection</span><span class="vk-desc">Structural moat vs Chinese competition</span><span class="vk-have">Original</span></div>
+  <div class="vk"><div class="vk-bar" style="background:#185FA5"></div><span class="vk-name">Demand stability</span><span class="vk-desc">Inverse of end-market cyclicality</span><span class="vk-have">Original</span></div>
+  <div class="vk"><div class="vk-bar" style="background:#993556"></div><span class="vk-name">Buyer power</span><span class="vk-desc">Your pricing power — inverse of buyer professionalism</span><span class="vk-have">Original</span></div>
+  <div class="vk"><div class="vk-bar" style="background:#BA7517"></div><span class="vk-name">Fragmentation</span><span class="vk-desc">Acquisition availability and buy-and-build potential</span><span class="vk-have">Original</span></div>
+  <div class="vk" style="border-left:2px dashed var(--rule)"><div class="vk-bar" style="background:#E24B4A"></div><span class="vk-name">Supplier power</span><span class="vk-desc">Inverse of raw material concentration and input volatility</span><span class="vk-new">New</span></div>
+  <div class="vk"><div class="vk-bar" style="background:#D4537E"></div><span class="vk-name">Substitution risk</span><span class="vk-desc">Inverse of structural product substitution threat (beyond China)</span><span class="vk-new">New</span></div>
+  <div class="vk"><div class="vk-bar" style="background:#639922"></div><span class="vk-name">Capital intensity</span><span class="vk-desc">Inverse of maintenance capex burden — 5 = asset-light, 1 = heavy reinvestment</span><span class="vk-new">New</span></div>
+  <div class="vk"><div class="vk-bar" style="background:#0F6E56"></div><span class="vk-name">Exit buyer depth</span><span class="vk-desc">Number and quality of credible strategic acquirers at exit</span><span class="vk-new">New</span></div>
+</div>
+
+<div class="sleg">
+  <div class="sleg-lbl">Score guide</div>
+  <div class="sleg-items">
+    <div class="sleg-item"><span class="sleg-n" style="color:#1D9E75">5</span><span>Outstanding on this criterion</span></div>
+    <div class="sleg-item"><span class="sleg-n" style="color:#3B6D11">4</span><span>Strong — meaningful advantage</span></div>
+    <div class="sleg-item"><span class="sleg-n" style="color:#8a8070">3</span><span>Moderate — present but not primary</span></div>
+    <div class="sleg-item"><span class="sleg-n" style="color:#c07040">2</span><span>Weak — real limitation</span></div>
+    <div class="sleg-item"><span class="sleg-n" style="color:#a03020">1</span><span>Absent or adverse</span></div>
+    <div class="sleg-item" style="border-left:2px dashed var(--rule)"><span style="font-size:8px;color:var(--ink3)">Dashed line separates original 7 from 4 new variables</span></div>
+  </div>
+</div>
+
+<div class="filters">
+  <span class="fl">Filter:</span>
+  <button class="fb on" onclick="filt('all',this)">All 20</button>
+  <button class="fb" onclick="filt('iberia-energy',this)">Iberia · Energy</button>
+  <button class="fb" onclick="filt('iberia-non',this)">Iberia · Non-energy</button>
+  <button class="fb" onclick="filt('europe-energy',this)">Europe · Energy</button>
+  <button class="fb" onclick="filt('europe-non',this)">Europe · Non-energy</button>
+  <button class="fb" onclick="filt('tier1',this)">Tier 1 only</button>
+</div>
+
+<div id="list"></div>
+
+<\x73cript>
+const C11=['knowledge','energy','export','china','stability','buyerPower','fragmentation','supplier','substitution','capex','exitDepth'];
+const C11_COL=['#534AB7','#D85A30','#1D9E75','#3B6D11','#185FA5','#993556','#BA7517','#E24B4A','#D4537E','#639922','#0F6E56'];
+const C11_LBL=['Know','Energy','Export','China','Stable','Buyer+','Frag','Supp','Sub','Capex','Exit'];
+
+const LBG={'iberia-energy':'#dff2ec','iberia-non':'#eeedfe','europe-energy':'#faeeda','europe-non':'#fbeaf0'};
+const LBC={'iberia-energy':'#0a5c48','iberia-non':'#3d3694','europe-energy':'#6a3e08','europe-non':'#7a2244'};
+const LLB={'iberia-energy':'Iberia · Energy','iberia-non':'Iberia · Non-energy','europe-energy':'Europe · Energy','europe-non':'Europe · Non-energy'};
+
+// Structural / cycl risk for penalties
+const STRUCT_PEN={glass:2,cork:3,paper:4,'spec-chem':6};
+
+// 4 new scores per sector: supplier(inv), substitution(inv), capex(inv), exitDepth
+// supplier: 5=many cheap suppliers, 1=single expensive source
+// substitution: 5=no structural substitute, 1=product being replaced
+// capex: 5=asset-light, 1=very heavy reinvestment burden
+// exitDepth: 5=many strategic buyers competing, 1=very few exit options
+const NEW={
+  'stone':      {supplier:4, substitution:5, capex:2, exitDepth:3},
+  'cer-es':     {supplier:3, substitution:4, capex:2, exitDepth:4},
+  'lime':       {supplier:5, substitution:4, capex:2, exitDepth:3},
+  'cer-pt':     {supplier:3, substitution:4, capex:2, exitDepth:4},
+  'food-ib':    {supplier:3, substitution:5, capex:4, exitDepth:3},
+  'stone-eu':   {supplier:4, substitution:5, capex:3, exitDepth:3},
+  'glass':      {supplier:3, substitution:2, capex:1, exitDepth:5},
+  'brick-cee':  {supplier:5, substitution:3, capex:2, exitDepth:3},
+  'tech-cer':   {supplier:3, substitution:4, capex:2, exitDepth:4},
+  'cork':       {supplier:2, substitution:2, capex:3, exitDepth:3},
+  'brick':      {supplier:5, substitution:3, capex:2, exitDepth:3},
+  'waste-eu':   {supplier:5, substitution:5, capex:3, exitDepth:4},
+  'waste-ib':   {supplier:5, substitution:5, capex:3, exitDepth:3},
+  'food-eu':    {supplier:3, substitution:4, capex:4, exitDepth:4},
+  'print':      {supplier:3, substitution:3, capex:3, exitDepth:3},
+  'paper':      {supplier:3, substitution:2, capex:2, exitDepth:3},
+  'surface':    {supplier:3, substitution:3, capex:3, exitDepth:2},
+  'textiles':   {supplier:3, substitution:3, capex:3, exitDepth:3},
+  'prec':       {supplier:4, substitution:4, capex:3, exitDepth:3},
+  'spec-chem':  {supplier:2, substitution:3, capex:3, exitDepth:3},
+};
+
+// New variable explanations per sector (supplier, substitution, capex, exit)
+const NEW_WHY={
+  'stone':     ['Multiple quarry operators and machinery suppliers — no single dependency. Abrasive blades and saw consumables have multiple sources.','Near-zero substitution risk. Stone is irreplaceable in luxury architecture, heritage, and premium interiors. Engineered quartz competes in kitchen worktops but not in architecture.','Quarry development and cutting equipment are capital-intensive. Multiple sites = ongoing reinvestment. Maintenance capex 10–15% of revenue typical.','Levantina, Cosentino, Polycor (Canada), and Asian stone groups are credible strategic buyers. 3–4 realistic acquirers at exit.'],
+  'cer-es':    ['Gas supply has 2–3 major suppliers in Spain (Endesa, Naturgy, Repsol). Clay inputs are locally abundant. Glaze chemicals have multiple European suppliers. Moderate supplier concentration.','Ceramic tiles face competition from luxury vinyl tile (LVT) and engineered wood in flooring. However specification-led tiles in commercial and premium residential are not easily substituted.','High capex sector. Kilns require €5–15m rebuilds every 8–12 years. Press upgrades every 5–7 years. Maintenance capex typically 8–12% of revenue. Offset by energy savings.','Pamesa, RAK Ceramics (UAE), Mohawk (US), and SCG (Thailand) are credible strategic acquirers. Strong strategic buyer universe for a well-run Castellón group.'],
+  'lime':      ['Limestone is one of the most abundant minerals on earth — available in most European geographies. Multiple quarry operators. Energy (gas or oil) is the key cost variable, not raw material.','Lime is a fundamental industrial chemical — steel, water, construction, food. No credible structural substitute exists for most applications. Powdered lime cannot be replaced.','Very high capex. Lime kilns cost €15–30m to build. Crushing and processing plant adds capital burden. Major cement groups (Lhoist, Omya, Imerys) typically run at 12–15% capex/revenue.','Lhoist (Belgium), Omya (Switzerland), Imerys (France) — three global industrial minerals groups who consolidate. Credible exit at good multiples. Strong strategic buyer universe.'],
+  'cer-pt':    ['Same as Castellón — gas supply, clay, glaze chemicals all have multiple sources in Portugal and Spain. Slightly less supply depth than Spain but manageable.','Same substitution dynamic as Castellón. LVT and engineered wood compete in residential floors. Specification-led premium ceramics are more resilient.','Same capex profile as Castellón — kilns, presses, glazing lines. Portuguese plants typically newer, so lower near-term rebuild risk but same long-run burden.','Same strategic buyer universe as Castellón, plus Portuguese government may have strategic interest in national ceramics industry consolidation.'],
+  'food-ib':   ['Olive trees and grape vines take decades to establish — raw material supply is structurally constrained and cannot be quickly expanded. Seasonal harvest risk. Weather volatility affects supply cost.','GI-protected food products have near-zero substitution risk. Rioja wine, Alentejo olive oil, Iberian ham cannot be substituted — the GI designation is the product. Structural permanence.','Food processing businesses have moderate capex. Production equipment (presses, bottling lines, tanks) requires regular replacement but scale is smaller than heavy industry. 5–8% capex/revenue.','Strategic buyer universe is moderate — regional food groups, multinational F&B companies (Nestlé, Unilever for premium ingredients), and financial buyers. Not the broadest universe.'],
+  'stone-eu':  ['Same supplier logic as Iberian stone. Carrara marble extraction is more concentrated — fewer quarry operators in the Carrara valley. Slightly higher supplier power than Iberia.','Engineered stone (Silestone, Calacatta lookalikes) competes in kitchen worktops but not in architecture, heritage restoration, or premium hospitality. Origin stone has near-zero structural substitution.','Stone processing has significant capex in cutting equipment, polishing lines, and water recycling. Italian operations typically older with higher near-term reinvestment need.','Cosentino, Levantina, Polycor, and Asian premium stone groups are credible buyers. Italian heritage and Carrara brand attract premium strategic interest at exit.'],
+  'glass':     ['Glass is energy (25%), cullet (recycled glass 30–40%), and sand/soda ash (20%). Sand is commodity. Soda ash has 3–4 global suppliers (Solvay, Tata Chemicals, Genesis). Energy is the key variable — same lever as ceramics.','Cans (aluminium) and PET plastic are taking share from glass in beer and standard wine. This is the core structural risk scored in Demand Stability. Exit: pharma vials and premium spirits bottles have near-zero substitution.','Very high capex. Glass furnaces cost €20–50m to rebuild every 8–12 years. This is the highest capex burden in the list. Scored 1 — makes free cash flow tight. Must account for furnace rebuild timing in any acquisition model.','Ardagh Group, Verallia, Owens-Illinois, Vidrala — four global strategic buyers with known acquisition programmes. Deepest strategic buyer universe of any sector. Your BA Glass relationships give you direct access to these conversations.'],
+  'brick-cee': ['Clay is extremely abundant — literally the ground beneath CEE. Multiple quarry options everywhere. Gas and electricity are the key cost variables, not raw materials. Very low supplier power.','Brick faces long-term substitution from timber frame construction and prefabricated building systems. This is a slow secular trend (decades) not an immediate risk. Near-term CEE construction boom masks it.','Very high capex. Brick tunnel kilns cost €8–20m to rebuild. Extruder and cutter replacement adds to burden. CEE family businesses often have under-invested plant needing catch-up capex.','Wienerberger (Austria), Etex Group (Belgium), and Brickability (UK) are credible acquirers. CEE brick groups are Wienerberger targets if brought to sufficient scale (€50m+ revenue). Moderate buyer depth.'],
+  'tech-cer':  ['Technical ceramic raw materials (alumina, zirconia, silicon carbide) are more specialised than construction ceramics. Alumina has 2–3 global suppliers. Zirconia from China is a single-source dependency risk — important vulnerability.','Technical ceramics for high-performance applications (aerospace, medical, energy) have no substitutes. Refractories for furnace lining have limited alternatives. Premium technical ceramics are structurally protected.','High capex. Technical ceramic kilns and presses are precision equipment. Process certification adds indirect capex burden. Maintenance and certification renewal 10–14% of revenue typical in this sector.','Global technical ceramics groups (Kyocera, CoorsTek, Saint-Gobain, RHI Magnesita for refractories) are credible acquirers. Good strategic buyer universe for a focused technical ceramics niche.'],
+  'cork':      ['Cork bark can only be harvested from cork oak forests — predominantly in Portugal and Spain. Forest ownership is fragmented but you cannot create new sources quickly. Processing chemicals (peroxide, solvents) have multiple suppliers but bark is the key constraint. Moderate supplier power.','Wine stoppers face structural substitution from screw caps — this is ongoing and accelerating. Synthetic corks compete in lower-end wine. Technical cork (construction, aerospace) has low substitution risk. Overall score reflects stopper dependency.','Cork autoclaves and processing equipment have moderate capex. Less capital-intensive than glass or ceramics. 6–9% capex/revenue typical. Main reinvestment is in drying capacity and granulation lines.','Corticeira Amorim is the dominant buyer — which concentrates exit options. OENEO (France) and specialty packaging groups could also acquire. Exit options exist but buyer universe is narrower than glass or ceramics.'],
+  'brick':     ['Same as CEE brick — clay is commodity, gas is the key variable. Very low raw material supplier power. Multiple gas suppliers in Iberia.','Same secular timber frame and prefab substitution risk as CEE brick but slightly more advanced in Western Europe. Spain and Portugal still predominantly masonry construction — longer transition runway than Northern Europe.','Same high capex profile as CEE brick. Iberian family brickworks often have ageing equipment requiring significant catch-up reinvestment. Factor into acquisition pricing.','Same strategic buyer universe as CEE brick. Wienerberger and Etex are credible exit targets for a regional Iberian brick platform.'],
+  'waste-eu':  ['No meaningful raw material inputs — waste treatment is a service business. Trucks, containers, treatment chemicals, and permits are the operational inputs. Multiple chemical suppliers, competitive fleet market. Very low supplier power.','Industrial and hazardous waste treatment has no substitute — regulated waste must be treated by licensed operators. Regulatory strengthening continuously increases, not decreases, demand. Near-zero substitution risk.','Waste treatment is relatively asset-light vs manufacturing. Treatment facilities and vehicle fleets require ongoing capex but at lower intensity than kiln-based industries. 6–8% capex/revenue typical.','Veolia, Suez/Veolia, Remondis, and Séché Environnement are credible strategic acquirers. Strong European platform acquirers with known consolidation appetite. Good exit universe.'],
+  'waste-ib':  ['Same as European waste — service business, no meaningful raw material dependency. Low supplier power.','Same regulatory logic — no substitution possible. Mandatory waste treatment is structurally growing.','Same asset profile as European waste — moderate capex for treatment facilities and fleet.','Smaller Iberian waste treatment market means fewer strategic acquirers at exit. Veolia and Suez operate in Iberia but smaller deal size reduces strategic buyer interest. Moderate exit universe.'],
+  'food-eu':   ['Specialty food ingredients often require specific fermentation feedstocks, exotic botanicals, or specialty chemicals. Some ingredients have 1–2 global suppliers for key precursors. Moderate supplier concentration risk.','EU food safety regulation and clean label trends protect functional ingredients. However natural ingredients face competition from synthesised alternatives (lower cost, higher consistency). Some substitution risk in mid-market applications.','Food ingredient production is relatively asset-light vs heavy manufacturing. Fermentation vessels, extraction equipment, and drying systems require maintenance but at moderate intensity. 6–9% capex/revenue.','IFF, Givaudan, Symrise, and Firmenich are the global flavour and ingredient consolidators — well-capitalised with active acquisition programmes. Strong exit buyer universe for a well-positioned niche.'],
+  'print':     ['Paper and ink are the main inputs. Both have multiple suppliers globally. Print equipment (presses, digital printers) from 2–3 dominant manufacturers (Heidelberg, Koenig & Bauer, HP). Moderate supplier dependency on equipment.','Commercial printing faces secular substitution from digital media. Specialty/regulatory printing (pharma labels, security) has near-zero substitution. Score reflects mixed portfolio.','Print requires ongoing equipment investment as digital technology evolves. Presses have 7–10 year useful life before competitive obsolescence. Moderate to high capex for a non-capital-heavy sector.','DSCB, CCL Industries, Avery Dennison, and Brady are credible specialty label acquirers. Commercial print market has fewer strategic buyers. Buyer universe depends heavily on product mix.'],
+  'paper':     ['Pulp and energy are the two main cost drivers. Pulp has a global spot market — moderate supplier power offset by multiple sources. Portugal has eucalyptus pulp advantage.','Commodity graphic paper faces structural decline from digital substitution. Sustainable packaging paper has regulatory tailwind but competes with other substrates (bioplastics, moulded pulp).','Paper mills have the highest capex burden of the non-energy-intensive sectors. Paper machines cost €50–200m. Rebuilds every 15–20 years but major ongoing maintenance. Capex/revenue 10–15%.','Mondi, Smurfit Kappa, DS Smith, and Billerud are European packaging paper consolidators. Good strategic buyer universe for sustainable packaging positioned businesses.'],
+  'surface':   ['Surface treatment chemicals (zinc, anodising compounds, powder coat) have multiple suppliers. Zinc is a globally traded commodity. No single-source dependency.','Metal surface treatment has no structural substitute — steel must be protected. The substitution risk is more about end-market mix (automotive losing to composites) than the treatment process itself.','Treatment line equipment has moderate capex. Rectifiers, tanks, conveyor systems require regular replacement. 6–8% capex/revenue typical.','No dominant strategic acquirer — surface treatment is fragmented globally. Private equity roll-up is the primary exit. Strategic buyer universe is shallow compared to ceramics or glass.'],
+  'textiles':  ['Yarn and fibre inputs have multiple global suppliers. Technical fibre (carbon fibre, aramid) is more concentrated — 2–3 global suppliers for specialty grades. Moderate supplier dependency in technical grades.','Technical textiles have moderate substitution risk. Composite materials replacing technical fabrics in some automotive and aerospace applications. Geotextiles facing competition from synthetic alternatives.','Textile machinery (looms, finishing equipment) has moderate capex. Equipment useful life 10–15 years. Less capital-intensive than ceramics or glass. 6–8% capex/revenue.','No dominant strategic acquirer in technical textiles. Freudenberg, Toray, and Teijin are credible global buyers but acquisition programmes are selective. Moderate exit buyer depth.'],
+  'prec':      ['Tooling, cutting inserts, and raw materials (bar stock, castings) have multiple suppliers. No single-source dependency. Machine tools (DMG Mori, Mazak) have an oligopolistic supply but competitive market.','Precision machined components are increasingly being replaced by additive manufacturing (3D printing) in some aerospace and medical applications. Medium-term technology disruption risk in non-critical components.','CNC machining requires regular equipment investment. Machine tool useful life 7–12 years. High precision equipment costs €200k–2m per machine. Moderate capex intensity for the sector.','No obvious strategic consolidator in general precision machining. Aerospace Tier 1 and defence primes occasionally acquire supply chain companies. Limited strategic buyer depth — primarily PE exit.'],
+  'spec-chem': ['Specialty chemical raw materials often include regulated precursors with limited global suppliers. Some specialty intermediates have 1–2 global sources. Higher supplier power than most sectors.','China imports of chemicals rose 140% 2019–2024 — specialty chemicals face both import substitution and domestic industry pressure. Some regulatory-qualified niches are protected but broad chemical categories are being substituted.','Chemical plants require significant ongoing capex — reactors, distillation columns, safety systems. Regulatory compliance adds indirect capex burden. 8–12% capex/revenue typical.','BASF, Dow, Solvay, and specialty chemical consolidators are credible acquirers but only for clearly differentiated niches. Commodity chemical businesses attract no strategic premium. Buyer depth depends heavily on niche.'],
+};
+
+// Weights for scoring (knowledge 1.5x, energy 1.2x, others 1x)
+// New variables: supplier 1x, substitution 1x, capex 1x, exitDepth 1x
+// Max = 5*1.5 + 5*1.2 + 5*9 = 7.5+6+45 = 58.5, scale to /55
+
+const SECTORS=[
+  {id:'stone',   list:'iberia-energy',  color:'#1D9E75', rank:1,  name:'Natural stone — granite, marble, limestone', geo:'Galicia / Alentejo / Alicante',  scores:{knowledge:3,energy:3,export:5,china:5,stability:4,buyerPower:5,fragmentation:5}, structRisk:false,cyclRisk:false},
+  {id:'cer-es',  list:'iberia-energy',  color:'#1D9E75', rank:2,  name:'Ceramics tiles — Castellón, Spain',          geo:'Castellón province',              scores:{knowledge:4,energy:5,export:5,china:3,stability:3,buyerPower:5,fragmentation:5}, structRisk:false,cyclRisk:true},
+  {id:'lime',    list:'europe-energy',  color:'#BA7517', rank:3,  name:'Lime and calcium carbonate',                  geo:'France / Germany / Poland / CEE', scores:{knowledge:4,energy:5,export:3,china:5,stability:4,buyerPower:2,fragmentation:4}, structRisk:false,cyclRisk:false},
+  {id:'cer-pt',  list:'iberia-energy',  color:'#1D9E75', rank:4,  name:'Ceramics tiles — Aveiro, Portugal',           geo:'Aveiro district',                 scores:{knowledge:4,energy:4,export:4,china:3,stability:3,buyerPower:5,fragmentation:4}, structRisk:false,cyclRisk:true},
+  {id:'food-ib', list:'iberia-non',     color:'#534AB7', rank:5,  name:'Agri-food processing — olive oil, wine, premium food', geo:'Andalucía / Alentejo / Douro', scores:{knowledge:3,energy:1,export:5,china:5,stability:5,buyerPower:5,fragmentation:4}, structRisk:false,cyclRisk:false},
+  {id:'stone-eu',list:'europe-non',     color:'#993556', rank:6,  name:'Natural stone — Northern and Central Europe',  geo:'Italy / Scandinavia',             scores:{knowledge:3,energy:2,export:4,china:5,stability:4,buyerPower:5,fragmentation:4}, structRisk:false,cyclRisk:false},
+  {id:'glass',   list:'europe-energy',  color:'#BA7517', rank:7,  name:'Glass packaging — CEE / Benelux / Italy',      geo:'CEE / Benelux / Italy',           scores:{knowledge:5,energy:5,export:3,china:4,stability:3,buyerPower:3,fragmentation:3}, structRisk:true,cyclRisk:false},
+  {id:'brick-cee',list:'europe-energy', color:'#BA7517', rank:8,  name:'Brick and clay — CEE',                         geo:'Poland / Romania / Hungary',      scores:{knowledge:3,energy:5,export:1,china:5,stability:3,buyerPower:5,fragmentation:4}, structRisk:false,cyclRisk:true},
+  {id:'tech-cer',list:'europe-energy',  color:'#BA7517', rank:9,  name:'Technical ceramics and refractories',           geo:'Germany / Italy / Czech Republic', scores:{knowledge:4,energy:4,export:4,china:3,stability:3,buyerPower:2,fragmentation:4}, structRisk:false,cyclRisk:false},
+  {id:'cork',    list:'iberia-energy',  color:'#1D9E75', rank:10, name:'Cork processing and technical cork products',   geo:'Santa Maria da Feira / Coruche',  scores:{knowledge:3,energy:3,export:5,china:5,stability:4,buyerPower:3,fragmentation:4}, structRisk:true,cyclRisk:false},
+  {id:'brick',   list:'iberia-energy',  color:'#1D9E75', rank:11, name:'Brick and clay — Iberia',                       geo:'Alentejo / Extremadura',          scores:{knowledge:3,energy:5,export:1,china:5,stability:2,buyerPower:5,fragmentation:4}, structRisk:false,cyclRisk:true},
+  {id:'waste-eu',list:'europe-non',     color:'#993556', rank:12, name:'Industrial waste treatment — Europe',            geo:'Germany / France / Benelux / CEE',scores:{knowledge:2,energy:1,export:1,china:5,stability:5,buyerPower:3,fragmentation:5}, structRisk:false,cyclRisk:false},
+  {id:'waste-ib',list:'iberia-non',     color:'#534AB7', rank:13, name:'Industrial waste treatment — Iberia',            geo:'PT + ES',                         scores:{knowledge:2,energy:1,export:1,china:5,stability:5,buyerPower:3,fragmentation:4}, structRisk:false,cyclRisk:false},
+  {id:'food-eu', list:'europe-non',     color:'#993556', rank:14, name:'Specialty food ingredients and additives',       geo:'France / Germany / Netherlands',  scores:{knowledge:2,energy:1,export:4,china:5,stability:5,buyerPower:1,fragmentation:3}, structRisk:false,cyclRisk:false},
+  {id:'print',   list:'europe-non',     color:'#993556', rank:15, name:'Specialty printing and packaging',               geo:'Germany / Benelux / CEE / Italy', scores:{knowledge:2,energy:1,export:3,china:3,stability:4,buyerPower:3,fragmentation:4}, structRisk:false,cyclRisk:false},
+  {id:'paper',   list:'iberia-energy',  color:'#1D9E75', rank:16, name:'Specialty paper and sustainable packaging',      geo:'Portugal / Northern Spain',       scores:{knowledge:3,energy:3,export:4,china:3,stability:4,buyerPower:3,fragmentation:3}, structRisk:true,cyclRisk:false},
+  {id:'surface', list:'iberia-non',     color:'#534AB7', rank:17, name:'Metal surface treatment and galvanising',        geo:'PT + ES industrial zones',        scores:{knowledge:2,energy:2,export:2,china:4,stability:3,buyerPower:2,fragmentation:3}, structRisk:false,cyclRisk:false},
+  {id:'textiles',list:'iberia-non',     color:'#534AB7', rank:18, name:'Technical textiles and industrial fabrics',      geo:'Braga / Catalonia',               scores:{knowledge:2,energy:1,export:4,china:3,stability:4,buyerPower:1,fragmentation:3}, structRisk:false,cyclRisk:false},
+  {id:'prec',    list:'iberia-non',     color:'#534AB7', rank:19, name:'Precision metalworking — Iberia',               geo:'PT industrial parks / Basque',    scores:{knowledge:2,energy:1,export:3,china:3,stability:3,buyerPower:1,fragmentation:3}, structRisk:false,cyclRisk:false},
+  {id:'spec-chem',list:'europe-energy', color:'#BA7517', rank:20, name:'Specialty chemicals',                            geo:'Germany / Benelux / France',      scores:{knowledge:2,energy:3,export:4,china:2,stability:3,buyerPower:1,fragmentation:3}, structRisk:true,cyclRisk:false},
+];
+
+
+const TIERS=[
+  {min:1,max:4,  label:'Tier 1 — Strong conviction',  color:'#0a5c48',desc:'Highest weighted scores across all 11 variables. Enter with confidence.'},
+  {min:5,max:9,  label:'Tier 2 — Selective conviction',color:'#185FA5',desc:'Strong on most dimensions with one or two manageable weaknesses.'},
+  {min:10,max:14,label:'Tier 3 — Situational',         color:'#BA7517',desc:'Good sectors with specific profile limitations. Viable with right target.'},
+  {min:15,max:20,label:'Tier 4 — Caution',             color:'#7a2244',desc:'One or more structural weaknesses vs your specific skills. Only with compelling specific opportunity.'},
+];
+
+function wScore(s){
+  const sc=Object.assign({},s.scores,NEW[s.id]);
+  const w=sc.knowledge*1.5+sc.energy*1.2+sc.export+sc.china+sc.stability+sc.buyerPower+sc.fragmentation+sc.supplier+sc.substitution+sc.capex+sc.exitDepth;
+  let adj=w*(55/58.5);
+  if(s.structRisk) adj-=(STRUCT_PEN[s.id]||4);
+  if(s.cyclRisk)   adj-=1.5;
+  if(s.scores.stability<=2) adj-=1;
+  return {raw:Math.round(w),adj:Math.round(adj*10)/10};
+}
+
+function getOutlook(s){
+  const {adj}=wScore(s);
+  if(adj>=46) return {stars:'●●●●●',label:'Strong buy',color:'#0a5c48'};
+  if(adj>=40) return {stars:'●●●●○',label:'Buy',       color:'#1D9E75'};
+  if(adj>=34) return {stars:'●●●○○',label:'Selective', color:'#BA7517'};
+  if(adj>=28) return {stars:'●●○○○',label:'Cautious',  color:'#c07030'};
+  return      {stars:'●○○○○',label:'Avoid',     color:'#a03020'};
+}
+
+let activeFilt='all';
+function filt(v,btn){
+  activeFilt=v;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  render();
+}
+function tog(rank){
+  const el=document.getElementById('r'+rank);
+  if(el) el.classList.toggle('open');
+}
+
+function render(){
+  const el=document.getElementById('list');
+  let html='';
+  let lastTier=null;
+  const allCols=C11;
+  const allColors=C11_COL;
+  const allLabels=C11_LBL;
+
+  SECTORS.forEach((s,i)=>{
+    const show=activeFilt==='all'||activeFilt===s.list||(activeFilt==='tier1'&&s.rank<=4);
+    if(!show) return;
+    const tier=TIERS.find(t=>s.rank>=t.min&&s.rank<=t.max);
+    if(tier!==lastTier){
+      html+=\`<div class="tier-hdr" style="border-left:4px solid \${tier.color}">
+        <span class="tier-title" style="color:\${tier.color}">\${tier.label}</span>
+        <span class="tier-desc">\${tier.desc}</span>
+      </div>
+      <div class="col-hdr">
+        <div class="ch">Rank</div><div></div>
+        <div class="ch-name">Sector</div>
+        <div class="ch" style="color:#534AB7">Know</div>
+        <div class="ch" style="color:#D85A30">Energy</div>
+        <div class="ch" style="color:#1D9E75">Export</div>
+        <div class="ch" style="color:#3B6D11">China</div>
+        <div class="ch" style="color:#185FA5">Stable</div>
+        <div class="ch" style="color:#993556">Buyer+</div>
+        <div class="ch" style="color:#BA7517">Frag</div>
+        <div class="ch" style="color:#E24B4A;border-left:1px dashed var(--rule);padding-left:4px">Supp</div>
+        <div class="ch" style="color:#D4537E">Sub</div>
+        <div class="ch" style="color:#639922">Capex</div>
+        <div class="ch" style="color:#0F6E56">Exit</div>
+        <div class="ch-total">Total /55</div>
+        <div class="ch-out">Outlook</div>
+        <div></div>
+      </div>\`;
+      lastTier=tier;
+    }
+
+    const n=NEW[s.id];
+    const {raw,adj}=wScore(s);
+    const ol=getOutlook(s);
+    const riskBadge=s.structRisk?\`<span class="out-risk" style="background:#faeeda;color:#6a3e08">⚠ Structural</span>\`:(s.cyclRisk?\`<span class="out-risk" style="background:#fde8e8;color:#7a1a1a">↻ Cyclical</span>\`:'');
+    const lb=LLB[s.list];
+    const scoreH=(key,ci)=>{
+      const v=s.scores[key];const w=v*20;
+      const col=v>=4?allColors[ci]:v===3?'#8a8070':v===2?'#c07040':'#a03020';
+      return \`<div class="sc" title="\${allLabels[ci]}: \${v}/5"><span class="sc-val" style="color:\${col}">\${v}</span><div class="sc-bar" style="width:\${w}%;background:\${allColors[ci]};opacity:\${v>=3?1:0.4}"></div></div>\`;
+    };
+    const scoreN=(key,ci)=>{
+      const v=n[key];const w=v*20;
+      const col=v>=4?allColors[ci]:v===3?'#8a8070':v===2?'#c07040':'#a03020';
+      const border=ci===7?'border-left:0.5px dashed var(--rule);padding-left:4px':'';
+      return \`<div class="sc new-var" style="\${border}" title="\${allLabels[ci]}: \${v}/5"><span class="sc-val" style="color:\${col}">\${v}</span><div class="sc-bar" style="width:\${w}%;background:\${allColors[ci]};opacity:\${v>=3?1:0.4}"></div></div>\`;
+    };
+
+    const nw=NEW_WHY[s.id]||['','','',''];
+    const detailCards=\`
+      <div class="exp-card"><h5>Supplier power</h5><p>\${nw[0]}</p></div>
+      <div class="exp-card"><h5>Substitution risk</h5><p>\${nw[1]}</p></div>
+      <div class="exp-card"><h5>Capital intensity</h5><p>\${nw[2]}</p></div>
+      <div class="exp-card"><h5>Exit buyer depth</h5><p>\${nw[3]}</p></div>\`;
+
+    const totCol=adj>=46?'#0a5c48':adj>=40?'#1D9E75':adj>=34?'#BA7517':adj>=28?'#c07030':'#a03020';
+
+    html+=\`<div class="srow" id="r\${s.rank}" onclick="tog(\${s.rank})">
+      <div class="sr-main">
+        <div class="sr-rank">\${s.rank}</div>
+        <div class="sr-dot" style="background:\${s.color}"></div>
+        <div class="sr-name">
+          <span class="sr-name-main">\${s.name}</span>
+          <span class="sr-name-geo">\${s.geo}</span>
+          <span class="sr-badge" style="background:\${LBG[s.list]};color:\${LBC[s.list]}">\${lb}</span>
+        </div>
+        \${scoreH('knowledge',0)}\${scoreH('energy',1)}\${scoreH('export',2)}\${scoreH('china',3)}\${scoreH('stability',4)}\${scoreH('buyerPower',5)}\${scoreH('fragmentation',6)}
+        \${scoreN('supplier',7)}\${scoreN('substitution',8)}\${scoreN('capex',9)}\${scoreN('exitDepth',10)}
+        <div class="sr-total">
+          <span class="tot-num" style="color:\${totCol}">\${raw}</span>
+          <span class="tot-max">adj \${adj}</span>
+        </div>
+        <div class="sr-out">
+          <span class="out-stars" style="color:\${ol.color}">\${ol.stars}</span>
+          <span class="out-label" style="color:\${ol.color}">\${ol.label}</span>
+          \${riskBadge}
+        </div>
+        <div class="sr-arr">▾</div>
+      </div>
+      <div class="sr-expand">\${detailCards}</div>
+    </div>\`;
+  });
+  el.innerHTML=html;
+}
+document.addEventListener("DOMContentLoaded", function() { render(); });
+<\/script>
+</body>
+</html>
+`;
+const _loaded = {};
+
+const _origShowPanel = showPanel;
+window.showPanel = function(n, btn) {
+  _origShowPanel(n, btn);
+  if (n === 3 && !_loaded[3]) {
+    document.getElementById('vcFrame').srcdoc = VC_HTML_STR;
+    _loaded[3] = true;
+  }
+  if (n === 4 && !_loaded[4]) {
+    document.getElementById('fsmFrame').srcdoc = FSM_HTML_STR;
+    _loaded[4] = true;
+  }
+};
+</script>
+</body>
+</html>

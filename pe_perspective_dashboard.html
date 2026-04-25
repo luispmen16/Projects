@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Luis Mendes — PE Perspective: Entry / Value Creation / Exit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E1B2C;--bg2:#142540;--panel:#19294A;--line:#26375E;
+    --gold:#D4AF6A;--gold2:#EFD89A;--txt:#EAE7DD;--muted:#9FB2CC;
+    --green:#5DCAA5;--amber:#EFB347;--red:#E78989;--blue:#7CB7F0;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:'Poppins',system-ui,sans-serif;font-size:18px;line-height:1.6}
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 28px 80px}
+  header{border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:24px}
+  h1{font-weight:600;font-size:34px;margin:0 0 8px;color:var(--gold2);letter-spacing:.2px}
+  h2{font-weight:600;font-size:24px;color:var(--gold2);margin:36px 0 12px;scroll-margin-top:90px}
+  h3{font-weight:600;font-size:20px;color:var(--gold);margin:0 0 8px}
+  h4{font-weight:600;font-size:14px;color:var(--gold);margin:14px 0 6px;letter-spacing:.6px;text-transform:uppercase}
+  p{margin:0 0 12px;color:var(--txt)}
+  .sub{color:var(--muted);font-size:15px}
+  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:500;letter-spacing:.4px;margin-right:6px;margin-bottom:6px;border:1px solid transparent}
+  .p-strong{background:rgba(93,202,165,.14);color:var(--green);border-color:rgba(93,202,165,.45)}
+  .p-mod{background:rgba(239,179,71,.14);color:var(--amber);border-color:rgba(239,179,71,.45)}
+  .p-weak{background:rgba(231,137,137,.13);color:var(--red);border-color:rgba(231,137,137,.4)}
+  .p-tier{background:rgba(124,183,240,.13);color:var(--blue);border-color:rgba(124,183,240,.45)}
+  .p-energy{background:rgba(212,175,106,.13);color:var(--gold2);border-color:rgba(212,175,106,.5)}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}
+  .kpi{background:var(--panel);border:1px solid var(--line);padding:14px 16px;border-radius:10px}
+  .kpi .lbl{font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+  .kpi .val{font-weight:600;font-size:22px;color:var(--gold2);margin-top:4px}
+  nav{position:sticky;top:0;background:rgba(14,27,44,.94);backdrop-filter:blur(8px);padding:10px 0 12px;margin:0 -28px 20px;border-bottom:1px solid var(--line);z-index:50}
+  nav ul{list-style:none;margin:0;padding:0 28px;display:flex;flex-wrap:wrap;gap:8px}
+  nav a,nav button.navlink{display:inline-block;padding:6px 14px;color:var(--muted);background:transparent;text-decoration:none;border:1px solid var(--line);border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit}
+  nav a:hover,nav button.navlink:hover{color:var(--gold2);border-color:var(--gold);background:rgba(212,175,106,.08)}
+  .sector{background:linear-gradient(180deg, var(--bg2) 0%, var(--panel) 100%);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:20px 0;scroll-margin-top:90px}
+  .sector .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:8px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px}
+  .sector .head .meta{font-size:13px;color:var(--muted)}
+  .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+  .col{background:rgba(14,27,44,.55);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .col h4{margin-top:0}
+  .col ul{margin:6px 0 0;padding-left:20px}
+  .col li{margin-bottom:6px;font-size:15px;color:var(--txt)}
+  .col p{font-size:15px}
+  table{width:100%;border-collapse:collapse;margin:10px 0 18px;font-size:14px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-weight:500;font-size:13px;letter-spacing:.4px;text-transform:uppercase}
+  td{color:var(--txt)}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .legend{font-size:14px;color:var(--muted);margin:6px 0 22px}
+  .footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+  .callout{background:rgba(212,175,106,.08);border-left:3px solid var(--gold);padding:12px 16px;margin:14px 0;border-radius:6px}
+  .callout strong{color:var(--gold2)}
+  @media(max-width:900px){.cols{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>PE Perspective — Entry, Value Creation, Exit</h1>
+  <div class="sub">Layer 3 of the strategy. Builds on the sector universe (dashboard v2) and the policy crossref. For each priority sector it answers three questions in plain numbers: how do we get in, what do we do once we own it, and how do we sell it.</div>
+  <div class="grid" style="margin-top:18px">
+    <div class="kpi"><div class="lbl">Fund I target</div><div class="val">€80–120m</div></div>
+    <div class="kpi"><div class="lbl">Platforms (Fund I)</div><div class="val">4</div></div>
+    <div class="kpi"><div class="lbl">Add-ons over fund life</div><div class="val">10–14</div></div>
+    <div class="kpi"><div class="lbl">Total companies owned</div><div class="val">14–18</div></div>
+    <div class="kpi"><div class="lbl">Total EV deployed</div><div class="val">€250–400m</div></div>
+    <div class="kpi"><div class="lbl">Hold period</div><div class="val">4–6 years</div></div>
+  </div>
+</header>
+
+<nav><ul>
+  <li><button class="navlink" data-go="fund">Fund sizing</button></li>
+  <li><button class="navlink" data-go="frame">Framework</button></li>
+  <li><button class="navlink" data-go="waste-ib">Waste IB</button></li>
+  <li><button class="navlink" data-go="prec">Precision metalwork</button></li>
+  <li><button class="navlink" data-go="pharma-glass">Pharma glass</button></li>
+  <li><button class="navlink" data-go="lime">Lime</button></li>
+  <li><button class="navlink" data-go="tech-cer">Technical ceramics</button></li>
+  <li><button class="navlink" data-go="stone">Natural stone</button></li>
+  <li><button class="navlink" data-go="tiles-cas">Tiles Castellón</button></li>
+  <li><button class="navlink" data-go="cork">Cork</button></li>
+  <li><button class="navlink" data-go="summary">Summary</button></li>
+  <li><button class="navlink" data-go="caveats">Caveats</button></li>
+</ul></nav>
+
+<section>
+<h2 id="fund">1 · Fund architecture &amp; sector quantification</h2>
+<p>Three building blocks: how the money is raised, how big each platform is, and how the portfolio is constructed.</p>
+
+<h3>(A) The phasing — three steps, not one</h3>
+<p>You start with €200k of GP commit and a €1m reserve. That is not enough to anchor a fund alone. The realistic path is sequential — prove the model on one deal, then raise Fund I, then Fund II.</p>
+
+<table>
+<thead><tr>
+<th>Phase</th>
+<th>Timing</th>
+<th>Vehicle</th>
+<th class="num">Equity per phase</th>
+<th class="num">Luis personal sleeve</th>
+<th>What it does</th>
+</tr></thead>
+<tbody>
+<tr>
+  <td><strong>Phase 1 — Sponsor deal</strong></td>
+  <td>2026–2027</td>
+  <td>Single deal-by-deal SPV with one PE co-investor</td>
+  <td class="num">€15–30m</td>
+  <td class="num">€0.2–1m</td>
+  <td>Build the track record. One platform in the lowest-risk sector (Waste IB or Stone IB).</td>
+</tr>
+<tr>
+  <td><strong>Phase 2 — Fund I</strong></td>
+  <td>2027–2030</td>
+  <td>Discretionary closed-end fund</td>
+  <td class="num">€80–120m</td>
+  <td class="num">€0.8–1.2m (1% GP commit)</td>
+  <td>3–4 platforms in Iberian sectors. LPs: Iberian institutionals, family offices, BA-Glass network HNW, one anchor PE LP.</td>
+</tr>
+<tr>
+  <td><strong>Phase 3 — Fund II</strong></td>
+  <td>2030–2033</td>
+  <td>Larger discretionary fund</td>
+  <td class="num">€200–300m</td>
+  <td class="num">€2–3m (rolled from Fund I exits)</td>
+  <td>3 platforms in European energy-intensive sectors (pharma glass, lime, technical ceramics). Bigger checks, bigger LPs.</td>
+</tr>
+</tbody>
+</table>
+
+<div class="callout"><strong>The personal capital math.</strong> Your €200k GP commit is enough for Phase 1 (1–3% sleeve in a single SPV alongside a co-investor). Fund I needs co-GPs sharing the 1% commit — partners with €300–500k each. By Fund II, the rolled-over carry from Fund I exits funds the GP commit organically. This is the path BA-Glass-style operators have taken (e.g. Charme Capital began as deal-by-deal before institutionalising).</div>
+
+<h3>(B) What each platform costs — sector by sector</h3>
+<p>This table answers "how big is one deal in this sector". Equity check is the cash we need from the fund (rest is bank debt). Companies = platform + add-ons.</p>
+
+<table>
+<thead><tr>
+<th>Sector</th>
+<th class="num">Platform EBITDA</th>
+<th class="num">Platform EV</th>
+<th class="num">Equity check</th>
+<th class="num">Add-ons</th>
+<th class="num">Companies</th>
+<th class="num">Total equity per platform</th>
+</tr></thead>
+<tbody>
+<tr><td>Industrial waste — Iberia</td><td class="num">€5–12m</td><td class="num">€45–100m</td><td class="num">€22–50m</td><td class="num">3–4</td><td class="num">4–5</td><td class="num">€40–90m</td></tr>
+<tr><td>Precision metalworking — Iberia</td><td class="num">€3–8m</td><td class="num">€18–48m</td><td class="num">€10–26m</td><td class="num">2–3</td><td class="num">3–4</td><td class="num">€20–55m</td></tr>
+<tr><td>Pharma &amp; premium glass — CEE</td><td class="num">€8–15m</td><td class="num">€80–150m</td><td class="num">€36–83m</td><td class="num">1–2</td><td class="num">2–3</td><td class="num">€60–130m</td></tr>
+<tr><td>Lime &amp; calcium carbonate — Europe</td><td class="num">€5–12m</td><td class="num">€40–96m</td><td class="num">€20–48m</td><td class="num">2</td><td class="num">3</td><td class="num">€35–78m</td></tr>
+<tr><td>Technical ceramics — Europe</td><td class="num">€6–12m</td><td class="num">€60–120m</td><td class="num">€27–54m</td><td class="num">2</td><td class="num">3</td><td class="num">€45–100m</td></tr>
+<tr><td>Natural stone — Iberia</td><td class="num">€2–5m</td><td class="num">€10–25m</td><td class="num">€5–13m</td><td class="num">4–6</td><td class="num">5–7</td><td class="num">€25–55m</td></tr>
+<tr><td>Ceramics tiles — Castellón</td><td class="num">€5–10m</td><td class="num">€30–60m</td><td class="num">€15–30m</td><td class="num">2</td><td class="num">3</td><td class="num">€25–50m</td></tr>
+<tr><td>Cork — Portugal</td><td class="num">€2–6m</td><td class="num">€12–36m</td><td class="num">€6–18m</td><td class="num">2–3</td><td class="num">3–4</td><td class="num">€15–32m</td></tr>
+</tbody>
+</table>
+
+<div class="legend">Assumptions: bank debt at 4–5× EBITDA at platform entry, falling to 3.5× on add-ons (mid-market industrial standard). Equity check at platform = EV − debt. Total equity per platform = platform equity + add-on equity (some add-ons part-funded by platform cash flow). Numbers are negotiation anchors, not appraisal values.</div>
+
+<h3>(C) Recommended Fund I portfolio — 4 platforms, ~€100m</h3>
+<p>Fund I picks the four sectors that combine highest conviction with deal sizes that fit a €80–120m fund. Pharma glass, lime, and technical ceramics are too capital-heavy for Fund I — they wait for Fund II.</p>
+
+<table>
+<thead><tr>
+<th>#</th>
+<th>Sector</th>
+<th class="num">Equity allocation</th>
+<th class="num">Companies</th>
+<th class="num">Entry EBITDA (combined)</th>
+<th class="num">Exit EBITDA (target)</th>
+<th>Why in Fund I</th>
+</tr></thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><strong>Industrial waste — Iberia</strong></td>
+  <td class="num">€30m</td>
+  <td class="num">4–5</td>
+  <td class="num">€8m</td>
+  <td class="num">€16–20m</td>
+  <td>Best policy tailwind, deepest exit-buyer pool. Anchor of the fund.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><strong>Precision metalworking — Iberia</strong></td>
+  <td class="num">€20m</td>
+  <td class="num">3–4</td>
+  <td class="num">€5m</td>
+  <td class="num">€11–13m</td>
+  <td>Highest margin lift potential. Defence cycle peaks during hold.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><strong>Natural stone — Iberia</strong></td>
+  <td class="num">€25m</td>
+  <td class="num">5–7</td>
+  <td class="num">€4m</td>
+  <td class="num">€12–15m</td>
+  <td>Cheapest entry. Pure buy-and-build alpha. No competing consolidator.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><strong>Ceramics tiles — Castellón</strong></td>
+  <td class="num">€25m</td>
+  <td class="num">3</td>
+  <td class="num">€7m</td>
+  <td class="num">€13–16m</td>
+  <td>Direct CFO knowledge fit. Pamesa-style energy lever has a recent precedent.</td>
+</tr>
+<tr>
+  <td colspan="2"><strong>Fund I total</strong></td>
+  <td class="num"><strong>€100m</strong></td>
+  <td class="num"><strong>15–19</strong></td>
+  <td class="num"><strong>€24m</strong></td>
+  <td class="num"><strong>€52–64m</strong></td>
+  <td>Reserve €0–20m for follow-on / fees</td>
+</tr>
+</tbody>
+</table>
+
+<h3>(D) Fund II portfolio — 3 platforms, ~€200–250m</h3>
+<table>
+<thead><tr>
+<th>#</th>
+<th>Sector</th>
+<th class="num">Equity allocation</th>
+<th class="num">Companies</th>
+<th>Why Fund II, not Fund I</th>
+</tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>Pharma &amp; premium glass — CEE</strong></td><td class="num">€80m</td><td class="num">2–3</td><td>Single deal too large for €100m Fund I; needs Fund II's check size.</td></tr>
+<tr><td>2</td><td><strong>Technical ceramics — Europe</strong></td><td class="num">€60m</td><td class="num">3</td><td>Capital-heavy. Defence and chip cycles peak 2031–33 — perfect Fund II window.</td></tr>
+<tr><td>3</td><td><strong>Lime &amp; CaCO₃ — Europe</strong></td><td class="num">€60m</td><td class="num">3</td><td>EU carbon border tax fully in force by 2030 — buy after the policy is locked.</td></tr>
+<tr><td colspan="2"><strong>Fund II total</strong></td><td class="num"><strong>€200m</strong></td><td class="num"><strong>8–9</strong></td><td>Cork stays in Fund I or skipped — exit-buyer depth too thin for institutional Fund II.</td></tr>
+</tbody>
+</table>
+
+<div class="callout"><strong>Total programme over a decade.</strong> Phase 1 single deal + Fund I (4 platforms, ~16 companies, €100m equity, ~€280m EV) + Fund II (3 platforms, ~9 companies, €200m equity, ~€500m EV) = roughly <strong>23–27 companies under management at peak, ~€800m EV deployed, €300–330m of equity raised.</strong> At 2× target money-multiple, programme generates ~€700m of gross equity returns. Personal carry economics — at 20% carry over Funds I+II — sit in the €30–60m range over 10 years assuming target performance, which clears your €1m/year income objective with margin.</div>
+</section>
+
+<section>
+<h2 id="frame">2 · The framework, in plain words</h2>
+<p>Three questions. We answer them sector by sector, with the numbers attached.</p>
+
+<h3>(1) How do we get in?</h3>
+<p>The price we pay (the multiple) and the deal we offer the founder. Mid-market industrial deals in Iberia trade in a tight band, but three things move the price by several turns: <strong>size</strong> (a small €3m EBITDA business sells for two turns less than a €15m one), <strong>policy halo</strong> (sectors that benefit from EU green / defence policy command +2–4 turns), and <strong>certifications</strong> (a metal shop with aerospace or medical certification is worth 2–3 turns more than the same shop without). The owner-pain list per sector is what we use to convince founders to sell to us at the friendly end of the band, instead of into a competitive auction.</p>
+
+<h3>(2) What do we do once we own it?</h3>
+<p>Lift the EBITDA margin by 4 to 10 percentage points over 24–36 months. That is the size of the prize that justifies the buy multiple. The lift always comes from the same toolbox — energy procurement, scale buying, cost discipline, machine uptime, working-capital release, pricing, plus 2–4 add-on acquisitions. Each sector activates a different subset; below we name the levers that carry 80% of the bridge.</p>
+
+<h3>(3) How do we sell it?</h3>
+<p>Exit is engineered, not opportunistic. Three things make the sale price: <strong>scale</strong> (a €3m EBITDA business sold standalone is worth less per euro than a €15m platform), <strong>quality</strong> (margin, customer mix, certifications), and <strong>timing</strong> (defence cycle peaks 2028–30, EU recycling rules tighten 2027–32, the Iberian energy advantage over Germany is structural). For each sector we name the strategic buyers, the back-up financial buyers, and the realistic window.</p>
+
+<div class="callout"><strong>How to read the multiples.</strong> Every multiple range below is EV/EBITDA — the price expressed as a multiple of last year's earnings before interest, tax, depreciation. The ranges reflect actual mid-market deals (€20–150m enterprise value) seen in Europe between 2022 and 2025. They are anchors for negotiation, not appraisal values. The real number depends on the specific target and the auction process.</div>
+</section>
+
+<section>
+<h2 id="waste-ib">3 · Industrial waste treatment — Iberia</h2>
+<div class="sector">
+  <div class="head">
+    <div>
+      <h3>What it is</h3>
+      <div class="meta">Companies that collect, sort, treat and recycle industrial waste in Portugal and Spain. Energy is 6–10% of cost. Margins 10–18% today, best operators &gt;22%. Hundreds of small, founder-owned operators. Permits are the moat.</div>
+    </div>
+    <div>
+      <span class="pill p-strong">Strong policy tailwind</span>
+      <span class="pill p-tier">Tier 2 — Selective conviction</span>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h4>(1) How we get in</h4>
+      <p><strong>Price:</strong> 7.5–10× EBITDA for a small platform; 11–14× if the company holds hazardous-waste permits (those permits are scarce and very hard to replace).</p>
+      <p><strong>Why founders sell to us:</strong></p>
+      <ul>
+        <li>The owner is personally on the hook for any environmental incident; over 60, this risk weighs heavily.</li>
+        <li>New EU emissions rules coming into force in 2030 require €1–4m of plant upgrades per site — the family can't fund it.</li>
+        <li>New waste streams are appearing — used batteries, end-of-life solar panels, scrapped wind-turbine blades — and capturing them needs growth capital.</li>
+        <li>Banks are tightening on environmentally-marginal balance sheets.</li>
+      </ul>
+      <p><strong>The deal we offer:</strong> sell us 70% now, keep 30%, and ride a "second bite" when we sell the platform 4–5 years later at a higher multiple. Cash today for estate planning, plus retained equity that is worth more later.</p>
+    </div>
+
+    <div class="col">
+      <h4>(2) What we do once we own it</h4>
+      <p><strong>Margin lift target: +5 to +8 percentage points over 36 months.</strong> On a €10m EBITDA base that is €5–8m of new earnings.</p>
+      <ul>
+        <li><strong>Roll up permits:</strong> 3–4 add-on acquisitions to consolidate hazardous-waste permits across Iberia.</li>
+        <li><strong>Reprice old contracts:</strong> grandfathered industrial contracts more than 5 years old are typically 8–15% below market.</li>
+        <li><strong>Route the trucks better:</strong> consolidating collection routes across plants is worth 2–3 margin points.</li>
+        <li><strong>Capture new revenue streams:</strong> waste from batteries, solar panels and wind-turbine blades — be the first regional operator to handle them, before Veolia builds it.</li>
+        <li><strong>Energy:</strong> a smaller lever here (energy is only ~8% of cost) — worth about 0.5–1 point.</li>
+        <li><strong>Working capital:</strong> standardise customer payment terms from 70 days to 45.</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h4>(3) How we sell it</h4>
+      <p><strong>When:</strong> 2030–2032. The 2030 emissions deadline forces a wave of consolidation; we want to be on sale just before it.</p>
+      <p><strong>Price:</strong> 11–14× EBITDA at exit (vs 7.5–10× at entry). On top of the EBITDA growth, this gives us 1.4–1.7× of multiple expansion alone.</p>
+      <p><strong>Who buys:</strong> the European waste majors — Veolia, Urbaser, FCC, Remondis, PreZero, Befesa (specialist in hazardous), Sarpi (Veolia), Stericycle (medical waste).</p>
+      <p><strong>Backup buyer:</strong> large PE funds that own waste platforms — Cinven, EQT, Ardian, Macquarie. All active.</p>
+      <p><strong>IPO:</strong> not realistic at this size unless we cross €40m EBITDA.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<h2 id="prec">4 · Precision metalworking — Iberia</h2>
+<div class="sector">
+  <div class="head">
+    <div>
+      <h3>What it is</h3>
+      <div class="meta">Family-owned machine shops cutting precision metal parts on CNC machines for aerospace, defence, medical devices and automotive. 25–60 people typical. Energy 5–9% of cost. Margins 6–10% today, best in class 15%+.</div>
+    </div>
+    <div>
+      <span class="pill p-strong">Strong policy tailwind</span>
+      <span class="pill p-tier">Tier 3 — Situational conviction</span>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h4>(1) How we get in</h4>
+      <p><strong>Price:</strong> 5.5–7× EBITDA for a generalist shop; 8–10× if it has aerospace certifications; 10–13× if it has medical-device certifications. Same shop, very different price tag depending on what it is allowed to make.</p>
+      <p><strong>Why founders sell to us:</strong></p>
+      <ul>
+        <li>Founder retiring, no son or daughter capable of running a 25–60 person CNC shop.</li>
+        <li>40–60% of revenue typically comes from 3 large customers (Embraer, Airbus suppliers, Daimler) — they squeeze price every year.</li>
+        <li>A 5-axis CNC machine costs €600–900k; the family can't fund the next two.</li>
+        <li>Customers want digital factory-floor monitoring; the shop can't afford it and is losing certification points to bigger competitors.</li>
+      </ul>
+      <p><strong>The deal we offer:</strong> "We pay you out, we run it, and we promote your shop from second-tier supplier to first-tier — that alone is worth 30% more revenue."</p>
+    </div>
+
+    <div class="col">
+      <h4>(2) What we do once we own it</h4>
+      <p><strong>Margin lift target: +6 to +10 percentage points.</strong> The biggest bridge of any sector on the list.</p>
+      <ul>
+        <li><strong>Run the machines harder:</strong> a typical Iberian shop runs its machines productively about 60% of the time. The benchmark is 78%. That gap alone is worth 3–5 margin points.</li>
+        <li><strong>Change the customer mix:</strong> shift from generic job-work to defence and medical contracts, which pay 25–40% more per part.</li>
+        <li><strong>Buy 2–3 complementary shops:</strong> different machines, different specialties — together they win bids none of them could win alone.</li>
+        <li><strong>Invest in certifications:</strong> €200–400k and 18–24 months for aerospace and medical accreditation. That investment alone doubles or triples the exit multiple.</li>
+        <li><strong>Diversify customers:</strong> reduce dependency on any single OEM.</li>
+        <li><strong>Buy raw material across the platform:</strong> titanium and high-grade alloys — 2–3% off COGS.</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h4>(3) How we sell it</h4>
+      <p><strong>When:</strong> 2030–2032. NATO defence spending peaks 2028–30; we sell 12 months before the peak.</p>
+      <p><strong>Price:</strong> 10–13× EBITDA on a certified platform → 1.5–2.0× multiple expansion.</p>
+      <p><strong>Who buys (aerospace):</strong> Howmet Aerospace, Doncasters, MTU Aero Engines, Latécoère, Aequs, GKN Aerospace, Senior plc.</p>
+      <p><strong>Who buys (medical):</strong> Resonetics, Heraeus Medical, Phillips-Medisize, Tecomet.</p>
+      <p><strong>Who buys (defence):</strong> Indra, Edge Group, Rheinmetall component arm, KNDS.</p>
+      <p><strong>Backup buyer:</strong> defence-focused PE — Tikehau Ace Capital, Industrial Opportunity Partners, Searchlight.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<h2 id="pharma-glass">5 · Pharma &amp; premium glass packaging — CEE / Italy</h2>
+<div class="sector">
+  <div class="head">
+    <div>
+      <h3>What it is</h3>
+      <div class="meta">Glass plants making vials, syringes, and ampoules for the pharma industry, plus high-end bottles for premium spirits and olive oil. Energy 20–30% of cost. Margins 14–22%. Multi-plant operators. <strong>Filter:</strong> only pharma + premium — commodity beer/wine glass is in structural decline.</div>
+    </div>
+    <div>
+      <span class="pill p-strong">Strong policy tailwind</span>
+      <span class="pill p-tier">Tier 2 — Selective</span>
+      <span class="pill p-energy">Energy-intensive</span>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h4>(1) How we get in</h4>
+      <p><strong>Price:</strong> 8–11× EBITDA for premium-spirits / olive-oil glass; 11–14× for pharma vials and syringes (the entire pharma-glass category was re-rated upward after Stevanato's IPO in 2021).</p>
+      <p><strong>Why founders sell to us:</strong></p>
+      <ul>
+        <li>Furnaces have to be rebuilt every 10–12 years at €20–50m a pop — too big for a family balance sheet.</li>
+        <li>Energy bills doubled after 2022 and most operators have no professional gas hedging.</li>
+        <li>The EU carbon trading scheme is tightening — they need to invest in cleaner furnaces and don't have the cash.</li>
+        <li>Pharma customers now demand carbon and ESG reporting that small operators can't deliver.</li>
+      </ul>
+      <p><strong>The deal we offer (Luis-specific):</strong> ex-CFO of BA Glass, 13 furnaces in 7 countries, personally negotiated €1.2bn of debt. The pitch — "I have run your problem at 30 times your scale" — is uniquely defensible here. Few operators in Europe can say it.</p>
+    </div>
+
+    <div class="col">
+      <h4>(2) What we do once we own it</h4>
+      <p><strong>Margin lift target: +5 to +8 percentage points.</strong></p>
+      <ul>
+        <li><strong>Energy procurement and long-term power contracts:</strong> the headline lever in this sector. Long-term renewable power contracts at €60–80/MWh vs spot prices at €130+. That alone is worth 3–5 margin points.</li>
+        <li><strong>Run the furnaces at the right pull-rate:</strong> the BA Glass internal benchmarking playbook applies directly.</li>
+        <li><strong>Mix shift:</strong> move capacity from commodity bottles to premium pharma glass.</li>
+        <li><strong>EU green-industry grants:</strong> co-finance a hybrid furnace at 40–60% of cost using EU Innovation Fund and IPCEI programmes.</li>
+        <li><strong>Sell more of what we already make:</strong> capacity utilisation from 78% to 88% via better order-book management.</li>
+        <li><strong>Working capital:</strong> stock days from 80 to 55.</li>
+      </ul>
+      <p><strong>Important geography note:</strong> there are no Iberian pharma-glass acquisition targets at the right scale — we have to base in Central or Eastern Europe / Italy. Iberia is for other sectors.</p>
+    </div>
+
+    <div class="col">
+      <h4>(3) How we sell it</h4>
+      <p><strong>When:</strong> 2031–2033. Demand for premium pharma glass exceeds supply through 2030; the big players (Stevanato, Schott) cannot meet demand alone.</p>
+      <p><strong>Price:</strong> 12–15× EBITDA for a multi-plant pharma platform → 1.3–1.5× multiple expansion.</p>
+      <p><strong>Who buys (pharma):</strong> Stevanato Group, Schott Pharma, Gerresheimer, SGD Pharma, Stoelzle Glass, Bormioli Pharma, Nipro.</p>
+      <p><strong>Who buys (premium spirits):</strong> Verallia, Vidrala, BA Glass (yes — selling back to the former employer is realistic), Ardagh.</p>
+      <p><strong>Backup buyer:</strong> CVC, Bain Capital, Carlyle, Rhône Capital — all have glass platforms.</p>
+      <p><strong>IPO:</strong> realistic above €60m EBITDA, following the Stevanato precedent.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<h2 id="lime">6 · Lime &amp; high-purity calcium carbonate — Europe</h2>
+<div class="sector">
+  <div class="head">
+    <div>
+      <h3>What it is</h3>
+      <div class="meta">Quarries that make lime (used in steel, water treatment, construction) and high-purity calcium carbonate (used in paper, plastics, pharma). Local logistics moat — uneconomic to ship beyond ~200km. Energy 18–28%. Margins 18–25%. Geography: France, Germany, Poland, CEE.</div>
+    </div>
+    <div>
+      <span class="pill p-strong">Strong policy tailwind</span>
+      <span class="pill p-tier">Tier 2 — Selective</span>
+      <span class="pill p-energy">Energy-intensive</span>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h4>(1) How we get in</h4>
+      <p><strong>Price:</strong> 7–9× EBITDA for a single-plant regional player; 9–11× if multi-plant with a high-purity calcium carbonate line.</p>
+      <p><strong>Why founders sell to us:</strong></p>
+      <ul>
+        <li>The big three (Lhoist, Carmeuse, Imerys) are consolidating — the independent local players are exposed.</li>
+        <li>Quarry permit extensions are political and slow; family operators don't have the regulatory team for it.</li>
+        <li>Decarbonising a kiln costs €15–30m — way beyond family balance sheet.</li>
+        <li>Their large steel-mill customers extract price from them every year.</li>
+      </ul>
+      <p><strong>The deal we offer:</strong> "Join an Iberian-led platform that will hedge your gas costs, apply for EU grants on your behalf, and bring you the regulatory team you don't have." Most family lime operators have never applied for a single EU green grant.</p>
+    </div>
+
+    <div class="col">
+      <h4>(2) What we do once we own it</h4>
+      <p><strong>Margin lift target: +4 to +7 percentage points.</strong></p>
+      <ul>
+        <li><strong>Energy:</strong> hedge gas and coke purchases, convert kilns to biomass — 2–4 margin points.</li>
+        <li><strong>Roll up neighbouring quarries:</strong> 2 add-ons in adjacent regions so we cover the 200km logistics radius. Lime is uneconomic to ship further.</li>
+        <li><strong>Pricing:</strong> introduce automatic price formulas linked to fuel and CO₂ — most independents still re-price once a year.</li>
+        <li><strong>Add high-purity calcium carbonate:</strong> sells into paper and pharma at twice the gross margin of standard lime.</li>
+        <li><strong>Extend the quarry life:</strong> a professional permitting team can add 10–15 years of reserves — that adds equity value directly.</li>
+        <li><strong>EU grants:</strong> co-fund kiln electrification with the Innovation Fund and Just Transition Fund.</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h4>(3) How we sell it</h4>
+      <p><strong>When:</strong> 2030–2032. The EU's carbon border tax (CBAM) is rolling in 2026–34 — it makes European lime structurally favoured over imports.</p>
+      <p><strong>Price:</strong> 9–12× EBITDA → 1.2–1.5× multiple expansion.</p>
+      <p><strong>Who buys:</strong> Lhoist, Carmeuse, Calcinor (Spain), CRH, Heidelberg Materials, Imerys, Omya.</p>
+      <p><strong>Backup buyer:</strong> infrastructure-style PE — Triton, Antin Infrastructure, Macquarie European Infrastructure.</p>
+      <p><strong>Risk:</strong> only 4–5 credible global lime buyers exist. Mitigated by running a dual-track sale that also approaches calcium-carbonate specialists (Omya, Imerys).</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<h2 id="tech-cer">7 · Technical ceramics &amp; refractories — Europe</h2>
+<div class="sector">
+  <div class="head">
+    <div>
+      <h3>What it is</h3>
+      <div class="meta">Two related businesses. <em>Refractories</em> are the high-temperature linings inside steel furnaces and cement kilns (commodity-ish). <em>Technical ceramics</em> are engineered ceramic parts for medical implants, semiconductors, defence armour (high-IP, high-margin). Energy 15–22%. Margins 14–22%. Geography: Germany, Italy, Czech Republic.</div>
+    </div>
+    <div>
+      <span class="pill p-strong">Strong policy tailwind</span>
+      <span class="pill p-tier">Tier 2 — Selective</span>
+      <span class="pill p-energy">Energy-intensive</span>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h4>(1) How we get in</h4>
+      <p><strong>Price:</strong> 8–10× EBITDA for refractories (the steel-and-cement consumable side); 10–13× for technical ceramics (medical, semiconductor, defence).</p>
+      <p><strong>Why founders sell to us:</strong></p>
+      <ul>
+        <li>R&amp;D budget too small to keep up with the global leaders (CeramTec, CoorsTek).</li>
+        <li>Energy costs doubled in 2022 and they only partly passed it through.</li>
+        <li>Skilled ceramic engineers are scarce in Germany and the Czech Republic — they cannot grow.</li>
+        <li>Refractory customers (steel mills) cycle hard — revenue can fall 35% in a recession.</li>
+      </ul>
+      <p><strong>The deal we offer:</strong> "Protect your IP and your team from being broken up by an Asian buyer. We bring CFO discipline and the energy-hedging template from Iberia."</p>
+    </div>
+
+    <div class="col">
+      <h4>(2) What we do once we own it</h4>
+      <p><strong>Margin lift target: +5 to +9 percentage points.</strong></p>
+      <ul>
+        <li><strong>Mix shift:</strong> move capacity from commodity refractories into engineered ceramics — defence armour tiles, medical implants, semiconductor wafer carriers. 2–3× the gross margin.</li>
+        <li><strong>Energy:</strong> hedge gas and electricity for kilns. 2–3 margin points.</li>
+        <li><strong>Capex discipline:</strong> close subscale lines and pause unnecessary kiln rebuilds.</li>
+        <li><strong>EU R&amp;D co-funding:</strong> apply systematically to Horizon Europe.</li>
+        <li><strong>Buy small IP-rich specialists:</strong> €5–15m revenue specialty ceramics labs are accretive on a multiple basis.</li>
+        <li><strong>Pricing:</strong> renegotiate formulas tied to gas index instead of annual reviews.</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h4>(3) How we sell it</h4>
+      <p><strong>When:</strong> 2031–2033. The defence ramp-up and the EU push to bring chip production back to Europe both peak in this window.</p>
+      <p><strong>Price:</strong> 11–14× EBITDA → 1.3–1.5× multiple expansion.</p>
+      <p><strong>Who buys:</strong> CeramTec (owned by BC Partners — natural buy-up partner), CoorsTek, Morgan Advanced Materials, Saint-Gobain Performance Ceramics, Imerys (refractories), Kyocera, Vesuvius.</p>
+      <p><strong>Backup buyer:</strong> BC Partners, CVC, Triton, Cinven, Carlyle.</p>
+      <p><strong>Risk:</strong> if the mix shift to engineered ceramics fails, we exit at refractory multiples (8–10×) instead of technical ceramic multiples (12–14×).</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<h2 id="stone">8 · Natural stone processing — Iberia</h2>
+<div class="sector">
+  <div class="head">
+    <div>
+      <h3>What it is</h3>
+      <div class="meta">Companies that buy rough granite/marble/limestone blocks from quarries and turn them into polished slabs, kitchen countertops, façade panels, restoration pieces. <strong>Not quarrying</strong> — processing. Energy 10–14%. Margins 8–14%. The most fragmented sector in Iberian industry — no consolidator yet. Geography: Galicia, Alentejo, Alicante.</div>
+    </div>
+    <div>
+      <span class="pill p-mod">Moderate policy tailwind</span>
+      <span class="pill p-tier">Tier 1 — Strong conviction</span>
+      <span class="pill p-energy">Energy-intensive</span>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h4>(1) How we get in</h4>
+      <p><strong>Price:</strong> 4.5–6× EBITDA for a small family processor; 6–8× if vertically integrated with quarry supply contracts; 8–10× for premium-finish exporters. Cheapest entry point of any sector on the list.</p>
+      <p><strong>Why founders sell to us:</strong></p>
+      <ul>
+        <li>Founder is over 60, sons run the business but are not investing in the future.</li>
+        <li>Chinese imports of finished slabs are killing the commodity end.</li>
+        <li>Need to invest €1–3m in modern cutting and digital templating to compete on premium — they can't fund it.</li>
+        <li>Italian and Brazilian operators are tying up the best Iberian quarry blocks at source.</li>
+        <li>Heritage restoration projects (cathedrals, monuments — funded by EU Cultural funds) require a sales team that family operators don't have.</li>
+      </ul>
+      <p><strong>The deal we offer:</strong> "There is no consolidator in your sector — be the platform that buys everyone else." First-mover advantage in the most fragmented sector in Iberian industry.</p>
+    </div>
+
+    <div class="col">
+      <h4>(2) What we do once we own it</h4>
+      <p><strong>Margin lift target: +6 to +10 percentage points.</strong></p>
+      <ul>
+        <li><strong>Buy and build:</strong> the dominant lever here. 4–6 add-ons across Galicia, Alentejo and Alicante. The fragmentation is the alpha.</li>
+        <li><strong>Buy quarry blocks at scale:</strong> a large platform secures stone supply at 8–12% better terms than a single small operator.</li>
+        <li><strong>Move up to premium finishing:</strong> modern cutting + automated polishing + digital templating lifts gross margin 3–5 points.</li>
+        <li><strong>Export to Germany and DACH:</strong> Iberian stone is under-distributed in the German luxury kitchen-counter market vs Italian — Luis's network applies directly.</li>
+        <li><strong>Heritage restoration vertical:</strong> EU Cultural Heritage Fund + Notre-Dame-style projects. High-margin and defensible.</li>
+        <li><strong>Pricing discipline:</strong> exit the commodity slab business; price premium finishes on value, not on cost-plus.</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h4>(3) How we sell it</h4>
+      <p><strong>When:</strong> 2031–2033. We hold longer here (5–6 years) because the buy-and-build needs the runway.</p>
+      <p><strong>Price:</strong> 7–9× EBITDA on a €15–25m platform → 1.4–1.7× multiple expansion.</p>
+      <p><strong>Who buys:</strong> realistic but limited — Antolini (Italy), Marmi Bruno Zanet, Levantina (Spain, owned by Charme Capital), Cosentino (the Silestone parent).</p>
+      <p><strong>Backup buyer:</strong> the more likely exit. Iberian-focused PE — Charme Capital, Magnum, Iberis, Oakley.</p>
+      <p><strong>Honest weakness:</strong> few global buyers exist. Mitigation — be the consolidator others want to plug into. <strong>Bear case:</strong> hold stretches to 7+ years and we exit at 6× to a smaller PE.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<h2 id="tiles-cas">9 · Ceramics tiles — Castellón (Spain)</h2>
+<div class="sector">
+  <div class="head">
+    <div>
+      <h3>What it is</h3>
+      <div class="meta">Tile producers in the Castellón cluster — the largest tile-making region in Europe. Energy 22–32% of cost (the highest on the list). Margins 8–14%. Construction-cycle exposed. The cluster is consolidating around five players.</div>
+    </div>
+    <div>
+      <span class="pill p-mod">Moderate policy tailwind</span>
+      <span class="pill p-tier">Tier 1 — Strong conviction</span>
+      <span class="pill p-energy">Energy-intensive</span>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h4>(1) How we get in</h4>
+      <p><strong>Price:</strong> 5–6.5× EBITDA for a single-plant operator; 6.5–8× if multi-plant with porcelain capacity.</p>
+      <p><strong>Why founders sell to us:</strong></p>
+      <ul>
+        <li>The 2022 gas spike wiped out the working capital of mid-tier players. Many are still under-capitalised.</li>
+        <li>Italian competitors (Mohawk Industries / Marazzi, Concorde, Florim) are better hedged and better capitalised.</li>
+        <li>The sector is exposed to two construction cycles — Spanish housing and US export.</li>
+        <li>Pamesa and Porcelanosa are pulling away — the mid-tier needs scale or it dies.</li>
+        <li>Owners are simply exhausted from the 2022 energy crisis.</li>
+      </ul>
+      <p><strong>The deal we offer:</strong> "BA Glass-style energy procurement on your gas bill = +3 margin points overnight. We bring you institutional governance in a cluster that is consolidating around five players. Be one of the five."</p>
+    </div>
+
+    <div class="col">
+      <h4>(2) What we do once we own it</h4>
+      <p><strong>Margin lift target: +5 to +9 percentage points.</strong></p>
+      <ul>
+        <li><strong>Energy procurement and hedging:</strong> the headline lever. Pamesa's 2024 supplier switch saved €85m on a single decision — that template is replicable on a smaller base for 3–5 margin points.</li>
+        <li><strong>Buy 2 add-ons in the cluster:</strong> consolidate kiln lines, eliminate redundant overhead.</li>
+        <li><strong>Mix shift:</strong> move capacity from commodity ceramic to large-format porcelain slabs (3× the price per square metre).</li>
+        <li><strong>Export to Germany and CEE:</strong> Iberian tile is under-distributed there — Luis's network applies.</li>
+        <li><strong>Run kilns harder:</strong> machine uptime from 70% to 82%.</li>
+        <li><strong>Working capital:</strong> customer payment terms 90→60 days; stock days 110→75.</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h4>(3) How we sell it</h4>
+      <p><strong>When:</strong> 2030–2031. We time the construction cycle — buy in trough/recovery (now), sell before the next peak.</p>
+      <p><strong>Price:</strong> 7–9× EBITDA on a consolidated platform → 1.3–1.5× multiple expansion.</p>
+      <p><strong>Who buys:</strong> Pamesa, Porcelanosa, Mohawk Industries (Marazzi), RAK Ceramics, Lamosa (Mexico), Concorde Group, Florim.</p>
+      <p><strong>Backup buyer:</strong> Iberian-focused PE — Magnum, Charme, ProA Capital. All have building-materials track records.</p>
+      <p><strong>Main risk:</strong> exit timing. Sell when residential building permits are growing for &gt;6 quarters; the dashboard's construction-cycle rule applies in full.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<h2 id="cork">10 · Cork processing — Portugal</h2>
+<div class="sector">
+  <div class="head">
+    <div>
+      <h3>What it is</h3>
+      <div class="meta">Companies that turn raw cork bark into wine stoppers, technical insulation, automotive gaskets, aerospace floors and sports surfaces. Geography: Santa Maria da Feira and Coruche. Energy 6–10%. Margins 10–18%. The buyer side is dominated by Corticeira Amorim — that is the structural problem.</div>
+    </div>
+    <div>
+      <span class="pill p-weak">Weak policy tailwind</span>
+      <span class="pill p-tier">Tier 1 — Strong conviction (operational)</span>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h4>(1) How we get in</h4>
+      <p><strong>Price:</strong> 5–7× EBITDA for a small processor. Limited deal flow because Amorim dominates the market and most owners feel trapped.</p>
+      <p><strong>Why founders sell to us:</strong></p>
+      <ul>
+        <li>The wine stopper market is in slow decline — screw caps gaining share, wine consumption in Europe is down 7% over 2022–24.</li>
+        <li>Pivoting into technical cork (insulation, automotive, aerospace, sports) needs capex they don't have.</li>
+        <li>Amorim is the only realistic buyer — the owners feel they have no alternative.</li>
+        <li>Forest fire risk in the Portuguese cork-oak regions is rising with climate.</li>
+      </ul>
+      <p><strong>The deal we offer:</strong> "We are the alternative to Amorim. Strategic optionality alone is worth a premium — and we know how to pivot you out of stoppers and into technical cork."</p>
+    </div>
+
+    <div class="col">
+      <h4>(2) What we do once we own it</h4>
+      <p><strong>Margin lift target: +5 to +8 percentage points.</strong></p>
+      <ul>
+        <li><strong>Pivot end-markets:</strong> reduce wine-stopper revenue dependency. Build technical cork — aerospace cabin floors, EV battery thermal pads, building insulation panels.</li>
+        <li><strong>Buy and build:</strong> consolidate 2–3 family processors around Santa Maria da Feira.</li>
+        <li><strong>Lock in supply:</strong> 15–20-year cork-oak supply contracts with landowners — cork has a 9-year harvest cycle, supply security is real value.</li>
+        <li><strong>Pricing:</strong> stop the price-down spiral with Amorim by developing direct customer relationships with Diageo, Pernod Ricard.</li>
+        <li><strong>Working capital:</strong> stock days run above 200 (cork ages) — smarter inventory management is worth 2 margin points.</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h4>(3) How we sell it</h4>
+      <p><strong>When:</strong> 2031–2033. We hold longer because the technical-cork pivot needs time to show in the numbers.</p>
+      <p><strong>Price:</strong> 6–8× EBITDA → 1.2–1.4× multiple expansion. The smallest expansion of any priority sector.</p>
+      <p><strong>Who buys:</strong> Corticeira Amorim is the dominant buyer (yes, the same Amorim we positioned against — we sell <em>to</em> them at scale). Plus JPS Cork, M.A. Silva, Granorte. Outside cork: Saint-Gobain (insulation), Armacell.</p>
+      <p><strong>Backup buyer:</strong> thin — Iberis, Magnum, possibly forestry funds.</p>
+      <p><strong>Honest caveat:</strong> exit-buyer depth is the weakest of all 8 sectors. Cork makes the list because of operational fit and fragmentation, not because of exit attractiveness. We hold this for cash flow, not for multiple expansion.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<h2 id="summary">11 · Summary table — entry, value creation, exit</h2>
+<div class="legend">All multiples are EV/EBITDA (price as a multiple of last year's earnings). Bridge = margin points added over 36 months. Multiple expansion = exit multiple ÷ entry multiple. <strong>Money-multiple ≈ EBITDA growth × multiple expansion × leverage effect.</strong></div>
+
+<table>
+<thead><tr>
+<th>Sector</th>
+<th>Geography</th>
+<th class="num">Entry multiple</th>
+<th class="num">Margin lift</th>
+<th class="num">Exit multiple</th>
+<th class="num">Multiple uplift</th>
+<th>Window</th>
+<th>Top 3 buyers</th>
+</tr></thead>
+<tbody>
+<tr><td>Industrial waste</td><td>Iberia</td><td class="num">7.5–10×</td><td class="num">+5–8 pp</td><td class="num">11–14×</td><td class="num">1.4–1.7×</td><td>2030–32</td><td>Veolia · Urbaser · FCC</td></tr>
+<tr><td>Precision metalworking</td><td>Iberia</td><td class="num">5.5–10×</td><td class="num">+6–10 pp</td><td class="num">10–13×</td><td class="num">1.5–2.0×</td><td>2030–32</td><td>Howmet · Doncasters · MTU</td></tr>
+<tr><td>Pharma &amp; premium glass</td><td>CEE / Italy</td><td class="num">8–14×</td><td class="num">+5–8 pp</td><td class="num">12–15×</td><td class="num">1.3–1.5×</td><td>2031–33</td><td>Stevanato · Schott · Gerresheimer</td></tr>
+<tr><td>Lime &amp; calcium carbonate</td><td>FR / DE / PL</td><td class="num">7–11×</td><td class="num">+4–7 pp</td><td class="num">9–12×</td><td class="num">1.2–1.5×</td><td>2030–32</td><td>Lhoist · Carmeuse · Calcinor</td></tr>
+<tr><td>Technical ceramics</td><td>DE / IT / CZ</td><td class="num">8–13×</td><td class="num">+5–9 pp</td><td class="num">11–14×</td><td class="num">1.3–1.5×</td><td>2031–33</td><td>CeramTec · CoorsTek · Morgan</td></tr>
+<tr><td>Natural stone</td><td>Iberia</td><td class="num">4.5–8×</td><td class="num">+6–10 pp</td><td class="num">7–9×</td><td class="num">1.4–1.7×</td><td>2031–33</td><td>Antolini · Levantina · Cosentino</td></tr>
+<tr><td>Ceramics tiles — Castellón</td><td>Spain</td><td class="num">5–8×</td><td class="num">+5–9 pp</td><td class="num">7–9×</td><td class="num">1.3–1.5×</td><td>2030–31</td><td>Pamesa · Mohawk · Concorde</td></tr>
+<tr><td>Cork processing</td><td>Portugal</td><td class="num">5–7×</td><td class="num">+5–8 pp</td><td class="num">6–8×</td><td class="num">1.2–1.4×</td><td>2031–33</td><td>Amorim · Saint-Gobain · Armacell</td></tr>
+</tbody>
+</table>
+
+<h3>My conviction order — risk-adjusted</h3>
+<table>
+<thead><tr><th>#</th><th>Sector</th><th>Why this rank</th><th>Expected return on equity invested</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>Industrial waste — Iberia</strong></td><td>Best policy tailwind. Best exit-buyer depth. Permits are a real moat that protects the value we build.</td><td>Base 22–28% / Upside 32%+</td></tr>
+<tr><td>2</td><td><strong>Precision metalworking — Iberia</strong></td><td>Highest margin lift potential. Defence and medical certifications can double the exit multiple.</td><td>Base 20–26% / Upside 35%+</td></tr>
+<tr><td>3</td><td><strong>Natural stone — Iberia</strong></td><td>Tier-1 ranking. Cheapest entry. Most fragmented = biggest buy-and-build alpha.</td><td>Base 18–24% / Upside 30%</td></tr>
+<tr><td>4</td><td><strong>Ceramics tiles — Castellón</strong></td><td>Direct CFO knowledge fit. Energy lever has the Pamesa 2024 precedent. Cycle-timing risk is the issue.</td><td>Base 16–22% / Upside 28%</td></tr>
+<tr><td>5</td><td><strong>Pharma &amp; premium glass — CEE</strong></td><td>The "ex-BA Glass operator" thesis is uniquely defensible. Geography forces a CEE base.</td><td>Base 18–22% / Upside 28%</td></tr>
+<tr><td>6</td><td><strong>Lime — Europe</strong></td><td>EU carbon-border-tax tailwind is real. Entry multiple already prices in part of the upside.</td><td>Base 15–20% / Upside 24%</td></tr>
+<tr><td>7</td><td><strong>Technical ceramics — Europe</strong></td><td>Highest IP optionality. Entry multiple already prices in defence and chip cycles.</td><td>Base 16–22% / Upside 26%</td></tr>
+<tr><td>8</td><td><strong>Cork — Portugal</strong></td><td>Operational fit and fragmentation are real, but Amorim's buyer dominance caps the multiple expansion.</td><td>Base 14–18% / Upside 22%</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2 id="caveats">12 · Honest caveats</h2>
+<div class="callout"><strong>What is solid.</strong> The methodology, the margin-lift toolbox, the benchmark ranges, the named buyers per sector. The multiple bands sit inside actual mid-market deal data from 2022–25.</div>
+<div class="callout"><strong>What is uncertain.</strong> The exact entry multiple depends on how competitive the sale process is — proprietary deals (no auction) clear well below the band; auctions clear at the top. The exit multiple depends on whether EU industrial policy and the NATO defence ramp play out as currently signalled.</div>
+<div class="callout"><strong>What only opens once we are inside the company.</strong> The true maintenance capex (vs accounting capex), the real working-capital position, the contractual customer concentration, accumulated environmental liabilities (especially in waste, lime, glass), and how much the founder's personal relationships replace a real sales team.</div>
+<div class="callout"><strong>The single most important sentence.</strong> The PE thesis only works if the margin lift <em>and</em> the exit buyer are both real. Sectors where the lift is strong but the buyer pool is thin (Cork, Stone) only work if buy-and-build manufactures the buyer interest by getting to scale.</div>
+</section>
+
+<div class="footer">
+Built on dashboard v2 (sector universe + 38-lever × 20-sector matrix), policy_crossref (EU/UK industrial policy overlay), and the operational-efficiency-screener benchmark library. iPad-optimised at base 18px.<br/>
+<em>The numbers above are negotiation anchors, not appraisal values. Replace with target-specific figures when a CIM is in hand.</em>
+</div>
+
+</div>
+
+<script>
+(function(){
+  // Make every navlink button scroll smoothly to its target.
+  // Using JS rather than href anchors so it works inside iframes / embedded contexts.
+  document.querySelectorAll('button.navlink').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = btn.getAttribute('data-go');
+      var el = document.getElementById(id);
+      if(el){
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Company — Claude Enterprise</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#0a0a08;--paper:#f5f0e8;--cream:#ede8dc;--gold:#c8a84b;--gold-light:#e8d08a;--rust:#b84a2a;--forest:#2a4a2e;--slate:#3a3a4a;--mid:#7a7a6a;--border:#d8d0c0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Poppins',sans-serif;font-size:15px;overflow-x:hidden}
+.topnav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:9px 32px;background:rgba(245,240,232,0.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Poppins',sans-serif;font-weight:800;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--ink);text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:3px;flex-wrap:wrap}
+.nav-link{padding:5px 11px;font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;border-radius:2px;border:1px solid transparent;color:var(--mid);transition:all .2s;text-decoration:none;background:none;font-family:'Poppins',sans-serif;display:inline-block}
+.nav-link:hover{color:var(--ink);border-color:var(--border)}
+.nav-link.active{color:var(--ink);border-color:var(--ink)}
+.nav-link.cta{background:var(--ink);color:var(--paper)!important;border-color:var(--ink)}
+.nav-link.cta:hover{background:var(--gold);border-color:var(--gold);color:var(--ink)!important}
+.hero{min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 48px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(200,168,75,.12) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:34px;height:1px;background:var(--gold)}
+.hero-title{font-family:'Instrument Serif',serif;font-size:clamp(42px,6.5vw,86px);line-height:.93;letter-spacing:-2px;max-width:800px;margin-bottom:24px}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-subtitle{font-size:15px;color:var(--mid);max-width:500px;line-height:1.7;font-weight:400}
+section{padding:64px 48px;max-width:1140px;margin:0 auto}
+.full-bleed{max-width:none;padding-left:0;padding-right:0}
+.section-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.section-label::before{content:'';width:20px;height:1px;background:var(--gold)}
+h2{font-family:'Instrument Serif',serif;font-size:clamp(28px,4vw,52px);line-height:1.05;letter-spacing:-1px;margin-bottom:14px}
+h2 em{font-style:italic;color:var(--gold)}
+.section-intro{font-size:15px;color:var(--mid);line-height:1.7;max-width:560px;margin-bottom:40px;font-weight:400}
+.divider{border:none;border-top:1px solid var(--border);margin:0}
+.reality-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);margin-bottom:32px}
+.reality-cell{background:var(--paper);padding:28px}
+.reality-cell.dark{background:var(--ink)}
+.reality-cell .rc-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);margin-bottom:10px}
+.reality-cell.dark .rc-label{color:rgba(255,255,255,.35)}
+.reality-cell h3{font-family:'Instrument Serif',serif;font-size:22px;line-height:1.2;margin-bottom:8px}
+.reality-cell.dark h3{color:var(--paper)}
+.reality-cell p{font-size:13px;line-height:1.7;color:var(--mid)}
+.reality-cell.dark p{color:rgba(255,255,255,.5)}
+.reality-cell .rc-num{font-family:'Instrument Serif',serif;font-size:56px;color:var(--gold);line-height:1;margin-bottom:4px}
+.elevation-table{width:100%;border-collapse:collapse;margin-bottom:32px;font-size:13px}
+.elevation-table th{text-align:left;padding:9px 14px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);border-bottom:2px solid var(--ink);background:var(--cream)}
+.elevation-table td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;font-size:13px}
+.elevation-table tr:hover td{background:var(--cream)}
+.elevation-table .role-col{font-weight:700;color:var(--ink);white-space:nowrap}
+.elevation-table .before-col{color:var(--rust)}
+.elevation-table .after-col{color:var(--forest);font-weight:500}
+.elevation-table .gain-col{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);white-space:nowrap}
+.replacement-intro{background:var(--ink);padding:36px;margin-bottom:32px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+.replacement-intro h3{font-family:'Instrument Serif',serif;font-size:24px;color:var(--paper);line-height:1.2;margin-bottom:10px}
+.replacement-intro p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7}
+.ri-right{border-left:1px solid rgba(255,255,255,.1);padding-left:36px}
+.ri-stat{margin-bottom:18px}
+.ri-stat .ri-n{font-family:'Instrument Serif',serif;font-size:40px;color:var(--gold);line-height:1}
+.ri-stat .ri-l{font-size:11px;color:rgba(255,255,255,.35);font-family:'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.spectrum{display:flex;gap:2px;margin-bottom:32px}
+.spectrum-col{flex:1;padding:20px 16px}
+.spectrum-col:nth-child(1){background:rgba(184,74,42,.08);border:1px solid rgba(184,74,42,.2)}
+.spectrum-col:nth-child(2){background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.2)}
+.spectrum-col:nth-child(3){background:rgba(42,74,46,.08);border:1px solid rgba(42,74,46,.2)}
+.spectrum-col .sp-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:block}
+.spectrum-col:nth-child(1) .sp-label{color:var(--rust)}
+.spectrum-col:nth-child(2) .sp-label{color:var(--gold)}
+.spectrum-col:nth-child(3) .sp-label{color:var(--forest)}
+.spectrum-col h4{font-size:13px;font-weight:700;margin-bottom:8px}
+.spectrum-col ul{list-style:none}
+.spectrum-col ul li{font-size:12px;color:var(--mid);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.4}
+.spectrum-col ul li:last-child{border-bottom:none}
+.style-shift{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px}
+.style-card{border:1px solid var(--border);padding:24px;position:relative;overflow:hidden;transition:border-color .2s}
+.style-card:hover{border-color:var(--gold)}
+.style-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.style-card:nth-child(1)::after{background:var(--rust)}
+.style-card:nth-child(2)::after{background:var(--gold)}
+.style-card:nth-child(3)::after{background:var(--forest)}
+.style-card .sc-num{font-family:'Instrument Serif',serif;font-size:48px;color:var(--border);line-height:1;margin-bottom:10px}
+.style-card h4{font-size:14px;font-weight:700;margin-bottom:8px}
+.style-card p{font-size:13px;color:var(--mid);line-height:1.65;margin-bottom:10px}
+.style-card .sc-action{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold)}
+.mindset-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border)}
+.mindset-cell{background:var(--paper);padding:24px}
+.mindset-cell .old{font-size:12px;color:var(--rust);font-family:'DM Mono',monospace;text-decoration:line-through;margin-bottom:5px;opacity:.7}
+.mindset-cell .new{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4}
+.mindset-cell .explain{font-size:12px;color:var(--mid);line-height:1.6;margin-top:5px}
+.data-hero{background:var(--cream);border:1px solid var(--border);padding:42px;margin-bottom:32px;text-align:center}
+.data-hero h3{font-family:'Instrument Serif',serif;font-size:clamp(20px,3vw,38px);line-height:1.1;margin-bottom:14px}
+.data-hero h3 em{font-style:italic;color:var(--gold)}
+.data-hero p{font-size:14px;color:var(--mid);max-width:540px;margin:0 auto;line-height:1.7}
+.data-pyramid{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:40px}
+.pyramid-row{display:flex;align-items:center;gap:12px;width:100%;max-width:720px}
+.pyramid-bar{display:flex;align-items:center;padding:12px 18px;font-weight:600;font-size:12px}
+.pyramid-desc{font-size:12px;color:var(--mid);line-height:1.5;flex:1}
+.pyramid-row:nth-child(1){padding-left:0}
+.pyramid-row:nth-child(2){padding-left:32px}
+.pyramid-row:nth-child(3){padding-left:64px}
+.pyramid-row:nth-child(4){padding-left:96px}
+.data-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+.da-card{border:1px solid var(--border);padding:18px;transition:all .2s}
+.da-card:hover{border-color:var(--gold);background:var(--cream)}
+.da-card .da-icon{font-size:22px;margin-bottom:8px}
+.da-card h4{font-size:13px;font-weight:700;margin-bottom:5px}
+.da-card p{font-size:12px;color:var(--mid);line-height:1.6}
+.area-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:20px}
+.area-tab{padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer;border-radius:2px;border:1px solid var(--border);background:var(--paper);color:var(--mid);transition:all .15s;font-family:'Poppins',sans-serif}
+.area-tab:hover{border-color:var(--gold);color:var(--ink)}
+.area-tab.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.area-panel{display:none}
+.area-panel.active{display:block}
+.area-header-row{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.area-icon-box{width:40px;height:40px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.area-title-text{font-family:'Instrument Serif',serif;font-size:26px;letter-spacing:-.5px}
+.area-tagline{font-size:13px;color:var(--mid);margin-top:1px}
+.uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:14px}
+.uc-card{background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:14px;transition:border-color .2s}
+.uc-card:hover{border-color:var(--gold)}
+.uc-role{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-family:'DM Mono',monospace;margin-bottom:5px;opacity:.7}
+.uc-title{font-size:13px;font-weight:700;margin-bottom:5px;line-height:1.3}
+.uc-tool{display:inline-block;padding:2px 7px;border-radius:2px;font-size:10px;font-family:'DM Mono',monospace;margin-bottom:6px;font-weight:500}
+.uc-body{font-size:12px;color:var(--mid);line-height:1.6}
+.uc-impact{margin-top:7px;padding-top:7px;border-top:1px solid var(--border);font-size:11px;font-family:'DM Mono',monospace;color:var(--gold)}
+.sec-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px}
+.sec-card{background:var(--ink);padding:26px;border-radius:2px}
+.sec-card h4{font-size:14px;font-weight:700;color:var(--paper);margin-bottom:10px}
+.sec-card ul{list-style:none}
+.sec-card ul li{font-size:12px;color:rgba(255,255,255,.5);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.07);line-height:1.5;display:flex;gap:7px}
+.sec-card ul li:last-child{border-bottom:none}
+.sec-card ul li::before{content:'→';color:var(--gold);flex-shrink:0}
+.roi-table{width:100%;border-collapse:collapse;margin-bottom:24px;font-size:13px}
+.roi-table th{text-align:left;padding:9px 13px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);border-bottom:2px solid var(--ink);background:var(--cream)}
+.roi-table td{padding:12px 13px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;font-size:13px}
+.roi-table tr:hover td{background:var(--cream)}
+.roi-table .fn{font-weight:700}
+.roi-tag{display:inline-block;padding:2px 8px;border-radius:2px;font-size:11px;font-family:'DM Mono',monospace}
+.roi-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border);border:1px solid var(--border);margin-bottom:28px}
+.roi-sum-cell{background:var(--ink);padding:26px 20px}
+.roi-sum-cell:nth-child(1){background:var(--forest)}
+.roi-sum-cell .rs-n{font-family:'Instrument Serif',serif;font-size:36px;color:var(--gold);line-height:1;margin-bottom:3px}
+.roi-sum-cell .rs-l{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.8px}
+.roi-note{background:var(--cream);border:1px solid var(--border);padding:18px 22px;font-size:13px;color:var(--mid);line-height:1.7}
+.roi-note strong{color:var(--ink)}
+.offer-section{background:var(--ink);padding:64px 48px;max-width:none}
+.offer-inner{max-width:1140px;margin:0 auto}
+.offer-section .section-label{color:var(--gold-light)}
+.offer-section .section-label::before{background:var(--gold-light)}
+.offer-section h2{color:var(--paper)}
+.offer-section h2 em{color:var(--gold)}
+.offer-section .section-intro{color:rgba(255,255,255,.5)}
+.wave-strip{display:flex;gap:2px;background:var(--border);margin-bottom:32px}
+.wave-item{flex:1;background:var(--paper);padding:18px 16px}
+.wave-item:nth-child(2){background:var(--cream)}
+.wave-item .wi-wave{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.wave-item h4{font-size:13px;font-weight:700;margin-bottom:5px}
+.wave-item p{font-size:12px;color:var(--mid);line-height:1.6}
+.tier-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-bottom:32px}
+.tier-item{background:var(--paper);padding:22px 20px}
+.tier-item.highlight{background:var(--cream)}
+.tier-item .ti-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.tier-item h4{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.tier-item ul{list-style:none}
+.tier-item ul li{font-size:12px;color:var(--mid);padding:4px 0;border-bottom:1px solid var(--border);line-height:1.4}
+.tier-item ul li:last-child{border-bottom:none}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:32px}
+.why-card{padding:22px 18px;border-top:2px solid rgba(255,255,255,.12)}
+.why-card:nth-child(2){border-top-color:var(--gold)}
+.why-card .wc-icon{font-size:20px;margin-bottom:8px}
+.why-card h4{font-size:14px;font-weight:700;color:var(--paper);margin-bottom:7px}
+.why-card p{font-size:12px;color:rgba(255,255,255,.45);line-height:1.6}
+.closing{background:var(--paper);padding:72px 48px;text-align:center;max-width:none}
+.closing-inner{max-width:700px;margin:0 auto}
+.closing h2{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,64px);line-height:1;margin-bottom:18px}
+.closing p{font-size:15px;color:var(--mid);line-height:1.7;margin-bottom:32px}
+.btn-primary{display:inline-block;padding:13px 28px;background:var(--ink);color:var(--paper);font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;transition:all .2s;text-decoration:none}
+.btn-primary:hover{background:var(--gold);color:var(--ink)}
+.closing-footnote{margin-top:32px;font-family:'DM Mono',monospace;font-size:11px;color:var(--mid);letter-spacing:.8px}
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="#hero" class="nav-logo">CLAUDE <span>·</span> ENTERPRISE</a>
+  <div class="nav-links">
+    <a href="#reality"  class="nav-link">The Shift</a>
+    <a href="#people"   class="nav-link">People</a>
+    <a href="#style"    class="nav-link">Working Style</a>
+    <a href="#data"     class="nav-link">Data</a>
+    <a href="#usecases" class="nav-link">Use Cases</a>
+    <a href="#security" class="nav-link">Security</a>
+    <a href="#roi"      class="nav-link">ROI</a>
+    <a href="#offer"    class="nav-link">Deployment</a>
+    <a href="https://claude.ai/enterprise" target="_blank" class="nav-link cta">Get Started</a>
+  </div>
+</nav>
+
+<div class="hero" id="hero">
+  <div class="hero-eyebrow">Claude Enterprise · 2026</div>
+  <h1 class="hero-title">Your company,<br><em>amplified</em><br>by intelligence.</h1>
+  <p class="hero-subtitle">Every person more capable. Every process faster. Every decision better informed. This is not automation — this is a permanent upgrade to how your organisation thinks and works.</p>
+</div>
+
+<hr class="divider">
+
+<!-- CH1 THE SHIFT -->
+<section id="reality">
+  <div class="section-label">Chapter 01 — The Shift</div>
+  <h2>A structural change,<br>not a <em>trend.</em></h2>
+  <p class="section-intro">Every generation has a technology that separates companies that thrive from those that fall behind. This is that moment. The question is not whether AI changes your industry — it is whether you lead or react.</p>
+  <div class="reality-grid fade-in">
+    <div class="reality-cell"><div class="rc-label">The old model</div><h3>Information processing was the bottleneck.</h3><p>Companies hired people to gather, format, analyse, and report data. Output was constrained by human hours and human speed.</p></div>
+    <div class="reality-cell dark"><div class="rc-label">The new model</div><h3 style="color:var(--gold)">Judgment is the bottleneck. AI handles the rest.</h3><p>Every repetitive cognitive task can be delegated to Claude. Your people focus entirely on decisions, relationships, and strategy.</p></div>
+    <div class="reality-cell"><div class="rc-num">40%</div><div class="rc-label">of knowledge worker time</div><p>Spent on tasks automatable today: formatting, report writing, email drafting, search and summarisation, form completion, routine analysis.</p></div>
+    <div class="reality-cell"><div class="rc-num">3×</div><div class="rc-label">faster at comparable quality</div><p>Average output improvement when AI is properly integrated — not replacing people, but removing friction from every task they touch.</p></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- CH2 PEOPLE -->
+<section id="people">
+  <div class="section-label">Chapter 02 — People & Headcount</div>
+  <h2>Some roles transform.<br><em>Some disappear.</em></h2>
+  <p class="section-intro">If a person's primary role is gathering, formatting, or moving data, that role will shrink or disappear. This is not a risk to manage — it is the point. Communicate it honestly.</p>
+  <table class="elevation-table fade-in">
+    <thead><tr><th>Role</th><th>Before Claude — where time goes</th><th>After Claude — what the role becomes</th><th>Gain</th></tr></thead>
+    <tbody>
+      <tr><td class="role-col">CEO</td><td class="before-col">Waiting for reports. Update meetings. Asking for data to be recut.</td><td class="after-col">Real-time intelligence on demand. More time on strategy, culture, and external relationships.</td><td class="gain-col">Decision velocity ↑</td></tr>
+      <tr><td class="role-col">CFO</td><td class="before-col">Reviewing manually-assembled reports. Chasing the close. Rebuilding models.</td><td class="after-col">Automated close. Forward-looking analytics always ready. More time on capital allocation.</td><td class="gain-col">Insight quality ↑↑</td></tr>
+      <tr><td class="role-col">FP&amp;A Analyst</td><td class="before-col">Excel mechanics. Formatting decks. Reconciling data from five systems.</td><td class="after-col">Model designer. Scenario interpreter. Business partner to the business. 1 analyst does what 3 did.</td><td class="gain-col">~1 FTE freed/team</td></tr>
+      <tr><td class="role-col">Sales Manager</td><td class="before-col">Writing proposals from scratch. Manually logging CRM notes. Researching accounts.</td><td class="after-col">Walking into every meeting fully briefed. Proposals in minutes. Selling, not administrating.</td><td class="gain-col">Win rate + margin ↑</td></tr>
+      <tr><td class="role-col">HR Manager</td><td class="before-col">Onboarding paperwork. Policy updates. Payroll formatting. Scheduling.</td><td class="after-col">Onboarding automated. HR admin headcount reduced materially by Wave 3.</td><td class="gain-col">Admin −60%</td></tr>
+      <tr><td class="role-col">Plant Manager</td><td class="before-col">Manually compiling shift reports. Reacting to downtime. Chasing maintenance logs.</td><td class="after-col">Real-time OEE visibility. Predictive alerts before failures. Fewer admin-heavy supervisors needed.</td><td class="gain-col">OEE +8–12pp</td></tr>
+      <tr><td class="role-col">Factory Operator</td><td class="before-col">Paper SOPs. Waiting for supervisor. Language barriers on safety procedures.</td><td class="after-col">Digital SOPs on tablets. Instant procedure lookup in native language. Fewer errors, safer work.</td><td class="gain-col">Error rate ↓</td></tr>
+      <tr><td class="role-col">Exec. Assistant</td><td class="before-col">Formatting documents. Scheduling. Summarising long reports for leadership.</td><td class="after-col">Strategic coordination. Communication layer for the leadership team. Role consolidates.</td><td class="gain-col">Output quality ↑↑</td></tr>
+    </tbody>
+  </table>
+  <div class="replacement-intro fade-in">
+    <div>
+      <h3>The headcount equation — said plainly.</h3>
+      <p>By Month 18, expect material headcount reduction in: data entry clerks, report assemblers, scheduling administrators, payroll formatters, inside sales CRM support, procurement administrators, and HR onboarding staff. These are roles whose primary output is moving information from one place to another. Claude does that faster, cheaper, and without error.</p>
+      <p style="margin-top:10px">The roles that grow in value — and must be retained and invested in — are those requiring judgment, relationships, and domain expertise: senior analysts, key account managers, plant engineers, HR business partners, and leadership.</p>
+      <p style="margin-top:10px">Vague reassurances that "no one will lose their job" will be disbelieved and damage trust in the programme. The better message: the company is becoming more efficient, some roles will be restructured, and people who develop AI fluency will have more valuable careers — here and anywhere else.</p>
+    </div>
+    <div class="ri-right">
+      <div class="ri-stat"><div class="ri-n">100%</div><div class="ri-l">of roles are affected</div></div>
+      <div class="ri-stat"><div class="ri-n">~15%</div><div class="ri-l">of tasks fully automated in year 1</div></div>
+      <div class="ri-stat"><div class="ri-n">2–4</div><div class="ri-l">FTE equivalents removed by month 18</div></div>
+    </div>
+  </div>
+  <div class="spectrum fade-in">
+    <div class="spectrum-col"><span class="sp-label">Automate now</span><h4>Tasks Claude replaces</h4><ul><li>Invoice matching and reconciliation</li><li>Report formatting and assembly</li><li>Email drafting and triage</li><li>Data entry into systems</li><li>Basic document search and summary</li><li>Shift report compilation</li><li>RFQ drafting</li><li>Payroll data formatting</li></ul></div>
+    <div class="spectrum-col"><span class="sp-label">Augment now</span><h4>Tasks Claude accelerates</h4><ul><li>Financial analysis and modelling</li><li>Commercial proposal writing</li><li>Strategic scenario planning</li><li>Supplier and customer research</li><li>HR policy drafting</li><li>ESG and regulatory reporting</li><li>Board and investor communications</li><li>Production root cause analysis</li></ul></div>
+    <div class="spectrum-col"><span class="sp-label">Always human</span><h4>Tasks only people do</h4><ul><li>Final strategic decisions</li><li>Customer and supplier relationships</li><li>Culture and team leadership</li><li>Complex negotiations</li><li>Crisis management</li><li>Ethical judgments</li><li>Creative vision and direction</li><li>Accountability to stakeholders</li></ul></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- CH3 WORKING STYLE -->
+<section id="style">
+  <div class="section-label">Chapter 03 — New Working Style</div>
+  <h2>The skill is no longer<br><em>doing</em> — it's <em>directing.</em></h2>
+  <p class="section-intro">The most valuable skill in an AI-enabled company is knowing how to instruct, evaluate, and iterate with an AI. Every person in your company needs a version of it.</p>
+  <div class="style-shift fade-in">
+    <div class="style-card"><div class="sc-num">01</div><h4>From executor to director</h4><p>Instead of doing the analysis, you direct Claude — specifying the frame, the inputs, the output format. Your value is in knowing what question to ask and whether the answer is right.</p><div class="sc-action">New skill → prompt design + output evaluation</div></div>
+    <div class="style-card"><div class="sc-num">02</div><h4>From reactive to proactive</h4><p>When Claude handles routine monitoring automatically, you are no longer waiting for a problem to surface in a weekly report. You are alerted in real time and spend energy on the response, not detection.</p><div class="sc-action">New skill → exception management + early action</div></div>
+    <div class="style-card"><div class="sc-num">03</div><h4>From generalist to specialist</h4><p>With AI handling routine breadth, every professional can invest more deeply in domain expertise. The analyst who spent 60% formatting now spends it building sharper financial intuition.</p><div class="sc-action">New skill → depth over breadth</div></div>
+  </div>
+  <div class="mindset-grid fade-in">
+    <div class="mindset-cell"><div class="old">"I need to find time to do this."</div><div class="new">"I need to design the right instruction for Claude."</div><div class="explain">The shift from "how do I do this?" to "how do I brief this?" is the central habit change. It takes roughly 30 days to become natural.</div></div>
+    <div class="mindset-cell"><div class="old">"I'll need the team to pull this data together."</div><div class="new">"Claude has the data. I need to ask the right question."</div><div class="explain">When data is connected, the bottleneck shifts entirely to question quality. Leaders who thrive will be those who ask better questions.</div></div>
+    <div class="mindset-cell"><div class="old">"This is taking us three days to prepare."</div><div class="new">"This should take three hours. Where is the bottleneck?"</div><div class="explain">Speed expectations change permanently. Any process still taking days is a candidate for automation review. The benchmark resets.</div></div>
+    <div class="mindset-cell"><div class="old">"We don't have the resources to analyse that."</div><div class="new">"We can analyse anything with the right data and prompt."</div><div class="explain">Resource constraints on analysis largely disappear. The constraint becomes data quality and question quality — both of which you control.</div></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- CH4 DATA -->
+<section id="data">
+  <div class="section-label">Chapter 04 — The Data Imperative</div>
+  <h2>Your past data is<br>your <em>most underused asset.</em></h2>
+  <p class="section-intro">Claude is only as intelligent as the data it can access. Companies that invest in data quality, structure, and accessibility will extract ten times more value than those that have not.</p>
+  <div class="data-hero fade-in"><h3>Every decision you ever made<br>is <em>material for better future decisions.</em></h3><p>Your ERP holds 10 years of supplier performance. Your CRM holds every customer interaction. Your production system holds every defect, downtime event, and yield variation. This data has been sitting idle. Claude unlocks it.</p></div>
+  <div style="max-width:720px;margin:0 auto 40px">
+    <div class="section-label fade-in" style="margin-bottom:16px">The data value pyramid</div>
+    <div class="data-pyramid fade-in">
+      <div class="pyramid-row"><div class="pyramid-bar" style="flex:.36;background:var(--forest);justify-content:center;color:white">Strategic Intelligence</div><div class="pyramid-desc"><strong>The top:</strong> Synthesises all functions to answer forward-looking questions. What happens to EBITDA if resin rises 15%?</div></div>
+      <div class="pyramid-row"><div class="pyramid-bar" style="flex:.5;background:var(--gold);justify-content:center;color:var(--ink)">Predictive Models</div><div class="pyramid-desc"><strong>Layer 3:</strong> Historical patterns power demand forecasts, maintenance predictions, quality correlations. Longer data history = more accurate models.</div></div>
+      <div class="pyramid-row"><div class="pyramid-bar" style="flex:.64;background:var(--slate);justify-content:center;color:white">Automated Reporting</div><div class="pyramid-desc"><strong>Layer 2:</strong> Clean structured data enables Claude to generate reports automatically. Requires consistent schemas across systems.</div></div>
+      <div class="pyramid-row"><div class="pyramid-bar" style="flex:.78;background:var(--border);justify-content:center;color:var(--ink)">Clean, Connected Data</div><div class="pyramid-desc"><strong>Foundation:</strong> Structured, accessible data in ERP, CRM, WMS, SCADA. Without this, everything above is impossible.</div></div>
+    </div>
+  </div>
+  <div class="data-actions fade-in">
+    <div class="da-card"><div class="da-icon">🗂️</div><h4>Audit your data now</h4><p>Map every data source: what exists, where it lives, how clean it is, and whether it has an accessible API.</p></div>
+    <div class="da-card"><div class="da-icon">🔗</div><h4>Connect before you analyse</h4><p>ERP + CRM + production data together answer questions no single system can. Integration is the highest-return infrastructure investment.</p></div>
+    <div class="da-card"><div class="da-icon">📐</div><h4>Standardise naming</h4><p>"Nestlé", "NESTLE", "Nestle SA" — three different customers to Claude. Standardisation multiplies the value of every query you run.</p></div>
+    <div class="da-card"><div class="da-icon">⏳</div><h4>Historical depth is a moat</h4><p>A model trained on 10 years of orders is materially better than one on 2 years. Every month you wait is training data you will never recover.</p></div>
+  </div>
+  <div class="mindset-grid fade-in" style="border:1px solid var(--border)">
+    <div class="mindset-cell" style="background:var(--cream)"><div class="old">"We don't have the data for that."</div><div class="new">"We have the data. We need to find and clean it."</div><div class="explain">In almost every company, the data exists — it is just scattered or inconsistent. The work is curation, not creation.</div></div>
+    <div class="mindset-cell" style="background:var(--cream)"><div class="old">"That historical data is not useful anymore."</div><div class="new">"Historical data is the raw material for every prediction."</div><div class="explain">Every past supplier delay, order, and defect is a data point that makes future models more accurate. Archive nothing.</div></div>
+    <div class="mindset-cell" style="background:var(--cream)"><div class="old">"Data quality is an IT problem."</div><div class="new">"Data quality is every department head's responsibility."</div><div class="explain">The CFO who allows inconsistent cost center coding is degrading every AI output the company will ever run.</div></div>
+    <div class="mindset-cell" style="background:var(--cream)"><div class="old">"We'll integrate systems eventually."</div><div class="new">"Integration is an immediate strategic priority."</div><div class="explain">Competitors with connected data are building smarter models every day. Every month of delay compounds.</div></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- CH5 USE CASES -->
+<section id="usecases">
+  <div class="section-label">Chapter 05 — Claude Across the Enterprise</div>
+  <h2>Deployed in every<br>function, at every <em>level.</em></h2>
+  <p class="section-intro">From the CFO's board pack to the factory operator's SOP tablet. Real use cases, proven workflows, measurable outcomes — for a plastic packaging company with blue-collar operations.</p>
+  <div class="area-tabs fade-in" id="areaTabs">
+    <button class="area-tab active" data-panel="fin">💰 Finance</button>
+    <button class="area-tab" data-panel="sup">🚚 Supply Chain</button>
+    <button class="area-tab" data-panel="sal">📊 Sales</button>
+    <button class="area-tab" data-panel="pla">📅 Planning</button>
+    <button class="area-tab" data-panel="hr">👷 HR</button>
+    <button class="area-tab" data-panel="ir">📢 Investor Relations</button>
+    <button class="area-tab" data-panel="pro">🏭 Production</button>
+  </div>
+
+  <div class="area-panel active" id="panel-fin">
+    <div class="area-header-row"><div class="area-icon-box" style="background:#e8f5ef">💰</div><div><div class="area-title-text" style="color:#2a4a2e">Finance</div><div class="area-tagline">From month-end drag to real-time insight engine</div></div></div>
+    <div class="uc-grid">
+      <div class="uc-card"><div class="uc-role" style="color:#2a4a2e">CFO / Finance Director</div><div class="uc-title">Board Pack & Variance Commentary</div><span class="uc-tool" style="background:#e8f5ef;color:#2a4a2e;border:1px solid #2a4a2e30">claude.ai</span><div class="uc-body">Upload actuals vs. budget → Claude drafts executive commentary, highlights outliers, writes board narrative. 2 days becomes 2 hours.</div><div class="uc-impact">↓ 75% prep time</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#2a4a2e">FP&amp;A Analyst</div><div class="uc-title">Automated Month-End Close Agent</div><span class="uc-tool" style="background:#f5eeff;color:#7a3a9a;border:1px solid #7a3a9a30">Agent</span><div class="uc-body">Monitors ERP for close triggers, pulls GL data, runs reconciliations, flags exceptions, routes approvals autonomously. Humans touch exceptions only.</div><div class="uc-impact">↓ 40% close cycle</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#2a4a2e">FP&amp;A / Controller</div><div class="uc-title">Excel Model Automation</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Describe the model in plain English → Python builds dynamic EBITDA bridges, cash flow, or working capital models. No more brittle spreadsheets.</div><div class="uc-impact">↓ 60% build time</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#2a4a2e">Treasury</div><div class="uc-title">13-Week Cash Flow Forecasting</div><span class="uc-tool" style="background:#e8f5ef;color:#2a4a2e;border:1px solid #2a4a2e30">claude.ai</span><div class="uc-body">Feed AR aging, AP schedule, resin POs → rolling cash forecast with scenario toggles (resin +10%, volume −5%). Critical for commodity-exposed companies.</div><div class="uc-impact">↑ Forecast accuracy</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#2a4a2e">AP / AR Clerk</div><div class="uc-title">Invoice & PO Reconciliation</div><span class="uc-tool" style="background:#fff3e8;color:#9a4a1a;border:1px solid #9a4a1a30">Cowork</span><div class="uc-body">Watches supplier inbox, extracts line items, matches against ERP POs, flags discrepancies, logs to Excel. Zero manual data entry.</div><div class="uc-impact">↓ 80% manual entry</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#2a4a2e">CEO / CFO</div><div class="uc-title">Resin Cost Impact Monitor</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Daily script monitors PE/PP/PET spot prices, maps P&amp;L impact per SKU, emails a one-page brief to leadership. Direct EBITDA lever.</div><div class="uc-impact">Real-time commodity risk</div></div>
+    </div>
+  </div>
+
+  <div class="area-panel" id="panel-sup">
+    <div class="area-header-row"><div class="area-icon-box" style="background:#f0f8e8">🚚</div><div><div class="area-title-text" style="color:#5a7a1a">Supply Chain</div><div class="area-tagline">Resin volatility and supplier risk — brought under control</div></div></div>
+    <div class="uc-grid">
+      <div class="uc-card"><div class="uc-role" style="color:#5a7a1a">Procurement Manager</div><div class="uc-title">Supplier RFQ Drafting & Analysis</div><span class="uc-tool" style="background:#f0f8e8;color:#5a7a1a;border:1px solid #5a7a1a30">claude.ai</span><div class="uc-body">Describe specs → Claude drafts RFQ in minutes, then compares incoming quotes in a total-cost-of-ownership matrix.</div><div class="uc-impact">↓ 70% RFQ prep time</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#5a7a1a">Supply Chain Analyst</div><div class="uc-title">Resin Price Risk Tracker</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Pulls PE/PP/PET spot prices, calculates 30/90-day volatility bands, maps to open purchase commitments. Daily risk brief to CFO and procurement.</div><div class="uc-impact">Commodity hedge support</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#5a7a1a">Logistics Coordinator</div><div class="uc-title">Inbound Delay Agent</div><span class="uc-tool" style="background:#f5eeff;color:#7a3a9a;border:1px solid #7a3a9a30">Agent</span><div class="uc-body">Monitors shipment ETAs, cross-references production schedule, proactively reroutes or reschedules when delays are detected — before the line notices.</div><div class="uc-impact">↓ Line stoppages</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#5a7a1a">Inventory Manager</div><div class="uc-title">Inventory Reorder Automation</div><span class="uc-tool" style="background:#f5eeff;color:#7a3a9a;border:1px solid #7a3a9a30">Agent</span><div class="uc-body">Reads WMS stock levels, triggers reorder at safety stock breach, drafts PO for approval, logs everything. Eliminates stockout firefighting.</div><div class="uc-impact">↓ Stockouts · ↑ Turns</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#5a7a1a">Procurement / Finance</div><div class="uc-title">Contract Clause Extraction</div><span class="uc-tool" style="background:#f0f8e8;color:#5a7a1a;border:1px solid #5a7a1a30">claude.ai</span><div class="uc-body">Upload supplier contracts → Claude extracts price escalation clauses, force majeure, minimum volume commitments, liability caps. Builds risk register automatically.</div><div class="uc-impact">Legal risk visibility</div></div>
+    </div>
+  </div>
+
+  <div class="area-panel" id="panel-sal">
+    <div class="area-header-row"><div class="area-icon-box" style="background:#fff0e8">📊</div><div><div class="area-title-text" style="color:#9a3a1a">Sales</div><div class="area-tagline">Win more at better margins — faster</div></div></div>
+    <div class="uc-grid">
+      <div class="uc-card"><div class="uc-role" style="color:#9a3a1a">Sales Director / KAM</div><div class="uc-title">Custom Quote Generator</div><span class="uc-tool" style="background:#fff0e8;color:#9a3a1a;border:1px solid #9a3a1a30">claude.ai</span><div class="uc-body">Input customer specs, volume, delivery requirements → fully formatted commercial proposal with pricing rationale and sustainability credentials. In minutes.</div><div class="uc-impact">↑ Win rate</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#9a3a1a">Sales Analyst</div><div class="uc-title">Pipeline & Margin Analytics</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Live pipeline dashboard: win probability by segment, ASP trends, margin per SKU per customer. Identifies where to push and where to protect.</div><div class="uc-impact">Margin-aware pipeline</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#9a3a1a">Inside Sales / SDR</div><div class="uc-title">CRM Data Entry from Email</div><span class="uc-tool" style="background:#fff3e8;color:#9a4a1a;border:1px solid #9a4a1a30">Cowork</span><div class="uc-body">Reads sales email threads, extracts deal details, logs structured data to CRM automatically. Reps sell, not type.</div><div class="uc-impact">↑ CRM data quality</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#9a3a1a">Sales / Marketing</div><div class="uc-title">Account Research Agent</div><span class="uc-tool" style="background:#f5eeff;color:#7a3a9a;border:1px solid #7a3a9a30">Agent</span><div class="uc-body">Before each key call, researches the target: packaging spend signals, sustainability commitments, current supplier, decision-makers. One-page brief delivered automatically.</div><div class="uc-impact">↑ Meeting quality</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#9a3a1a">CEO / Sales Director</div><div class="uc-title">Pricing Floor Modeler</div><span class="uc-tool" style="background:#fff0e8;color:#9a3a1a;border:1px solid #9a3a1a30">claude.ai</span><div class="uc-body">Input cost structure and volume tiers → optimal price bands by segment, margin impact of discounting scenarios, recommended floor prices.</div><div class="uc-impact">Defensible pricing fast</div></div>
+    </div>
+  </div>
+
+  <div class="area-panel" id="panel-pla">
+    <div class="area-header-row"><div class="area-icon-box" style="background:#f0eeff">📅</div><div><div class="area-title-text" style="color:#5a2a8a">Planning</div><div class="area-tagline">S&OP that actually runs itself</div></div></div>
+    <div class="uc-grid">
+      <div class="uc-card"><div class="uc-role" style="color:#5a2a8a">Planning Manager / COO</div><div class="uc-title">S&OP Pack Automation</div><span class="uc-tool" style="background:#f5eeff;color:#7a3a9a;border:1px solid #7a3a9a30">Agent</span><div class="uc-body">Pulls demand forecast, production capacity, inventory status from multiple systems, assembles monthly S&OP deck, distributes it before anyone asks. Saves 8 hrs/month.</div><div class="uc-impact">↓ 8 hrs/month prep</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#5a2a8a">Demand Planner</div><div class="uc-title">Demand Sensing Model</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Ingests order history, customer commits, seasonality, macro indicators. Outputs SKU-level weekly forecasts with confidence intervals. Replaces spreadsheet guesswork.</div><div class="uc-impact">↑ Forecast accuracy</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#5a2a8a">CFO / CEO</div><div class="uc-title">Scenario Planning Narratives</div><span class="uc-tool" style="background:#f0eeff;color:#5a2a8a;border:1px solid #5a2a8a30">claude.ai</span><div class="uc-body">Upload three volume/price/cost scenarios → executive narrative for each: risks, responses, capex implications. Board-ready language instantly.</div><div class="uc-impact">Better decisions, faster</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#5a2a8a">Production Planner</div><div class="uc-title">Capacity Constraint Identifier</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Reads machine availability, shift patterns, order book → identifies bottlenecks before they hit the line, proposes optimised run sequences.</div><div class="uc-impact">↑ Line utilisation</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#5a2a8a">All Planners</div><div class="uc-title">Forecast File Assembly</div><span class="uc-tool" style="background:#fff3e8;color:#9a4a1a;border:1px solid #9a4a1a30">Cowork</span><div class="uc-body">Consolidates forecast inputs from commercial, operations, and finance into one master file — resolving format inconsistencies automatically. Kills the "send me your tab" cycle.</div><div class="uc-impact">↓ 90% assembly time</div></div>
+    </div>
+  </div>
+
+  <div class="area-panel" id="panel-hr">
+    <div class="area-header-row"><div class="area-icon-box" style="background:#ffe8f0">👷</div><div><div class="area-title-text" style="color:#9a1a4a">HR</div><div class="area-tagline">Blue-collar workforce — recruited, trained, retained faster</div></div></div>
+    <div class="uc-grid">
+      <div class="uc-card"><div class="uc-role" style="color:#9a1a4a">HR Manager</div><div class="uc-title">Blue-Collar Onboarding Agent</div><span class="uc-tool" style="background:#f5eeff;color:#7a3a9a;border:1px solid #7a3a9a30">Agent</span><div class="uc-body">Sends checklist, collects signed documents, schedules safety induction, assigns e-learning, confirms completion — without HR admin involvement. Built for high-volume factory hiring.</div><div class="uc-impact">↓ 60% admin</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#9a1a4a">Safety Officer</div><div class="uc-title">Safety Training Content</div><span class="uc-tool" style="background:#ffe8f0;color:#9a1a4a;border:1px solid #9a1a4a30">claude.ai</span><div class="uc-body">Describe a process or machine → safety briefings, risk assessments, toolbox talk scripts for packaging machinery. Available in PT/ES/PL for migrant workers.</div><div class="uc-impact">↓ Incident risk</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#9a1a4a">Shift Supervisor / HR</div><div class="uc-title">Shift Scheduling Optimizer</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Input headcount, skills matrix, absence patterns, production schedule → optimised shift rotas minimising overtime cost while meeting coverage and labour law constraints.</div><div class="uc-impact">↓ Overtime cost</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#9a1a4a">HR Director</div><div class="uc-title">Labor Policy Drafting</div><span class="uc-tool" style="background:#ffe8f0;color:#9a1a4a;border:1px solid #9a1a4a30">claude.ai</span><div class="uc-body">Describe a regulatory change → Claude updates HR policy documents, drafts employee communications, flags gaps in current practices. Compliance without external legal spend.</div><div class="uc-impact">Compliance at low cost</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#9a1a4a">HR Admin</div><div class="uc-title">Payroll Data Formatting</div><span class="uc-tool" style="background:#fff3e8;color:#9a4a1a;border:1px solid #9a4a1a30">Cowork</span><div class="uc-body">Takes raw attendance and overtime data from the clocking system, formats to payroll processor spec, flags anomalies before submission.</div><div class="uc-impact">↓ Payroll errors</div></div>
+    </div>
+  </div>
+
+  <div class="area-panel" id="panel-ir">
+    <div class="area-header-row"><div class="area-icon-box" style="background:#fffce8">📢</div><div><div class="area-title-text" style="color:#7a6a0a">Investor Relations</div><div class="area-tagline">Credible, consistent, data-driven investor narrative</div></div></div>
+    <div class="uc-grid">
+      <div class="uc-card"><div class="uc-role" style="color:#7a6a0a">CFO / IR Manager</div><div class="uc-title">Earnings Script & Q&A Prep</div><span class="uc-tool" style="background:#fffce8;color:#7a6a0a;border:1px solid #7a6a0a30">claude.ai</span><div class="uc-body">Input financials and key messages → drafts earnings call script, anticipates analyst questions, prepares CFO answer briefs with data support.</div><div class="uc-impact">↓ Prep time 50%</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#7a6a0a">IR / ESG Officer</div><div class="uc-title">CSRD/GRI ESG Report Drafting</div><span class="uc-tool" style="background:#fffce8;color:#7a6a0a;border:1px solid #7a6a0a30">claude.ai</span><div class="uc-body">Upload emissions data, recycled content %, energy use → CSRD/GRI-aligned ESG sections with narrative, tables, KPI commentary. Critical for EPR-regulated packaging companies.</div><div class="uc-impact">Regulatory compliance</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#7a6a0a">IR Analyst</div><div class="uc-title">Peer Benchmarking Extractor</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Scrapes public filings and earnings transcripts of packaging peers (Amcor, Sealed Air, Berry Global), extracts margin/leverage/growth metrics, builds live benchmark table.</div><div class="uc-impact">Always-current positioning</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#7a6a0a">CFO / CEO</div><div class="uc-title">Analyst Q&A Prep Agent</div><span class="uc-tool" style="background:#f5eeff;color:#7a3a9a;border:1px solid #7a3a9a30">Agent</span><div class="uc-body">Before each results call, scans recent analyst reports and sell-side notes, generates a ranked list of likely questions with suggested answers.</div><div class="uc-impact">No call surprises</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#7a6a0a">IR Admin</div><div class="uc-title">Investor Deck Version Control</div><span class="uc-tool" style="background:#fff3e8;color:#9a4a1a;border:1px solid #9a4a1a30">Cowork</span><div class="uc-body">Manages roadshow deck versions — auto-updating data tables from latest financials, ensuring consistent messaging, archiving prior versions with date stamps.</div><div class="uc-impact">Zero version errors</div></div>
+    </div>
+  </div>
+
+  <div class="area-panel" id="panel-pro">
+    <div class="area-header-row"><div class="area-icon-box" style="background:#e8f0ff">🏭</div><div><div class="area-title-text" style="color:#2a3a8a">Production</div><div class="area-tagline">The factory floor — smarter, safer, faster</div></div></div>
+    <div class="uc-grid">
+      <div class="uc-card"><div class="uc-role" style="color:#2a3a8a">Plant Manager / COO</div><div class="uc-title">OEE Dashboard & Downtime Analysis</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Connects to SCADA/MES, computes OEE (Availability × Performance × Quality) per machine per shift, auto-generates root cause commentary. Replaces manual shift logs.</div><div class="uc-impact">OEE +8–12pp</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#2a3a8a">Maintenance Engineer</div><div class="uc-title">Predictive Maintenance Agent</div><span class="uc-tool" style="background:#f5eeff;color:#7a3a9a;border:1px solid #7a3a9a30">Agent</span><div class="uc-body">Monitors vibration, temperature, cycle count sensors on extruders and blow-moulding lines, flags anomalies, opens maintenance work order before failure occurs.</div><div class="uc-impact">↓ Unplanned downtime</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#2a3a8a">Process Engineer</div><div class="uc-title">SOP Digitisation & Simplification</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">claude.ai</span><div class="uc-body">Upload paper SOPs → Claude rewrites in plain language for low-literacy operators, step-by-step structure, safety checkpoints highlighted. PT/ES/PL available.</div><div class="uc-impact">↓ Operator errors</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#2a3a8a">Quality Manager</div><div class="uc-title">Defect Root Cause Analysis</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Feed quality inspection data (defect type, machine, batch, material lot) → statistical analysis surfaces correlations, e.g. defects spike when resin lot X meets machine 3 above 220°C.</div><div class="uc-impact">↑ First-pass yield</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#2a3a8a">Shift Supervisor</div><div class="uc-title">Automated Shift Report</div><span class="uc-tool" style="background:#fff3e8;color:#9a4a1a;border:1px solid #9a4a1a30">Cowork</span><div class="uc-body">Pulls production counters, downtime logs, quality data at shift end, compiles standardised shift report, distributes to management and planning automatically.</div><div class="uc-impact">↓ Admin per shift</div></div>
+      <div class="uc-card"><div class="uc-role" style="color:#2a3a8a">CEO / Plant Director</div><div class="uc-title">Energy Cost Optimiser</div><span class="uc-tool" style="background:#e8f0ff;color:#2a4a8a;border:1px solid #2a4a8a30">Claude Code</span><div class="uc-body">Models energy consumption by machine and shift against tariff schedules → optimal run times to minimise peak-rate exposure. Plastic processing is energy-intensive; this hits EBITDA directly.</div><div class="uc-impact">2–4% energy saving</div></div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- CH6 SECURITY -->
+<section id="security">
+  <div class="section-label">Chapter 06 — Security & Data Governance</div>
+  <h2>Deployed with<br><em>enterprise-grade</em> controls.</h2>
+  <p class="section-intro">Security is not a separate workstream — it is the foundation every deployment wave sits on. Five principles govern how Claude handles your data, and they apply before go-live.</p>
+  <div class="sec-grid fade-in">
+    <div class="sec-card"><h4>🔒 Five Non-Negotiable Principles</h4><ul><li>No personal data in claude.ai chat without anonymisation first — HR managers may not paste employee names, salaries, or IDs into the interface in plain text</li><li>Data classification matrix in force before Wave 1: what can go to Claude, in what form, and what never can</li><li>Claude Code scripts run inside your environment — data stays on your infrastructure; Claude processes the query, not the full raw dataset</li><li>Agents operate with minimum necessary permissions — the close agent has no access to payroll; the reorder agent has no access to customer pricing</li><li>Enterprise plan only — Individual Pro accounts do not guarantee data is not used for model training. Non-negotiable before Wave 2</li></ul></div>
+    <div class="sec-card"><h4>🇪🇺 GDPR — Porto / EU Operations</h4><ul><li>Blue-collar employee data (attendance, clocking, health) requires a lawful basis, data processing record, and DPA with Anthropic under GDPR Article 28</li><li>Customer names in proposals constitute personal data — anonymise to company-level or ensure privacy notices cover AI-assisted processing</li><li>Anthropic infrastructure is primarily US-based — Standard Contractual Clauses cover the transfer; your DPO must verify before Wave 2</li><li>CNPD (Portugal's supervisory authority) is increasingly active — document all AI processing in your Records of Processing Activities (ROPA)</li><li>Anthropic enterprise DPA confirms conversations are not retained beyond the session — document this to respond to employee GDPR access requests</li></ul></div>
+    <div class="sec-card"><h4>⚙️ Technical Controls by Wave</h4><ul><li>Wave 1: SSO-linked corporate accounts, data classification policy ratified, DPO sign-off obtained, Anthropic DPA executed before any data-connected use</li><li>Wave 2: Audit logging on all Claude Code scripts (timestamped, attributed); role-based access controls; ERP connector tested in sandbox before production</li><li>Wave 3: Per-agent security sign-off document (permissions scope, human-in-loop triggers, rollback procedure); penetration test at Month 6 milestone</li><li>Wave 4: Full data lineage audit; ESG reporting chain of custody documented for CSRD regulators; annual AI security review added to IT audit calendar</li></ul></div>
+    <div class="sec-card"><h4>🚨 Top Risks to Manage</h4><ul><li>Data quality failures producing wrong automated outputs — caught too late and surfacing in board packs or regulatory submissions</li><li>Factory workforce backlash if communication is poor — address proactively in native language, delivered by line managers not HR circulars</li><li>Over-reliance on agents without human review protocols, creating audit or compliance exposure in financial processes</li><li>Loss of internal AI owner — the roadmap stalls without a named accountable person; formalise the role before Wave 3</li><li>The biggest risk is your own people misusing the tool without realising it — one day of scenario-based security training per wave rollout prevents 90% of incidents</li></ul></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- CH7 ROI -->
+<section id="roi">
+  <div class="section-label">Chapter 07 — ROI Summary</div>
+  <h2>The business case<br>in <em>plain numbers.</em></h2>
+  <p class="section-intro">Conservative estimates based on a mid-size plastic packaging company with €40–80M revenue, mixed white-collar and blue-collar workforce. All figures are Year 1 unless stated.</p>
+  <div class="roi-summary fade-in">
+    <div class="roi-sum-cell"><div class="rs-n">€1–3M</div><div class="rs-l">Conservative Year 1 value</div></div>
+    <div class="roi-sum-cell"><div class="rs-n">10–30×</div><div class="rs-l">ROI vs. annual Claude cost</div></div>
+    <div class="roi-sum-cell"><div class="rs-n">Month 2</div><div class="rs-l">First measurable ROI visible</div></div>
+    <div class="roi-sum-cell"><div class="rs-n">18 mo</div><div class="rs-l">Full deployment horizon</div></div>
+  </div>
+  <table class="roi-table fade-in">
+    <thead><tr><th>Function</th><th>Primary Value Driver</th><th>Quantification Basis</th><th>Est. Year 1</th><th>Wave</th></tr></thead>
+    <tbody>
+      <tr><td class="fn" style="color:#2a4a2e">Finance</td><td>Close −40%. Board prep −75%. Invoice matching −80% manual time. Resin alerts prevent 1–2 margin surprises/year.</td><td>1 FTE equivalent freed in FP&amp;A. Commodity margin protection.</td><td><span class="roi-tag" style="background:#e8f5ef;color:#2a4a2e">€150–300k</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid)">W1–W3</td></tr>
+      <tr><td class="fn" style="color:#5a7a1a">Supply Chain</td><td>RFQ cycle −70%. Stockouts reduced. Inbound delays caught early. Contract risk surfaced before disputes.</td><td>Each avoided line stoppage: €10–50k. 0.5 FTE procurement admin freed.</td><td><span class="roi-tag" style="background:#f0f8e8;color:#5a7a1a">€100–250k</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid)">W2–W3</td></tr>
+      <tr><td class="fn" style="color:var(--rust)">Sales</td><td>Proposal cycle −65%. Win rate uplift. Margin floor prevents below-cost selling. CRM data quality improves forecast accuracy.</td><td>1pp win rate on €20M pipeline = €200k. Pricing floor worth 0.5pp EBITDA margin.</td><td><span class="roi-tag" style="background:#fff0e8;color:#9a3a1a">€200–400k</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid)">W1–W2</td></tr>
+      <tr><td class="fn" style="color:#5a2a8a">Planning</td><td>S&amp;OP prep −8 hrs/month. Demand accuracy reduces safety stock. Capacity optimisation reduces rush costs.</td><td>5% safety stock reduction on €5M inventory = €250k. S&amp;OP prep: 0.25 FTE equivalent.</td><td><span class="roi-tag" style="background:#f0eeff;color:#5a2a8a">€150–300k</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid)">W2–W3</td></tr>
+      <tr><td class="fn" style="color:#9a1a4a">HR</td><td>Onboarding admin −60%. Overtime scheduling savings. Payroll errors reduced. Safety incidents reduced via better training.</td><td>0.5 FTE admin equivalent. Incident cost avoidance significant but hard to quantify.</td><td><span class="roi-tag" style="background:#ffe8f0;color:#9a1a4a">€80–150k</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid)">W1–W3</td></tr>
+      <tr><td class="fn" style="color:#7a6a0a">IR</td><td>Earnings prep −50%. ESG compliance avoids fines. Better analyst prep reduces negative surprises on calls.</td><td>ESG non-compliance fines: €100k–1M+. Analyst surprise management: qualitative but material on cost of capital.</td><td><span class="roi-tag" style="background:#fffce8;color:#7a6a0a">€100–200k</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid)">W1–W4</td></tr>
+      <tr><td class="fn" style="color:#2a3a8a">Production</td><td>OEE +8–12pp. Predictive maintenance reduces unplanned downtime. Scrap rate reduction. Energy cost −2–4%.</td><td>1pp OEE on €50M revenue plant = €500k+ throughput. Energy savings: €50–150k/year.</td><td><span class="roi-tag" style="background:#e8f0ff;color:#2a4a8a">€500k–1M+</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid)">W2–W4</td></tr>
+    </tbody>
+  </table>
+  <div class="roi-note fade-in"><strong>How to read this:</strong> Production and Sales carry the most weight in Year 1 — OEE improvement is measurable within weeks of connecting SCADA data, and sales win rate impact is visible within the first quarter. Finance and Planning deliver steady compounding value from Month 3 onward. HR and IR are smaller in absolute terms but have high leverage when regulatory risk (CSRD, labour compliance) is factored in. <strong>The 10–30× ROI range is conservative</strong> — it excludes improved decision quality, reduced key-person dependency, and talent attraction from being a digitally advanced employer.</div>
+</section>
+<hr class="divider">
+
+<!-- CH8 DEPLOYMENT -->
+<section id="offer" class="full-bleed offer-section">
+  <div class="offer-inner">
+    <div class="section-label">Chapter 08 — Deployment Plan</div>
+    <h2 style="color:var(--paper)">Four waves.<br><em>18 months</em> to full potential.</h2>
+    <p class="section-intro">Each wave builds the infrastructure and trust for the next. Start with zero-integration wins, connect data, automate workflows, then run autonomous agents at scale.</p>
+    <div class="wave-strip fade-in">
+      <div class="wave-item"><div class="wi-wave">Wave 1 · M0–3</div><h4>Foundation</h4><p>Power users (10–15) across all functions. claude.ai only. No integration. Quick wins in board packs, proposals, SOPs. Data audit begins. AI policy ratified. Leadership uses Claude visibly.</p></div>
+      <div class="wave-item"><div class="wi-wave">Wave 2 · M3–6</div><h4>Connect</h4><p>Claude Code connects ERP, SCADA, CRM. First automated reporting pipelines. Cowork deployed to admin layer. Broad white-collar rollout. Power users become internal trainers.</p></div>
+      <div class="wave-item"><div class="wi-wave">Wave 3 · M6–12</div><h4>Automate</h4><p>Agents take over the close, S&OP, predictive maintenance, and onboarding. Blue-collar SOP access on tablets. First autonomous financial commitments within pre-defined limits.</p></div>
+      <div class="wave-item"><div class="wi-wave">Wave 4 · M12–18</div><h4>Optimise</h4><p>Cross-agent integration. ESG reporting automated. Quality-yield loop running. Energy and demand models combined. AI fluency embedded in hiring standards and performance reviews.</p></div>
+    </div>
+    <div class="tier-strip fade-in">
+      <div class="tier-item"><div class="ti-label">Foundation · Wave 1</div><h4>claude.ai Enterprise</h4><ul><li>Unlimited chat for all white-collar staff</li><li>Document upload and analysis</li><li>Board pack and proposal drafting</li><li>SSO and enterprise data controls</li><li>GDPR-compliant, no training on your data</li><li>Usage analytics by department</li></ul></div>
+      <div class="tier-item highlight"><div class="ti-label">Core Platform · Waves 2–3</div><h4>Claude Code + Cowork</h4><ul><li>ERP, CRM, WMS, SCADA data connectors</li><li>Automated reporting pipelines</li><li>Cowork desktop automation for admin layer</li><li>Claude Code for financial and operational scripts</li><li>Role-based data access controls</li><li>Audit logging and compliance reporting</li></ul></div>
+      <div class="tier-item"><div class="ti-label">Full Potential · Wave 4</div><h4>Agents at Scale</h4><ul><li>Autonomous close, S&OP, and procurement agents</li><li>Predictive maintenance and quality agents</li><li>Cross-function data synthesis</li><li>ESG automated reporting pipeline</li><li>Strategic scenario intelligence</li><li>Quarterly AI performance audit framework</li></ul></div>
+    </div>
+    <div class="why-grid fade-in">
+      <div class="why-card"><div class="wc-icon">🧠</div><h4>Most capable model</h4><p>Claude leads benchmarks on reasoning, analysis, and long-document understanding. For complex financial and operational tasks, this gap is material.</p></div>
+      <div class="why-card"><div class="wc-icon">🔒</div><h4>Privacy by design</h4><p>Enterprise agreement: your data is never used for model training. Conversations not retained. Full GDPR DPA. This is not true of all AI providers.</p></div>
+      <div class="why-card"><div class="wc-icon">⚡</div><h4>Built for enterprise</h4><p>SSO, audit logging, role-based access, API-first architecture, and agent infrastructure designed for production deployment.</p></div>
+      <div class="why-card"><div class="wc-icon">🌍</div><h4>Multilingual</h4><p>Critical for blue-collar workforces. High quality in Portuguese, Spanish, French, Polish, and 50+ other languages out of the box.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<div id="closing" class="closing">
+  <div class="closing-inner" style="max-width:860px">
+    <div class="section-label" style="justify-content:center">The Decision</div>
+    <h2 class="fade-in">Time is not<br><em>neutral.</em></h2>
+    <p class="fade-in" style="font-size:15px;color:var(--mid);line-height:1.8;margin-bottom:20px">AI value does not accumulate linearly. It compounds — not just in cost savings, but in <strong style="color:var(--ink)">capability, in knowledge, in competitive distance.</strong></p>
+    <p class="fade-in" style="font-size:15px;color:var(--mid);line-height:1.8;margin-bottom:20px">The ROI numbers are the easy part. What cannot be measured is the analyst who, six months into using Claude daily, starts asking questions no one in the company ever thought to ask. The sales manager who walks into every negotiation knowing more about the customer than the customer expects. The plant engineer who, after a year of working with defect data through Claude, develops an intuition about process quality that <strong style="color:var(--ink)">no competitor can buy or copy.</strong></p>
+    <p class="fade-in" style="font-size:15px;color:var(--mid);line-height:1.8;margin-bottom:20px">These are not efficiency gains. They are <strong style="color:var(--ink)">capability transformations</strong> — and they only happen through time spent with the tool. This is why the start date matters more than any implementation detail. A great person with a great tool, given enough time, does not just outperform — they reframe what is possible. They change the standard.</p>
+    <p class="fade-in" style="font-size:15px;color:var(--mid);line-height:1.8;margin-bottom:20px">By the time a competitor starts, they are not catching up to where you are today. They are catching up to where you will be in another twelve months — <strong style="color:var(--ink)">and you will not be standing still.</strong></p>
+    <p class="fade-in" style="font-size:15px;color:var(--mid);line-height:1.8;margin-bottom:36px">The question is not whether to move. It is whether you move before or after the person across the table from you does. <strong style="color:var(--ink)">If it is after, the battle is not delayed — it is already lost.</strong></p>
+    <div class="fade-in"><a href="https://claude.ai/enterprise" target="_blank" class="btn-primary">Start with Claude Enterprise →</a></div>
+    <div class="closing-footnote fade-in" style="margin-top:28px">claude.ai/enterprise · GDPR Article 28 DPA · SSO-ready · Data never used for training</div>
+  </div>
+</div>
+
+<script>
+// Fade-in on scroll
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.07 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// Nav active state on scroll
+const secIds = ['hero','reality','people','style','data','usecases','security','roi','offer','closing'];
+window.addEventListener('scroll', () => {
+  let cur = '';
+  secIds.forEach(id => { const el = document.getElementById(id); if (el && window.scrollY >= el.offsetTop - 72) cur = id; });
+  document.querySelectorAll('.nav-link:not(.cta)').forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + cur) l.classList.add('active');
+  });
+}, { passive: true });
+
+// Area tabs — event delegation on parent container
+document.getElementById('areaTabs').addEventListener('click', function(e) {
+  const btn = e.target.closest('.area-tab');
+  if (!btn) return;
+  const panelId = btn.getAttribute('data-panel');
+  document.querySelectorAll('.area-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.area-panel').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('panel-' + panelId);
+  if (target) target.classList.add('active');
+});
+</script>
+</body>
+</html>

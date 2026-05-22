@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>90-Day Action Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #0f0f1a;
+    color: #f0f0f0;
+    min-height: 100vh;
+    padding: 0 0 40px 0;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #1a1a3e 0%, #2d1b69 100%);
+    padding: 36px 24px 28px;
+    text-align: center;
+    border-bottom: 3px solid #7c3aed;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 15px;
+    font-weight: 400;
+    color: #a78bfa;
+    line-height: 1.5;
+  }
+
+  /* PHASE TABS */
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    background: #13131f;
+    padding: 12px 16px;
+    gap: 10px;
+    scrollbar-width: none;
+    border-bottom: 1px solid #2a2a4a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    background: #1e1e35;
+    color: #a0a0c0;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab.active {
+    background: #7c3aed;
+    color: #fff;
+    border-color: #a78bfa;
+  }
+
+  /* SECTIONS */
+  .section { display: none; padding: 24px 20px; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: #1a1a30;
+    border-radius: 20px;
+    padding: 22px 20px;
+    margin-bottom: 18px;
+    border-left: 5px solid #7c3aed;
+  }
+  .card.green { border-left-color: #10b981; }
+  .card.blue { border-left-color: #3b82f6; }
+  .card.orange { border-left-color: #f59e0b; }
+  .card.red { border-left-color: #ef4444; }
+  .card.pink { border-left-color: #ec4899; }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .card-subtitle {
+    font-size: 13px;
+    font-weight: 500;
+    color: #a78bfa;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .card-text {
+    font-size: 15px;
+    font-weight: 400;
+    color: #c0c0d8;
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .card-text:last-child { margin-bottom: 0; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .section-desc {
+    font-size: 14px;
+    color: #7070a0;
+    margin-bottom: 22px;
+    line-height: 1.6;
+  }
+
+  /* STEPS */
+  .steps { list-style: none; }
+  .step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #7c3aed;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .step-num.green { background: #10b981; }
+  .step-num.blue { background: #3b82f6; }
+  .step-num.orange { background: #f59e0b; }
+  .step-num.pink { background: #ec4899; }
+
+  .step-content {}
+  .step-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 3px;
+  }
+  .step-detail {
+    font-size: 14px;
+    color: #9090b8;
+    line-height: 1.6;
+  }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .badge-purple { background: #3b1e7a; color: #c4b5fd; }
+  .badge-green { background: #064e3b; color: #6ee7b7; }
+  .badge-blue { background: #1e3a5f; color: #93c5fd; }
+  .badge-orange { background: #78350f; color: #fcd34d; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: #2a2a4a;
+    margin: 20px 0;
+  }
+
+  /* QUOTE BOX */
+  .quote {
+    background: #12122a;
+    border: 1px solid #3b2f6e;
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin: 16px 0;
+  }
+  .quote-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #c4b5fd;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: #2a2a4a;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #7c3aed;
+    border: 2px solid #0f0f1a;
+  }
+  .timeline-item.green::before { background: #10b981; }
+  .timeline-item.blue::before { background: #3b82f6; }
+  .timeline-item.orange::before { background: #f59e0b; }
+
+  .timeline-period {
+    font-size: 12px;
+    font-weight: 700;
+    color: #7c3aed;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .timeline-item.green .timeline-period { color: #10b981; }
+  .timeline-item.blue .timeline-period { color: #3b82f6; }
+  .timeline-item.orange .timeline-period { color: #f59e0b; }
+
+  .timeline-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .timeline-desc {
+    font-size: 14px;
+    color: #9090b8;
+    line-height: 1.6;
+  }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .check-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: #1e1e35;
+    border: 2px solid #7c3aed;
+    margin-top: 2px;
+  }
+  .check-text {
+    font-size: 15px;
+    color: #c0c0d8;
+    line-height: 1.6;
+  }
+  .check-text strong {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* SBNRR special */
+  .sbnrr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .sbnrr-item {
+    background: #12122a;
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+  }
+  .sbnrr-letter {
+    font-size: 32px;
+    font-weight: 800;
+    color: #a78bfa;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .sbnrr-word {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .sbnrr-desc {
+    font-size: 12px;
+    color: #7070a0;
+    line-height: 1.4;
+  }
+
+  /* WEEK GRID */
+  .week-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .week-item {
+    background: #12122a;
+    border-radius: 14px;
+    padding: 14px 12px;
+  }
+  .week-day {
+    font-size: 12px;
+    font-weight: 700;
+    color: #7c3aed;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .week-task {
+    font-size: 13px;
+    color: #c0c0d8;
+    line-height: 1.5;
+  }
+
+  /* PILL ROW */
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #1e1e40;
+    color: #a78bfa;
+    border: 1px solid #3b2f6e;
+  }
+
+  /* BOTTOM NAV placeholder spacing */
+  .bottom-space { height: 20px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>90-Day Personal<br>Value Creation Plan</h1>
+  <p>CBT · Mindfulness · Nervous System · Behaviour</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showSection('overview')">Overview</div>
+  <div class="tab" onclick="showSection('daily')">Daily</div>
+  <div class="tab" onclick="showSection('mindfulness')">Mindfulness</div>
+  <div class="tab" onclick="showSection('cbt')">CBT Tools</div>
+  <div class="tab" onclick="showSection('behaviour')">Behaviour</div>
+  <div class="tab" onclick="showSection('weeks')">Phase Plan</div>
+  <div class="tab" onclick="showSection('jobsearch')">Job Search</div>
+  <div class="tab" onclick="showSection('investment')">Investment</div>
+  <div class="tab" onclick="showSection('closure')">Closure Drive</div>
+</div>
+
+<!-- ═══════════ OVERVIEW ═══════════ -->
+<div id="overview" class="section active">
+
+  <div class="section-title">The Diagnosis</div>
+  <div class="section-desc">What we identified in this session</div>
+
+  <div class="card red">
+    <div class="badge badge-purple">Core Belief</div>
+    <div class="card-title">"Needing help means incompetence"</div>
+    <div class="card-text">Self-sufficiency became identity. Dependence feels like failure — not to others, only to yourself.</div>
+  </div>
+
+  <div class="card orange">
+    <div class="badge badge-orange">Key Distortion</div>
+    <div class="card-title">Double Standard Thinking</div>
+    <div class="card-text">You would help a respected peer with pleasure. You deny yourself the same right. The rule applies only to you.</div>
+  </div>
+
+  <div class="card blue">
+    <div class="badge badge-blue">The Mechanism</div>
+    <div class="card-title">Freeze fires before thought</div>
+    <div class="card-text">With authority figures, the amygdala hijacks before the prefrontal cortex can engage. The freeze is pre-cognitive — childhood programming still running.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">The Reframe</div>
+  <div class="quote">
+    <div class="quote-text">"I am not asking a favour. I am giving a senior contact the opportunity to be part of my next chapter."</div>
+  </div>
+  <div class="quote">
+    <div class="quote-text">"Accessing my network is not weakness. It is a core executive competency."</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">The Asset</div>
+  <div class="card green">
+    <div class="card-title">Your Strengths in This Work</div>
+    <div class="card-text">✦ Exceptional self-awareness<br>✦ Analytical precision — you corrected the diagnosis<br>✦ Honest, non-defensive engagement<br>✦ High motivation to change</div>
+    <div class="card-text" style="color:#6ee7b7; margin-top:8px;">These accelerate the timeline significantly.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">One Schema.<br>Four Domains.</div>
+  <div class="section-desc">The unified map. One root. Four expressions. The fourth — the invisible one — is the most expensive.</div>
+
+  <div class="card red">
+    <div class="card-subtitle">Domain 1</div>
+    <div class="card-title">Authority & Assertiveness</div>
+    <div class="card-text"><strong style="color:#fca5a5;">Trigger:</strong> Superior + loss of conversational control</div>
+    <div class="card-text"><strong style="color:#fca5a5;">Freeze:</strong> Physical shutdown, chitchat</div>
+    <div class="card-text"><strong style="color:#fca5a5;">Cost:</strong> Goals not achieved, relationships underutilised</div>
+  </div>
+
+  <div class="card orange">
+    <div class="card-subtitle">Domain 2</div>
+    <div class="card-title">Help-Seeking & Network</div>
+    <div class="card-text"><strong style="color:#fcd34d;">Trigger:</strong> Need-expression with any person</div>
+    <div class="card-text"><strong style="color:#fcd34d;">Freeze:</strong> Suppression of the ask, self-sufficiency performance</div>
+    <div class="card-text"><strong style="color:#fcd34d;">Cost:</strong> Network atrophy, unnecessary difficulty</div>
+  </div>
+
+  <div class="card blue">
+    <div class="card-subtitle">Domain 3</div>
+    <div class="card-title">Investment & Financial Risk</div>
+    <div class="card-text"><strong style="color:#93c5fd;">Trigger:</strong> Financial commitment under uncertainty</div>
+    <div class="card-text"><strong style="color:#93c5fd;">Freeze:</strong> Decision paralysis, indefinite analysis, nausea on loss</div>
+    <div class="card-text"><strong style="color:#93c5fd;">Cost:</strong> Capital not deployed, PE strategy not executed</div>
+  </div>
+
+  <div class="card pink">
+    <div class="card-subtitle">Domain 4 — Most Dangerous</div>
+    <div class="card-title">The Closure Drive</div>
+    <div class="card-text"><strong style="color:#f9a8d4;">Trigger:</strong> Sustained uncertainty — the last 20% of any analysis</div>
+    <div class="card-text"><strong style="color:#f9a8d4;">Expression:</strong> Premature closure, judgment delegation, hope-based reasoning, stupid mistakes</div>
+    <div class="card-text"><strong style="color:#f9a8d4;">Invisible:</strong> Feels like trust, optimism, confident decision-making</div>
+    <div class="card-text" style="color:#f9a8d4; font-size:13px; margin-top:4px;">The €100k investment. The presentation errors. All the same pattern.</div>
+  </div>
+
+  <div class="quote">
+    <div class="quote-text">Single root: early environment where unpredictability led to physical threat. Two fused equations: authority = danger, uncertainty = threat incoming. One treatment: update the nervous system's threat model across all four domains.</div>
+  </div>
+
+</div>
+
+<!-- ═══════════ DAILY ═══════════ -->
+<div id="daily" class="section">
+
+  <div class="section-title">Daily Protocol</div>
+  <div class="section-desc">Non-negotiable minimum. 20 minutes total.</div>
+
+  <div class="card green">
+    <div class="card-subtitle">Morning · 5 min</div>
+    <div class="card-title">Physiological Sigh</div>
+    <div class="card-text">Double inhale through nose — short inhale, then a second top-up — followed by a long slow exhale through the mouth.</div>
+    <div class="card-text">Repeat <strong style="color:#6ee7b7;">5 times.</strong> Every morning, before screens.</div>
+    <div class="card-text" style="color:#6ee7b7; font-size:13px;">Proven fastest method to downregulate stress response. Stanford Huberman Lab.</div>
+  </div>
+
+  <div class="card blue">
+    <div class="card-subtitle">Morning · 10 min</div>
+    <div class="card-title">Mindfulness — Breath Awareness</div>
+    <div class="card-text">Sit. Focus on physical sensation of breath — nostrils, chest, pause between exhale and inhale. When mind wanders, notice and return. No judgment.</div>
+    <div class="card-text"><strong style="color:#93c5fd;">App:</strong> Waking Up (Sam Harris) — analytical style, suits your profile.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-subtitle">Anytime triggered · 5 min</div>
+    <div class="card-title">Thought Record</div>
+    <div class="card-text">Every time avoidance or freeze fires — write it. Use the CBT Tools tab for the full structure.</div>
+    <div class="card-text" style="color:#a78bfa; font-size:13px;">Goal: build the gap between trigger and response. Awareness before change.</div>
+  </div>
+
+  <div class="card pink">
+    <div class="card-subtitle">Weekly · 10 min</div>
+    <div class="card-title">Self-Compassion Letter</div>
+    <div class="card-text">Write about one avoidance moment as if writing to a close friend who told you the same story. Warmth, not analysis.</div>
+    <div class="card-text">Read it back. The discomfort you feel is the double standard in action.</div>
+    <div class="card-text" style="color:#f9a8d4; font-size:13px;">Evidence-based. Kristin Neff, University of Texas.</div>
+  </div>
+
+  <div class="card orange">
+    <div class="card-subtitle">Pre-meeting · 3 min</div>
+    <div class="card-title">High-Stakes Protocol</div>
+    <div class="steps" style="margin-top:8px;">
+      <div class="step">
+        <div class="step-num orange">1</div>
+        <div class="step-content">
+          <div class="step-label">Write the ask</div>
+          <div class="step-detail">One precise sentence. What specifically do I want from this meeting?</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num orange">2</div>
+        <div class="step-content">
+          <div class="step-label">Anticipate the barrier</div>
+          <div class="step-detail">How will the conversation likely be deflected?</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num orange">3</div>
+        <div class="step-content">
+          <div class="step-label">Prepare the bridge</div>
+          <div class="step-detail">"I appreciate that — and before we finish I want to ask you something directly..."</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num orange">4</div>
+        <div class="step-content">
+          <div class="step-label">Physiological sigh</div>
+          <div class="step-detail">5 breaths before entering. Prefrontal cortex online.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num orange">5</div>
+        <div class="step-content">
+          <div class="step-label">Permission to be imperfect</div>
+          <div class="step-detail">Goal: say the ask. Even awkwardly. Even at the end. Just say it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ MINDFULNESS ═══════════ -->
+<div id="mindfulness" class="section">
+
+  <div class="section-title">Mindfulness</div>
+  <div class="section-desc">The neurological foundation. Builds the gap between trigger and response.</div>
+
+  <div class="card blue">
+    <div class="card-subtitle">Why it works for your pattern</div>
+    <div class="card-title">Interoceptive Awareness</div>
+    <div class="card-text">Your freeze starts in the body before it reaches the mind. Mindfulness trains you to detect the early signal — chest tightening, breathing shift, shoulder tension — before the prefrontal cortex goes offline.</div>
+    <div class="card-text" style="color:#93c5fd; font-size:13px;">8 weeks of practice produces measurable prefrontal cortex thickening and amygdala volume reduction. Harvard, Sara Lazar.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card green">
+    <div class="card-subtitle">Practice 1 · Daily · 10 min</div>
+    <div class="card-title">Breath Awareness</div>
+    <ul class="steps">
+      <div class="step">
+        <div class="step-num green">1</div>
+        <div class="step-content">
+          <div class="step-label">Sit comfortably</div>
+          <div class="step-detail">Eyes closed or soft gaze downward. Spine upright but not rigid.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">2</div>
+        <div class="step-content">
+          <div class="step-label">Focus on breath sensation</div>
+          <div class="step-detail">Air at nostrils. Chest rising. Pause between exhale and next inhale. Physical, not conceptual.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">3</div>
+        <div class="step-content">
+          <div class="step-label">When mind wanders — return</div>
+          <div class="step-detail">Without frustration. Each return is one rep of the skill. This IS the practice.</div>
+        </div>
+      </div>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-subtitle">Practice 2 · 3x week · 15 min</div>
+    <div class="card-title">Body Scan</div>
+    <div class="card-text">Lie down. Move attention slowly from feet to head. Notice sensations — tension, warmth, numbness, constriction — without trying to change them.</div>
+    <div class="card-text"><strong style="color:#a78bfa;">Why this matters most for you:</strong> Builds the interoceptive vocabulary to catch freeze signals in real time. Do in calm conditions first.</div>
+  </div>
+
+  <div class="card pink">
+    <div class="card-subtitle">Practice 3 · In-the-moment</div>
+    <div class="card-title">Mindfulness of Emotions</div>
+    <div class="card-text">When fear or avoidance arises — instead of suppressing or analysing it, turn toward it with curiosity:</div>
+    <div class="pill-row">
+      <div class="pill">Where in my body?</div>
+      <div class="pill">What shape?</div>
+      <div class="pill">Temperature?</div>
+      <div class="pill">What would it say?</div>
+    </div>
+    <div class="card-text" style="margin-top:14px; color:#f9a8d4; font-size:13px;">Emotions observed with curiosity lose intensity faster than emotions suppressed. Affect labelling reduces amygdala activation directly.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">SBNRR</div>
+  <div class="section-desc">In-the-moment intervention. Use before freeze takes hold.</div>
+
+  <div class="sbnrr-grid">
+    <div class="sbnrr-item">
+      <div class="sbnrr-letter">S</div>
+      <div class="sbnrr-word">Stop</div>
+      <div class="sbnrr-desc">Deliberate pause. Half a second is enough.</div>
+    </div>
+    <div class="sbnrr-item">
+      <div class="sbnrr-letter">B</div>
+      <div class="sbnrr-word">Breathe</div>
+      <div class="sbnrr-desc">One conscious breath. Physiological sigh if needed.</div>
+    </div>
+    <div class="sbnrr-item">
+      <div class="sbnrr-letter">N</div>
+      <div class="sbnrr-word">Notice</div>
+      <div class="sbnrr-desc">What am I feeling? Where in my body? What thought fired?</div>
+    </div>
+    <div class="sbnrr-item">
+      <div class="sbnrr-letter">R</div>
+      <div class="sbnrr-word">Reflect</div>
+      <div class="sbnrr-desc">Is this appropriate — or historical pattern firing?</div>
+    </div>
+  </div>
+  <div class="sbnrr-item" style="background:#12122a; border-radius:14px; padding:14px; text-align:center; margin-top:12px;">
+    <div class="sbnrr-letter">R</div>
+    <div class="sbnrr-word">Respond</div>
+    <div class="sbnrr-desc">Choose deliberately. Don't react automatically.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card orange">
+    <div class="card-subtitle">Recommended App</div>
+    <div class="card-title">Waking Up — Sam Harris</div>
+    <div class="card-text">Analytical, evidence-based approach. No spiritual framing. Suits your profile precisely. Start with the introductory course — 28 days of 10-minute guided sessions.</div>
+  </div>
+
+</div>
+
+<!-- ═══════════ CBT TOOLS ═══════════ -->
+<div id="cbt" class="section">
+
+  <div class="section-title">CBT Tools</div>
+  <div class="section-desc">Cognitive layer. Challenging beliefs that don't survive scrutiny.</div>
+
+  <div class="card">
+    <div class="card-subtitle">Daily tool</div>
+    <div class="card-title">Thought Record</div>
+    <div class="steps" style="margin-top:8px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-label">Situation</div>
+          <div class="step-detail">What happened, factually. No interpretation.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-label">Automatic Thought</div>
+          <div class="step-detail">What fired in your mind. The fast, uncensored thought.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-label">Emotion + Intensity</div>
+          <div class="step-detail">What you felt. Rate 0–10.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-label">Distortion</div>
+          <div class="step-detail">Which cognitive error: double standard, fortune telling, catastrophising, should statement?</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-label">Balanced Thought</div>
+          <div class="step-detail">What would you tell a respected CFO colleague in the same situation?</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-label">Emotion After</div>
+          <div class="step-detail">Re-rate intensity 0–10. Track the delta.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">Your Distortions Map</div>
+  <div class="section-desc">The specific errors identified in your pattern</div>
+
+  <div class="card red">
+    <div class="card-title">Double Standard Thinking</div>
+    <div class="card-text">Rules applied to yourself that you would never apply to others. The primary distortion in your profile.</div>
+    <div class="quote" style="margin-top:12px;">
+      <div class="quote-text">"Would I think this about a respected peer? No. Why is the standard different for me?"</div>
+    </div>
+  </div>
+
+  <div class="card orange">
+    <div class="card-title">Fortune Telling</div>
+    <div class="card-text">"If I push, he'll react badly." Predicting negative outcomes without evidence — and using the prediction to justify avoidance.</div>
+  </div>
+
+  <div class="card blue">
+    <div class="card-title">Should Statements</div>
+    <div class="card-text">"I should not need help." "I should have predicted his response." Rigid rules that create guilt and restrict action.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Catastrophising</div>
+    <div class="card-text">"If I lose this relationship, I lose the opportunity." Overestimating the consequences of asserting a need.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card green">
+    <div class="card-subtitle">Core intervention</div>
+    <div class="card-title">The Double Standard Test</div>
+    <div class="card-text">Every time "I shouldn't need help" fires:</div>
+    <div class="quote" style="margin-top:10px;">
+      <div class="quote-text">"If a talented CFO I respected came to me with this same situation — would I think less of them?"</div>
+    </div>
+    <div class="card-text" style="margin-top:10px; color:#6ee7b7;">You already know the answer. Use it.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card pink">
+    <div class="card-subtitle">Reading</div>
+    <div class="card-title">Two Books</div>
+    <div class="card-text"><strong style="color:#fff;">The Body Keeps the Score</strong><br>Bessel van der Kolk<br><span style="color:#9090b8; font-size:13px;">How trauma is stored somatically. You will recognise yourself.</span></div>
+    <div class="card-text" style="margin-top:12px;"><strong style="color:#fff;">Self-Compassion</strong><br>Kristin Neff<br><span style="color:#9090b8; font-size:13px;">Evidence-based. Directly targets the double standard pattern.</span></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ BEHAVIOUR ═══════════ -->
+<div id="behaviour" class="section">
+
+  <div class="section-title">Behavioural Experiments</div>
+  <div class="section-desc">One per week. Always start at the bottom. Generate corrective data.</div>
+
+  <div class="card blue">
+    <div class="card-subtitle">The principle</div>
+    <div class="card-title">Prediction vs Reality</div>
+    <div class="card-text">After each experiment record what you predicted would happen versus what actually happened. The gap between these is your medicine — it directly dismantles the belief.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">Assertiveness Hierarchy</div>
+  <div class="section-desc">Start uncomfortably low. That is intentional.</div>
+
+  <div class="timeline">
+
+    <div class="timeline-item green">
+      <div class="timeline-period">Rung 1 — Week 1–2</div>
+      <div class="timeline-title">Ask a peer for a small favour</div>
+      <div class="timeline-desc">Low stakes. Minimal authority differential. The point is to generate the first corrective data point.</div>
+    </div>
+
+    <div class="timeline-item green">
+      <div class="timeline-period">Rung 2 — Week 3–4</div>
+      <div class="timeline-title">Mild disagreement with a peer in a meeting</div>
+      <div class="timeline-desc">Offer a different view, calmly. Track the outcome versus your prediction.</div>
+    </div>
+
+    <div class="timeline-item blue">
+      <div class="timeline-period">Rung 3 — Week 5–6</div>
+      <div class="timeline-title">Ask a direct report for something outside normal scope</div>
+      <div class="timeline-desc">Medium stakes. You control the power differential here — useful intermediate step.</div>
+    </div>
+
+    <div class="timeline-item blue">
+      <div class="timeline-period">Rung 4 — Week 7–8</div>
+      <div class="timeline-title">Push back on a superior on a minor point</div>
+      <div class="timeline-desc">First real test with authority differential. Small topic, deliberate assertiveness.</div>
+    </div>
+
+    <div class="timeline-item orange">
+      <div class="timeline-period">Rung 5 — Week 9–10</div>
+      <div class="timeline-title">Direct ask of a senior contact</div>
+      <div class="timeline-desc">Professional networking ask. Use the pre-meeting protocol. Track prediction vs reality.</div>
+    </div>
+
+    <div class="timeline-item orange">
+      <div class="timeline-period">Rung 6 — Week 11–12</div>
+      <div class="timeline-title">Break a barrier with a superior to assert your goal</div>
+      <div class="timeline-desc">The BoD meeting scenario. By this point you have 10 weeks of corrective data behind you.</div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card orange">
+    <div class="card-subtitle">After every experiment</div>
+    <div class="card-title">Record These Three Things</div>
+    <ul class="checklist" style="margin-top:10px;">
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>What I predicted</strong> would happen</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>What actually happened</strong></div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>What this tells me</strong> about the belief</div>
+      </div>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ═══════════ PHASE PLAN ═══════════ -->
+<div id="weeks" class="section">
+
+  <div class="section-title">Phase Plan</div>
+  <div class="section-desc">90 days structured as a value creation timeline</div>
+
+  <div class="card green">
+    <div class="badge badge-green">Month 1 · Weeks 1–4</div>
+    <div class="card-title">Build the Foundation</div>
+    <div class="card-text"><strong style="color:#6ee7b7;">Daily:</strong> Physiological sigh + 10 min breath awareness. Non-negotiable.</div>
+    <div class="card-text"><strong style="color:#6ee7b7;">Weekly:</strong> Body scan 3x. Self-compassion letter 1x. Behavioural experiments Rung 1–2.</div>
+    <div class="card-text"><strong style="color:#6ee7b7;">Reading:</strong> Begin The Body Keeps the Score.</div>
+    <div class="card-text"><strong style="color:#6ee7b7;">Goal:</strong> Build interoceptive awareness. Catch the freeze signal earlier. First corrective data points.</div>
+  </div>
+
+  <div class="card blue">
+    <div class="badge badge-blue">Month 2 · Weeks 5–8</div>
+    <div class="card-title">Deepen the Work</div>
+    <div class="card-text"><strong style="color:#93c5fd;">Daily:</strong> All Month 1 practices maintained. Add mindfulness of emotions.</div>
+    <div class="card-text"><strong style="color:#93c5fd;">Weekly:</strong> Thought records on every significant avoidance. Behavioural experiments Rung 3–4.</div>
+    <div class="card-text"><strong style="color:#93c5fd;">Reading:</strong> Begin Self-Compassion — Kristin Neff.</div>
+    <div class="card-text"><strong style="color:#93c5fd;">Goal:</strong> Double standard test operating automatically. Nervous system regulation improving. First authority-level experiments.</div>
+  </div>
+
+  <div class="card orange">
+    <div class="badge badge-orange">Month 3 · Weeks 9–12</div>
+    <div class="card-title">Integration and Real Tests</div>
+    <div class="card-text"><strong style="color:#fcd34d;">Daily:</strong> All practices maintained. SBNRR deployed in real situations.</div>
+    <div class="card-text"><strong style="color:#fcd34d;">Weekly:</strong> Behavioural experiments Rung 5–6. Senior contact asks. Pre-meeting protocol on every high-stakes meeting.</div>
+    <div class="card-text"><strong style="color:#fcd34d;">Goal:</strong> Break the BoD-level barrier. Corrective emotional experience with authority figure. New data replacing old belief.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">What Changes When</div>
+
+  <div class="timeline">
+    <div class="timeline-item green">
+      <div class="timeline-period">Weeks 1–3</div>
+      <div class="timeline-title">Earlier detection</div>
+      <div class="timeline-desc">You notice the freeze signal before full hijack. Small but real.</div>
+    </div>
+    <div class="timeline-item green">
+      <div class="timeline-period">Weeks 4–6</div>
+      <div class="timeline-title">Cognitive shifts</div>
+      <div class="timeline-desc">Double standard test becomes automatic. Frustration after avoidance reduces.</div>
+    </div>
+    <div class="timeline-item blue">
+      <div class="timeline-period">Weeks 7–9</div>
+      <div class="timeline-title">Behavioural evidence accumulates</div>
+      <div class="timeline-desc">Prediction vs reality gaps visible. Belief starts losing grip.</div>
+    </div>
+    <div class="timeline-item orange">
+      <div class="timeline-period">Weeks 10–12</div>
+      <div class="timeline-title">Real-world assertiveness</div>
+      <div class="timeline-desc">Senior contact asks land. Authority interactions feel different. New identity forming.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card pink">
+    <div class="card-subtitle">When you're ready</div>
+    <div class="card-title">The Therapist Accelerator</div>
+    <div class="card-text">What you're doing here prepares the ground. When you choose to add a therapist, look for:</div>
+    <div class="pill-row">
+      <div class="pill">EMDR certified</div>
+      <div class="pill">Developmental trauma</div>
+      <div class="pill">Somatic training</div>
+      <div class="pill">EMDR Europe</div>
+    </div>
+    <div class="card-text" style="margin-top:14px; color:#f9a8d4; font-size:13px;">Your self-work now will compress the therapeutic timeline significantly when you begin.</div>
+  </div>
+
+  <div class="bottom-space"></div>
+
+</div>
+
+<!-- ═══════════ JOB SEARCH ═══════════ -->
+<div id="jobsearch" class="section">
+
+  <div class="section-title">Job Search as<br>Exposure Therapy</div>
+  <div class="section-desc">Unemployment is not a deficit here. It is your highest-value experiment arena.</div>
+
+  <div class="card blue">
+    <div class="card-subtitle">The reframe</div>
+    <div class="card-title">The Job Search IS the Work</div>
+    <div class="card-text">The freeze and avoidance pattern didn't originate at work — it originated in life. Every interaction in your job search is a live behavioural experiment with real stakes and real corrective data.</div>
+    <div class="card-text" style="color:#93c5fd; font-size:13px;">You are not waiting for a job to start this work. The job search is the work.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">The Hierarchy<br>in Job Search Terms</div>
+
+  <div class="timeline">
+
+    <div class="timeline-item green">
+      <div class="timeline-period">Rung 1 — This week</div>
+      <div class="timeline-title">Ask anyone for something small</div>
+      <div class="timeline-desc">Neighbour, friend, service person. Something you'd normally handle alone. Direct ask, no hinting.</div>
+    </div>
+
+    <div class="timeline-item green">
+      <div class="timeline-period">Rung 2 — Week 2</div>
+      <div class="timeline-title">Disagree with a peer directly</div>
+      <div class="timeline-desc">Offer a different view in a conversation. Track what happens versus what you predicted.</div>
+    </div>
+
+    <div class="timeline-item blue">
+      <div class="timeline-period">Rung 3 — Week 3</div>
+      <div class="timeline-title">Direct request to a family member</div>
+      <div class="timeline-desc">Not a hint. A specific, explicit ask. Practice the words before the professional arena.</div>
+    </div>
+
+    <div class="timeline-item blue">
+      <div class="timeline-period">Rung 4 — Week 4</div>
+      <div class="timeline-title">Challenge a service provider</div>
+      <div class="timeline-desc">Bank, landlord, supplier — push back on something minor. Low stakes, real assertiveness.</div>
+    </div>
+
+    <div class="timeline-item orange">
+      <div class="timeline-period">Rung 5 — Week 5–6</div>
+      <div class="timeline-title">Reach out to a former colleague</div>
+      <div class="timeline-desc">Direct ask for a conversation about your search. Specific, not vague. State what you need clearly.</div>
+    </div>
+
+    <div class="timeline-item orange">
+      <div class="timeline-period">Rung 5+ — Week 6–8</div>
+      <div class="timeline-title">Ask explicitly for an introduction</div>
+      <div class="timeline-desc">Not hinting. Not "if you know anyone..." — a specific: "Would you introduce me to X?" Follow up if no response. Tolerate the discomfort of a second ask.</div>
+    </div>
+
+    <div class="timeline-item" style="border-left: none;">
+      <div class="timeline-period" style="color:#ef4444;">Rung 6 — When ready</div>
+      <div class="timeline-title">Redo the BoD meeting</div>
+      <div class="timeline-desc">Request a second meeting. Written ask prepared in advance. The first meeting going poorly is not a reason to avoid — it is exactly the reason to go back. This is your highest-value corrective data point.</div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">Job Search<br>Experiment Map</div>
+  <div class="section-desc">Every job search action reframed as exposure</div>
+
+  <div class="card">
+    <div class="card-title">High-Value Experiments</div>
+    <ul class="checklist" style="margin-top:12px;">
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>Reaching out to a senior contact</strong> — direct, not apologetic</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>Asking explicitly for an introduction</strong> — name the person you want to meet</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>Following up</strong> when no response — second ask, same directness</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>Stating your target role clearly</strong> — not vague to avoid rejection</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>Negotiating terms</strong> — timeline, scope, conditions</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>Asking for feedback</strong> after a process — even when uncomfortable</div>
+      </div>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">Unemployment<br>as Asset</div>
+
+  <div class="card green">
+    <div class="card-title">What this period gives you</div>
+    <div class="card-text">✦ <strong style="color:#6ee7b7;">More time</strong> for daily practices — mindfulness, body scan, thought records</div>
+    <div class="card-text">✦ <strong style="color:#6ee7b7;">High-frequency exposure</strong> to exact triggers — senior contacts, asks, vulnerability</div>
+    <div class="card-text">✦ <strong style="color:#6ee7b7;">Real stakes</strong> that make experiments meaningful, not artificial</div>
+    <div class="card-text">✦ <strong style="color:#6ee7b7;">A clear goal</strong> that structures the hierarchy naturally</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">This Week's<br>Action</div>
+
+  <div class="card red">
+    <div class="card-subtitle">Concrete next step</div>
+    <div class="card-title">Three Names Exercise</div>
+    <div class="steps" style="margin-top:10px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-label">Write three names</div>
+          <div class="step-detail">Senior contacts you have been avoiding reaching out to. Where the freeze has stopped you.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-label">Rank them</div>
+          <div class="step-detail">Lowest to highest threat. Be honest about which one feels safest.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-label">Reach out to the lowest</div>
+          <div class="step-detail">This week. One sentence ask. Direct and specific. No hinting.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-label">Record prediction vs reality</div>
+          <div class="step-detail">What did you predict would happen? What actually happened? That gap is your data.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <div class="quote-text">"You are a former Group CFO of a large industrial group. You are not asking a favour. You are giving a senior contact the opportunity to be part of your next chapter."</div>
+  </div>
+
+  <div class="bottom-space"></div>
+
+</div>
+
+<!-- ═══════════ INVESTMENT ═══════════ -->
+<div id="investment" class="section">
+
+  <div class="section-title">Loss Intolerance &<br>Investment Paralysis</div>
+  <div class="section-desc">The same schema. A third domain.</div>
+
+  <div class="card red">
+    <div class="card-subtitle">What you said</div>
+    <div class="card-title">"I will fail and lose everything. I feel sick on losing."</div>
+    <div class="card-text">Two distinct things compressed into one statement. They have different origins and require different interventions.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">Two Layers</div>
+
+  <div class="card orange">
+    <div class="card-subtitle">Layer 1 — Cognitive</div>
+    <div class="card-title">"Lose Everything"</div>
+    <div class="card-text">All-or-nothing thinking. The mind collapses a continuous range of outcomes — partial loss, breakeven, gain — into a single catastrophic endpoint. It reacts to the worst-case tail as if it were the probable case.</div>
+    <div class="card-text">This is the same catastrophising and fortune-telling distortion identified in the assertiveness domain. The mechanism is identical. The domain has changed.</div>
+    <div class="quote" style="margin-top:12px;">
+      <div class="quote-text">The actual expected value of the investment is irrelevant. The mind has already arrived at catastrophe before the analysis completes.</div>
+    </div>
+  </div>
+
+  <div class="card red">
+    <div class="card-subtitle">Layer 2 — Somatic</div>
+    <div class="card-title">"I Feel Sick"</div>
+    <div class="card-text">Not a cognitive event. A physical threat response. The body reacting to financial loss as if loss were genuinely dangerous.</div>
+    <div class="card-text">In the early environment, loss of control led to physical punishment. Financial loss is, neurologically, a loss of control over resources and future. The nervous system does not distinguish. It fires the same response.</div>
+    <div class="card-text" style="color:#fca5a5; font-size:13px;">The nausea is not irrational. It is historical data misfiring in the wrong context.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">The Loop</div>
+
+  <div class="card">
+    <div class="card-title">Self-Defeating Cycle</div>
+    <div class="steps" style="margin-top:12px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-label">Schema fires</div>
+          <div class="step-detail">Uncertainty = danger. Financial commitment = loss of control.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-label">All-or-nothing collapse</div>
+          <div class="step-detail">Any loss = "lose everything." Threat response activated.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-label">Somatic response</div>
+          <div class="step-detail">Nausea, shutdown, freeze. Prefrontal cortex bypassed.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-label">Avoidance</div>
+          <div class="step-detail">Don't invest. Defer. Add more analysis. Wait for certainty that never comes.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-label">Cost</div>
+          <div class="step-detail">Capital not deployed. Returns foregone. PE strategy not executed.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-label">Self-criticism</div>
+          <div class="step-detail">"I should be able to do this." Competence threat activated. Schema reinforced.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">The PE Strategy<br>Connection</div>
+
+  <div class="card blue">
+    <div class="card-title">This is not peripheral</div>
+    <div class="card-text">Private equity specifically requires what the schema most resists:</div>
+    <ul class="checklist" style="margin-top:12px;">
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>Committing large capital</strong> to illiquid positions with uncertain multi-year outcomes</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>Holding through drawdowns</strong> without premature exit at the worst moment</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>Irreversible decisions</strong> — acquisitions, capital structure — under uncertainty</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text"><strong>Tolerating the J-curve</strong> — position looks worse before it looks better</div>
+      </div>
+    </ul>
+    <div class="card-text" style="margin-top:14px; color:#93c5fd; font-size:13px;">The personal development work on loss tolerance is a prerequisite for executing the PE strategy — not background preparation. Run these two tracks in parallel.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">The Reframe</div>
+
+  <div class="quote">
+    <div class="quote-text">"This physical response is real. It is also historical data, not current assessment. My body is reacting to a threat encoding from a very different context. The loss of a position is not the same as the loss of safety."</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">Graduated Loss<br>Exposure Practice</div>
+  <div class="section-desc">The specific intervention for this domain. Same logic as the assertiveness hierarchy.</div>
+
+  <div class="card green">
+    <div class="card-title">The Protocol</div>
+    <div class="steps" style="margin-top:10px;">
+      <div class="step">
+        <div class="step-num green">1</div>
+        <div class="step-content">
+          <div class="step-label">Take a small position</div>
+          <div class="step-detail">Financially irrelevant if lost entirely. The amount must feel real but not threatening to your security.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">2</div>
+        <div class="step-content">
+          <div class="step-label">When loss occurs — allow the response</div>
+          <div class="step-detail">Do not suppress the nausea. Do not immediately analyse. Let the somatic response come.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">3</div>
+        <div class="step-content">
+          <div class="step-label">Apply mindfulness tools</div>
+          <div class="step-detail">SBNRR. Breath. Observe the nausea with curiosity, not alarm. Where is it? What shape? Does it move?</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">4</div>
+        <div class="step-content">
+          <div class="step-label">Notice it passes</div>
+          <div class="step-detail">You are intact. The response peaked and subsided. Record this.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">5</div>
+        <div class="step-content">
+          <div class="step-label">Record prediction vs reality</div>
+          <div class="step-detail">How bad did I predict it would feel? How long did I predict it would last? What actually happened?</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num green">6</div>
+        <div class="step-content">
+          <div class="step-label">Increase gradually</div>
+          <div class="step-detail">Only as somatic response reduces. Never jump ahead. The nervous system updates slowly and through repetition.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-text" style="margin-top:12px; color:#6ee7b7; font-size:13px;">Purpose: not return generation. Nervous system retraining. The body learning that loss is survivable.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card pink">
+    <div class="card-subtitle">Additional reading</div>
+    <div class="card-title">Thinking, Fast and Slow</div>
+    <div class="card-text">Daniel Kahneman. Directly addresses loss aversion, probability distortion, and decision-making under uncertainty with the analytical rigour suited to your profile. The most relevant book for this specific domain.</div>
+  </div>
+
+  <div class="bottom-space"></div>
+
+</div>
+
+<!-- ═══════════ CLOSURE DRIVE ═══════════ -->
+<div id="closure" class="section">
+
+  <div class="section-title">The Closure Drive</div>
+  <div class="section-desc">The invisible expression. The most expensive one.</div>
+
+  <div class="card red">
+    <div class="card-subtitle">What you identified</div>
+    <div class="card-title">Three connected failures</div>
+    <div class="card-text">✦ Delegating judgment to the entrepreneur without independent reasoning</div>
+    <div class="card-text">✦ Impatience with final-stage analysis — stupid mistakes in the last 5%</div>
+    <div class="card-text">✦ Hope filling the gap where conviction should be</div>
+    <div class="card-text" style="color:#fca5a5; margin-top:8px; font-size:13px;">These are not separate problems. They are the same nervous system doing the same thing.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">The Mechanism</div>
+
+  <div class="card">
+    <div class="card-title">The 80% Collapse</div>
+    <div class="steps" style="margin-top:10px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-label">Complex task begins</div>
+          <div class="step-detail">High effort applied. Learning Approach 88 fully engaged.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-label">80–90% reached</div>
+          <div class="step-detail">Remaining work is tedious, detailed, or irreducibly ambiguous.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-label">Nervous system signals: close</div>
+          <div class="step-detail">Adjustment 33 — chronic anxiety makes sustained uncertainty physically taxing. The drive to resolve fires.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-label">Premature closure</div>
+          <div class="step-detail">In analysis: the stupid mistake. In decisions: the delegated judgment. In investments: hope replaces conviction.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-label">Cost paid later</div>
+          <div class="step-detail">The error that was in the last 5%. The €100k that followed someone else's certainty.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">Why It Is<br>Invisible</div>
+
+  <div class="card orange">
+    <div class="card-title">It looks like trust</div>
+    <div class="card-text">The authority-figure freeze feels like a freeze. You know it when it happens.</div>
+    <div class="card-text">The closure drive feels like trust, collaboration, confident decision-making, and optimism. It does not trigger the frustration that generates learning. It gets rationalised as a reasonable decision that did not work out.</div>
+    <div class="card-text" style="color:#fcd34d; font-size:13px; margin-top:8px;">This is why it is the most expensive expression of the schema.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">Revised EMDR<br>Target Map</div>
+  <div class="section-desc">Three clusters. Sequential processing.</div>
+
+  <div class="card red">
+    <div class="badge badge-purple">Cluster 1 — First</div>
+    <div class="card-title">The Authority Figure</div>
+    <div class="card-text"><strong style="color:#fca5a5;">Equation:</strong> Authority + assertion of needs = physical danger</div>
+    <div class="card-text"><strong style="color:#fca5a5;">Touchstone:</strong> Earliest childhood punishment memory</div>
+    <div class="card-text"><strong style="color:#fca5a5;">Recent activation:</strong> BoD meeting, job search</div>
+    <div class="quote" style="margin-top:10px;">
+      <div class="quote-text">"I can assert my needs in the presence of authority and remain safe."</div>
+    </div>
+  </div>
+
+  <div class="card blue">
+    <div class="badge badge-blue">Cluster 2 — Last</div>
+    <div class="card-title">The Uncertainty Trigger</div>
+    <div class="card-text"><strong style="color:#93c5fd;">Equation:</strong> Sustained uncertainty = threat incoming</div>
+    <div class="card-text"><strong style="color:#93c5fd;">Touchstone:</strong> Ambient unpredictability of early environment — chronic not-knowing-what-was-coming-next</div>
+    <div class="card-text"><strong style="color:#93c5fd;">Recent activation:</strong> Closure drive, stupid mistakes, investment impatience</div>
+    <div class="card-text" style="color:#93c5fd; font-size:13px; margin-top:6px;">Most diffuse — body-based, not episodic. May need Somatic Experiencing rather than standard EMDR.</div>
+    <div class="quote" style="margin-top:10px;">
+      <div class="quote-text">"I can tolerate not knowing and remain safe. Uncertainty is a normal state, not a threat signal."</div>
+    </div>
+  </div>
+
+  <div class="card orange">
+    <div class="badge badge-orange">Cluster 3 — Second</div>
+    <div class="card-title">The Deference Pattern</div>
+    <div class="card-text"><strong style="color:#fcd34d;">Equation:</strong> My incomplete reasoning is less reliable than someone else's certainty</div>
+    <div class="card-text"><strong style="color:#fcd34d;">Touchstone:</strong> Situations where independent judgment in the presence of someone more certain led to negative consequence</div>
+    <div class="card-text"><strong style="color:#fcd34d;">Recent activation:</strong> €100k investment — entrepreneur's conviction overriding own analysis</div>
+    <div class="quote" style="margin-top:10px;">
+      <div class="quote-text">"My own judgment is reliable and worth asserting, even when others are more certain."</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">The Training<br>Protocol</div>
+
+  <div class="card green">
+    <div class="card-subtitle">Core practice</div>
+    <div class="card-title">The 80% Pause</div>
+    <div class="card-text">When 80% through any significant task — stop deliberately. Do not close. Sit with the incompleteness for a defined minimum period.</div>
+    <div class="card-text"><strong style="color:#6ee7b7;">Presentations:</strong> 24-hour gap between "finished" and "sent." One final pass — 20 minutes — specifically targeting the last 5%.</div>
+    <div class="card-text"><strong style="color:#6ee7b7;">Investment decisions:</strong> 72-hour minimum between "I think I want this" and any commitment conversation.</div>
+    <div class="card-text" style="color:#6ee7b7; font-size:13px; margin-top:8px;">This is graduated exposure to sustained uncertainty. Each rep trains the nervous system that remaining unresolved is survivable.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-subtitle">Decision protocol</div>
+    <div class="card-title">Partner Independence Test</div>
+    <div class="card-text">Before any investment discussion with a partner — write your own independent view first. In writing. Alone.</div>
+    <div class="quote" style="margin-top:10px;">
+      <div class="quote-text">"Would I invest if this exact opportunity arrived anonymously, with no names attached?"</div>
+    </div>
+    <div class="card-text" style="margin-top:10px;">If no or uncertain — that is your actual view. The partner's conviction is overriding your judgment. Name that explicitly before deciding.</div>
+  </div>
+
+  <div class="card blue">
+    <div class="card-subtitle">Before every commitment</div>
+    <div class="card-title">The Pre-Mortem</div>
+    <div class="card-text">Spend 20 minutes on one question, written in past tense:</div>
+    <div class="quote" style="margin-top:10px;">
+      <div class="quote-text">"It is 3 years from now and this has failed completely. What was the most likely cause?"</div>
+    </div>
+    <div class="card-text" style="margin-top:10px;">Assumes failure rather than asking whether it is possible. Bypasses motivated reasoning directly.</div>
+  </div>
+
+  <div class="card orange">
+    <div class="card-subtitle">Ongoing</div>
+    <div class="card-title">The Decision Journal</div>
+    <div class="card-text">Before every significant decision — three sentences:</div>
+    <ul class="checklist" style="margin-top:10px;">
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text">My genuine independent read — before anyone else's view</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text">The single thing that would make me wrong</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div class="check-text">The earliest signal I will watch for</div>
+      </div>
+    </ul>
+    <div class="card-text" style="margin-top:10px; color:#fcd34d; font-size:13px;">Return after resolution. Compare. Over 2–3 years this builds the calibrated map of where judgment is sharp and where it drifts toward hope.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-title">The Unified<br>Schema</div>
+
+  <div class="quote">
+    <div class="quote-text">"The invisible closure drive — not the visible freeze — is the highest-priority treatment target. It is the most expensive pattern precisely because it does not feel like a problem while it is operating."</div>
+  </div>
+
+  <div class="bottom-space"></div>
+
+</div>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

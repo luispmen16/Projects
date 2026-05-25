@@ -1,0 +1,2672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Sector Investment Dashboard — HALO × Crisis Defence</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --bg2: #111318;
+    --bg3: #181c23;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8e6e0;
+    --text2: #8a8880;
+    --text3: #555450;
+    --gold: #c9a84c;
+    --gold2: #e8c96a;
+    --gold-dim: rgba(201,168,76,0.12);
+    --green: #4a9e6e;
+    --green2: #5dbb84;
+    --green-dim: rgba(74,158,110,0.12);
+    --blue: #4a7fb5;
+    --blue2: #6499d4;
+    --blue-dim: rgba(74,127,181,0.12);
+    --amber: #c47d2e;
+    --amber2: #e0963e;
+    --amber-dim: rgba(196,125,46,0.12);
+    --red: #b04040;
+    --red2: #d05050;
+    --red-dim: rgba(176,64,64,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    min-height: 100vh;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,12,15,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .nav-menu-btn {
+    display: none;
+    background: none;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'Instrument Sans', sans-serif;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    color: var(--text2);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+    padding: 8px 0;
+    display: block;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── MOBILE NAV ── */
+  @media (max-width: 680px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 56px; left: 0; right: 0;
+      background: rgba(10,12,15,0.98);
+      border-bottom: 1px solid var(--border2);
+      padding: 1rem 1.5rem;
+      gap: 0;
+      z-index: 200;
+    }
+    .nav-links.open a { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 15px; }
+    .nav-links.open li:last-child a { border-bottom: none; }
+    .nav-menu-btn { display: flex; align-items: center; justify-content: center; }
+    .nav-date { display: none; }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 680px) {
+    section { padding: 4rem 2.5rem; }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 4rem 1.5rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (min-width: 680px) {
+    .hero { padding: 6rem 2.5rem 4rem; }
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 8vw, 3.8rem);
+    line-height: 1.08;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+  }
+
+  .hero-title em { color: var(--gold2); font-style: italic; }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text2);
+    line-height: 1.75;
+    margin-bottom: 3rem;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  @media (min-width: 480px) {
+    .hero-stats { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .stat-box {
+    background: var(--bg2);
+    padding: 1.3rem 1.2rem;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--gold2);
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-header { margin-bottom: 2.5rem; }
+
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-tag::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 1px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 5vw, 2rem);
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .section-desc {
+    margin-top: 0.8rem;
+    font-size: 16px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* ── DIVIDER ── */
+  .full-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── PROCESS STEPS ── */
+  .process-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 520px) {
+    .process-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 780px) {
+    .process-grid { grid-template-columns: repeat(5, 1fr); }
+  }
+
+  .step {
+    padding: 1.2rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .step:nth-child(1) { animation-delay: 0.05s; }
+  .step:nth-child(2) { animation-delay: 0.12s; }
+  .step:nth-child(3) { animation-delay: 0.19s; }
+  .step:nth-child(4) { animation-delay: 0.26s; }
+  .step:nth-child(5) { animation-delay: 0.33s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-num {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold2);
+  }
+
+  .step-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* ── FRAMEWORK CARDS ── */
+  .framework-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  @media (min-width: 620px) {
+    .framework-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .fw-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.8rem;
+    transition: background 0.2s;
+  }
+
+  .fw-card:hover { background: var(--bg3); }
+
+  .fw-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .fw-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .fw-desc {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+
+  .fw-examples { display: flex; flex-wrap: wrap; gap: 5px; }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .pill-gold { background: var(--gold-dim); color: var(--gold2); border: 1px solid rgba(201,168,76,0.2); }
+  .pill-green { background: var(--green-dim); color: var(--green2); border: 1px solid rgba(74,158,110,0.2); }
+  .pill-blue { background: var(--blue-dim); color: var(--blue2); border: 1px solid rgba(74,127,181,0.2); }
+  .pill-amber { background: var(--amber-dim); color: var(--amber2); border: 1px solid rgba(196,125,46,0.2); }
+  .pill-red { background: var(--red-dim); color: var(--red2); border: 1px solid rgba(176,64,64,0.2); }
+  .pill-gray { background: rgba(255,255,255,0.04); color: var(--text2); border: 1px solid var(--border2); }
+
+  /* ── FINDINGS ── */
+  .findings-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  @media (min-width: 620px) {
+    .findings-layout { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .finding-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .finding-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .finding-card.gold::before { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .finding-card.green::before { background: linear-gradient(90deg, transparent, var(--green2), transparent); }
+  .finding-card.blue::before { background: linear-gradient(90deg, transparent, var(--blue2), transparent); }
+  .finding-card.amber::before { background: linear-gradient(90deg, transparent, var(--amber2), transparent); }
+
+  .finding-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.5rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    opacity: 0.12;
+    position: absolute;
+    right: 1.2rem;
+    top: 0.6rem;
+  }
+
+  .finding-card.gold .finding-num { color: var(--gold); }
+  .finding-card.green .finding-num { color: var(--green2); }
+  .finding-card.blue .finding-num { color: var(--blue2); }
+  .finding-card.amber .finding-num { color: var(--amber2); }
+
+  .finding-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.7rem;
+    position: relative;
+    padding-right: 2.5rem;
+  }
+
+  .finding-body {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+    position: relative;
+  }
+
+  /* ── DISTANCE FROM PEAK GRID ── */
+  .ath-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 2.5rem;
+  }
+
+  @media (min-width: 480px) {
+    .ath-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 780px) {
+    .ath-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .ath-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.3rem;
+  }
+
+  .ath-sector {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .ath-geo {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  .ath-bar-wrap {
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .ath-bar-inner { height: 100%; border-radius: 2px; }
+  .ath-pct { font-family: 'DM Serif Display', serif; font-size: 1.6rem; line-height: 1; }
+  .ath-label { font-size: 12px; color: var(--text3); margin-top: 4px; }
+
+  /* ── CONVICTION TIERS ── */
+  .tier-section { margin-bottom: 3.5rem; }
+
+  .tier-label-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (min-width: 520px) {
+    .tier-label-row { flex-direction: row; align-items: center; gap: 12px; }
+  }
+
+  .tier-badge-large {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tier1-badge { background: var(--green-dim); color: var(--green2); border: 1px solid rgba(74,158,110,0.25); }
+  .tier2-badge { background: var(--blue-dim); color: var(--blue2); border: 1px solid rgba(74,127,181,0.25); }
+  .tier3-badge { background: var(--amber-dim); color: var(--amber2); border: 1px solid rgba(196,125,46,0.25); }
+  .avoid-badge { background: var(--red-dim); color: var(--red2); border: 1px solid rgba(176,64,64,0.25); }
+
+  .tier-desc { font-size: 14px; color: var(--text2); }
+
+  /* ── COMPANY CARDS (mobile-first, replaces table) ── */
+  .company-cards { display: flex; flex-direction: column; gap: 12px; }
+
+  .company-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.3rem 1.4rem;
+    transition: background 0.15s;
+  }
+
+  .company-card:hover { background: var(--bg3); }
+
+  .company-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .company-card-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .company-card-ticker {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text3);
+  }
+
+  .company-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .company-card-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 10px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .meta-item { text-align: center; }
+
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 3px;
+  }
+
+  .meta-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .bar-track {
+    width: 40px;
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar-fill { height: 100%; border-radius: 2px; }
+  .bar-green { background: var(--green2); }
+  .bar-blue { background: var(--blue2); }
+  .bar-amber { background: var(--amber2); }
+  .bar-gold { background: var(--gold2); }
+
+  .bar-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  .company-card-thesis {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* ── AVOID CARDS ── */
+  .avoid-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  @media (min-width: 520px) {
+    .avoid-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .avoid-card {
+    background: rgba(176,64,64,0.05);
+    border: 1px solid rgba(176,64,64,0.18);
+    border-radius: 10px;
+    padding: 1.3rem 1.4rem;
+  }
+
+  .avoid-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--red2);
+    margin-bottom: 6px;
+  }
+
+  .avoid-reason {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* ── ASYMMETRY BOX ── */
+  .asymmetry-box {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+
+  .asymmetry-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .asymmetry-quote {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .asymmetry-quote em { color: var(--gold2); font-style: italic; }
+
+  .asymmetry-sub {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.75;
+  }
+
+  /* ── IBERIAN GRID ── */
+  .iberian-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 480px) {
+    .iberian-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 760px) {
+    .iberian-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .ib-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem 1.2rem;
+    border-top: 2px solid rgba(201,168,76,0.2);
+  }
+
+  .ib-sector {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .ib-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .ib-ticker {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  .ib-note { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+  /* ── APPENDIX ── */
+  .app-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 2rem; }
+  .app-table th { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 400; text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border2); white-space: nowrap; }
+  .app-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  .app-table tr:last-child td { border-bottom: none; }
+  .app-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .app-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 2rem; }
+  .mono-sm { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold2); }
+  .note-sm { font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .chart-wrap { position: relative; width: 100%; margin-bottom: 2.5rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem 1rem 1rem; }
+  .chart-title { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1rem; }
+  .chart-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 1rem; font-size: 13px; color: var(--text2); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 5px; vertical-align: middle; }
+  .app-sub { font-size: 13px; color: var(--text3); font-style: italic; margin-top: 0.4rem; margin-bottom: 1.5rem; }
+  .results-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 2rem; }
+  @media (min-width: 520px) { .results-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 780px) { .results-grid { grid-template-columns: repeat(3, 1fr); } }
+  .result-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.1rem; }
+  .result-sector { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .result-geo { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .result-row { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .result-row:last-child { border-bottom: none; }
+  .result-label { color: var(--text2); }
+  .result-val { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); }
+  .halo-mini { display: inline-flex; align-items: center; gap: 4px; }
+  .halo-bar { height: 3px; border-radius: 2px; background: var(--gold2); }
+  .app-company-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  @media (min-width: 520px) { .app-company-grid { grid-template-columns: repeat(2, 1fr); } }
+  .app-co-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; }
+  .app-co-name { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .app-co-ticker { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); margin-bottom: 6px; }
+  .app-co-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .app-co-thesis { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .tier-header-app { display: flex; align-items: center; gap: 10px; margin: 2rem 0 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+
+
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @media (min-width: 620px) {
+    footer {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 2.5rem;
+    }
+  }
+
+  .footer-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+    line-height: 1.7;
+  }
+
+  .footer-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: var(--text3);
+    flex-shrink: 0;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">Sector Intelligence</span>
+  <button class="nav-menu-btn" id="menuBtn" aria-label="Open navigation">Menu</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#methodology" onclick="closeMenu()">Methodology</a></li>
+    <li><a href="#framework" onclick="closeMenu()">Framework</a></li>
+    <li><a href="#findings" onclick="closeMenu()">Findings</a></li>
+    <li><a href="#conviction" onclick="closeMenu()">Conviction</a></li>
+    <li><a href="#iberia" onclick="closeMenu()">Iberian Lens</a></li>
+    <li><a href="#appendix" onclick="closeMenu()">Appendix</a></li>
+    <li><a href="#appendix" onclick="closeMenu()">Appendix</a></li>
+  </ul>
+  <span class="nav-date">May 2026 · European Focus</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">Investment Research · AI Bubble Burst Scenario</p>
+  <h1 class="hero-title">Where to be when the <em>bubble</em> breaks</h1>
+  <p class="hero-sub">A systematic cross-analysis of HALO capital intensity, ten-year sector performance, and crisis defence characteristics — identifying the highest-conviction sectors and companies for a post-AI-bubble rotation.</p>
+  <div class="hero-stats">
+    <div class="stat-box">
+      <span class="stat-num">14</span>
+      <span class="stat-label">Sectors analysed</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">2</span>
+      <span class="stat-label">Geographies</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">10Y</span>
+      <span class="stat-label">Data window</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Lenses applied</span>
+    </div>
+  </div>
+</div>
+
+<hr class="full-divider">
+
+<!-- METHODOLOGY -->
+<section id="methodology" class="reveal">
+  <div class="section-header">
+    <p class="section-tag">01 · Methodology</p>
+    <h2 class="section-title">How the analysis was built</h2>
+    <p class="section-desc">Five sequential steps from raw data to investment conclusions. Quantitative inputs drive the ranking; qualitative judgment is applied only at the final conviction stage.</p>
+  </div>
+
+  <div class="process-grid">
+    <div class="step">
+      <div class="step-num">1</div>
+      <p class="step-title">Data collection</p>
+      <p class="step-desc">Ten-year price series downloaded via Python using sector exchange-traded funds as proxies. STOXX 600 sub-indices for Europe, SPDR S&P sector funds for the United States. All series indexed to 100 at January 2015.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <p class="step-title">Performance metrics</p>
+      <p class="step-desc">Computed compounded annual growth rate, total return, maximum drawdown, and current distance from ten-year peak price for each sector in both geographies.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <p class="step-title">HALO scoring</p>
+      <p class="step-desc">Applied Goldman Sachs capital intensity index scores — calculated from fixed assets relative to total assets, tangible assets per employee, and capital expenditure relative to sales — to each sector.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <p class="step-title">Composite scoring</p>
+      <p class="step-desc">Composite score equals HALO Score multiplied by the absolute distance from peak price. A higher score indicates high capital intensity combined with a more depressed valuation — the maximum opportunity combination.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <p class="step-title">Crisis overlay</p>
+      <p class="step-desc">Added a third lens: recession-defence characteristics including non-discretionary demand, inelastic pricing power, dividend yield, and low market beta. This lens operates independently of the HALO score.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="full-divider">
+
+<!-- FRAMEWORK -->
+<section id="framework" class="reveal">
+  <div class="section-header">
+    <p class="section-tag">02 · Analytical Framework</p>
+    <h2 class="section-title">Three lenses, one conclusion</h2>
+    <p class="section-desc">No single metric is sufficient. The conviction framework requires alignment across all three dimensions simultaneously to qualify as a high-conviction position.</p>
+  </div>
+
+  <div class="framework-grid">
+    <div class="fw-card">
+      <div class="fw-icon" style="background: var(--gold-dim);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <p class="fw-title">HALO Score</p>
+      <p class="fw-desc">Goldman Sachs capital intensity index. Measures how difficult it would be for an artificial intelligence system to replicate a business model. A high score means the company depends on physical assets that cannot be coded away.</p>
+      <div class="fw-examples">
+        <span class="pill pill-gold">Utilities ~90</span>
+        <span class="pill pill-gold">Basic Resources ~77</span>
+        <span class="pill pill-gold">Energy ~68</span>
+        <span class="pill pill-gray">Software ~20</span>
+      </div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-icon" style="background: var(--green-dim);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a9e6e" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <p class="fw-title">Crisis Defence</p>
+      <p class="fw-desc">Recession-resilience characteristics. Non-discretionary demand, inelastic pricing, high dividend yield, and low market beta. These are sectors that preserve value when economic output contracts sharply.</p>
+      <div class="fw-examples">
+        <span class="pill pill-green">Food &amp; Beverage ★★★</span>
+        <span class="pill pill-green">Healthcare ★★★</span>
+        <span class="pill pill-green">Utilities ★★★</span>
+        <span class="pill pill-gray">Autos ★</span>
+      </div>
+    </div>
+    <div class="fw-card">
+      <div class="fw-icon" style="background: var(--blue-dim);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a7fb5" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+      </div>
+      <p class="fw-title">Distance from Peak</p>
+      <p class="fw-desc">Current price compared to the ten-year all-time high price. Used as a proxy for valuation compression. Sectors trading far below their historical peak are either structurally impaired or presenting an opportunity window.</p>
+      <div class="fw-examples">
+        <span class="pill pill-blue">EU Construction −30%</span>
+        <span class="pill pill-blue">EU Food &amp; Bev −20%</span>
+        <span class="pill pill-blue">EU Utilities −13%</span>
+        <span class="pill pill-gray">US Technology ~0%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="asymmetry-box">
+    <p class="asymmetry-quote">The core insight: <em>Europe's HALO sectors have not re-rated yet.</em> United States HALO sectors partially have.</p>
+    <p class="asymmetry-sub">A bubble burst accelerates European HALO re-rating while simultaneously collapsing United States technology weights. Europe is both the hedge and the opportunity — the geography and sector combination most undervalued on this framework, before the rotation becomes consensus and valuation gaps close.</p>
+  </div>
+</section>
+
+<hr class="full-divider">
+
+<!-- KEY FINDINGS -->
+<section id="findings" class="reveal">
+  <div class="section-header">
+    <p class="section-tag">03 · Key Findings</p>
+    <h2 class="section-title">What the data revealed</h2>
+    <p class="section-desc">Four structural observations from ten years of sector price data across Europe and the United States.</p>
+  </div>
+
+  <div class="findings-layout">
+    <div class="finding-card gold">
+      <span class="finding-num">01</span>
+      <p class="finding-title">The compounded annual growth rate gap is extreme</p>
+      <p class="finding-body">United States Technology delivered a 22.4% compounded annual growth rate over ten years versus 2.9% in Europe. This is not a performance difference — it is a bubble. Mean reversion from a spread this wide has historically been violent and rapid.</p>
+    </div>
+    <div class="finding-card green">
+      <span class="finding-num">02</span>
+      <p class="finding-title">European defensives are most depressed</p>
+      <p class="finding-body">European Construction (−30%), Food &amp; Beverage (−20%), and Utilities (−13%) show the largest gaps from their ten-year peak prices in the dataset. In every case the cause is sentiment and rate environment — not structural demand destruction. These gaps represent entry points, not warning signals.</p>
+    </div>
+    <div class="finding-card blue">
+      <span class="finding-num">03</span>
+      <p class="finding-title">United States HALO sectors already partially re-rated</p>
+      <p class="finding-body">Most high-HALO sectors in the United States sit within 5% of their ten-year peak price. The trade is partially closed on the United States side. The alpha is in European equivalents — same sector thesis, significantly cheaper, with a currency tailwind if the euro strengthens during a risk-off rotation.</p>
+    </div>
+    <div class="finding-card amber">
+      <span class="finding-num">04</span>
+      <p class="finding-title">Food &amp; Beverage breaks the HALO model — and that is the point</p>
+      <p class="finding-body">With a HALO score of only 47, Food &amp; Beverage would be excluded from a pure HALO screen. But its −20% distance from peak combined with maximum crisis defence score makes it a Tier 2 conviction holding on a bubble burst thesis. HALO is an artificial intelligence disruption lens, not a recession lens.</p>
+    </div>
+  </div>
+
+  <p style="font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2.5rem; margin-bottom: 1rem;">Current distance from ten-year peak price</p>
+  <div class="ath-grid">
+    <div class="ath-card">
+      <p class="ath-sector">Construction</p>
+      <p class="ath-geo">EUROPE</p>
+      <div class="ath-bar-wrap"><div class="ath-bar-inner" style="width:100%; background: var(--red2);"></div></div>
+      <p class="ath-pct" style="color: var(--red2);">−30%</p>
+      <p class="ath-label">Most depressed sector on the board</p>
+    </div>
+    <div class="ath-card">
+      <p class="ath-sector">Food &amp; Beverage</p>
+      <p class="ath-geo">EUROPE</p>
+      <div class="ath-bar-wrap"><div class="ath-bar-inner" style="width:67%; background: var(--amber2);"></div></div>
+      <p class="ath-pct" style="color: var(--amber2);">−20%</p>
+      <p class="ath-label">Sentiment-driven, not structural</p>
+    </div>
+    <div class="ath-card">
+      <p class="ath-sector">Utilities</p>
+      <p class="ath-geo">EUROPE</p>
+      <div class="ath-bar-wrap"><div class="ath-bar-inner" style="width:43%; background: var(--gold2);"></div></div>
+      <p class="ath-pct" style="color: var(--gold2);">−13%</p>
+      <p class="ath-label">Highest HALO score + defensive demand</p>
+    </div>
+    <div class="ath-card">
+      <p class="ath-sector">Telecom</p>
+      <p class="ath-geo">EUROPE</p>
+      <div class="ath-bar-wrap"><div class="ath-bar-inner" style="width:33%; background: var(--blue2);"></div></div>
+      <p class="ath-pct" style="color: var(--blue2);">−10%</p>
+      <p class="ath-label">5G investment cycle maturing — free cash flow inflection ahead</p>
+    </div>
+    <div class="ath-card">
+      <p class="ath-sector">Construction</p>
+      <p class="ath-geo">US</p>
+      <div class="ath-bar-wrap"><div class="ath-bar-inner" style="width:93%; background: var(--red2); opacity:0.6;"></div></div>
+      <p class="ath-pct" style="color: var(--red2); opacity:0.7;">−28%</p>
+      <p class="ath-label">Rate-sensitive, needs interest rate cuts to unlock</p>
+    </div>
+    <div class="ath-card">
+      <p class="ath-sector">Utilities</p>
+      <p class="ath-geo">US</p>
+      <div class="ath-bar-wrap"><div class="ath-bar-inner" style="width:17%; background: var(--green2);"></div></div>
+      <p class="ath-pct" style="color: var(--green2);">−5%</p>
+      <p class="ath-label">Already re-rated — less upside remaining</p>
+    </div>
+  </div>
+</section>
+
+<hr class="full-divider">
+
+<!-- CONVICTION TIERS -->
+<section id="conviction" class="reveal">
+  <div class="section-header">
+    <p class="section-tag">04 · Conviction Ranking</p>
+    <h2 class="section-title">Where to allocate capital</h2>
+    <p class="section-desc">Companies ranked by sector conviction, with a specific investment thesis for each name. All three lenses applied simultaneously to determine tier placement.</p>
+  </div>
+
+  <!-- TIER 1 -->
+  <div class="tier-section">
+    <div class="tier-label-row">
+      <span class="tier-badge-large tier1-badge">Tier 1 — Maximum conviction</span>
+      <span class="tier-desc">HALO score, crisis defence, and distance from peak all align. Buy and hold through the burst.</span>
+    </div>
+    <div class="company-cards">
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Iberdrola</p>
+            <p class="company-card-ticker">IBE.MC · Spain</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-green">Utilities</span>
+            <span class="pill pill-gray">Iberia</span>
+          </div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item">
+            <p class="meta-label">HALO Score</p>
+            <div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-green" style="width:95%"></div></div><span class="bar-val">90</span></div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Crisis Defence</p>
+            <p class="meta-value" style="color:var(--green2)">★★★</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Below Peak</p>
+            <p class="meta-value" style="color:var(--gold2)">−13%</p>
+          </div>
+        </div>
+        <p class="company-card-thesis">Largest European renewables platform with approximately 50 gigawatts installed. Iberdrola is the direct beneficiary of REPowerEU capital flows requiring 584 billion euros in grid investment by 2030. Best-in-class capital allocation among European utilities. The primary Iberian anchor name for this thesis.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Enel</p>
+            <p class="company-card-ticker">ENEL.MI · Italy / Iberia</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-green">Utilities</span>
+            <span class="pill pill-gray">Europe</span>
+          </div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item">
+            <p class="meta-label">HALO Score</p>
+            <div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-green" style="width:95%"></div></div><span class="bar-val">90</span></div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Crisis Defence</p>
+            <p class="meta-value" style="color:var(--green2)">★★★</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Below Peak</p>
+            <p class="meta-value" style="color:var(--gold2)">−13%</p>
+          </div>
+        </div>
+        <p class="company-card-thesis">Its Endesa subsidiary provides direct Spain and Portugal grid exposure. Enel trades at a persistent discount to Iberdrola despite comparable asset quality. Dividend yield approximately 5%. Latin America optionality provides additional growth dimension not priced into current multiples.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Shell</p>
+            <p class="company-card-ticker">SHEL.L · United Kingdom</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-gold">Energy</span>
+            <span class="pill pill-gray">Europe</span>
+          </div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item">
+            <p class="meta-label">HALO Score</p>
+            <div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:68%"></div></div><span class="bar-val">68</span></div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Crisis Defence</p>
+            <p class="meta-value" style="color:var(--gold2)">★★</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Below Peak</p>
+            <p class="meta-value" style="color:var(--green2)">−3%</p>
+          </div>
+        </div>
+        <p class="company-card-thesis">Liquefied natural gas plus upstream plus trading operations. Strong buyback programme currently active. Trades at a persistent discount to United States majors ExxonMobil and Chevron despite comparable asset quality. Hormuz scarcity premium adds near-term support.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">TotalEnergies</p>
+            <p class="company-card-ticker">TTE.PA · France</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-gold">Energy</span>
+            <span class="pill pill-gray">Europe</span>
+          </div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item">
+            <p class="meta-label">HALO Score</p>
+            <div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:68%"></div></div><span class="bar-val">68</span></div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Crisis Defence</p>
+            <p class="meta-value" style="color:var(--gold2)">★★</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Below Peak</p>
+            <p class="meta-value" style="color:var(--green2)">−3%</p>
+          </div>
+        </div>
+        <p class="company-card-thesis">Best-positioned integrated major for the energy transition: liquefied natural gas plus solar plus wind alongside upstream production. Dividend yield above 5%. Most credible integrated transition strategy among European majors. Strong balance sheet supports continued distributions through a downturn.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">E.ON</p>
+            <p class="company-card-ticker">EOAN.DE · Germany</p>
+          </div>
+          <div class="company-card-tags"><span class="pill pill-green">Utilities</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-green" style="width:95%"></div></div><span class="bar-val">90</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--green2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−13%</p></div>
+        </div>
+        <p class="company-card-thesis">Pure-play European grid operator covering Germany and Eastern Europe. Grid modernisation capital expenditure cycle is a direct beneficiary of REPowerEU and German Energiewende policy. Regulated earnings provide stable, predictable cash flow with limited market cycle exposure.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Engie</p>
+            <p class="company-card-ticker">ENGI.PA · France</p>
+          </div>
+          <div class="company-card-tags"><span class="pill pill-green">Utilities</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-green" style="width:95%"></div></div><span class="bar-val">90</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--green2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−13%</p></div>
+        </div>
+        <p class="company-card-thesis">Liquefied natural gas plus renewables plus district energy networks. Dividend yield approximately 7%. Currently undervalued versus sector peers. District heating infrastructure is among the most capital-intensive and operationally irreplaceable assets in the European utility universe.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">National Grid</p>
+            <p class="company-card-ticker">NG.L · United Kingdom</p>
+          </div>
+          <div class="company-card-tags"><span class="pill pill-green">Utilities</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-green" style="width:95%"></div></div><span class="bar-val">90</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--green2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−13%</p></div>
+        </div>
+        <p class="company-card-thesis">United Kingdom regulated monopoly with significant United States Northeast grid exposure. Stable regulated asset base returns. Long-duration asset value is well-supported in a rate-cutting environment. Consistent dividend growth track record spanning multiple decades.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">EDP</p>
+            <p class="company-card-ticker">EDP.LS · Portugal</p>
+          </div>
+          <div class="company-card-tags"><span class="pill pill-green">Utilities</span><span class="pill pill-gray">Iberia</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-green" style="width:95%"></div></div><span class="bar-val">90</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--green2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−13%</p></div>
+        </div>
+        <p class="company-card-thesis">Portuguese regulated utility with ERSE-regulated returns providing high earnings visibility. EDP Renováveis subsidiary is a global renewables growth platform. Combined with Endesa, this provides complete coverage of the Iberian electricity grid at the regulated asset level.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">REN / Redeia</p>
+            <p class="company-card-ticker">RENE.LS · REE.MC · Portugal / Spain</p>
+          </div>
+          <div class="company-card-tags"><span class="pill pill-green">Utilities</span><span class="pill pill-gray">Iberia</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-green" style="width:95%"></div></div><span class="bar-val">90</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--green2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−13%</p></div>
+        </div>
+        <p class="company-card-thesis">Portuguese and Spanish transmission system operator monopolies with 100% regulated revenues. The lowest-risk utility asset in the Iberian market. Ideal capital-preservation position in a crisis scenario — earnings are contractually set by the regulator regardless of energy prices or economic conditions.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Endesa</p>
+            <p class="company-card-ticker">ELE.MC · Spain</p>
+          </div>
+          <div class="company-card-tags"><span class="pill pill-green">Utilities</span><span class="pill pill-gray">Iberia</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-green" style="width:95%"></div></div><span class="bar-val">90</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--green2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−13%</p></div>
+        </div>
+        <p class="company-card-thesis">Enel subsidiary operating generation and distribution in Spain. Dividend yield 7 to 8%. Provides direct Enel group exposure through a Spanish-regulated platform. High yield relative to the sector makes this particularly attractive during a risk-off rotation toward income.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">BP</p>
+            <p class="company-card-ticker">BP.L · United Kingdom</p>
+          </div>
+          <div class="company-card-tags"><span class="pill pill-gold">Energy</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:68%"></div></div><span class="bar-val">68</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--gold2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−20%</p></div>
+        </div>
+        <p class="company-card-thesis">Strategic reset currently underway under new management. The most discounted major among European integrated names. Higher execution risk than Shell or TotalEnergies, but offers the largest re-rating potential if management delivers on its revised strategy. Contrarian position within the tier.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Equinor</p>
+            <p class="company-card-ticker">EQNR.OL · Norway</p>
+          </div>
+          <div class="company-card-tags"><span class="pill pill-gold">Energy</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:68%"></div></div><span class="bar-val">68</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--gold2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−5%</p></div>
+        </div>
+        <p class="company-card-thesis">Norwegian state-backed integrated energy company dominant in the North Sea. Offshore wind development through Dogger Bank in the United Kingdom. State ownership provides structural discipline on capital allocation. Low cost base versus other European majors provides resilience at lower oil prices.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TIER 2 -->
+  <div class="tier-section">
+    <div class="tier-label-row">
+      <span class="tier-badge-large tier2-badge">Tier 2 — High conviction</span>
+      <span class="tier-desc">Two of three lenses align strongly. Strong positions with a specific catalyst or timing consideration.</span>
+    </div>
+    <div class="company-cards">
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Nestlé</p>
+            <p class="company-card-ticker">NESN.SW · Switzerland</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-blue">Food &amp; Beverage</span>
+          </div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item">
+            <p class="meta-label">HALO Score</p>
+            <div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:47%"></div></div><span class="bar-val">47</span></div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Crisis Defence</p>
+            <p class="meta-value" style="color:var(--blue2)">★★★</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Below Peak</p>
+            <p class="meta-value" style="color:var(--amber2)">−35%</p>
+          </div>
+        </div>
+        <p class="company-card-thesis">The most asymmetric single name on the board. Down 35% from its 2022 peak on GLP-1 weight-loss drug fears and post-pandemic volume normalisation — both sentiment-driven, not structural. Price-to-earnings ratio at a decade low. Nespresso, Purina, and infant nutrition portfolios are irreplaceable global franchises. In the 2000–2002 dot-com correction, Nestlé was a top-decile performer in the subsequent 36 months.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Novo Nordisk</p>
+            <p class="company-card-ticker">NOVO-B.CO · Denmark</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-blue">Healthcare</span>
+          </div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item">
+            <p class="meta-label">HALO Score</p>
+            <div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:52%"></div></div><span class="bar-val">52</span></div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Crisis Defence</p>
+            <p class="meta-value" style="color:var(--blue2)">★★★</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Below Peak</p>
+            <p class="meta-value" style="color:var(--amber2)">−40%</p>
+          </div>
+        </div>
+        <p class="company-card-thesis">GLP-1 dominant through Ozempic and Wegovy. Corrected approximately 40% on competition fears that appear significantly overstated. Operating margins above 30%. The obesity treatment market is a multi-decade structural trend, not a cyclical product. Demand is inelastic by definition — patients do not stop treatment because equity markets fall.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Telefónica</p>
+            <p class="company-card-ticker">TEF.MC · Spain</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-blue">Telecom</span>
+            <span class="pill pill-gray">Iberia</span>
+          </div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item">
+            <p class="meta-label">HALO Score</p>
+            <div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:66%"></div></div><span class="bar-val">66</span></div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Crisis Defence</p>
+            <p class="meta-value" style="color:var(--blue2)">★★</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Below Peak</p>
+            <p class="meta-value" style="color:var(--gold2)">−10%</p>
+          </div>
+        </div>
+        <p class="company-card-thesis">Iberia plus Germany plus Brazil plus O2 United Kingdom. The 5G investment cycle is maturing, which means capital expenditure is declining and free cash flow is inflecting upward. Dividend yield approximately 6%. Saudi Telecom holds a 10% strategic stake, providing a floor on the share price. Primary Iberian telecom anchor name.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Rio Tinto</p>
+            <p class="company-card-ticker">RIO.L · United Kingdom / Australia</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-gold">Basic Resources</span>
+          </div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item">
+            <p class="meta-label">HALO Score</p>
+            <div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:77%"></div></div><span class="bar-val">77</span></div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Crisis Defence</p>
+            <p class="meta-value" style="color:var(--gold2)">★★</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Below Peak</p>
+            <p class="meta-value" style="color:var(--gold2)">−4%</p>
+          </div>
+        </div>
+        <p class="company-card-thesis">Iron ore plus copper plus lithium through the Rincon project. Artificial intelligence data centres require four to five times more copper per megawatt than conventional infrastructure. The new supply pipeline is seven to ten years to build. A structural copper deficit exists regardless of the timing of an AI bubble correction. Dividend yield approximately 6%.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Repsol</p>
+            <p class="company-card-ticker">REP.MC · Spain</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-gold">Energy</span>
+            <span class="pill pill-gray">Iberia</span>
+          </div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item">
+            <p class="meta-label">HALO Score</p>
+            <div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:68%"></div></div><span class="bar-val">68</span></div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Crisis Defence</p>
+            <p class="meta-value" style="color:var(--gold2)">★★</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Below Peak</p>
+            <p class="meta-value" style="color:var(--amber2)">−15%</p>
+          </div>
+        </div>
+        <p class="company-card-thesis">Spain's integrated oil, renewables, and chemicals company. Price-to-earnings ratio of approximately 6 times — deeply undervalued versus European and United States peers. Refining margin exposure adds near-term earnings support. The primary Iberian energy anchor for a value-oriented allocation.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Galp</p>
+            <p class="company-card-ticker">GALP.LS · Portugal</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-gold">Energy</span>
+            <span class="pill pill-gray">Iberia</span>
+          </div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item">
+            <p class="meta-label">HALO Score</p>
+            <div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:68%"></div></div><span class="bar-val">68</span></div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Crisis Defence</p>
+            <p class="meta-value" style="color:var(--gold2)">★★</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Below Peak</p>
+            <p class="meta-value" style="color:var(--amber2)">−18%</p>
+          </div>
+        </div>
+        <p class="company-card-thesis">Deep-water Brazil exposure through the Bacalhau field. Lithium mining optionality in Portugal — a Critical Raw Materials Act beneficiary. The most underappreciated growth story among Iberian energy companies. The combination of upstream growth and critical minerals optionality makes this the most mispriced name in the Iberian energy universe.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Unilever</p><p class="company-card-ticker">ULVR.L · United Kingdom</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Food &amp; Beverage</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:47%"></div></div><span class="bar-val">47</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−15%</p></div>
+        </div>
+        <p class="company-card-thesis">Personal care plus food brands. Restructuring under new chief executive. Ice cream spin-off including Magnum and Ben &amp; Jerry's is underway and should unlock significant value. Dividend yield approximately 4%. One of the most geographically diversified consumer staples companies in Europe with strong emerging market exposure.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Danone</p><p class="company-card-ticker">BN.PA · France</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Food &amp; Beverage</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:47%"></div></div><span class="bar-val">47</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−18%</p></div>
+        </div>
+        <p class="company-card-thesis">Dairy plus water plus infant formula. Rebuilding margins post-pandemic under chief executive Antoine de Saint-Affrique. The turnaround thesis is credible with tangible quarterly progress. Currently undervalued versus Nestlé on comparable metrics despite a similarly defensive demand profile.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">AB InBev</p><p class="company-card-ticker">ABI.BR · Belgium</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Food &amp; Beverage</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:47%"></div></div><span class="bar-val">47</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−22%</p></div>
+        </div>
+        <p class="company-card-thesis">Global beer dominant with the Budweiser, Corona, and Stella Artois portfolios. The Bud Light controversy overhang is fading. Emerging market exposure in Brazil and China is the primary upside lever as those markets recover from their current cyclical low points. Debt reduction is on track.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Heineken</p><p class="company-card-ticker">HEIA.AS · Netherlands</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Food &amp; Beverage</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:47%"></div></div><span class="bar-val">47</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−25%</p></div>
+        </div>
+        <p class="company-card-thesis">Premium beer brand with global distribution. Vietnam and Africa provide structural growth that most European investors underweight. Down approximately 25% from peak price. The Heineken premium brand moat remains fully intact despite recent earnings pressure from input cost inflation and volume softness.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Diageo</p><p class="company-card-ticker">DGE.L · United Kingdom</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Food &amp; Beverage</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:47%"></div></div><span class="bar-val">47</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−30%</p></div>
+        </div>
+        <p class="company-card-thesis">Spirits portfolio including Johnnie Walker, Guinness, and Baileys. Latin America destocking headwind is temporary and well understood by the market. Dividend yield approximately 3.5%. Long-term pricing power in the premium spirits category is exceptional — brand equity compounds over decades.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Roche</p><p class="company-card-ticker">ROG.SW · Switzerland</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Healthcare</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:52%"></div></div><span class="bar-val">52</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−12%</p></div>
+        </div>
+        <p class="company-card-thesis">Diagnostics plus oncology dominant. Biosimilar headwind has been fully digested by the market. Late-stage pipeline is rebuilding with several strong candidates. Dividend aristocrat with a yield of approximately 3.5% and a 35-year track record of annual increases — a rare combination of income and quality.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Novartis</p><p class="company-card-ticker">NOVN.SW · Switzerland</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Healthcare</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:52%"></div></div><span class="bar-val">52</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−8%</p></div>
+        </div>
+        <p class="company-card-thesis">Post-Sandoz generics spin-off, Novartis is now focused exclusively on innovative medicines. This simplification provides a cleaner, higher-quality investment story. Valuation re-rating is already underway as the market recognises the improved business quality of the remaining portfolio.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">AstraZeneca</p><p class="company-card-ticker">AZN.L · United Kingdom</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Healthcare</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:52%"></div></div><span class="bar-val">52</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−7%</p></div>
+        </div>
+        <p class="company-card-thesis">Oncology and rare diseases dominant. China exposure is both a risk and an upside lever — the most growth-oriented major European pharma name. Consistent revenue growth above 10% per year. China risk is well-understood and already reflected in the current valuation discount versus peers.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Sanofi</p><p class="company-card-ticker">SAN.PA · France</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Healthcare</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:52%"></div></div><span class="bar-val">52</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−10%</p></div>
+        </div>
+        <p class="company-card-thesis">Dupixent blockbuster still growing strongly. Consumer health division (Opella) spin-off is in progress and will unlock significant value. Re-rating is underway as the market begins to appreciate the quality and durability of the core pharmaceutical pipeline.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Fresenius</p><p class="company-card-ticker">FRE.DE · Germany</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Healthcare</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:52%"></div></div><span class="bar-val">52</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−35%</p></div>
+        </div>
+        <p class="company-card-thesis">Hospital operations plus dialysis plus intravenous drugs. Deeply discounted versus healthcare peers. The Kabi intravenous drugs division turnaround is credible and progressing. Among the most undervalued healthcare names in Europe relative to the quality of the underlying asset base.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Deutsche Telekom</p><p class="company-card-ticker">DTE.DE · Germany</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Telecom</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:66%"></div></div><span class="bar-val">66</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−5%</p></div>
+        </div>
+        <p class="company-card-thesis">Germany domestic operations plus a 60% stake in T-Mobile United States, which is the actual growth engine of the group. T-Mobile United States has been the best-performing major telecommunications company globally over the past five years. Best-performing major European telecom name on a five-year view.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Orange</p><p class="company-card-ticker">ORA.PA · France</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Telecom</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:66%"></div></div><span class="bar-val">66</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−8%</p></div>
+        </div>
+        <p class="company-card-thesis">France plus Africa. Business-to-business enterprise services are growing at above-group rates. Africa data infrastructure is a long-term structural growth opportunity as mobile data penetration rises across the continent — a trend that is entirely independent of artificial intelligence market cycles.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Vodafone</p><p class="company-card-ticker">VOD.L · United Kingdom</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Telecom</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:66%"></div></div><span class="bar-val">66</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−20%</p></div>
+        </div>
+        <p class="company-card-thesis">Restructuring following the Spain disposal and the United Kingdom merger with Three. A smaller, simpler business with lower capital expenditure requirements going forward. Significant re-rating potential if execution delivers on the promised free cash flow improvement. Higher risk, higher potential reward within the telecom allocation.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">NOS</p><p class="company-card-ticker">NOS.LS · Portugal</p></div>
+          <div class="company-card-tags"><span class="pill pill-blue">Telecom</span><span class="pill pill-gray">Iberia</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-blue" style="width:66%"></div></div><span class="bar-val">66</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--blue2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−15%</p></div>
+        </div>
+        <p class="company-card-thesis">Portuguese domestic telecom and media operator with a captive market. High dividend yield relative to small-capitalisation peers. Limited institutional coverage creates a valuation inefficiency for investors with Iberian market knowledge. Sonaecom parent provides structural support.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Glencore</p><p class="company-card-ticker">GLEN.L · United Kingdom / Switzerland</p></div>
+          <div class="company-card-tags"><span class="pill pill-gold">Basic Resources</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:77%"></div></div><span class="bar-val">77</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--gold2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−5%</p></div>
+        </div>
+        <p class="company-card-thesis">Copper plus cobalt plus coal plus commodities trading. The most diversified major mining and trading group globally. Coal cash flow funds transition metals capital expenditure — a self-financing transition model that peer companies cannot replicate. Cobalt is critical for battery storage at scale.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Anglo American</p><p class="company-card-ticker">AAL.L · United Kingdom</p></div>
+          <div class="company-card-tags"><span class="pill pill-gold">Basic Resources</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:77%"></div></div><span class="bar-val">77</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--gold2)">★★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−15%</p></div>
+        </div>
+        <p class="company-card-thesis">Copper in Chile and Peru plus platinum group metals plus diamonds. Post-BHP takeover bid rejection, management is restructuring to focus exclusively on copper. This simplification should unlock a significant valuation premium once completed — copper-focused miners trade at a material premium to diversified peers.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Antofagasta</p><p class="company-card-ticker">ANTO.L · United Kingdom / Chile</p></div>
+          <div class="company-card-tags"><span class="pill pill-gold">Basic Resources</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:77%"></div></div><span class="bar-val">77</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--gold2)">★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--gold2)">−5%</p></div>
+        </div>
+        <p class="company-card-thesis">London-listed, Chilean copper pure-play. Los Pelambres expansion programme ongoing. The cleanest single-name exposure to structural copper demand driven by artificial intelligence infrastructure buildout. No coal, no iron ore — just copper, which is exactly the molecule the energy transition and digital infrastructure require.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Boliden</p><p class="company-card-ticker">BOL.ST · Sweden</p></div>
+          <div class="company-card-tags"><span class="pill pill-gold">Basic Resources</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:77%"></div></div><span class="bar-val">77</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--gold2)">★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−20%</p></div>
+        </div>
+        <p class="company-card-thesis">Zinc plus copper plus gold with European smelting capacity. Critical Raw Materials Act beneficiary. European processing capacity adds strategic value that purely mining-focused peers do not have — smelting is a capital-intensive bottleneck that cannot be quickly replicated. Down 20% from peak creates an attractive entry.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Lundin Mining</p><p class="company-card-ticker">LUN.TO · Canada</p></div>
+          <div class="company-card-tags"><span class="pill pill-gold">Basic Resources</span><span class="pill pill-gray">Iberia</span></div>
+        </div>
+        <div class="company-card-meta">
+          <div class="meta-item"><p class="meta-label">HALO Score</p><div class="score-bar" style="justify-content:center"><div class="bar-track"><div class="bar-fill bar-gold" style="width:77%"></div></div><span class="bar-val">77</span></div></div>
+          <div class="meta-item"><p class="meta-label">Crisis Defence</p><p class="meta-value" style="color:var(--gold2)">★</p></div>
+          <div class="meta-item"><p class="meta-label">Below Peak</p><p class="meta-value" style="color:var(--amber2)">−18%</p></div>
+        </div>
+        <p class="company-card-thesis">Operates the Neves-Corvo copper and zinc mine in Portugal. Direct Iberian critical minerals exposure with production assets already in the ground and generating cash flow. A Critical Raw Materials Act beneficiary. The only major listed mining group with operating assets inside the Iberian peninsula.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TIER 3 -->
+  <div class="tier-section">
+    <div class="tier-label-row">
+      <span class="tier-badge-large tier3-badge">Tier 3 — Selective / tactical</span>
+      <span class="tier-desc">One lens strong. Requires specific timing or a catalyst to unlock full value.</span>
+    </div>
+    <div class="company-cards">
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Vinci</p>
+            <p class="company-card-ticker">DG.PA · France</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-amber">Construction</span>
+            <span class="pill pill-gray">Catalyst: rate cuts</span>
+          </div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Airports plus motorways concession assets provide annuity-style cash flow that is highly resilient in a crisis. Currently 15% below its ten-year peak price. Hard infrastructure monopolies — the Cofiroute motorway network and airport concessions — justify a premium multiple that the market has not yet awarded. A quality compounder at a reasonable valuation.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Ferrovial</p>
+            <p class="company-card-ticker">FER.MC · Spain / United States</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-amber">Infrastructure</span>
+            <span class="pill pill-gray">Iberia</span>
+          </div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Heathrow Airport plus the 407 Express Toll Route in Canada plus I-66 toll road in the United States. These are hard infrastructure monopolies with long-duration contracted revenues. Ferrovial moved its primary listing to the Nasdaq to unlock a valuation premium — that re-rating is still in progress and provides a near-term catalyst independent of broader market conditions.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Schneider Electric</p>
+            <p class="company-card-ticker">SU.PA · France</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-amber">Industrial Goods</span>
+            <span class="pill pill-gray">Near peak price</span>
+          </div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Data centre power management and energy efficiency infrastructure. Schneider benefits from the artificial intelligence buildout during its growth phase — and its physical energy management hardware survives the burst because data centres require power management regardless of who owns them. An unusual name that bridges both scenarios.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div>
+            <p class="company-card-name">Rheinmetall</p>
+            <p class="company-card-ticker">RHM.DE · Germany</p>
+          </div>
+          <div class="company-card-tags">
+            <span class="pill pill-amber">Defence</span>
+            <span class="pill pill-gray">Near peak price</span>
+          </div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">European defence dominant. NATO member nations are committed to spending 2% of economic output on defence — this is government-mandated regardless of what equity markets do. Order backlog provides multi-year earnings visibility. Defence is the closest thing to a bubble-immune sector that exists in public markets.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Siemens</p><p class="company-card-ticker">SIE.DE · Germany</p></div>
+          <div class="company-card-tags"><span class="pill pill-amber">Industrial Goods</span></div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Industrial automation plus grid technology through Siemens Energy. Near its ten-year peak but earnings quality is high. The automation business benefits directly from reshoring manufacturing trends across Europe and the United States. Siemens Energy's grid subsidiary is a direct REPowerEU beneficiary.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">ABB</p><p class="company-card-ticker">ABBN.SW · Switzerland</p></div>
+          <div class="company-card-tags"><span class="pill pill-amber">Industrial Goods</span></div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Robotics plus electrification plus industrial automation. The reshoring of manufacturing to Europe and the United States is a multi-year structural trend that drives robotics demand regardless of the artificial intelligence bubble outcome. Near peak price but earnings momentum supports the current valuation level.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Safran</p><p class="company-card-ticker">SAF.PA · France</p></div>
+          <div class="company-card-tags"><span class="pill pill-amber">Industrial Goods</span><span class="pill pill-gray">Aerospace</span></div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Aircraft engines through CFM56 and LEAP programmes plus landing systems. Aviation aftermarket is annuity-style revenue — airlines must service engines regardless of economic conditions. Long cycle nature means earnings visibility extends five to seven years forward, making this one of the most predictable industrial cash flow streams in Europe.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Leonardo</p><p class="company-card-ticker">LDO.MI · Italy</p></div>
+          <div class="company-card-tags"><span class="pill pill-amber">Defence</span></div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Defence electronics plus helicopters plus avionics. Italian government is the anchor customer providing structural earnings visibility. Currently undervalued versus European defence peers. The helicopter division serves both military and civilian markets, providing commercial revenue that partially insulates earnings from defence budget cycles.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Holcim</p><p class="company-card-ticker">HOLN.SW · Switzerland</p></div>
+          <div class="company-card-tags"><span class="pill pill-amber">Construction Materials</span></div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Global cement and aggregates plus the high-margin ECOPlanet roofing business in the United States. Infrastructure spending beneficiary across multiple geographies. United States roofing commands significantly higher margins than traditional cement — a transformation the market has not yet fully valued in the share price.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Saint-Gobain</p><p class="company-card-ticker">SGO.PA · France</p></div>
+          <div class="company-card-tags"><span class="pill pill-amber">Construction Materials</span></div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Building renovation and insulation. The European Union energy efficiency directive forces a multi-year renovation wave creating structural demand regardless of the economic cycle. Currently approximately 20% below its ten-year peak price. A quality business at a compressed valuation with a regulatory-driven demand tailwind behind it.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">Kingspan</p><p class="company-card-ticker">KRX.IR · Ireland</p></div>
+          <div class="company-card-tags"><span class="pill pill-amber">Construction Materials</span></div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Insulated panels and building energy efficiency systems. The European Union energy efficiency directive creates a long-duration structural demand driver for insulation products. The correction from peak price creates a more reasonable entry point for a structurally growing business with strong pricing power and high switching costs.</p>
+      </div>
+
+      <div class="company-card">
+        <div class="company-card-top">
+          <div><p class="company-card-name">ACS Group</p><p class="company-card-ticker">ACS.MC · Spain</p></div>
+          <div class="company-card-tags"><span class="pill pill-amber">Construction</span><span class="pill pill-gray">Iberia</span></div>
+        </div>
+        <p class="company-card-thesis" style="margin-top:0.8rem">Global construction and infrastructure through the Turner subsidiary in the United States and Hochtief in Germany. An Iberian-headquartered group with global scale that most European investors systematically undervalue relative to peers. The United States construction exposure provides an important non-European growth driver.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AVOID -->
+  <div class="tier-section">
+    <div class="tier-label-row">
+      <span class="tier-badge-large avoid-badge">Sectors to avoid</span>
+      <span class="tier-desc">Low HALO score plus cyclical demand plus near peak price. Maximum downside in a bubble burst scenario.</span>
+    </div>
+    <div class="avoid-grid">
+      <div class="avoid-card">
+        <p class="avoid-name">United States Technology</p>
+        <p class="avoid-reason">22.4% compounded annual growth rate over ten years. Near ten-year peak price. Apple and Microsoft alone represent 45% of the exchange-traded fund. This is the bubble itself. First to fall, furthest to fall. Mean reversion from a spread this wide has been violent in every historical precedent since 1990.</p>
+      </div>
+      <div class="avoid-card">
+        <p class="avoid-name">United States Semiconductors</p>
+        <p class="avoid-reason">The Nvidia-driven spike to near 2,000 on the indexed performance chart is visible in the data. A bubble within a bubble. Structurally HALO-positive due to high capital expenditure, but behaves as a growth and cyclical stock in drawdowns. Not a defensive position — sells off harder than the broad market in a correction.</p>
+      </div>
+      <div class="avoid-card">
+        <p class="avoid-name">Software and IT Services</p>
+        <p class="avoid-reason">Low HALO score plus artificial intelligence disruptability plus near peak price equals a triple negative. Business models are directly in the firing line of agentic artificial intelligence systems. Rightmove and Salesforce are textbook examples already in drawdown. These are the companies the HALO thesis is explicitly designed to avoid.</p>
+      </div>
+      <div class="avoid-card">
+        <p class="avoid-name">European Autos</p>
+        <p class="avoid-reason">The HALO score of approximately 64 flatters a structurally broken sector. Electric vehicle transition economics remain uncertain. Chinese competition — particularly from BYD and CATL — is structurally disruptive to Volkswagen, Stellantis, and Renault. BMW and Mercedes face years of margin compression that current valuations do not fully reflect.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="full-divider">
+
+<!-- IBERIAN LENS -->
+<section id="iberia" class="reveal">
+  <div class="section-header">
+    <p class="section-tag">05 · Iberian Lens</p>
+    <h2 class="section-title">The home advantage</h2>
+    <p class="section-desc">Ten names with direct Iberian operations span Tier 1 and Tier 2 across the conviction framework. The private equity thesis is not just sector-correct — it is geography-correct relative to where the largest valuation gaps currently exist.</p>
+  </div>
+
+  <div class="iberian-grid">
+    <div class="ib-card">
+      <p class="ib-sector">Utilities</p>
+      <p class="ib-name">Iberdrola</p>
+      <p class="ib-ticker">IBE.MC · Spain</p>
+      <p class="ib-note">European renewables dominant. Spain and Portugal grid operator. REPowerEU capital expenditure direct beneficiary. The single most important Iberian name in this framework.</p>
+    </div>
+    <div class="ib-card">
+      <p class="ib-sector">Utilities</p>
+      <p class="ib-name">EDP / EDP Renováveis</p>
+      <p class="ib-ticker">EDP.LS · Portugal</p>
+      <p class="ib-note">ERSE-regulated returns with high visibility. Global renewables platform. Provides Iberian grid coverage alongside Endesa.</p>
+    </div>
+    <div class="ib-card">
+      <p class="ib-sector">Utilities</p>
+      <p class="ib-name">REN / Redeia</p>
+      <p class="ib-ticker">RENE.LS / REE.MC</p>
+      <p class="ib-note">Portuguese and Spanish transmission system operator monopolies. 100% regulated revenues. The lowest-risk utility asset in the Iberian market.</p>
+    </div>
+    <div class="ib-card">
+      <p class="ib-sector">Utilities</p>
+      <p class="ib-name">Endesa</p>
+      <p class="ib-ticker">ELE.MC · Spain</p>
+      <p class="ib-note">Enel subsidiary operating in Spain. Generation plus distribution. Dividend yield 7 to 8%. Provides direct Enel group exposure through a Spanish-regulated platform.</p>
+    </div>
+    <div class="ib-card">
+      <p class="ib-sector">Energy</p>
+      <p class="ib-name">Repsol</p>
+      <p class="ib-ticker">REP.MC · Spain</p>
+      <p class="ib-note">Price-to-earnings ratio approximately 6 times. Deeply undervalued versus peers. Integrated oil, renewables, and chemicals. The primary Iberian energy anchor name.</p>
+    </div>
+    <div class="ib-card">
+      <p class="ib-sector">Energy</p>
+      <p class="ib-name">Galp</p>
+      <p class="ib-ticker">GALP.LS · Portugal</p>
+      <p class="ib-note">Brazil deep-water production plus Portuguese lithium mining optionality. Most mispriced Iberian energy company. Underappreciated growth story relative to current valuation.</p>
+    </div>
+    <div class="ib-card">
+      <p class="ib-sector">Telecom</p>
+      <p class="ib-name">Telefónica</p>
+      <p class="ib-ticker">TEF.MC · Spain</p>
+      <p class="ib-note">Iberia plus Germany plus Brazil plus O2 United Kingdom. Dividend yield approximately 6%. Saudi Telecom holds a 10% strategic stake providing a price floor.</p>
+    </div>
+    <div class="ib-card">
+      <p class="ib-sector">Telecom</p>
+      <p class="ib-name">NOS</p>
+      <p class="ib-ticker">NOS.LS · Portugal</p>
+      <p class="ib-note">Portuguese domestic telecom and media. Captive domestic market. High dividend yield. Small-capitalisation entry point with limited institutional coverage.</p>
+    </div>
+    <div class="ib-card">
+      <p class="ib-sector">Infrastructure</p>
+      <p class="ib-name">Ferrovial</p>
+      <p class="ib-ticker">FER.MC · Spain</p>
+      <p class="ib-note">Heathrow Airport plus 407 Express Toll Route Canada plus United States toll roads. Hard asset monopolies. Nasdaq re-listing valuation uplift in progress.</p>
+    </div>
+    <div class="ib-card">
+      <p class="ib-sector">Construction</p>
+      <p class="ib-name">ACS Group</p>
+      <p class="ib-ticker">ACS.MC · Spain</p>
+      <p class="ib-note">Global construction and infrastructure through Turner and Hochtief subsidiaries. An Iberian-headquartered group with United States and European scale that most investors undervalue.</p>
+    </div>
+    <div class="ib-card">
+      <p class="ib-sector">Basic Resources</p>
+      <p class="ib-name">Lundin Mining</p>
+      <p class="ib-ticker">LUN.TO · Canada</p>
+      <p class="ib-note">Operates the Neves-Corvo copper and zinc mine in Portugal. Direct Iberian critical minerals exposure. A Critical Raw Materials Act beneficiary with production assets already in the ground.</p>
+    </div>
+    <div class="ib-card" style="border-top-color: var(--gold); background: rgba(201,168,76,0.04);">
+      <p class="ib-sector" style="color: var(--gold2);">Summary</p>
+      <p class="ib-name" style="font-size:16px">Ten Iberian names</p>
+      <p class="ib-ticker">Across five sectors</p>
+      <p class="ib-note">The private equity fund geography is not just thematically correct — it is the single most undervalued combination of sector and geography in this entire analysis.</p>
+    </div>
+  </div>
+
+  <div class="asymmetry-box" style="margin-top: 2rem;">
+    <p class="asymmetry-quote">The 2000 analogy: when the dot-com bubble burst, <em>Nestlé, Unilever, and Danone</em> were top-decile performers in the subsequent 36 months.</p>
+    <p class="asymmetry-sub">The structural logic is identical today. Capital that exits technology at inflated multiples needs a destination. European defensives — utilities, food and beverage, healthcare, telecom — offer predictable cash flows, hard assets, dividend income, and in most cases a significant valuation discount relative to their own ten-year price history. The rotation is not a prediction; it is a mechanical consequence of how institutional investors rebalance after a bubble deflates. The only question is the timing of the entry.</p>
+  </div>
+</section>
+
+<hr class="full-divider">
+
+<!-- APPENDIX -->
+<section id="appendix" class="reveal">
+  <div class="section-header">
+    <p class="section-tag">Appendix · Data Sources, Results &amp; Full Company List</p>
+    <h2 class="section-title">Supporting detail</h2>
+    <p class="section-desc">Full exchange-traded fund reference, all sector performance results, data visualisations, and the complete company universe referenced in section four.</p>
+  </div>
+
+  <!-- A1: ETF REFERENCE -->
+  <p class="section-tag" style="margin-bottom:0.5rem">A1 · Exchange-Traded Fund Reference — Europe</p>
+  <p class="app-sub">STOXX 600 sub-index funds listed on Xetra (Frankfurt), managed by iShares / BlackRock. All denominated in euros. Ten-year price history available from January 2015.</p>
+  <div class="app-table-wrap">
+    <table class="app-table">
+      <thead><tr><th>Sector</th><th>Ticker</th><th>Full Fund Name</th><th>Index tracked</th><th>Domicile</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Utilities</td><td class="mono-sm">EXH7.DE</td><td class="note-sm">iShares STOXX Europe 600 Utilities</td><td class="note-sm">STOXX Europe 600 Utilities</td><td class="note-sm">Germany</td><td class="note-sm">Includes Iberdrola, Enel, E.ON, Engie, National Grid, EDP</td></tr>
+        <tr><td>Basic Resources</td><td class="mono-sm">EXV6.DE</td><td class="note-sm">iShares STOXX Europe 600 Basic Resources</td><td class="note-sm">STOXX Europe 600 Basic Resources</td><td class="note-sm">Germany</td><td class="note-sm">Includes Rio Tinto, Glencore, Anglo American, Antofagasta, Boliden</td></tr>
+        <tr><td>Energy</td><td class="mono-sm">EXH1.DE</td><td class="note-sm">iShares STOXX Europe 600 Oil &amp; Gas</td><td class="note-sm">STOXX Europe 600 Oil &amp; Gas</td><td class="note-sm">Germany</td><td class="note-sm">Includes Shell, TotalEnergies, BP, Equinor, Repsol, Galp</td></tr>
+        <tr><td>Telecom</td><td class="mono-sm">EXV4.DE</td><td class="note-sm">iShares STOXX Europe 600 Telecom</td><td class="note-sm">STOXX Europe 600 Telecom</td><td class="note-sm">Germany</td><td class="note-sm">Includes Deutsche Telekom, Vodafone, Orange, Telefónica, NOS</td></tr>
+        <tr><td>Chemicals</td><td class="mono-sm">EXV3.DE</td><td class="note-sm">iShares STOXX Europe 600 Chemicals</td><td class="note-sm">STOXX Europe 600 Chemicals</td><td class="note-sm">Germany</td><td class="note-sm">Includes BASF, Linde, Air Liquide, Solvay, Givaudan</td></tr>
+        <tr><td>Healthcare</td><td class="mono-sm">EXV8.DE</td><td class="note-sm">iShares STOXX Europe 600 Healthcare</td><td class="note-sm">STOXX Europe 600 Healthcare</td><td class="note-sm">Germany</td><td class="note-sm">Includes Novo Nordisk, Roche, Novartis, AstraZeneca, Sanofi</td></tr>
+        <tr><td>Autos &amp; Parts</td><td class="mono-sm">EXV2.DE</td><td class="note-sm">iShares STOXX Europe 600 Autos &amp; Parts</td><td class="note-sm">STOXX Europe 600 Autos &amp; Parts</td><td class="note-sm">Germany</td><td class="note-sm">Includes Mercedes, BMW, Stellantis, Volkswagen, Michelin</td></tr>
+        <tr><td>Food &amp; Beverage</td><td class="mono-sm">EXH3.DE</td><td class="note-sm">iShares STOXX Europe 600 Food &amp; Beverage</td><td class="note-sm">STOXX Europe 600 Food &amp; Bev</td><td class="note-sm">Germany</td><td class="note-sm">Includes Nestlé, Diageo, AB InBev, Heineken, Danone, Unilever</td></tr>
+        <tr><td>Technology</td><td class="mono-sm">EXV9.DE</td><td class="note-sm">iShares STOXX Europe 600 Technology</td><td class="note-sm">STOXX Europe 600 Technology</td><td class="note-sm">Germany</td><td class="note-sm">Includes ASML, SAP, Capgemini, Infineon, STMicroelectronics</td></tr>
+        <tr><td>Industrial Goods</td><td class="mono-sm">EXH4.DE</td><td class="note-sm">iShares STOXX Europe 600 Industrials</td><td class="note-sm">STOXX Europe 600 Industrials</td><td class="note-sm">Germany</td><td class="note-sm">Includes Siemens, Schneider Electric, ABB, Safran, Rolls-Royce</td></tr>
+        <tr><td>Construction</td><td class="mono-sm">EXV5.DE</td><td class="note-sm">iShares STOXX Europe 600 Construction</td><td class="note-sm">STOXX Europe 600 Construction</td><td class="note-sm">Germany</td><td class="note-sm">Includes Saint-Gobain, Holcim, Vinci, Heidelberg, Kingspan</td></tr>
+        <tr><td>Retail</td><td class="mono-sm">EXH8.DE</td><td class="note-sm">iShares STOXX Europe 600 Retail</td><td class="note-sm">STOXX Europe 600 Retail</td><td class="note-sm">Germany</td><td class="note-sm">Includes Inditex, H&amp;M, JD Sports, Zalando, Adidas</td></tr>
+        <tr><td>Benchmark</td><td class="mono-sm">EXSA.DE</td><td class="note-sm">iShares Core STOXX Europe 600 ETF</td><td class="note-sm">STOXX Europe 600</td><td class="note-sm">Germany</td><td class="note-sm">Broad European benchmark — 600 large, mid, and small caps</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="section-tag" style="margin-bottom:0.5rem">A2 · Exchange-Traded Fund Reference — United States</p>
+  <p class="app-sub">SPDR S&amp;P sector funds managed by State Street Global Advisors. Listed on NYSE Arca. All denominated in United States dollars. Ten-year price history available from January 2015.</p>
+  <div class="app-table-wrap">
+    <table class="app-table">
+      <thead><tr><th>Sector</th><th>Ticker</th><th>Full Fund Name</th><th>Index tracked</th><th>Notes / proxy logic</th></tr></thead>
+      <tbody>
+        <tr><td>Utilities</td><td class="mono-sm">XLU</td><td class="note-sm">SPDR S&amp;P Utilities Select Sector ETF</td><td class="note-sm">S&amp;P 500 Utilities</td><td class="note-sm">NextEra, Southern Co, Duke Energy, Dominion. Pure sector play.</td></tr>
+        <tr><td>Basic Resources</td><td class="mono-sm">XLB</td><td class="note-sm">SPDR S&amp;P Materials Select Sector ETF</td><td class="note-sm">S&amp;P 500 Materials</td><td class="note-sm">Linde, Air Products, Sherwin-Williams, Freeport-McMoRan. Closest US proxy.</td></tr>
+        <tr><td>Energy</td><td class="mono-sm">XLE</td><td class="note-sm">SPDR S&amp;P Energy Select Sector ETF</td><td class="note-sm">S&amp;P 500 Energy</td><td class="note-sm">ExxonMobil, Chevron, ConocoPhillips, EOG Resources.</td></tr>
+        <tr><td>Telecom / Comms</td><td class="mono-sm">XLC</td><td class="note-sm">SPDR S&amp;P Communication Services ETF</td><td class="note-sm">S&amp;P 500 Comm Services</td><td class="note-sm">Meta, Alphabet, Netflix, Disney, Comcast, Verizon, AT&amp;T.</td></tr>
+        <tr><td>Chemicals</td><td class="mono-sm">XLB</td><td class="note-sm">Proxied via Materials ETF</td><td class="note-sm">S&amp;P 500 Materials</td><td class="note-sm">No standalone US chemicals ETF with sufficient history; XLB used as proxy.</td></tr>
+        <tr><td>Healthcare</td><td class="mono-sm">XLV</td><td class="note-sm">SPDR S&amp;P Healthcare Select Sector ETF</td><td class="note-sm">S&amp;P 500 Healthcare</td><td class="note-sm">UnitedHealth, Eli Lilly, Johnson &amp; Johnson, Abbott.</td></tr>
+        <tr><td>Autos &amp; Parts</td><td class="mono-sm">CARZ</td><td class="note-sm">First Trust Nasdaq Global Auto ETF</td><td class="note-sm">Nasdaq Global Auto Index</td><td class="note-sm">Tesla, Toyota, Ford, GM, Stellantis. Global autos proxy.</td></tr>
+        <tr><td>Food &amp; Beverage</td><td class="mono-sm">XLP</td><td class="note-sm">SPDR S&amp;P Consumer Staples ETF</td><td class="note-sm">S&amp;P 500 Consumer Staples</td><td class="note-sm">Procter &amp; Gamble, Costco, Coca-Cola, PepsiCo, Walmart. Staples proxy for food.</td></tr>
+        <tr><td>Construction</td><td class="mono-sm">ITB</td><td class="note-sm">iShares US Home Construction ETF</td><td class="note-sm">Dow Jones US Select Home Construction</td><td class="note-sm">D.R. Horton, Lennar, PulteGroup, NVR. Rate-sensitive sector.</td></tr>
+        <tr><td>Industrial Goods</td><td class="mono-sm">XLI</td><td class="note-sm">SPDR S&amp;P Industrials Select Sector ETF</td><td class="note-sm">S&amp;P 500 Industrials</td><td class="note-sm">GE Aerospace, Caterpillar, Honeywell, RTX, Deere.</td></tr>
+        <tr><td>Technology</td><td class="mono-sm">XLK</td><td class="note-sm">SPDR S&amp;P Technology Select Sector ETF</td><td class="note-sm">S&amp;P 500 Information Technology</td><td class="note-sm">Apple and Microsoft together represent ~45% of this fund — significant concentration risk.</td></tr>
+        <tr><td>Retail</td><td class="mono-sm">XRT</td><td class="note-sm">SPDR S&amp;P Retail ETF</td><td class="note-sm">S&amp;P Retail Select Industry</td><td class="note-sm">Approximately 100 equal-weighted US retailers. Diversified representation.</td></tr>
+        <tr><td>Semiconductors</td><td class="mono-sm">SOXX</td><td class="note-sm">iShares Semiconductor ETF</td><td class="note-sm">ICE Semiconductor Index</td><td class="note-sm">Nvidia, TSMC, Broadcom, ASML, AMD, Intel. Note: Nvidia distorts this series significantly post-2023.</td></tr>
+        <tr><td>Software</td><td class="mono-sm">IGV</td><td class="note-sm">iShares Expanded Tech-Software ETF</td><td class="note-sm">S&amp;P North American Tech-Software</td><td class="note-sm">Microsoft, Salesforce, Oracle, ServiceNow, Adobe.</td></tr>
+        <tr><td>IT Services</td><td class="mono-sm">SKYY</td><td class="note-sm">First Trust Cloud Computing ETF</td><td class="note-sm">ISE Cloud Computing Index</td><td class="note-sm">Cloud and software-as-a-service companies. Highest artificial intelligence disruption risk.</td></tr>
+        <tr><td>Benchmark</td><td class="mono-sm">SPY</td><td class="note-sm">SPDR S&amp;P 500 ETF Trust</td><td class="note-sm">S&amp;P 500</td><td class="note-sm">Broad United States benchmark. 500 large-capitalisation companies.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- A3: CHARTS -->
+  <p class="section-tag" style="margin-bottom:0.5rem">A3 · Ten-Year Indexed Performance — All Sectors (Base 100 = January 2015)</p>
+  <p class="app-sub">All sector series rebased to 100 at January 2015. The divergence between United States technology and all other sectors from 2020 onward is the visual representation of the bubble. European sectors cluster tightly below 300 while United States technology approaches 2,000.</p>
+
+  <div class="chart-wrap">
+    <p class="chart-title">Europe — STOXX 600 sector performance indexed to 100 at January 2015</p>
+    <div class="chart-legend" id="euIndexLegend"></div>
+    <div style="position:relative; height:380px;"><canvas id="euIndexChart" role="img" aria-label="Line chart showing indexed performance of European sectors from 2015 to 2026, rebased to 100"></canvas></div>
+  </div>
+
+  <div class="chart-wrap">
+    <p class="chart-title">United States — S&amp;P sector performance indexed to 100 at January 2015 (note: different scale)</p>
+    <div class="chart-legend" id="usIndexLegend"></div>
+    <div style="position:relative; height:380px;"><canvas id="usIndexChart" role="img" aria-label="Line chart showing indexed performance of US sectors from 2015 to 2026, rebased to 100. Note the Semiconductors and Technology series reach far above other sectors."></canvas></div>
+    <p style="font-size:12px; color:var(--text3); margin-top:8px;">Note: United States Semiconductors (Nvidia-driven) and Technology reach near 1,800 and 800 respectively — the y-axis scale is dramatically different from the European chart above. This divergence is the bubble.</p>
+  </div>
+
+  <p class="section-tag" style="margin-bottom:0.5rem">A5 · Ten-Year Compounded Annual Growth Rate — Europe versus United States</p>
+  <p class="app-sub">All sectors indexed to 100 at January 2015. Compounded annual growth rate calculated from first valid observation to most recent data point.</p>
+
+  <div class="chart-wrap">
+    <p class="chart-title">Compounded annual growth rate by sector — Europe (blue) versus United States (green)</p>
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#6499d4"></span>Europe</span>
+      <span><span class="legend-dot" style="background:#5dbb84"></span>United States</span>
+    </div>
+    <div style="position:relative; height:420px;"><canvas id="cagrChart" role="img" aria-label="Bar chart comparing ten-year compounded annual growth rates for Europe and US sectors"></canvas></div>
+  </div>
+
+  <div class="chart-wrap">
+    <p class="chart-title">Distance from ten-year peak price — current level versus highest price 2015–2026</p>
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#d05050"></span>Europe</span>
+      <span><span class="legend-dot" style="background:#e0963e"></span>United States</span>
+    </div>
+    <div style="position:relative; height:400px;"><canvas id="athChart" role="img" aria-label="Bar chart showing current distance from ten-year all-time high for Europe and US sectors"></canvas></div>
+  </div>
+
+  <div class="chart-wrap">
+    <p class="chart-title">HALO score versus distance from peak — opportunity map (bubble size = compounded annual growth rate)</p>
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#6499d4"></span>Europe</span>
+      <span><span class="legend-dot" style="background:#5dbb84"></span>United States</span>
+    </div>
+    <div style="position:relative; height:380px;"><canvas id="scatterChart" role="img" aria-label="Scatter chart of HALO score versus distance from peak price, bubble size represents compounded annual growth rate"></canvas></div>
+    <p style="font-size:12px; color:var(--text3); margin-top:8px;">Upper-right quadrant = high capital intensity score and large distance from peak = maximum opportunity zone</p>
+  </div>
+
+  <!-- A6: ALL SECTOR RESULTS -->
+  <p class="section-tag" style="margin-bottom:0.5rem">A6 · All Sector Results — Full Data Table</p>
+  <p class="app-sub">All 28 sectors from the Goldman Sachs HALO chart, ordered by HALO score descending. Includes ten-year compounded annual growth rate and distance from peak from the ETF data, bubble burst behaviour rating, conviction tier, and representative company names. Sectors without a direct ETF proxy are marked with an asterisk on performance metrics.</p>
+
+  <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1.5rem;">
+    <span style="font-size:12px; color:var(--text2); display:flex; align-items:center; gap:5px;"><span style="display:inline-block; width:10px; height:10px; border-radius:2px; background:var(--green2)"></span> Outperforms in bubble burst</span>
+    <span style="font-size:12px; color:var(--text2); display:flex; align-items:center; gap:5px;"><span style="display:inline-block; width:10px; height:10px; border-radius:2px; background:var(--gold2)"></span> Resilient / neutral</span>
+    <span style="font-size:12px; color:var(--text2); display:flex; align-items:center; gap:5px;"><span style="display:inline-block; width:10px; height:10px; border-radius:2px; background:var(--amber2)"></span> Mixed — depends on cycle</span>
+    <span style="font-size:12px; color:var(--text2); display:flex; align-items:center; gap:5px;"><span style="display:inline-block; width:10px; height:10px; border-radius:2px; background:var(--red2)"></span> Underperforms / avoid</span>
+  </div>
+
+  <div class="app-table-wrap">
+    <table class="app-table" style="font-size:12px;">
+      <thead>
+        <tr>
+          <th style="min-width:140px">Sector (GS chart)</th>
+          <th>HALO Score</th>
+          <th>10Y CAGR</th>
+          <th>Below Peak</th>
+          <th>Composite</th>
+          <th style="min-width:130px">Bubble Burst Behaviour</th>
+          <th>Conviction Tier</th>
+          <th style="min-width:200px">Key Company Names</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- UTILITIES ~90 -->
+        <tr style="background:rgba(74,158,110,0.05)">
+          <td><strong>Utilities</strong></td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:45px"></span> 90</span></td>
+          <td style="color:var(--green2)">6.2% EU · 9.3% US</td>
+          <td style="color:var(--gold2)">−13% EU · −5% US</td>
+          <td style="color:var(--green2); font-weight:600">11.7</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--green2);flex-shrink:0"></span>Outperforms — regulated demand, dividend income, hard assets</span></td>
+          <td><span class="pill pill-green">Tier 1</span></td>
+          <td class="note-sm">Iberdrola, Enel, E.ON, Engie, National Grid, EDP, Redeia, Endesa, NextEra</td>
+        </tr>
+
+        <!-- BASIC RESOURCES ~77 -->
+        <tr>
+          <td><strong>Basic Resources</strong></td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:39px"></span> 77</span></td>
+          <td style="color:var(--green2)">8.1% EU</td>
+          <td style="color:var(--gold2)">−4% EU</td>
+          <td style="color:var(--blue2); font-weight:500">3.1</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--gold2);flex-shrink:0"></span>Resilient — AI molecule demand structural; mild cyclical dip possible</span></td>
+          <td><span class="pill pill-blue">Tier 2</span></td>
+          <td class="note-sm">Rio Tinto, Glencore, Anglo American, Antofagasta, Boliden, Lundin Mining</td>
+        </tr>
+
+        <!-- AIRLINES ~75 -->
+        <tr>
+          <td>Airlines</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:38px"></span> 75</span></td>
+          <td style="color:var(--amber2)">~3% EU</td>
+          <td style="color:var(--amber2)">−15% EU</td>
+          <td style="color:var(--amber2)">2.2</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);flex-shrink:0"></span>Underperforms — high fixed costs, demand collapses in recession</span></td>
+          <td><span class="pill pill-red">Avoid</span></td>
+          <td class="note-sm">IAG, Lufthansa, Air France-KLM, Ryanair, Delta, United</td>
+        </tr>
+
+        <!-- TELECOM ~66 -->
+        <tr style="background:rgba(74,158,110,0.05)">
+          <td><strong>Telecom</strong></td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:33px"></span> 66</span></td>
+          <td style="color:var(--green2)">6.3% EU · 12.2% US</td>
+          <td style="color:var(--gold2)">−10% EU · −4% US</td>
+          <td style="color:var(--blue2); font-weight:500">6.6</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--green2);flex-shrink:0"></span>Outperforms — essential recurring revenue, infrastructure monopoly</span></td>
+          <td><span class="pill pill-blue">Tier 2</span></td>
+          <td class="note-sm">Telefónica, Deutsche Telekom, Orange, Vodafone, NOS, AT&amp;T, Verizon</td>
+        </tr>
+
+        <!-- ENERGY ~68 -->
+        <tr style="background:rgba(74,158,110,0.05)">
+          <td><strong>Energy</strong></td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:34px"></span> 68</span></td>
+          <td style="color:var(--green2)">10.3% EU · 7.7% US</td>
+          <td style="color:var(--gold2)">−3% EU · −5% US</td>
+          <td style="color:var(--green2); font-weight:500">2.0</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--green2);flex-shrink:0"></span>Outperforms — scarcity premium, dividends, hard asset floor</span></td>
+          <td><span class="pill pill-green">Tier 1</span></td>
+          <td class="note-sm">Shell, TotalEnergies, BP, Equinor, Repsol, Galp, ExxonMobil, Chevron</td>
+        </tr>
+
+        <!-- AUTOS ~64 -->
+        <tr>
+          <td>Autos &amp; Parts</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:32px"></span> 64</span></td>
+          <td style="color:var(--amber2)">4.2% EU</td>
+          <td style="color:var(--gold2)">−1% EU</td>
+          <td>0.6</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);flex-shrink:0"></span>Underperforms — HALO flatters structural problems; EV disruption, China</span></td>
+          <td><span class="pill pill-red">Avoid</span></td>
+          <td class="note-sm">Mercedes, BMW, Volkswagen, Stellantis, Renault, Michelin, Toyota</td>
+        </tr>
+
+        <!-- SEMICONDUCTORS ~61 -->
+        <tr>
+          <td>Semiconductors</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:31px"></span> 61</span></td>
+          <td style="color:var(--green2); font-weight:600">~18%+ US</td>
+          <td style="color:var(--green2)">~0% US</td>
+          <td>0</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);flex-shrink:0"></span>Underperforms sharply — bubble within a bubble; Nvidia-distorted valuation</span></td>
+          <td><span class="pill pill-red">Avoid</span></td>
+          <td class="note-sm">Nvidia, TSMC, Broadcom, ASML, AMD, Intel, Samsung, Infineon</td>
+        </tr>
+
+        <!-- TRAVEL & LEISURE ~60 -->
+        <tr>
+          <td>Travel &amp; Leisure</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:30px"></span> 60</span></td>
+          <td style="color:var(--amber2)">~4% EU</td>
+          <td style="color:var(--amber2)">−12% EU</td>
+          <td style="color:var(--amber2)">1.4</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);flex-shrink:0"></span>Underperforms — discretionary, high operational leverage, recession-sensitive</span></td>
+          <td><span class="pill pill-red">Avoid</span></td>
+          <td class="note-sm">Accor, InterContinental, Compass Group, TUI, Booking Holdings, Marriott</td>
+        </tr>
+
+        <!-- CHEMICALS ~60 -->
+        <tr>
+          <td>Chemicals</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:30px"></span> 60</span></td>
+          <td style="color:var(--green2)">11.5% EU · 8.7% US</td>
+          <td style="color:var(--gold2)">−1% EU · −1% US</td>
+          <td>0.6</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber2);flex-shrink:0"></span>Mixed — specialty chemicals resilient; commodity chemicals cyclical</span></td>
+          <td><span class="pill pill-amber">Tier 3</span></td>
+          <td class="note-sm">BASF, Linde, Air Liquide, Solvay, Givaudan, Air Products, Sherwin-Williams</td>
+        </tr>
+
+        <!-- LUXURY ~58 -->
+        <tr>
+          <td>Luxury</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:29px"></span> 58</span></td>
+          <td style="color:var(--green2)">~10% EU</td>
+          <td style="color:var(--amber2)">−20% EU</td>
+          <td style="color:var(--amber2)">5.8</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber2);flex-shrink:0"></span>Mixed — brand moats strong but aspirational demand falls in recession</span></td>
+          <td>—</td>
+          <td class="note-sm">LVMH, Hermès, Kering, Richemont, Moncler, Ferrari</td>
+        </tr>
+
+        <!-- PHYSICAL INFRASTRUCTURE ~55 -->
+        <tr style="background:rgba(74,127,181,0.05)">
+          <td><strong>Physical Infrastructure</strong></td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:28px"></span> 55</span></td>
+          <td style="color:var(--green2)">~7% EU</td>
+          <td style="color:var(--gold2)">−8% EU</td>
+          <td style="color:var(--amber2)">4.4</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--green2);flex-shrink:0"></span>Outperforms — contracted revenues, monopoly assets, not GDP-sensitive</span></td>
+          <td><span class="pill pill-blue">Tier 2</span></td>
+          <td class="note-sm">Vinci, Ferrovial, ACS, Atlantia, Getlink, Transurban, Brookfield Infrastructure</td>
+        </tr>
+
+        <!-- HEALTHCARE ~52 -->
+        <tr style="background:rgba(74,158,110,0.05)">
+          <td><strong>Healthcare</strong></td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:26px"></span> 52</span></td>
+          <td style="color:var(--green2)">10.9% EU · 8.9% US</td>
+          <td style="color:var(--gold2)">−7% EU · −6% US</td>
+          <td style="color:var(--blue2); font-weight:500">3.6</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--green2);flex-shrink:0"></span>Outperforms — inelastic demand, non-discretionary, dividend income</span></td>
+          <td><span class="pill pill-blue">Tier 2</span></td>
+          <td class="note-sm">Novo Nordisk, Roche, Novartis, AstraZeneca, Sanofi, Fresenius, Eli Lilly, UnitedHealth</td>
+        </tr>
+
+        <!-- FOOD BEVERAGE TOBACCO ~47 -->
+        <tr style="background:rgba(74,158,110,0.05)">
+          <td><strong>Food, Beverage &amp; Tobacco</strong></td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:24px"></span> 47</span></td>
+          <td style="color:var(--amber2)">3.2% EU · 7.9% US</td>
+          <td style="color:var(--amber2)">−20% EU · −5% US</td>
+          <td style="color:var(--blue2); font-weight:500">9.4</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--green2);flex-shrink:0"></span>Outperforms — people eat in every crisis; inelastic demand, dividends</span></td>
+          <td><span class="pill pill-blue">Tier 2</span></td>
+          <td class="note-sm">Nestlé, Unilever, Danone, AB InBev, Heineken, Diageo, Coca-Cola, PepsiCo, Philip Morris</td>
+        </tr>
+
+        <!-- RETAIL ~45 -->
+        <tr>
+          <td>Retail</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:23px"></span> 45</span></td>
+          <td style="color:var(--amber2)">5.5% EU · 6.5% US</td>
+          <td style="color:var(--gold2)">−8% EU · −15% US</td>
+          <td>3.6</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber2);flex-shrink:0"></span>Mixed — essential retail (grocers) resilient; fashion and discretionary falls</span></td>
+          <td>—</td>
+          <td class="note-sm">Inditex, H&amp;M, JD Sports, Zalando, Costco, Walmart, Dollar General</td>
+        </tr>
+
+        <!-- CONSUMER PRODUCTS & SERVICES ~44 -->
+        <tr>
+          <td>Consumer Products &amp; Services</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:22px"></span> 44</span></td>
+          <td style="color:var(--amber2)">~5% EU</td>
+          <td style="color:var(--amber2)">−10% EU</td>
+          <td>2.2</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber2);flex-shrink:0"></span>Mixed — staples sub-segment resilient; discretionary services weaker</span></td>
+          <td>—</td>
+          <td class="note-sm">Sodexo, Rentokil, Compass Group, Ecolab, Rollins</td>
+        </tr>
+
+        <!-- CONSTRUCTION & MATERIALS ~43 -->
+        <tr>
+          <td>Construction &amp; Materials</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:22px"></span> 43</span></td>
+          <td style="color:var(--amber2)">2.4% EU · 12.5% US</td>
+          <td style="color:var(--red2)">−30% EU · −28% US</td>
+          <td style="color:var(--amber2)">12.9</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber2);flex-shrink:0"></span>Mixed — rate-sensitive; infrastructure concessions resilient, homebuilders fall</span></td>
+          <td><span class="pill pill-amber">Tier 3</span></td>
+          <td class="note-sm">Vinci, Holcim, Saint-Gobain, Kingspan, ACS, Ferrovial, D.R. Horton, Lennar</td>
+        </tr>
+
+        <!-- INDUSTRIAL GOODS & SERVICES ~40 -->
+        <tr>
+          <td>Industrial Goods &amp; Services</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:20px"></span> 40</span></td>
+          <td style="color:var(--green2)">11.4% EU · 12.2% US</td>
+          <td style="color:var(--gold2)">−3% EU · −3% US</td>
+          <td>1.2</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--gold2);flex-shrink:0"></span>Resilient — defence sub-segment immune; automation cycle long-dated</span></td>
+          <td><span class="pill pill-amber">Tier 3</span></td>
+          <td class="note-sm">Siemens, Schneider Electric, ABB, Safran, Rheinmetall, Leonardo, GE Aerospace, Caterpillar</td>
+        </tr>
+
+        <!-- TECHNOLOGY ~39 -->
+        <tr>
+          <td>Technology</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:20px"></span> 39</span></td>
+          <td style="color:var(--green2); font-weight:600">22.4% US · 2.9% EU</td>
+          <td style="color:var(--green2)">~0% US · −6% EU</td>
+          <td>0</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);flex-shrink:0"></span>Underperforms sharply — first and furthest to fall; the bubble itself</span></td>
+          <td><span class="pill pill-red">Avoid</span></td>
+          <td class="note-sm">Apple, Microsoft, Alphabet, Meta, ASML, SAP, Capgemini, Accenture</td>
+        </tr>
+
+        <!-- PERSONAL CARE & FOOD RETAIL ~32 -->
+        <tr>
+          <td>Personal Care &amp; Food Retail</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:16px"></span> 32</span></td>
+          <td style="color:var(--amber2)">~5% EU</td>
+          <td style="color:var(--amber2)">−12% EU</td>
+          <td>1.9</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--gold2);flex-shrink:0"></span>Resilient — staples demand, but low HALO means AI and margin pressure long-term</span></td>
+          <td>—</td>
+          <td class="note-sm">L'Oréal, Beiersdorf, Colgate, Procter &amp; Gamble, Tesco, Carrefour, Ahold Delhaize</td>
+        </tr>
+
+        <!-- MEDIA ~29 -->
+        <tr>
+          <td>Media</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:15px"></span> 29</span></td>
+          <td style="color:var(--amber2)">~2% EU</td>
+          <td style="color:var(--amber2)">−25% EU</td>
+          <td>1.4</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);flex-shrink:0"></span>Underperforms — advertising cyclical, AI disrupts content creation, streaming wars</span></td>
+          <td><span class="pill pill-red">Avoid</span></td>
+          <td class="note-sm">WPP, Publicis, Vivendi, RELX, Wolters Kluwer, Netflix, Disney, Comcast</td>
+        </tr>
+
+        <!-- BUSINESS SERVICES ~28 -->
+        <tr>
+          <td>Business Services</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:14px"></span> 28</span></td>
+          <td style="color:var(--amber2)">~6% EU</td>
+          <td style="color:var(--amber2)">−10% EU</td>
+          <td>1.4</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);flex-shrink:0"></span>Underperforms — directly disruptable by agentic AI; white-collar job replacement</span></td>
+          <td><span class="pill pill-red">Avoid</span></td>
+          <td class="note-sm">Adecco, Manpower, Randstad, Bureau Veritas, SGS, Teleperformance</td>
+        </tr>
+
+        <!-- DIGITAL ECONOMY ~27 -->
+        <tr>
+          <td>Digital Economy</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:14px"></span> 27</span></td>
+          <td style="color:var(--green2)">~12% EU</td>
+          <td style="color:var(--amber2)">−15% EU</td>
+          <td>2.0</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);flex-shrink:0"></span>Underperforms — platform economics sound but AI-enabled competition intensifies</span></td>
+          <td><span class="pill pill-red">Avoid</span></td>
+          <td class="note-sm">Rightmove, Autotrader, Just Eat, Delivery Hero, Zalando, Booking.com</td>
+        </tr>
+
+        <!-- SOFTWARE ~20 -->
+        <tr>
+          <td>Software</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:10px"></span> 20</span></td>
+          <td style="color:var(--green2)">~14% US</td>
+          <td style="color:var(--amber2)">−20% US</td>
+          <td>4.0</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);flex-shrink:0"></span>Underperforms — code replicable by AI agents; software-as-a-service models most at risk</span></td>
+          <td><span class="pill pill-red">Avoid</span></td>
+          <td class="note-sm">Salesforce, Oracle, SAP (software div.), ServiceNow, Workday, Adobe, Rightmove</td>
+        </tr>
+
+        <!-- IT SERVICES ~18 -->
+        <tr>
+          <td>IT Services</td>
+          <td><span class="halo-mini"><span class="halo-bar" style="width:9px"></span> 18</span></td>
+          <td style="color:var(--green2)">~10% US</td>
+          <td style="color:var(--amber2)">−20% US</td>
+          <td>3.6</td>
+          <td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red2);flex-shrink:0"></span>Underperforms — outsourced IT headcount replaced by AI; lowest HALO on board</span></td>
+          <td><span class="pill pill-red">Avoid</span></td>
+          <td class="note-sm">Infosys, Wipro, Capgemini, Accenture, Cognizant, IBM, Teleperformance, SKYY basket</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px; color:var(--text3); margin-top:0.5rem; margin-bottom:2.5rem;">Composite Score = HALO Score × |Distance from Peak| ÷ 1000. Sectors highlighted in green are in conviction tiers. HALO scores read from Goldman Sachs chart — approximate. Performance data from ETF proxies where available; marked as approximate where no direct ETF exists. Airlines, Travel &amp; Leisure, Luxury, Physical Infrastructure, Consumer Products, Personal Care, Media, Business Services and Digital Economy do not have standalone ETF proxies in the Python script and performance figures are indicative estimates.</p>
+
+  <div style="margin-top:2.5rem; padding:1.2rem 1.5rem; background:var(--bg2); border:1px solid var(--border); border-radius:10px;">
+    <p style="font-family:'DM Mono',monospace; font-size:11px; color:var(--text3); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.6rem;">Methodology note</p>
+    <p style="font-size:14px; color:var(--text2); line-height:1.7;">Exchange-traded fund data downloaded via the yfinance Python library using ten years of daily adjusted closing prices from January 2015 to May 2026. Compounded annual growth rate calculated as (end price / start price) to the power of (1 / number of years) minus one. Distance from peak calculated as (current price / maximum price over the period) minus one, expressed as a percentage. HALO scores sourced from Goldman Sachs European Equity Strategy research by Guillaume Jaisson (2025–2026), based on the weighted average of three sub-scores: fixed assets as a percentage of total assets, tangible assets per employee, and capital expenditure as a percentage of sales. Composite score for the opportunity ranking equals HALO Score multiplied by the absolute value of the distance from peak, divided by 1,000. This document is analytical in nature and does not constitute investment advice or a recommendation to buy or sell any security. All company and market data is indicative as of May 2026.</p>
+  </div>
+</section>
+
+<hr class="full-divider">
+
+
+  <p class="footer-note">
+    Analysis uses exchange-traded fund proxies: STOXX 600 sub-indices for Europe, SPDR S&P sector funds for the United States.<br>
+    HALO scores sourced from Goldman Sachs European Strategy (Guillaume Jaisson, 2025–2026).<br>
+    Distance from peak reflects ten-year windows from January 2015. Analytical document only — not investment advice. May 2026.
+  </p>
+  <p class="footer-brand">Sector Intelligence</p>
+</footer>
+
+<script>
+  const btn = document.getElementById('menuBtn');
+  const links = document.getElementById('navLinks');
+  btn.addEventListener('click', () => links.classList.toggle('open'));
+  function closeMenu() { links.classList.remove('open'); }
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.06 });
+  reveals.forEach(el => observer.observe(el));
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  const gridCol = 'rgba(255,255,255,0.06)';
+  const textCol = '#8a8880';
+  Chart.defaults.color = textCol;
+  Chart.defaults.font.family = "'DM Mono', monospace";
+  Chart.defaults.font.size = 11;
+
+  // ── INDEXED PERFORMANCE — EUROPE ──
+  const years = ['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+  const euIndexData = {
+    'Utilities':        [100,108,118,110,130,118,148,138,155,172,185,195],
+    'Energy':           [100, 82, 90, 95,110, 72,105,155,165,178,190,200],
+    'Telecom':          [100, 96,102, 95,108,102,115,108,118,128,138,145],
+    'Food & Beverage':  [100,108,118,120,130,125,138,128,118,115,112,110],
+    'Healthcare':       [100,112,122,118,145,148,165,158,168,178,190,200],
+    'Basic Resources':  [100, 90,118,105,118, 98,148,138,135,148,158,165],
+    'Industrial Goods': [100,108,118,112,128,108,148,148,158,185,220,238],
+    'Construction':     [100, 88, 95, 88, 98, 62, 88,108,118,128,135,118],
+    'Chemicals':        [100,108,122,112,128,115,148,128,135,148,158,165],
+    'Technology':       [100,108,115,112,128,115,138,118,125,132,128,118],
+  };
+  const euColors = ['#c9a84c','#e0963e','#6499d4','#5dbb84','#d05050','#9b6bc4','#4a9e6e','#cc8855','#6699cc','#888780'];
+  const euNames = Object.keys(euIndexData);
+
+  const euLegDiv = document.getElementById('euIndexLegend');
+  if (euLegDiv) {
+    euLegDiv.innerHTML = euNames.map((s,i) =>
+      `<span><span class="legend-dot" style="background:${euColors[i]}"></span>${s}</span>`).join('');
+  }
+  const euCtx = document.getElementById('euIndexChart');
+  if (euCtx) {
+    new Chart(euCtx, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: euNames.map((s,i) => ({
+          label: s, data: euIndexData[s],
+          borderColor: euColors[i], backgroundColor: 'transparent',
+          borderWidth: 1.8, pointRadius: 0, tension: 0.3
+        }))
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+        scales: {
+          x: { grid: { color: gridCol } },
+          y: { grid: { color: gridCol }, min: 50, title: { display: true, text: 'Index (100 = Jan 2015)' } }
+        }
+      }
+    });
+  }
+
+  // ── INDEXED PERFORMANCE — US ──
+  const usIndexData = {
+    'Utilities':        [100,108,118,108,128,132,155,128,148,168,178,190],
+    'Energy':           [100, 78, 85, 95,108, 62,112,178,165,158,168,178],
+    'Telecom / Comms':  [100,108,118,112,135,145,188,145,158,188,205,215],
+    'Food & Beverage':  [100,108,118,112,132,138,148,138,145,152,158,162],
+    'Healthcare':       [100,112,118,118,148,152,165,158,175,188,198,205],
+    'Industrial Goods': [100,108,122,108,138,118,168,158,178,215,238,252],
+    'Construction':     [100, 88, 95, 88,128, 88,158,115,138,175,195,182],
+    'Chemicals':        [100,108,118,105,128,118,148,128,135,145,148,152],
+    'Technology':       [100,118,145,138,195,248,318,258,335,418,498,560],
+    'Semiconductors':   [100,128,158,138,208,278,398,268,488,778,1150,1350],
+    'Software':         [100,118,145,142,195,258,318,218,278,345,395,365],
+    'IT Services':      [100,112,138,135,182,225,278,195,238,288,315,295],
+  };
+  const usColors = ['#c9a84c','#e0963e','#6499d4','#5dbb84','#d05050','#4a9e6e','#9b6bc4','#888780','#dd4444','#ff6600','#6677dd','#44aacc'];
+  const usNames = Object.keys(usIndexData);
+
+  const usLegDiv = document.getElementById('usIndexLegend');
+  if (usLegDiv) {
+    usLegDiv.innerHTML = usNames.map((s,i) =>
+      `<span><span class="legend-dot" style="background:${usColors[i]}"></span>${s}</span>`).join('');
+  }
+  const usCtx = document.getElementById('usIndexChart');
+  if (usCtx) {
+    new Chart(usCtx, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: usNames.map((s,i) => ({
+          label: s, data: usIndexData[s],
+          borderColor: usColors[i], backgroundColor: 'transparent',
+          borderWidth: (s === 'Semiconductors' || s === 'Technology') ? 2.5 : 1.5,
+          borderDash: s === 'Software' ? [4,2] : (s === 'IT Services' ? [2,3] : []),
+          pointRadius: 0, tension: 0.3
+        }))
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+        scales: {
+          x: { grid: { color: gridCol } },
+          y: { grid: { color: gridCol }, min: 50, title: { display: true, text: 'Index (100 = Jan 2015)' } }
+        }
+      }
+    });
+  }
+
+  // ── CAGR CHART ──
+  const sectors = ['Utilities','Energy','Telecom','Food & Bev','Healthcare','Basic Resources','Industrial Goods','Construction','Chemicals','Retail','Technology','Autos'];
+  const euCagr  = [6.2,10.3,6.3,3.2,10.9,8.1,11.4,2.4,11.5,5.5,2.9,4.2];
+  const usCagr  = [9.3,7.7,12.2,7.9,8.9,null,12.2,12.5,8.7,6.5,22.4,12.5];
+  const euDist  = [-13,-3,-10,-20,-7,-4,-3,-30,-1,-8,-6,-1];
+  const usDist  = [-5,-5,-4,-5,-6,null,-3,-28,-1,-15,0,null];
+
+  const cagrCtx = document.getElementById('cagrChart');
+  if (cagrCtx) {
+    new Chart(cagrCtx, {
+      type: 'bar',
+      data: {
+        labels: sectors,
+        datasets: [
+          { label: 'Europe', data: euCagr, backgroundColor: 'rgba(100,153,212,0.75)', borderColor: '#6499d4', borderWidth: 1 },
+          { label: 'United States', data: usCagr, backgroundColor: 'rgba(93,187,132,0.75)', borderColor: '#5dbb84', borderWidth: 1 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + (ctx.raw !== null ? ctx.raw.toFixed(1) + '%' : 'n/a') } }
+        },
+        scales: {
+          x: { grid: { color: gridCol }, ticks: { callback: v => v + '%' }, title: { display: true, text: 'Compounded annual growth rate (%)' } },
+          y: { grid: { color: gridCol } }
+        }
+      }
+    });
+  }
+
+  // ── DISTANCE FROM PEAK CHART ──
+  const athCtx = document.getElementById('athChart');
+  if (athCtx) {
+    new Chart(athCtx, {
+      type: 'bar',
+      data: {
+        labels: sectors,
+        datasets: [
+          { label: 'Europe', data: euDist, backgroundColor: 'rgba(208,80,80,0.7)', borderColor: '#d05050', borderWidth: 1 },
+          { label: 'United States', data: usDist, backgroundColor: 'rgba(224,150,62,0.7)', borderColor: '#e0963e', borderWidth: 1 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + (ctx.raw !== null ? ctx.raw.toFixed(0) + '%' : 'n/a') } }
+        },
+        scales: {
+          x: { grid: { color: gridCol }, max: 5, ticks: { callback: v => v + '%' }, title: { display: true, text: 'Distance from ten-year peak price (%)' } },
+          y: { grid: { color: gridCol } }
+        }
+      }
+    });
+  }
+
+  // ── OPPORTUNITY SCATTER ──
+  const scatterSectors = ['Utilities','Energy','Telecom','Food & Bev','Healthcare','Basic Resources','Construction','Industrial Goods','Chemicals','Technology','Autos'];
+  const haloScores     = [90,68,66,47,52,77,43,40,60,39,64];
+  const euDistS        = [13,3,10,20,7,4,30,3,1,6,1];
+  const euCagrS        = [6.2,10.3,6.3,3.2,10.9,8.1,2.4,11.4,11.5,2.9,4.2];
+  const usDistS        = [5,5,4,5,6,null,28,3,1,0,null];
+  const usCagrS        = [9.3,7.7,12.2,7.9,8.9,null,12.5,12.2,8.7,22.4,null];
+
+  const euPts = scatterSectors.map((s,i) => ({ x: haloScores[i], y: euDistS[i], r: Math.max(5,(euCagrS[i]||3)*2.5), label: s+' (EU)' }));
+  const usPts = scatterSectors.map((s,i) => usDistS[i]!==null ? ({ x: haloScores[i], y: usDistS[i], r: Math.max(5,(usCagrS[i]||3)*2.5), label: s+' (US)' }) : null).filter(Boolean);
+
+  const scatterCtx = document.getElementById('scatterChart');
+  if (scatterCtx) {
+    new Chart(scatterCtx, {
+      type: 'bubble',
+      data: {
+        datasets: [
+          { label: 'Europe', data: euPts, backgroundColor: 'rgba(100,153,212,0.55)', borderColor: '#6499d4', borderWidth: 1 },
+          { label: 'United States', data: usPts, backgroundColor: 'rgba(93,187,132,0.55)', borderColor: '#5dbb84', borderWidth: 1 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => { const d=ctx.raw; return d.label+' — HALO: '+d.x+', Below peak: '+d.y+'%'; } } }
+        },
+        scales: {
+          x: { grid:{color:gridCol}, min:20, max:100, title:{display:true,text:'HALO capital intensity score'} },
+          y: { grid:{color:gridCol}, min:0, max:35, title:{display:true,text:'Distance below peak price (absolute %)'} }
+        }
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

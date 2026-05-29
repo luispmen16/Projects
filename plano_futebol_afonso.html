@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>O Meu Plano de Futebol</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#27AE60;--green-d:#1a6e3c;--green-l:#e3f5ec;
+  --amber:#E67E22;--amber-l:#fdf0e0;
+  --blue:#2980B9;--blue-l:#e8f4fb;
+  --pink:#E74C3C;--pink-l:#fdecea;
+  --purple:#8E44AD;--purple-l:#f5edfb;
+  --bg:#f5f6f2;--card:#fff;--text:#1c1c1c;--muted:#6b7280;--border:#e2e4dd;
+  --r:13px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:17px;}
+
+.hdr{background:#1c1c1c;padding:26px 20px 22px;text-align:center;}
+.hdr h1{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:2px;color:var(--green);line-height:1;margin-bottom:4px;}
+.hdr p{font-size:15px;color:#999;}
+.hdr-badges{display:flex;justify-content:center;gap:7px;margin-top:10px;flex-wrap:wrap;}
+.hbadge{font-size:13px;font-weight:600;padding:3px 11px;border-radius:20px;border:1.5px solid;}
+.hb-g{color:var(--green);border-color:var(--green);}
+.hb-a{color:var(--amber);border-color:var(--amber);}
+.hb-b{color:var(--blue);border-color:var(--blue);}
+.hb-p{color:var(--pink);border-color:var(--pink);}
+
+.phase-strip{display:flex;}
+.ps{flex:1;padding:5px 4px;text-align:center;font-size:13px;font-weight:700;}
+.ps-team{background:var(--green);color:#0d3d20;}
+.ps-solo{background:var(--blue);color:#08243c;}
+
+.wrap{max-width:900px;margin:0 auto;padding:18px 13px;}
+
+.tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.tab{padding:9px 16px;border-radius:30px;font-size:15px;font-weight:600;border:2px solid var(--border);background:white;cursor:pointer;transition:all .18s;color:var(--muted);}
+.tab.active,.tab:hover{border-color:var(--green);color:var(--green);background:var(--green-l);}
+
+.stitle{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.stitle .ln{flex:1;height:2px;background:var(--border);}
+
+.wnav{display:flex;align-items:center;gap:5px;margin-bottom:12px;flex-wrap:wrap;}
+.wbtn{width:40px;height:40px;border-radius:50%;border:2px solid var(--border);background:white;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;color:var(--muted);}
+.wbtn.active{background:#1c1c1c;color:white;border-color:#1c1c1c;}
+.wbtn.wt{border-color:var(--green);}
+.wbtn.ws{border-color:var(--blue);}
+.wbtn:hover:not(.active){color:var(--green);border-color:var(--green);}
+.wphase{font-size:14px;font-weight:600;padding:3px 11px;border-radius:20px;margin-left:2px;}
+.wp-team{background:var(--green-l);color:var(--green-d);}
+.wp-solo{background:var(--blue-l);color:#1a4f7a;}
+.wp-taper{background:var(--amber-l);color:#7a4010;}
+
+.leg{display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap;}
+.leg-i{display:flex;align-items:center;gap:5px;font-size:14px;color:var(--muted);}
+.leg-d{width:9px;height:9px;border-radius:50%;}
+
+.dgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:14px;}
+.dcard{border:2px solid var(--border);border-radius:var(--r);padding:8px 3px;text-align:center;cursor:pointer;transition:all .18s;background:white;}
+.dcard:hover{border-color:var(--green);}
+.dcard.active{border-color:#1c1c1c;background:#1c1c1c;}
+.dcard.active .dname,.dcard.active .dtype{color:white!important;}
+.dname{font-size:14px;font-weight:700;display:block;color:var(--text);}
+.dtype{font-size:11px;color:var(--muted);display:block;margin-top:1px;line-height:1.2;}
+.ddot{width:7px;height:7px;border-radius:50%;margin:5px auto 0;}
+.dot-g{background:var(--green);}
+.dot-a{background:var(--amber);}
+.dot-b{background:var(--blue);}
+.dot-v{background:var(--purple);}
+.dot-x{background:#ccc;}
+
+.sess-hdr{background:#1c1c1c;color:white;border-radius:var(--r) var(--r) 0 0;padding:13px 17px;}
+.sess-hdr h3{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:1px;margin-bottom:2px;}
+.sess-hdr p{font-size:14px;color:#aaa;line-height:1.4;}
+.sess-body{background:white;border:2px solid #1c1c1c;border-top:none;border-radius:0 0 var(--r) var(--r);}
+
+.exrow{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:11px;align-items:flex-start;}
+.exrow:last-child{border-bottom:none;}
+.exn{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.ng{background:var(--green-l);color:var(--green-d);}
+.na{background:var(--amber-l);color:#7a4010;}
+.nb{background:var(--blue-l);color:#1a4f7a;}
+.nv{background:var(--purple-l);color:#5a1a7a;}
+.np{background:var(--pink-l);color:#a33;}
+.exc{flex:1;}
+.exname{font-size:15px;font-weight:600;margin-bottom:2px;}
+.exdesc{font-size:14px;color:var(--muted);line-height:1.55;}
+.exdose{display:inline-block;margin-top:5px;font-size:13px;font-weight:700;padding:2px 9px;border-radius:20px;background:var(--bg);border:1px solid var(--border);}
+
+.rest-box{background:white;border:2px solid var(--border);border-radius:var(--r);padding:28px;text-align:center;}
+.rest-box h3{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--muted);}
+.rest-box p{font-size:15px;color:var(--muted);margin-top:6px;}
+
+.food-rule{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin-bottom:16px;}
+.frule{border-radius:var(--r);padding:12px;text-align:center;}
+.fr-a{background:var(--amber-l);}
+.fr-b{background:var(--blue-l);}
+.fr-g{background:var(--green-l);}
+.frule .fnum{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;}
+.frule .ftitle{font-size:14px;font-weight:700;margin:2px 0;}
+.frule .fex{font-size:13px;color:var(--muted);}
+
+.timeline{position:relative;padding-left:18px;}
+.timeline::before{content:'';position:absolute;left:4px;top:8px;bottom:8px;width:2px;background:var(--border);}
+.titem{position:relative;margin-bottom:12px;}
+.titem::before{content:'';position:absolute;left:-15px;top:8px;width:9px;height:9px;border-radius:50%;border:2px solid white;}
+.ti-a::before{background:var(--amber);}
+.ti-g::before{background:var(--green);}
+.ti-b::before{background:var(--blue);}
+.ti-p::before{background:var(--pink);}
+.tcard{background:white;border:1px solid var(--border);border-radius:10px;padding:9px 13px;}
+.ttime{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+.tmeal{font-size:15px;font-weight:600;margin:2px 0;}
+.tdesc{font-size:14px;color:var(--muted);line-height:1.5;}
+.tstar{display:inline-block;background:var(--pink-l);color:var(--pink);font-size:12px;font-weight:700;padding:1px 7px;border-radius:20px;margin-left:5px;}
+
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:9px;margin-bottom:14px;}
+.rule-box{border-radius:var(--r);padding:12px 14px;font-size:15px;}
+.rb-g{background:var(--green-l);color:var(--green-d);}
+.rb-r{background:var(--pink-l);color:#a33;}
+.rb-b{background:var(--blue-l);color:#1a4f7a;}
+.rule-box strong{display:block;margin-bottom:3px;}
+
+.mats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;}
+.mcard{background:white;border:2px solid var(--border);border-radius:var(--r);padding:14px;}
+.mcard h4{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.mcard h4 .dot{width:8px;height:8px;border-radius:50%;}
+.mitem{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--border);font-size:15px;}
+.mitem:last-child{border-bottom:none;}
+.chk{width:22px;height:22px;border-radius:5px;border:2px solid var(--border);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .15s;font-weight:700;}
+.chk.on{background:var(--green);border-color:var(--green);color:white;}
+
+.infobox{border-radius:var(--r);padding:12px 15px;margin-bottom:13px;font-size:15px;line-height:1.55;}
+.ib-a{background:var(--amber-l);color:#7a4010;}
+.ib-g{background:var(--green-l);color:var(--green-d);}
+.ib-b{background:var(--blue-l);color:#1a4f7a;}
+
+.hidden{display:none;}
+/* iPhone optimizations */
+* { -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { padding-bottom: env(safe-area-inset-bottom); }
+.wrap { padding-left: max(13px, env(safe-area-inset-left)); padding-right: max(13px, env(safe-area-inset-right)); }
+.tab, .wbtn, .dcard, .chk { -webkit-touch-callout: none; user-select: none; }
+
+@media(max-width:520px){
+  {font-size:36px;}
+  .dgrid{gap:3px;}
+  .dcard{padding:5px 2px;}
+  {font-size:12px;}
+  {font-size:10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>O Meu Plano de Futebol</h1>
+  <p>10 semanas de férias · sem ginásio · 14 anos</p>
+  <div class="hdr-badges">
+    <span class="hbadge hb-g">Equipa 2ª·3ª·5ª (sem. 1–4)</span>
+    <span class="hbadge hb-a">Força no quintal</span>
+    <span class="hbadge hb-b">Corrida</span>
+    <span class="hbadge hb-p">Futebol solo</span>
+  </div>
+</div>
+
+<div class="phase-strip">
+  <div class="ps ps-team" style="flex:4">Semanas 1–4 · Com equipa (2ª, 3ª e 5ª)</div>
+  <div class="ps ps-solo" style="flex:6">Semanas 5–10 · Sozinho</div>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('treino',this)">Treino</button>
+    <button class="tab" onclick="showTab('comida',this)">Comida</button>
+    <button class="tab" onclick="showTab('lista',this)">O que preciso</button>
+  </div>
+
+  <!-- TREINO -->
+  <div id="tab-treino">
+    <div class="stitle">Semana <div class="ln"></div></div>
+    <div class="leg">
+      <div class="leg-i"><div class="leg-d" style="background:var(--green)"></div>Treino de equipa</div>
+      <div class="leg-i"><div class="leg-d" style="background:var(--amber)"></div>Corrida / Força</div>
+      <div class="leg-i"><div class="leg-d" style="background:var(--purple)"></div>Futebol solo</div>
+      <div class="leg-i"><div class="leg-d" style="background:#ccc"></div>Descanso</div>
+    </div>
+    <div class="wnav" id="wnav"></div>
+    <div class="dgrid" id="dgrid"></div>
+    <div id="sdetail"></div>
+  </div>
+
+  <!-- COMIDA -->
+  <div id="tab-comida" class="hidden">
+    <div class="stitle">Como preencher o prato <div class="ln"></div></div>
+    <div class="food-rule">
+      <div class="frule fr-a">
+        <div class="fnum" style="color:var(--amber)">½</div>
+        <div class="ftitle" style="color:#7a4010">Hidratos</div>
+        <div class="fex">arroz, massa, aveia, batata doce</div>
+      </div>
+      <div class="frule fr-b">
+        <div class="fnum" style="color:var(--blue)">¼</div>
+        <div class="ftitle" style="color:#1a4f7a">Proteína</div>
+        <div class="fex">frango, ovos, peixe, leite</div>
+      </div>
+      <div class="frule fr-g">
+        <div class="fnum" style="color:var(--green-d)">¼</div>
+        <div class="ftitle" style="color:var(--green-d)">Legumes</div>
+        <div class="fex">cenoura, brócolos, tomate, alface</div>
+      </div>
+    </div>
+    <div class="infobox ib-a"><strong>Sobre o pão:</strong> Usa pão de mistura só na torrada pré-treino. No resto das refeições, arroz, massa ou batata doce são muito melhores — dão mais energia e ficam mais tempo no estômago.</div>
+    <div class="stitle">O que comer cada dia <div class="ln"></div></div>
+    <div style="background:white;border:2px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:16px;">
+      <div class="timeline">
+        <div class="titem ti-a"><div class="tcard">
+          <div class="ttime">8h — Pequeno-almoço</div>
+          <div class="tmeal">Aveia com leite e banana</div>
+          <div class="tdesc">6 colheres de aveia numa taça, leite quente por cima, 1 banana às rodelas, um fio de mel. Mexe e come. Pronto em 3 minutos.</div>
+        </div></div>
+        <div class="titem ti-g"><div class="tcard">
+          <div class="ttime">10h30 — Lanche</div>
+          <div class="tmeal">1 fruta + punhado de amêndoas</div>
+          <div class="tdesc">Banana ou maçã + um punhado de amêndoas. Prepara na noite anterior e deixa no frigorífico.</div>
+        </div></div>
+        <div class="titem ti-b"><div class="tcard">
+          <div class="ttime">13h — Almoço</div>
+          <div class="tmeal">Arroz + frango + legume</div>
+          <div class="tdesc">Metade do prato arroz, um quarto frango grelhado, um quarto de legumes. Azeite por cima. É a refeição mais importante do dia.</div>
+        </div></div>
+        <div class="titem ti-a"><div class="tcard">
+          <div class="ttime">90 min antes do treino</div>
+          <div class="tmeal">Torrada com manteiga de amendoim + banana</div>
+          <div class="tdesc">1 fatia de pão de mistura torrada com manteiga de amendoim + 1 banana. O único momento do dia onde o pão faz sentido. Nunca treines sem comer nada.</div>
+        </div></div>
+        <div class="titem ti-p"><div class="tcard">
+          <div class="ttime">Logo após o treino <span class="tstar">★ não saltes</span></div>
+          <div class="tmeal">Leite + banana</div>
+          <div class="tdesc">Nos 30 minutos depois do treino: 1 copo grande de leite + 1 banana. É quando o músculo recupera mais depressa. Se saltares isto, perdes muito do esforço que fizeste.</div>
+        </div></div>
+        <div class="titem ti-b"><div class="tcard">
+          <div class="ttime">20h — Jantar</div>
+          <div class="tmeal">O que houver em casa</div>
+          <div class="tdesc">Come a refeição da família. Carne ou peixe + arroz ou batata doce + legumes. Sem pão no jantar.</div>
+        </div></div>
+        <div class="titem ti-g"><div class="tcard">
+          <div class="ttime">Antes de dormir</div>
+          <div class="tmeal">Copo de leite</div>
+          <div class="tdesc">Só isto. O leite tem uma proteína que trabalha enquanto dormes — o músculo cresce à noite.</div>
+        </div></div>
+      </div>
+    </div>
+    <div class="stitle">Regras fáceis <div class="ln"></div></div>
+    <div class="rules-grid">
+      <div class="rule-box rb-g"><strong>Bebe 2 litros de água por dia</strong>Garrafa sempre à mão. Bebe antes de teres sede.</div>
+      <div class="rule-box rb-g"><strong>Dorme 9 horas</strong>É quando o músculo cresce. Sem sono o treino não serve de nada.</div>
+      <div class="rule-box rb-b"><strong>Come a cada 3 horas</strong>Não fiques mais de 3 horas sem comer nada.</div>
+      <div class="rule-box rb-r"><strong>Sem Red Bull ou Monster</strong>São prejudiciais para o coração de quem ainda está a crescer.</div>
+      <div class="rule-box rb-r"><strong>Sem proteínas em pó</strong>Não precisas. A comida normal chega e sobra.</div>
+    </div>
+  </div>
+
+  <!-- LISTA -->
+  <div id="tab-lista" class="hidden">
+    <div class="stitle">Para o treino <div class="ln"></div></div>
+    <div class="mats-grid" style="margin-bottom:20px;">
+      <div class="mcard">
+        <h4><span class="dot" style="background:var(--green)"></span>Tens de ter</h4>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Bola de futebol</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Sapatilhas de corrida</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Chuteiras</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Roupa desportiva</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Garrafa de água (1 L)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Telemóvel (cronómetro)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Quintal ou espaço aberto</span></div>
+      </div>
+      <div class="mcard">
+        <h4><span class="dot" style="background:var(--amber)"></span>Ajuda muito — tudo na Decathlon</h4>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Discos futebol Essential × 10 <span style="font-size:11px;font-weight:700;color:var(--amber);margin-left:4px;">Kipsta · 7,00 €</span></span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Escada de agilidade futebol <span style="font-size:11px;font-weight:700;color:var(--amber);margin-left:4px;">Kipsta · 8,90 €</span></span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Kettlebell 4 kg (peso para agachamentos) <span style="font-size:11px;font-weight:700;color:var(--amber);margin-left:4px;">Corength · ~15 €</span></span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Fita ou corda para marcar distâncias <span style="font-size:11px;color:var(--muted);margin-left:4px;">grátis em casa</span></span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Banco de jardim ou step (~40 cm) <span style="font-size:11px;color:var(--muted);margin-left:4px;">já em casa</span></span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Parede ou vedação para remates <span style="font-size:11px;color:var(--muted);margin-left:4px;">já em casa</span></span></div>
+        <div style="margin-top:8px;padding:8px 10px;background:var(--green-l);border-radius:8px;font-size:12px;color:var(--green-d);font-weight:600;">Total Decathlon: ~31 €</div>
+      </div>
+    </div>
+    <div class="stitle">Compras da semana <div class="ln"></div></div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Tudo em qualquer supermercado. Uma compra por semana chega.</p>
+    <div class="mats-grid">
+      <div class="mcard">
+        <h4><span class="dot" style="background:var(--amber)"></span>Energia</h4>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Aveia (pacote grande)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Arroz branco</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Massa (esparguete ou penne)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Batata doce (3–4 unidades)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Bananas (10 unidades)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Maçãs e laranjas</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Pão de mistura (1 embalagem)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Mel</span></div>
+      </div>
+      <div class="mcard">
+        <h4><span class="dot" style="background:var(--blue)"></span>Músculo</h4>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Ovos (12 unidades)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Frango (peito, 500 g)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Leite (3 litros)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Iogurte grego natural</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Atum em lata (4 latas)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Peixe (pescada ou salmão)</span></div>
+      </div>
+      <div class="mcard">
+        <h4><span class="dot" style="background:var(--green)"></span>Vitaminas + extras</h4>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Brócolos ou espinafres</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Cenoura e tomate</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Alface e pepino</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Manteiga de amendoim</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Amêndoas (saco pequeno)</span></div>
+        <div class="mitem"><div class="chk" onclick="tc(this)"></div><span>Azeite</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var CW=1,CD=0;
+
+var WM=[
+  {ph:"Fundação",t:"team"},{ph:"Fundação",t:"team"},
+  {ph:"Progressão",t:"team"},{ph:"Progressão",t:"team"},
+  {ph:"A sério",t:"solo"},{ph:"A sério",t:"solo"},
+  {ph:"A sério",t:"solo"},{ph:"A sério",t:"solo"},
+  {ph:"Semana leve",t:"solo"},{ph:"Semana leve",t:"solo"}
+];
+
+/* SEMANAS 1-4: equipa 2a,3a,5a — livre 4a,6a,sab,dom */
+var TD=[
+  {n:"2ª",t:"equipa",d:"dot-g"},       /* 0 */
+  {n:"3ª",t:"equipa",d:"dot-g"},       /* 1 */
+  {n:"4ª",t:"velocidade",d:"dot-b"},   /* 2 */
+  {n:"5ª",t:"equipa",d:"dot-g"},       /* 3 */
+  {n:"6ª",t:"corrida",d:"dot-a"},      /* 4 */
+  {n:"Sáb",t:"força+bola",d:"dot-a"},  /* 5 */
+  {n:"Dom",t:"descanso",d:"dot-x"}     /* 6 */
+];
+
+/* SEMANAS 5-10: tudo solo */
+var SD=[
+  {n:"2ª",t:"velocidade",d:"dot-b"},      /* 0 */
+  {n:"3ª",t:"corrida curta",d:"dot-a"},   /* 1 */
+  {n:"4ª",t:"força no quintal",d:"dot-a"},/* 2 */
+  {n:"5ª",t:"corrida longa",d:"dot-a"},   /* 3 */
+  {n:"6ª",t:"bola+sprints",d:"dot-v"},    /* 4 */
+  {n:"Sáb",t:"bola+força",d:"dot-v"},     /* 5 */
+  {n:"Dom",t:"descanso",d:"dot-x"}        /* 6 */
+];
+
+/* ===== SESSÕES SEMANAS 1-4 ===== */
+var TS=[
+/* 0 — equipa 2a */ {
+  title:"2ª Feira — Treino de equipa",ac:"#27AE60",
+  desc:"Primeiro treino da semana. Aquece bem antes de começar.",
+  exs:[
+    {n:"1",c:"ng",nm:"Aquecimento — 10 minutos",
+     dc:"Trota 5 minutos devagar (consegues conversar). Depois fica parado e balança cada perna para a frente e para trás 10 vezes — como um pêndulo. Faz o mesmo para o lado. Roda as ancas em círculos 10 vezes para cada lado.",
+     ds:"10 min"},
+    {n:"2",c:"ng",nm:"Treino com a equipa",
+     dc:"Participa normalmente. Foca-te no teu treinador e na tua posição em campo.",
+     ds:"60–90 min"},
+    {n:"3",c:"ng",nm:"Alongar no fim — 5 minutos",
+     dc:"Fica de pé e puxa um pé para trás em direção às nádegas — sentes o músculo da frente da coxa a esticar. Fica 30 segundos. Muda de perna. Depois senta no chão, estende uma perna, e tenta chegar com as mãos ao pé. 30 segundos cada lado. Não saltes — fica parado na posição.",
+     ds:"5 min"}
+  ]
+},
+/* 1 — equipa 3a */ {
+  title:"3ª Feira — Treino de equipa",ac:"#27AE60",
+  desc:"Segundo treino da semana. Vai com energia.",
+  exs:[
+    {n:"1",c:"ng",nm:"Aquecimento",dc:"Trota 5 minutos. Balança as pernas como pêndulos para a frente, para trás e para o lado.",ds:"8 min"},
+    {n:"2",c:"ng",nm:"Treino com a equipa",dc:"Igual à 2ª feira. Tenta notar se a tua resistência está a melhorar semana a semana.",ds:"60–90 min"},
+    {n:"3",c:"ng",nm:"Alongar no fim",dc:"Igual à 2ª feira — frente da coxa e parte de trás da coxa.",ds:"5 min"}
+  ]
+},
+/* 2 — velocidade 4a */ {
+  title:"4ª Feira — Velocidade e pés rápidos",ac:"#2980B9",
+  desc:"Dia livre dos treinos de equipa. Treino curto mas intenso — trabalhas a rapidez.",
+  exs:[
+    {n:"1",c:"nb",nm:"Aquecimento",
+     dc:"Corre 8 minutos a ritmo fácil. Depois: anda durante 20 metros levantando muito bem os joelhos a cada passo — exagera o movimento como se tentasses tocar nos pés com os joelhos. Faz isto 4 vezes.",
+     ds:"12 min"},
+    {n:"2",c:"nb",nm:"Arranques de 20 metros",
+     dc:"Coloca um disco a 20 metros de ti. Inclina o corpo ligeiramente para a frente, põe um pé à frente do outro e arranca ao máximo até ao disco. Para. Caminha de volta — a caminhada de volta é o descanso. Repete. Semanas 1–2: 5 vezes. Semanas 3–4: 7 vezes.",
+     ds:"5 arranques (sem. 1–2) · 7 arranques (sem. 3–4)"},
+    {n:"3",c:"nb",nm:"Ziguezague entre discos",
+     dc:"Coloca 6 discos em linha com 1 metro entre cada um. Corre o mais rápido que consegues em ziguezague sem pisar nenhum. Usa o interior dos pés para virar. Cronometra com o telemóvel e tenta bater o teu tempo a cada sessão.",
+     ds:"6 passagens"},
+    {n:"4",c:"nb",nm:"Escada de agilidade",
+     dc:"Deita a escada no chão. Percorre-a pisando dentro de cada quadrado, um pé de cada vez, o mais rápido que consegues. Depois tenta dois pés em cada quadrado. Depois lateral — entra e sai de cada quadrado pelo lado. Parece simples mas depois de alguns segundos os pés ficam baralhados — é isso que treina.",
+     ds:"3 passagens de cada padrão"},
+    {n:"4",c:"nb",nm:"Corrida lateral",
+     dc:"Anda de lado durante 20 metros cruzando os pés — pé direito passa à frente do esquerdo, depois o esquerdo passa à frente do direito. Parece estranho no início mas treina os movimentos laterais que fazes em campo.",
+     ds:"4 × 20 metros cada lado"},
+    {n:"5",c:"nb",nm:"Alongar",dc:"Puxa o pé para as nádegas (frente da coxa, 30 seg cada). Senta, estende a perna e toca no pé (parte de trás, 30 seg cada).",ds:"6 min"}
+  ]
+},
+/* 3 — equipa 5a */ {
+  title:"5ª Feira — Treino de equipa",ac:"#27AE60",
+  desc:"Terceiro e último treino da semana com a equipa.",
+  exs:[
+    {n:"1",c:"ng",nm:"Aquecimento",dc:"Trota 5 minutos. Balança as pernas.",ds:"8 min"},
+    {n:"2",c:"ng",nm:"Treino com a equipa",dc:"Último treino da semana. Dá o teu melhor.",ds:"60–90 min"},
+    {n:"3",c:"ng",nm:"Alongar",dc:"5 minutos no fim.",ds:"5 min"}
+  ]
+},
+/* 4 — corrida 6a */ {
+  title:"6ª Feira — Corrida contínua",ac:"#E67E22",
+  desc:"Hoje não é rápido — é aguentar sem parar. Este treino é o que mais melhora a tua resistência nos jogos.",
+  exs:[
+    {n:"1",c:"na",nm:"Aquecimento",dc:"Caminha 3 minutos a passo rápido.",ds:"3 min"},
+    {n:"2",c:"na",nm:"Corre sem parar",
+     dc:"Escolhe um ritmo em que consegues dizer uma frase inteira sem te engasgar. Se só consegues dizer 2 palavras, estás rápido de mais — abranda. Se estás completamente à vontade, acelera ligeiramente. Semanas 1–2: corre 3 km. Semanas 3–4: corre 5 km.",
+     ds:"3 km (sem. 1–2) · 5 km (sem. 3–4)"},
+    {n:"3",c:"na",nm:"Arrefecer e alongar",
+     dc:"Caminha 3 minutos devagar. Depois alonga: frente da coxa (puxa o pé para as nádegas), parte de trás (senta e toca no pé), barriga da perna (encosta o pé à parede com a perna esticada). 30 seg cada posição.",
+     ds:"8 min"}
+  ]
+},
+/* 5 — força+bola sab */ {
+  title:"Sábado — Força no quintal + bola",ac:"#E67E22",
+  desc:"Tudo no quintal com o teu próprio peso. Primeiro a força, depois a bola.",
+  exs:[
+    {n:"1",c:"na",nm:"Aquecimento",
+     dc:"Trota 5 minutos. Depois 10 agachamentos lentos: pés à largura dos ombros, desce como se fosses sentar numa cadeira que está por baixo de ti — costas direitas. Sobe.",
+     ds:"8 min"},
+    {n:"2",c:"na",nm:"Saltar para cima de um banco",
+     dc:"Fica de frente a um banco resistente com cerca de 40 cm de altura. Dobra os joelhos, balança os braços e salta com os dois pés para cima do banco. Aterra com os joelhos ligeiramente dobrados — suave, sem barulho. Desce sempre a pé. Nunca saltes para baixo.",
+     ds:"3 séries de 8 saltos · descansa 90 seg entre séries"},
+    {n:"3",c:"na",nm:"Agachamentos",
+     dc:"Pés à largura dos ombros. Desce como se fosses sentar numa cadeira imaginária — costas direitas, joelhos não entram para dentro. Quando as coxas ficam paralelas ao chão, sobe. Para dificultar: segura o kettlebell de 4 kg ao peito.",
+     ds:"3 séries de 12 · descansa 60 seg"},
+    {n:"4",c:"na",nm:"Flexões",
+     dc:"Mãos no chão ligeiramente mais largas que os ombros. Corpo completamente direito da cabeça aos pés. Dobra os cotovelos e desce até o peito quase tocar no chão. Sobe. Se for difícil, apoia os joelhos no chão.",
+     ds:"3 séries de 10 · descansa 60 seg"},
+    {n:"5",c:"na",nm:"Saltos ao comprimento",
+     dc:"Pés juntos, dobra os joelhos, balança os braços para trás e salta o mais longe que consegues com os dois pés ao mesmo tempo. Marca onde aterras com uma pedra. Tenta ir mais longe todas as semanas.",
+     ds:"3 séries de 6 saltos"},
+    {n:"6",c:"nv",nm:"Bola — condução em ziguezague",
+     dc:"6 discos em linha com 1 metro entre eles. Conduz a bola em ziguezague com o interior do pé — mantém a bola perto dos pés, não a chutes para a frente. 5 passagens com o pé direito, 5 com o esquerdo.",
+     ds:"10 passagens"},
+    {n:"7",c:"nv",nm:"Bola — arranque e remate",
+     dc:"Marca duas linhas com 30 metros entre elas. Conduz a bola devagar de uma linha à outra. Deixa a bola, sprint ao máximo de volta, caminha até à bola. Repete.",
+     ds:"8 repetições"}
+  ]
+},
+/* 6 — descanso */ {title:"Domingo — Descanso",rest:true}
+];
+
+/* ===== SESSÕES SEMANAS 5-10 ===== */
+var SS=[
+/* 0 — velocidade 2a */ {
+  title:"2ª Feira — Velocidade",ac:"#2980B9",
+  desc:"Foco na aceleração. Semanas 5–8: máxima intensidade. Semanas 9–10: versão mais curta.",
+  exs:[
+    {n:"1",c:"nb",nm:"Aquecimento",
+     dc:"10 minutos de corrida leve. Depois: anda 20 metros levantando bem os joelhos — 4 vezes. Depois anda 20 metros tentando chutar as próprias nádegas com cada pé — 4 vezes.",
+     ds:"15 min"},
+    {n:"2",c:"nb",nm:"Arranques com balanço",
+     dc:"Começa a andar, vai acelerando para trote, e quando passas por um disco no chão arranca ao máximo durante 20 metros. Já tens velocidade — é como quando no jogo aceleras de repente para apanhar a bola. Cronometra e regista. Semanas 5–8: 8 arranques, descansa 2 min entre cada. Semanas 9–10: 5 arranques.",
+     ds:"8 arranques (sem. 5–8) · 5 arranques (sem. 9–10)"},
+    {n:"3",c:"nb",nm:"Ziguezague + explosão",
+     dc:"Ziguezague nos discos. No fim de cada passagem, toca no chão com a mão, levanta e arranca em sprint de 10 metros. Treina a explosão depois de mudar de direção — muito comum no futebol.",
+     ds:"8 passagens"},
+    {n:"4",c:"nb",nm:"Escada de agilidade — padrões rápidos",
+     dc:"Percorre a escada com 3 padrões diferentes: (1) um pé por quadrado, o mais rápido possível; (2) dois pés por quadrado; (3) lateral — entra e sai de cada lado. À medida que melhoraras, tenta fazer cada padrão mais rápido do que na semana anterior.",
+     ds:"4 passagens de cada padrão"},
+    {n:"4",c:"nb",nm:"Corrida lateral",
+     dc:"De lado durante 20 metros cruzando os pés — pé direito à frente, depois esquerdo à frente, alternando. Vai e vem 4 vezes em cada direção.",
+     ds:"4 × 20 metros cada lado"},
+    {n:"5",c:"nb",nm:"Alongar",dc:"Frente da coxa, parte de trás, barriga da perna. 30 seg cada.",ds:"8 min"}
+  ]
+},
+/* 1 — corrida curta 3a */ {
+  title:"3ª Feira — Corrida com sprints",ac:"#E67E22",
+  desc:"Treinas a resistência para correr rápido várias vezes seguidas — é exactamente o que um jogo exige.",
+  exs:[
+    {n:"1",c:"na",nm:"Aquecimento",dc:"8 minutos de corrida leve.",ds:"8 min"},
+    {n:"2",c:"na",nm:"Sprints de 100 metros",
+     dc:"Corre 100 metros muito depressa — não ao teu máximo total, mas quase. Imagina 85%: muito intenso mas ainda controlado. Descansas só 45 segundos entre cada sprint — é pouco de propósito, para treinares a recuperar rápido como num jogo. Semanas 5–8: 10 sprints. Semanas 9–10: 6 sprints.",
+     ds:"10 × 100 m (sem. 5–8) · 6 × 100 m (sem. 9–10)"},
+    {n:"3",c:"na",nm:"Arrefecer e alongar",dc:"Trota 5 minutos muito leve. Alonga bem as pernas.",ds:"10 min"}
+  ]
+},
+/* 2 — força 4a */ {
+  title:"4ª Feira — Força no quintal",ac:"#E67E22",
+  desc:"Tudo com o peso do teu próprio corpo. Sem equipamento.",
+  exs:[
+    {n:"1",c:"na",nm:"Aquecimento",dc:"5 minutos de corrida leve + 10 agachamentos lentos.",ds:"8 min"},
+    {n:"2",c:"na",nm:"Agachamentos com salto",
+     dc:"Faz um agachamento normal até as coxas ficarem paralelas ao chão, depois explode para cima saltando o mais alto que consegues. Aterra com os joelhos dobrados — suave. Conta até 1, controla, e repete. Não ressaltas logo.",
+     ds:"4 séries de 6 · descansa 2 min"},
+    {n:"3",c:"na",nm:"Agachamentos normais",
+     dc:"Igual ao sábado. Para dificultar: segura o kettlebell de 4 kg ao peito ou estende os braços à frente.",
+     ds:"4 séries de 12 · descansa 60 seg"},
+    {n:"4",c:"na",nm:"Flexões com torção",
+     dc:"Faz uma flexão. Quando subires, vira o tronco para o lado e levanta um braço direito para o ar — olha para a mão. Volta ao centro. Próxima flexão, vira para o outro lado. Alterna.",
+     ds:"3 séries de 8 cada lado"},
+    {n:"5",c:"na",nm:"Agachamentos numa perna só",
+     dc:"Fica de pé, levanta uma perna ligeiramente. Dobra a perna de apoio o máximo que consegues. Segura numa parede se precisares. Difícil mas excelente para os joelhos no futebol.",
+     ds:"3 séries de 6 cada perna"},
+    {n:"6",c:"na",nm:"Saltos ao comprimento",dc:"Salta o mais longe que consegues. Marca o teu recorde e tenta bater.",ds:"3 séries de 6"}
+  ]
+},
+/* 3 — corrida longa 5a */ {
+  title:"5ª Feira — Corrida longa",ac:"#E67E22",
+  desc:"A corrida mais longa da semana. Devagar mas sem parar. Esta é que muda a tua resistência nos jogos.",
+  exs:[
+    {n:"1",c:"na",nm:"Aquecimento",dc:"Caminha 3 minutos a passo rápido.",ds:"3 min"},
+    {n:"2",c:"na",nm:"Corre sem parar",
+     dc:"Ritmo de conversa — consegues dizer uma frase inteira sem te engasgar. Semanas 5–6: 7 km. Semanas 7–8: corre 45–50 minutos sem olhar à distância. Semanas 9–10: 5 km. Nas semanas 6–8, a meio da corrida faz 2 blocos de 5 minutos ligeiramente mais rápido.",
+     ds:"7 km (sem. 5–6) · 45–50 min (sem. 7–8) · 5 km (sem. 9–10)"},
+    {n:"3",c:"na",nm:"Arrefecer e alongar bem",
+     dc:"Caminha 5 minutos devagar. Alonga mais tempo hoje: frente da coxa, parte de trás, barriga da perna, e parte interior da coxa (senta com as pernas abertas e inclina para cada lado). 30–45 seg cada.",
+     ds:"12 min"}
+  ]
+},
+/* 4 — bola 6a */ {
+  title:"6ª Feira — Futebol solo",ac:"#8E44AD",
+  desc:"Sessão completa com bola. Basta a bola, discos e uma parede. 60 minutos.",
+  exs:[
+    {n:"1",c:"nv",nm:"Aquecimento com bola",
+     dc:"Passa a bola de um pé para o outro no lugar — toques curtos alternados. Tenta fazer 100 toques sem a bola fugir. Conta em voz alta.",
+     ds:"3 séries de 100 toques"},
+    {n:"2",c:"nv",nm:"Condução em ziguezague — pé fraco",
+     dc:"6 discos em linha. Desta vez faz 7 passagens com o pé mais fraco e 3 com o mais forte. A maioria dos jogadores ignora o pé mais fraco — não sejas um deles.",
+     ds:"10 passagens"},
+    {n:"3",c:"nv",nm:"Sprint + condução + remate",
+     dc:"Coloca a bola a 20 metros da parede. Sprint até à bola, conduz os últimos 5 metros e remata contra a parede. Vai buscar a bola a pé. O sprint é ao máximo.",
+     ds:"10 repetições"},
+    {n:"4",c:"nv",nm:"Remate com os dois pés",
+     dc:"A 6–8 metros da parede. 3 minutos a rematar só com o pé direito. 3 minutos só com o esquerdo. 2 minutos a alternar. Tenta sempre acertar no mesmo sítio.",
+     ds:"8 min total"},
+    {n:"5",c:"nv",nm:"Manter a bola num quadrado",
+     dc:"Marca um quadrado de 5×5 metros com 4 discos. Mantém a bola dentro do quadrado durante 2 minutos. Usa os dois pés, muda de direção. Conta quantas vezes sai e tenta melhorar.",
+     ds:"3 séries de 2 min"},
+    {n:"6",c:"nv",nm:"Arrefecer",dc:"5 minutos a passear com a bola muito devagar. Alonga as pernas.",ds:"8 min"}
+  ]
+},
+/* 5 — bola+força sab */ {
+  title:"Sábado — Força + Futebol solo",ac:"#8E44AD",
+  desc:"Começas com força no quintal e terminas com simulação de jogo.",
+  exs:[
+    {n:"1",c:"na",nm:"Aquecimento",dc:"8 min de trote leve + 10 agachamentos lentos.",ds:"10 min"},
+    {n:"2",c:"na",nm:"Agachamentos com salto",dc:"Agachas e explodes para cima ao máximo. Aterra suave. Cada salto ao máximo.",ds:"4 séries de 6 · descansa 2 min"},
+    {n:"3",c:"na",nm:"Flexões",dc:"Corpo direito. Desce devagar (conta até 3), sobe rápido. Para dificultar: eleva os pés no banco.",ds:"3 séries de 12"},
+    {n:"4",c:"nv",nm:"Simulação de jogo — 3 minutos intensos",
+     dc:"Durante 3 minutos faz isto sem parar: corre com bola 20 metros, para, remata, vai buscar a bola, conduz em ziguezague pelos discos, arranca em sprint. Mistura tudo sem parar. Depois 1 minuto a andar devagar. Repete 3 vezes. É o exercício mais parecido com um jogo real.",
+     ds:"3 × (3 min intenso + 1 min andar)"},
+    {n:"5",c:"nv",nm:"Golos solo",
+     dc:"Marca uma baliza com 2 discos (3 metros de largura). A 20 metros, sprint de 10 metros até à bola e remata sem parar para ajustar. Vai buscar a bola a pé. Conta os golos em 10 remates.",
+     ds:"10 remates"}
+  ]
+},
+/* 6 — descanso */ {title:"Domingo — Descanso",rest:true}
+];
+
+function getDays(w){return w<=4?TD:SD;}
+function getSess(w){return w<=4?TS:SS;}
+
+function getS(w,d){
+  var s=getSess(w)[d];
+  if(!s||s.rest)return s||null;
+  return JSON.parse(JSON.stringify(s));
+}
+
+function rnav(){
+  var h='';
+  for(var i=1;i<=10;i++){
+    var m=WM[i-1];
+    var cl=m.t==='team'?'wt':'ws';
+    var a=i===CW?' active':'';
+    h+='<button class="wbtn '+cl+a+'" onclick="sw('+i+',this)">'+i+'</button>';
+  }
+  var m=WM[CW-1];
+  var pc=m.t==='solo'?(m.ph.includes('leve')?'wp-taper':'wp-solo'):'wp-team';
+  h+='<span class="wphase '+pc+'">'+m.ph+'</span>';
+  document.getElementById('wnav').innerHTML=h;
+}
+
+function rdgrid(){
+  var days=getDays(CW);
+  var h='';
+  days.forEach(function(d,i){
+    var a=i===CD?' active':'';
+    h+='<div class="dcard'+a+'" onclick="sd('+i+',this)">';
+    h+='<span class="dname">'+d.n+'</span>';
+    h+='<span class="dtype">'+d.t+'</span>';
+    h+='<div class="ddot '+d.d+'"></div></div>';
+  });
+  document.getElementById('dgrid').innerHTML=h;
+}
+
+function rsess(){
+  var s=getS(CW,CD);
+  if(!s){document.getElementById('sdetail').innerHTML='';return;}
+  if(s.rest){
+    document.getElementById('sdetail').innerHTML=
+      '<div class="rest-box"><h3>Dia de Descanso</h3>'+
+      '<p>O teu corpo precisa de descansar para crescer e melhorar.</p>'+
+      '<p style="margin-top:6px;font-size:12px;">Dorme 9 horas · Bebe água · Come bem · Sem treino</p></div>';
+    return;
+  }
+  var ac=s.ac||'#27AE60';
+  var h='<div class="sess-hdr" style="border-top:4px solid '+ac+'">';
+  h+='<h3>'+s.title+'</h3><p>'+s.desc+'</p></div>';
+  h+='<div class="sess-body">';
+  s.exs.forEach(function(e){
+    h+='<div class="exrow"><div class="exn '+e.c+'">'+e.n+'</div>';
+    h+='<div class="exc"><div class="exname">'+e.nm+'</div>';
+    h+='<div class="exdesc">'+e.dc+'</div>';
+    h+='<span class="exdose">'+e.ds+'</span></div></div>';
+  });
+  h+='</div>';
+  document.getElementById('sdetail').innerHTML=h;
+}
+
+function sd(i,btn){
+  CD=i;
+  document.querySelectorAll('.dcard').forEach(function(c){c.classList.remove('active');});
+  btn.classList.add('active');
+  rsess();
+}
+
+function sw(w,btn){
+  CW=w; if(CD>6)CD=0;
+  rnav();rdgrid();rsess();
+}
+
+function showTab(id,btn){
+  ['treino','comida','lista'].forEach(function(t){
+    document.getElementById('tab-'+t).classList.toggle('hidden',t!==id);
+  });
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+}
+
+function tc(el){
+  el.classList.toggle('on');
+  el.textContent=el.classList.contains('on')?'✓':'';
+}
+
+rnav();rdgrid();rsess();
+</script>
+</body>
+</html>

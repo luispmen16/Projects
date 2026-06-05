@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>WireCo WorldGroup — Investment Memo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3250;
+    --accent: #4f8ef7;
+    --accent2: #e8c44d;
+    --accent3: #4fc98e;
+    --red: #e05252;
+    --orange: #e8894d;
+    --text: #e8eaf2;
+    --muted: #9196b0;
+    --card-shadow: 0 2px 16px rgba(0,0,0,0.4);
+    --base: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { font-size: var(--base); }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; font-size: 1rem; line-height: 1.65; }
+
+  /* STICKY WRAPPER */
+  .sticky-top { position: sticky; top: 0; z-index: 200; box-shadow: 0 6px 24px rgba(0,0,0,0.6); }
+
+  /* HEADER */
+  .header { background: linear-gradient(135deg, #0e1320 0%, #172040 60%, #1a2850 100%); border-bottom: 1px solid rgba(79,142,247,0.18); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-logo { width: 36px; height: 36px; background: linear-gradient(135deg, #4f8ef7, #2e5ea8); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1rem; color: #fff; flex-shrink: 0; letter-spacing: -1px; }
+  .header-titles h1 { font-size: 1.15rem; font-weight: 700; color: #fff; letter-spacing: -0.3px; line-height: 1.2; }
+  .header-titles .sub { color: var(--muted); font-size: 0.78rem; margin-top: 2px; letter-spacing: 0.2px; }
+  .header-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 20px; font-size: 0.76rem; font-weight: 600; }
+  .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .badge-b { background: rgba(79,142,247,0.12); color: #7fb0fa; border: 1px solid rgba(79,142,247,0.25); }
+  .badge-b::before { background: #4f8ef7; }
+  .badge-stable { background: rgba(79,201,142,0.12); color: #6dd4a0; border: 1px solid rgba(79,201,142,0.25); }
+  .badge-stable::before { background: #4fc98e; }
+  .badge-onex { background: rgba(232,196,77,0.12); color: #e8c44d; border: 1px solid rgba(232,196,77,0.25); }
+  .badge-onex::before { background: #e8c44d; }
+  .as-of { color: #555e7a; font-size: 0.72rem; padding: 4px 10px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,0.03); }
+
+  /* NAV */
+  .nav { background: rgba(18,22,36,0.98); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(79,142,247,0.1); padding: 0 28px; display: flex; gap: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
+  .nav a { color: #616888; text-decoration: none; padding: 14px 18px; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.18s; scroll-snap-align: start; min-height: 46px; display: flex; align-items: center; }
+  .nav a:hover { color: #9ab4e8; border-bottom-color: rgba(79,142,247,0.35); }
+  .nav a.active { color: #fff; border-bottom-color: var(--accent); background: rgba(79,142,247,0.06); }
+
+  /* LAYOUT */
+  .content { padding: 28px 32px; max-width: 1440px; margin: 0 auto; }
+  .section { margin-bottom: 52px; }
+  .section-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .section-title::before { content: ''; width: 4px; height: 22px; background: var(--accent); border-radius: 2px; flex-shrink: 0; }
+
+  /* CARDS */
+  .grid { display: grid; gap: 16px; }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-2-1 { grid-template-columns: 2fr 1fr; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; box-shadow: var(--card-shadow); }
+  .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 26px; }
+  .kpi-label { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.9px; margin-bottom: 8px; }
+  .kpi-value { font-size: 1.75rem; font-weight: 700; color: #fff; line-height: 1.1; }
+  .kpi-sub { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+  .delta-up { color: var(--accent3); }
+  .delta-down { color: var(--red); }
+  .delta-warn { color: var(--orange); }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; border-radius: 8px; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { background: var(--surface2); color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.5px; padding: 12px 14px; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th:first-child { text-align: left; }
+  td { padding: 10px 14px; text-align: right; border-bottom: 1px solid rgba(46,50,80,0.5); color: var(--text); font-size: 0.88rem; }
+  td:first-child { text-align: left; font-weight: 500; color: #c8cce0; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(79,142,247,0.04); }
+  .highlight-row td { background: rgba(79,142,247,0.08); font-weight: 600; }
+  .red { color: var(--red); }
+  .green { color: var(--accent3); }
+  .orange { color: var(--orange); }
+  .yellow { color: var(--accent2); }
+  .blue { color: var(--accent); }
+  .muted { color: var(--muted); }
+
+  /* CHART */
+  .chart-container { position: relative; }
+
+  /* RISK */
+  .risk-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 12px; display: flex; gap: 18px; align-items: flex-start; }
+  .risk-badge { flex-shrink: 0; width: 56px; height: 56px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; text-align: center; line-height: 1.2; }
+  .risk-high { background: rgba(224,82,82,0.2); color: var(--red); border: 1px solid rgba(224,82,82,0.3); }
+  .risk-med { background: rgba(232,137,77,0.2); color: var(--orange); border: 1px solid rgba(232,137,77,0.3); }
+  .risk-low { background: rgba(79,201,142,0.2); color: var(--accent3); border: 1px solid rgba(79,201,142,0.3); }
+  .risk-title { font-weight: 600; color: #fff; font-size: 0.95rem; margin-bottom: 5px; }
+  .risk-desc { color: var(--muted); font-size: 0.88rem; }
+
+  /* OPP */
+  .opp-item { background: var(--surface); border: 1px solid rgba(79,201,142,0.2); border-radius: 10px; padding: 18px 20px; margin-bottom: 12px; }
+  .opp-title { font-weight: 600; color: var(--accent3); margin-bottom: 5px; font-size: 0.95rem; }
+  .opp-desc { color: var(--muted); font-size: 0.88rem; }
+
+  /* EXIT */
+  .exit-scenario { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
+  .exit-scenario.preferred { border-color: rgba(79,142,247,0.4); background: rgba(79,142,247,0.06); }
+  .scenario-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 8px; }
+  .scenario-title { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 14px; }
+  .scenario-row { display: flex; justify-content: space-between; margin-bottom: 7px; font-size: 0.88rem; gap: 8px; }
+  .scenario-row .label { color: var(--muted); }
+  .scenario-row .value { font-weight: 600; color: var(--text); text-align: right; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 26px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 22px; }
+  .timeline-item::before { content: ''; position: absolute; left: -21px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+  .timeline-item.negative::before { background: var(--red); }
+  .timeline-item.warning::before { background: var(--orange); }
+  .timeline-item.peak::before { background: var(--accent3); }
+  .timeline-date { font-size: 0.75rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .timeline-event { font-weight: 600; color: #fff; margin-top: 3px; font-size: 0.95rem; }
+  .timeline-detail { font-size: 0.84rem; color: var(--muted); margin-top: 3px; }
+
+  /* COMP BAR */
+  .comp-bar { height: 8px; border-radius: 4px; background: var(--border); overflow: hidden; margin-top: 5px; }
+  .comp-fill { height: 100%; border-radius: 4px; }
+
+  /* WATERFALL / FCF */
+  .fcf-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 0.88rem; }
+  .fcf-label { width: 120px; color: var(--muted); text-align: right; flex-shrink: 0; font-size: 0.82rem; }
+  .fcf-bar-wrap { flex: 1; position: relative; height: 30px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+  .fcf-bar { height: 100%; display: flex; align-items: center; padding: 0 10px; font-weight: 700; font-size: 0.82rem; border-radius: 4px; }
+  .fcf-val { width: 72px; text-align: right; font-weight: 700; font-size: 0.88rem; }
+  .fcf-divider { border-top: 1px dashed var(--border); margin: 6px 0; }
+
+  /* ALERT BOX */
+  .alert { border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+  .alert-red { background: rgba(224,82,82,0.08); border: 1px solid rgba(224,82,82,0.25); }
+  .alert-yellow { background: rgba(232,196,77,0.08); border: 1px solid rgba(232,196,77,0.25); }
+  .alert-blue { background: rgba(79,142,247,0.08); border: 1px solid rgba(79,142,247,0.25); }
+  .alert-title { font-weight: 700; margin-bottom: 6px; font-size: 0.95rem; }
+
+  /* RESPONSIVE — iPad portrait ~768px, landscape ~1024px */
+  @media (max-width: 1100px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 820px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-2-1 { grid-template-columns: 1fr; }
+    .content { padding: 20px 20px; }
+    .header { padding: 20px; }
+    .fcf-label { width: 90px; }
+  }
+  @media (max-width: 540px) {
+    .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .risk-item { flex-direction: column; gap: 10px; }
+    .header-left h1 { font-size: 1.35rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sticky-top">
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">WC</div>
+    <div class="header-titles">
+      <h1>WireCo WorldGroup — Investment Memo</h1>
+      <div class="sub">Specialty Ropes &amp; Wires &nbsp;·&nbsp; Onex Partners IV &nbsp;·&nbsp; Leawood, Kansas</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge badge-b">S&amp;P: B</span>
+    <span class="badge badge-stable">Stable Outlook</span>
+    <span class="badge badge-onex">Onex: ~10yr Hold</span>
+    <span class="as-of">S&amp;P Apr 2026 · Bekaert 2019–2025</span>
+  </div>
+</div>
+
+<div class="nav" id="mainNav">
+  <a href="#snapshot" class="active">Snapshot</a>
+  <a href="#financials">Financials</a>
+  <a href="#cashflow">Cash Flow</a>
+  <a href="#market">Market</a>
+  <a href="#competition">Competition</a>
+  <a href="#risks">Risks</a>
+  <a href="#opportunities">Opportunities</a>
+  <a href="#exit">Exit Analysis</a>
+  <a href="#debtreduction">Debt Strategy</a>
+</div>
+</div><!-- end sticky-top -->
+
+<div class="content">
+
+<!-- ═══════════════════ SNAPSHOT ═══════════════════ -->
+<div class="section" id="snapshot">
+  <div class="section-title">Executive Snapshot</div>
+
+  <div class="grid grid-4" style="margin-bottom:16px">
+    <div class="kpi-card">
+      <div class="kpi-label">2025 Revenue</div>
+      <div class="kpi-value">$657M</div>
+      <div class="kpi-sub delta-down">▼ −13.5% vs 2023 peak ($759M)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2025 EBITDA</div>
+      <div class="kpi-value">$88.5M</div>
+      <div class="kpi-sub delta-warn">13.5% margin — vs 18–19% in 2021–23</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Net Leverage</div>
+      <div class="kpi-value" style="color:var(--orange)">6.5x</div>
+      <div class="kpi-sub">YE 2025 · down from 7.3x trough (2024)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Debt Maturity</div>
+      <div class="kpi-value" style="color:var(--red)">Nov 2028</div>
+      <div class="kpi-sub">$540M 1L Term Loan · ~29 months</div>
+    </div>
+  </div>
+
+  <div class="grid grid-4" style="margin-bottom:24px">
+    <div class="kpi-card">
+      <div class="kpi-label">Interest Coverage</div>
+      <div class="kpi-value" style="color:var(--orange)">2.0x</div>
+      <div class="kpi-sub">2025A · recovering from 1.4x (2024)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Onex Entry</div>
+      <div class="kpi-value">Jun 2016</div>
+      <div class="kpi-sub">$270M equity · Onex Partners IV ($5.7B)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Hold Period</div>
+      <div class="kpi-value" style="color:var(--accent2)">~10 yrs</div>
+      <div class="kpi-sub">Fund pressure mounting — no cont. vehicle</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Consumables</div>
+      <div class="kpi-value" style="color:var(--accent3)">~80%</div>
+      <div class="kpi-sub">Key structural positive — high recurring revenue</div>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="section-title" style="font-size:1rem">Business Profile</div>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:16px">Global manufacturer of specialty ropes, wires, synthetic nets, and engineered products serving industrial, energy, mining, and maritime end markets. 19 manufacturing facilities across North America, Europe, Mexico, and Brazil.</p>
+      <div class="grid grid-3" style="gap:10px">
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:1.4rem;font-weight:700;color:var(--accent)">~50%</div>
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:4px">Steel Ropes &amp; Wires</div>
+          <div style="font-size:0.75rem;color:var(--muted)">Industrial, mining, O&amp;G</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:1.4rem;font-weight:700;color:var(--accent3)">~34%</div>
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:4px">Synthetic Nets &amp; Ropes</div>
+          <div style="font-size:0.75rem;color:var(--muted)">Fishing, maritime, energy</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:1.4rem;font-weight:700;color:var(--accent2)">~15%</div>
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:4px">Engineered Products</div>
+          <div style="font-size:0.75rem;color:var(--muted)">Railroad, midstream, storage</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title" style="font-size:1rem">End Market Mix (2025)</div>
+      <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+        <canvas id="pieChart" width="150" height="150" style="flex-shrink:0"></canvas>
+        <div style="flex:1;min-width:180px">
+          <div style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#4f8ef7;font-weight:600;font-size:0.9rem">Industrial</span><span style="font-weight:700">43%</span></div>
+            <div class="comp-bar"><div class="comp-fill" style="width:43%;background:#4f8ef7"></div></div>
+            <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">Cranes, construction, data centers</div>
+          </div>
+          <div style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#e8c44d;font-weight:600;font-size:0.9rem">Energy</span><span style="font-weight:700">26%</span></div>
+            <div class="comp-bar"><div class="comp-fill" style="width:26%;background:#e8c44d"></div></div>
+            <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">Upstream O&amp;G, offshore mooring</div>
+          </div>
+          <div style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#4fc98e;font-weight:600;font-size:0.9rem">Fishing &amp; Maritime</span><span style="font-weight:700">22%</span></div>
+            <div class="comp-bar"><div class="comp-fill" style="width:22%;background:#4fc98e"></div></div>
+            <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">Commercial fishing, ship mooring</div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#e8894d;font-weight:600;font-size:0.9rem">Mining</span><span style="font-weight:700">9%</span></div>
+            <div class="comp-bar"><div class="comp-fill" style="width:9%;background:#e8894d"></div></div>
+            <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">Hoist ropes, copper/lithium mine capex</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Sources -->
+  <div class="card" style="margin-top:16px;border-color:rgba(79,142,247,0.2);background:rgba(79,142,247,0.04)">
+    <div style="font-weight:600;color:var(--muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px">Data Sources</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <div style="flex:1;min-width:220px">
+        <div style="font-size:0.78rem;color:var(--muted);line-height:2">
+          <b style="color:#c8cce0">S&amp;P Global Ratings</b> — 13 rating actions &amp; outlooks (Jul 2016 – Apr 2026)<br>
+          <b style="color:#c8cce0">Bekaert Annual Reports</b> — FY2019, FY2020, FY2021, FY2022, FY2023, FY2024, FY2025<br>
+          <b style="color:#c8cce0">Bekaert Segment Data</b> — BBRG divisional financials 2024–2025 (proprietary Excel model)
+        </div>
+      </div>
+      <div style="flex:1;min-width:220px">
+        <div style="font-size:0.78rem;color:var(--muted);line-height:2">
+          <b style="color:#c8cce0">Onex Corporation</b> — Apr 2026 continuation vehicle press release (GlobeNewswire)<br>
+          <b style="color:#c8cce0">Market research</b> — Allied Market Research, Grand View Research, IntelMarket (wire rope market sizing)<br>
+          <b style="color:#c8cce0">Onex Partners IV</b> — Fund profile: $5.7B, 2014 vintage (PitchBook / public filings)
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- ═══════════════════ FINANCIALS ═══════════════════ -->
+<div class="section" id="financials">
+  <div class="section-title">Financial Profile — S&amp;P Forecast Summary (2021–2027F)</div>
+
+  <div class="grid grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div style="font-weight:600;color:#fff;margin-bottom:14px;font-size:0.95rem">Revenue &amp; EBITDA ($M)</div>
+      <div class="chart-container" style="height:220px">
+        <canvas id="ebitdaChart"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-weight:600;color:#fff;margin-bottom:14px;font-size:0.95rem">Net Leverage (x) — S&amp;P Downgrade Trigger: 6.5x</div>
+      <div class="chart-container" style="height:220px">
+        <canvas id="leverageChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title" style="font-size:1rem">S&amp;P Forecast Summary — Exact Data</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric (Mil. $)</th>
+            <th>2021a</th><th>2022a</th><th>2023a</th><th>2024a</th><th>2025a</th><th>2026e</th><th>2027f</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Revenue</td>
+            <td>670.3</td><td>733.5</td><td class="green">758.9</td><td class="red">618.7</td><td>657.4</td><td class="green">695.6</td><td class="green">720.0</td>
+          </tr>
+          <tr>
+            <td>Revenue Growth (%)</td>
+            <td class="green">+20.5%</td><td class="green">+9.4%</td><td class="green">+3.5%</td><td class="red">(18.5%)</td><td class="green">+6.3%</td><td class="green">+5.8%</td><td class="green">+3.5%</td>
+          </tr>
+          <tr>
+            <td>EBITDA</td>
+            <td>131.0</td><td class="green">136.6</td><td class="green">139.3</td><td class="red">75.9</td><td>88.5</td><td class="green">90.7</td><td class="green">95.5</td>
+          </tr>
+          <tr>
+            <td>EBITDA Margin (%)</td>
+            <td>19.5%</td><td class="green">18.6%</td><td class="green">18.4%</td><td class="red">12.3%</td><td>13.5%</td><td>13.0%</td><td>13.3%</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>Debt / EBITDA (x)</td>
+            <td>4.3x</td><td class="green">4.0x</td><td class="green">3.9x</td><td class="red">7.3x</td><td class="orange">6.5x</td><td class="orange">6.3x</td><td>5.9x</td>
+          </tr>
+          <tr>
+            <td>FOCF / Debt (%)</td>
+            <td class="green">5.9%</td><td class="green">5.4%</td><td class="green">3.7%</td><td class="red">(1.6%)</td><td class="red">(1.4%)</td><td class="orange">1.3%</td><td class="green">4.5%</td>
+          </tr>
+          <tr>
+            <td>EBITDA / Interest (x)</td>
+            <td class="green">3.0x</td><td class="green">3.5x</td><td>2.5x</td><td class="red">1.4x</td><td>2.0x</td><td>2.2x</td><td class="green">2.6x</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);font-style:italic">Implied Cash Interest ($M)</td>
+            <td class="muted">43.7</td><td class="muted">39.0</td><td class="red">55.7</td><td class="red">54.2</td><td class="muted">44.3</td><td class="muted">41.2</td><td class="green">36.7</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);font-style:italic">Implied Adj. Debt ($M)</td>
+            <td class="muted">563</td><td class="muted">547</td><td class="muted">543</td><td class="muted">554</td><td class="muted">575</td><td class="muted">571</td><td class="muted">563</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);font-style:italic">Implied FOCF ($M)</td>
+            <td class="green">33.2</td><td class="green">29.5</td><td class="green">20.1</td><td class="red">(8.9)</td><td class="red">(8.1)</td><td class="orange">7.4</td><td class="green">25.4</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:12px;font-size:0.78rem;color:var(--muted)">Source: S&amp;P Global Ratings, April 16 2026. Implied interest, adj. debt and FOCF derived from reported ratios. Adj. debt includes operating leases and other obligations in addition to the $540M TL.</div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="section-title" style="font-size:1rem">Credit Rating History Under Onex</div>
+    <div class="timeline" style="padding-top:8px">
+      <div class="timeline-item">
+        <div class="timeline-date">Jul 2016</div>
+        <div class="timeline-event">B / Stable — Onex Acquires WireCo</div>
+        <div class="timeline-detail">$270M equity. Capital structure: $410M 1L + $185M 2L (Onex-financed) + $100M ABL. Leverage guided 6.0–6.5x.</div>
+      </div>
+      <div class="timeline-item warning">
+        <div class="timeline-date">Apr 2018</div>
+        <div class="timeline-event">B / Negative — Raw Material Compression</div>
+        <div class="timeline-detail">Input costs outpacing prices. Consolidation charges. Leverage 6–7x, coverage 1.75x.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Apr 2019</div>
+        <div class="timeline-event">B / Stable — Recovered</div>
+        <div class="timeline-detail">Product mix improvement, price increases. Leverage ~6x, margins ~16%.</div>
+      </div>
+      <div class="timeline-item negative">
+        <div class="timeline-date">Apr 2020</div>
+        <div class="timeline-event">B− / Negative — COVID + Oil Crash</div>
+        <div class="timeline-detail">Revenue −15–20%. O&amp;G order book cut &gt;50%. Leverage spiked to ~10x. Downgraded from B.</div>
+      </div>
+      <div class="timeline-item peak">
+        <div class="timeline-date">Oct 2021</div>
+        <div class="timeline-event">B / Stable — Upgraded + Refinanced</div>
+        <div class="timeline-detail">New $540M 1L TL due Nov 2028. Old 2-tranche structure (~$595M) retired. Leverage 4.3x. Strategic shift to high-performance rope accelerating.</div>
+      </div>
+      <div class="timeline-item peak">
+        <div class="timeline-date">Jun 2023</div>
+        <div class="timeline-event">B / Stable — Performance Peak</div>
+        <div class="timeline-detail">EBITDA $139M (18.4% margin). Leverage at 3.9x. Strong demand across all end markets. Financial sponsor cap limits rating to B.</div>
+      </div>
+      <div class="timeline-item negative">
+        <div class="timeline-date">Mar 2025</div>
+        <div class="timeline-event">B / Negative — Severe Deterioration</div>
+        <div class="timeline-detail">2024: Revenue −$140M (−18.5%). EBITDA crushed to $75.9M. Leverage 7.3x. Steel quality issues + Asian competition + destocking + rate pressure.</div>
+      </div>
+      <div class="timeline-item peak">
+        <div class="timeline-date">Apr 2026</div>
+        <div class="timeline-event">B / Stable — Recovery Confirmed</div>
+        <div class="timeline-detail">YE 2025 leverage 6.5x. Revenue $657M, EBITDA $88.5M (13.5%). FOCF expected positive in 2026. Quality issues resolved.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ CASH FLOW ═══════════════════ -->
+<div class="section" id="cashflow">
+  <div class="section-title">Cash Flow Analysis — Why Hasn't Debt Decreased?</div>
+
+  <div class="alert alert-red" style="margin-bottom:20px">
+    <div class="alert-title" style="color:var(--red)">⚠ The Core Problem: $540M of Debt, ~$99M of Cumulative FOCF Over 7 Years</div>
+    <p style="font-size:0.9rem;color:var(--muted)">WireCo has generated approximately $99M of cumulative free operating cash flow from 2021 through 2027F — an average of just $14M per year. Against $540M of debt and ~$45M of annual interest payments, this leaves virtually nothing for debt repayment. The term loan balance has remained essentially flat since the 2021 refinancing. Three structural forces have trapped WireCo in this leverage position: the rate cycle, working capital, and modest underlying FCF conversion.</p>
+  </div>
+
+  <div class="grid grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div style="font-weight:600;color:#fff;margin-bottom:16px;font-size:0.95rem">Annual Cash Flow Waterfall ($M estimated)</div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Line Item</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2026E</th><th>2027F</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>EBITDA</td>
+              <td class="green">131.0</td><td class="green">136.6</td><td class="green">139.3</td><td class="red">75.9</td><td>88.5</td><td class="green">90.7</td><td class="green">95.5</td>
+            </tr>
+            <tr>
+              <td class="muted">− Cash Interest</td>
+              <td class="muted">(43.7)</td><td class="green">(39.0)</td><td class="red">(55.7)</td><td class="red">(54.2)</td><td>(44.3)</td><td>(41.2)</td><td class="green">(36.7)</td>
+            </tr>
+            <tr>
+              <td class="muted">− Capex (~4.5% rev)</td>
+              <td class="muted">(30.2)</td><td class="muted">(33.0)</td><td class="muted">(34.2)</td><td class="muted">(27.8)</td><td>(29.6)</td><td>(31.3)</td><td>(32.4)</td>
+            </tr>
+            <tr>
+              <td class="muted">− Cash Taxes (est.)</td>
+              <td class="muted">(7.0)</td><td class="muted">(7.0)</td><td class="muted">(7.0)</td><td class="muted">(7.0)</td><td>(7.0)</td><td>(7.0)</td><td>(7.0)</td>
+            </tr>
+            <tr>
+              <td class="muted">+/− Working Capital</td>
+              <td class="muted">(16.9)</td><td class="red">(28.1)</td><td class="red">(22.3)</td><td class="green">4.2</td><td class="red">(15.8)</td><td class="orange">(3.8)</td><td class="green">6.0</td>
+            </tr>
+            <tr class="highlight-row">
+              <td>= FOCF</td>
+              <td class="green">33.2</td><td class="green">29.5</td><td class="green">20.1</td><td class="red">(8.9)</td><td class="red">(8.1)</td><td class="orange">7.4</td><td class="green">25.4</td>
+            </tr>
+            <tr>
+              <td style="color:var(--muted);font-style:italic">Debt Repaid</td>
+              <td class="muted">~(5)</td><td class="muted">~(5)</td><td class="muted">~(5)</td><td class="muted">—</td><td class="muted">—</td><td class="muted">~(5)</td><td class="muted">~(5)</td>
+            </tr>
+            <tr>
+              <td style="color:var(--muted);font-style:italic">Adjusted Debt (S&amp;P)</td>
+              <td class="muted">563</td><td class="muted">547</td><td class="muted">543</td><td class="muted">554</td><td class="muted">575</td><td class="muted">571</td><td class="muted">563</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;font-size:0.78rem;color:var(--muted)">Capex and working capital are estimated; FOCF/debt ratios per S&amp;P. Debt repayment reflects estimated 1% annual mandatory TL amortization (~$5M/yr).</div>
+    </div>
+
+    <div class="card">
+      <div style="font-weight:600;color:#fff;margin-bottom:16px;font-size:0.95rem">Cumulative FOCF 2021–2027F</div>
+      <div class="chart-container" style="height:200px;margin-bottom:16px">
+        <canvas id="fcfChart"></canvas>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.88rem">
+          <span style="color:var(--muted)">Cumulative FOCF 2021–2025</span><span class="orange" style="font-weight:700">$65.9M</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.88rem">
+          <span style="color:var(--muted)">Cumulative FOCF 2021–2027F</span><span class="green" style="font-weight:700">$98.7M</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.88rem">
+          <span style="color:var(--muted)">Average annual FOCF (2021–27F)</span><span style="font-weight:700">$14.1M/yr</span>
+        </div>
+        <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px">
+          <div style="display:flex;justify-content:space-between;font-size:0.88rem">
+            <span style="color:var(--muted)">TL Outstanding (unchanged)</span><span class="red" style="font-weight:700">$540M</span>
+          </div>
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:4px">TL balance ~flat since 2021 refinancing. Cumulative FOCF is 18% of outstanding debt.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Why no debt repayment - 3 boxes -->
+  <div class="section-title" style="font-size:1rem;margin-top:8px">The Three Reasons Debt Has Not Decreased</div>
+
+  <div class="grid grid-3" style="margin-bottom:16px">
+    <div class="card" style="border-color:rgba(224,82,82,0.3)">
+      <div style="font-size:1.6rem;margin-bottom:10px">📈</div>
+      <div style="font-weight:700;color:var(--red);margin-bottom:8px;font-size:0.95rem">1. The Rate Cycle Ambush</div>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:10px">Interest expense jumped from <b style="color:var(--text)">$39M (2022) to $55.7M (2023)</b> — a $16.7M increase — despite EBITDA being essentially flat at $136–139M. This absorbed the entire $2.7M of EBITDA growth in 2023 and more.</p>
+      <p style="font-size:0.88rem;color:var(--muted)">The $540M TL is floating rate (SOFR + spread). At peak Fed rates (~5.5% SOFR), the all-in rate reached ~9–10%, more than doubling the 2021 interest burden. This rate shock is now reversing — 2027F interest is projected at $36.7M vs. $55.7M in 2023, releasing ~$19M of annual cash.</p>
+    </div>
+
+    <div class="card" style="border-color:rgba(232,137,77,0.3)">
+      <div style="font-size:1.6rem;margin-bottom:10px">📦</div>
+      <div style="font-weight:700;color:var(--orange);margin-bottom:8px;font-size:0.95rem">2. Working Capital Consumed Growth Cash</div>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:10px">In the strong revenue years of 2021–23, working capital consumed an estimated <b style="color:var(--text)">$67M cumulatively</b>. Revenue growth from $670M to $759M (+13%) required proportional build in receivables and inventory. WireCo's ABL borrowing base is linked to receivables — capacity contracts exactly when performance weakens.</p>
+      <p style="font-size:0.88rem;color:var(--muted)">Additionally, S&amp;P explicitly flags that WireCo invested heavily in working capital in 2025 to support the recovery. This pushed FOCF negative even as EBITDA improved from 2024 trough.</p>
+    </div>
+
+    <div class="card" style="border-color:rgba(79,142,247,0.3)">
+      <div style="font-size:1.6rem;margin-bottom:10px">🏗️</div>
+      <div style="font-weight:700;color:var(--accent);margin-bottom:8px;font-size:0.95rem">3. Thin FCF Conversion + No Dividends</div>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:10px">Even at peak EBITDA of $139M (2023), FOCF was only <b style="color:var(--text)">$20M</b> — a 14% conversion rate. Interest, capex, taxes, and working capital consumed 86% of EBITDA. This leaves virtually nothing for discretionary debt repayment beyond mandatory 1% amortization (~$5M/yr).</p>
+      <p style="font-size:0.88rem;color:var(--muted)"><b style="color:var(--accent2)">No evidence of dividends.</b> S&amp;P makes no mention of dividend payments throughout the 10-year history — likely prohibited by leverage covenants. Onex's return has been purely through eventual exit, not cash distributions. PE monitoring fees (~$5–8M/yr estimated) are the only cash flow to the sponsor.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-yellow">
+    <div class="alert-title" style="color:var(--accent2)">Forward Cash Flow Outlook: A Narrow but Opening Window</div>
+    <div class="grid grid-2" style="margin-top:8px">
+      <div>
+        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:8px">Two tailwinds are converging in 2026–27 that materially improve FCF generation:</p>
+        <p style="font-size:0.88rem;color:var(--muted);margin-bottom:6px"><b style="color:var(--text)">Interest decline:</b> As SOFR comes down, annual cash interest should fall from $44M (2025) toward $37M (2027F), releasing ~$7M/yr of incremental cash.</p>
+        <p style="font-size:0.88rem;color:var(--muted)"><b style="color:var(--text)">WC normalization:</b> After heavy 2025 investment, S&amp;P expects working capital improvement in 2026, contributing to the step-up in FOCF from −$8M to +$7M (2026E) and +$25M (2027F).</p>
+      </div>
+      <div>
+        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:8px">However, even in the best-case 2027F scenario:</p>
+        <p style="font-size:0.88rem;color:var(--muted);margin-bottom:6px"><b style="color:var(--text)">FOCF of $25M</b> against $540M of debt = 4.5% FOCF/Debt ratio. This is inadequate to meaningfully reduce leverage before the November 2028 TL maturity.</p>
+        <p style="font-size:0.88rem;color:var(--muted)"><b style="color:var(--text)">Bottom line:</b> WireCo will not pay down this debt organically. The 2028 maturity must be resolved through a sale or a full refinancing. The sale window is 2026–mid-2027.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════ MARKET ═══════════════════ -->
+<div class="section" id="market">
+  <div class="section-title">Market Analysis</div>
+
+  <div class="grid grid-4" style="margin-bottom:16px">
+    <div class="kpi-card">
+      <div class="kpi-label">Global Wire Rope Market</div>
+      <div class="kpi-value">$8.6B</div>
+      <div class="kpi-sub">2024 · projected $10.6B by 2032</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Market CAGR 2024–32</div>
+      <div class="kpi-value" style="color:var(--accent3)">3–5%</div>
+      <div class="kpi-sub">Specialty/synthetic segment growing faster</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">WireCo Market Rank</div>
+      <div class="kpi-value">Top 3</div>
+      <div class="kpi-sub">Alongside Kiswire (~$1.3B) &amp; BBRG (~$0.6B)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Top 3 Market Share</div>
+      <div class="kpi-value">~18%</div>
+      <div class="kpi-sub">Highly fragmented — long tail of regional players</div>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div style="font-weight:600;color:#fff;margin-bottom:14px;font-size:0.95rem">Market Structure</div>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:14px">The global wire and specialty rope market is fragmented. Asia Pacific accounts for ~44% of global volume, dominated by Chinese and Korean producers competing aggressively on price in commodity segments. This is the direct source of WireCo's 2024 steel business pain.</p>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;margin-bottom:10px">
+        <div style="font-weight:600;margin-bottom:10px;font-size:0.9rem">Structural Segmentation</div>
+        <div style="font-size:0.85rem;color:var(--muted);line-height:1.9">
+          <b style="color:var(--text)">Commodity wire &amp; rope</b> — High volume, low margin, intense Asian competition. WireCo strategically exiting.<br>
+          <b style="color:var(--text)">High-performance specialty rope</b> — Safety-critical, engineered, qualification-heavy. Pricing power strong. WireCo's strategic focus.<br>
+          <b style="color:var(--text)">Synthetic/polymer rope</b> — Growing fastest; offshore, fishing modernization, maritime. WireCo's synthetic segment (~34% of revenue) is key competitive differentiator.
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-weight:600;color:#fff;margin-bottom:14px;font-size:0.95rem">End Market Dynamics — 2026 Outlook</div>
+      <div style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+          <span style="font-weight:600;font-size:0.9rem">Industrial (43%)</span>
+          <span class="badge" style="background:rgba(79,201,142,0.15);color:var(--accent3);border:1px solid rgba(79,201,142,0.3);font-size:0.75rem;padding:3px 10px">Recovering ↑</span>
+        </div>
+        <p style="font-size:0.84rem;color:var(--muted)">US infrastructure legislation + crane OEM growth + data center capex + Fed rate cuts easing construction. Destocking headwind fading.</p>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+          <span style="font-weight:600;font-size:0.9rem">Energy (26%)</span>
+          <span class="badge" style="background:rgba(79,201,142,0.15);color:var(--accent3);border:1px solid rgba(79,201,142,0.3);font-size:0.75rem;padding:3px 10px">Growing ↑</span>
+        </div>
+        <p style="font-size:0.84rem;color:var(--muted)">Higher oil prices from geopolitical tensions support upstream capex. Quality issues resolved → share recapture underway. Offshore wind muted near-term.</p>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+          <span style="font-weight:600;font-size:0.9rem">Mining (9%)</span>
+          <span class="badge" style="background:rgba(79,201,142,0.15);color:var(--accent3);border:1px solid rgba(79,201,142,0.3);font-size:0.75rem;padding:3px 10px">Positive ↑</span>
+        </div>
+        <p style="font-size:0.84rem;color:var(--muted)">Copper/lithium supercycle for energy transition. Mine expansions directly drive hoist rope demand.</p>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+          <span style="font-weight:600;font-size:0.9rem">Fishing &amp; Maritime (22%)</span>
+          <span class="badge" style="background:rgba(232,196,77,0.15);color:var(--accent2);border:1px solid rgba(232,196,77,0.3);font-size:0.75rem;padding:3px 10px">Stable +</span>
+        </div>
+        <p style="font-size:0.84rem;color:var(--muted)">Healthy backlog. Low-single-digit growth from global population increase and shift to harsh-environment fishing.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ COMPETITION ═══════════════════ -->
+<div class="section" id="competition">
+  <div class="section-title">Competitive Benchmarking</div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div style="font-weight:600;color:#fff;margin-bottom:14px;font-size:0.95rem">WireCo vs. Bridon-Bekaert Ropes Group (BBRG) — Closest Direct Comparable</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th><th>WireCo (2025A)</th><th>BBRG (2025A)</th><th>BBRG (2024A)</th><th>Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Revenue</td>
+            <td class="blue">$657M</td><td>€518M (~$565M)</td><td>€552M (~$602M)</td><td class="green">WireCo larger</td>
+          </tr>
+          <tr>
+            <td>EBITDA</td>
+            <td class="blue">$88.5M</td><td>€72.7M (~$79M)</td><td>€75.1M (~$82M)</td><td class="orange">Comparable</td>
+          </tr>
+          <tr>
+            <td>EBITDA Margin</td>
+            <td class="blue">13.5%</td><td>14.0%</td><td>13.5%</td><td class="orange">BBRG marginal edge</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>Net Leverage</td>
+            <td class="red">6.5x</td><td class="green">~0.4x (parent Bekaert)</td><td class="green">~1.2x</td><td class="red">BBRG far stronger BS</td>
+          </tr>
+          <tr>
+            <td>ROCE</td>
+            <td>~8–10% (est.)</td><td class="red">5.8%</td><td class="red">7.7%</td><td class="green">WireCo slightly better</td>
+          </tr>
+          <tr>
+            <td>Employees</td>
+            <td>~3,500 est.</td><td>2,251</td><td>2,437</td><td class="orange">BBRG more productive</td>
+          </tr>
+          <tr>
+            <td>Capex % Revenue</td>
+            <td>~4.5% est.</td><td>4.2%</td><td>4.9%</td><td class="green">Similar — capital-light</td>
+          </tr>
+          <tr>
+            <td>Parent / Ownership</td>
+            <td class="orange">Onex PE — ~10yr hold</td><td class="green">Bekaert (listed, Brussels)</td><td>—</td><td class="red">WireCo exit-pressured</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid grid-3">
+    <div class="card">
+      <div style="font-weight:700;color:#fff;margin-bottom:8px;font-size:1rem">WireCo</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-bottom:12px">Leawood, Kansas · Onex Partners IV</div>
+      <div style="font-size:0.88rem;line-height:2">
+        <span style="color:var(--accent3)">✓</span> Larger revenue base ($657M)<br>
+        <span style="color:var(--accent3)">✓</span> ~80% consumables — recurring<br>
+        <span style="color:var(--accent3)">✓</span> Strong synthetic rope franchise<br>
+        <span style="color:var(--accent3)">✓</span> Vertically integrated US ops<br>
+        <span style="color:var(--accent3)">✓</span> Tariff competitive advantage<br>
+        <span style="color:var(--red)">✗</span> <span style="color:var(--muted)">6.5x leverage — constrained</span><br>
+        <span style="color:var(--red)">✗</span> <span style="color:var(--muted)">2028 debt maturity looming</span><br>
+        <span style="color:var(--accent2)">!</span> Exit pressure = motivated seller
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-weight:700;color:#fff;margin-bottom:8px;font-size:1rem">BBRG (Bridon-Bekaert)</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-bottom:12px">100% Bekaert · UK/EU-led ops</div>
+      <div style="font-size:0.88rem;line-height:2">
+        <span style="color:var(--accent3)">✓</span> Strong Bridon brand in EU<br>
+        <span style="color:var(--accent3)">✓</span> Global leader in offshore rope<br>
+        <span style="color:var(--accent3)">✓</span> Mining hoist rope specialist<br>
+        <span style="color:var(--accent3)">✓</span> Nearly unlevered parent<br>
+        <span style="color:var(--red)">✗</span> <span style="color:var(--muted)">ROCE 5.8% — below WACC</span><br>
+        <span style="color:var(--red)">✗</span> <span style="color:var(--muted)">Non-core inside Bekaert</span><br>
+        <span style="color:var(--red)">✗</span> <span style="color:var(--muted)">Revenue declining 3 yrs</span><br>
+        <span style="color:var(--accent2)">!</span> Divestiture candidate → buyer = WireCo
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-weight:700;color:#fff;margin-bottom:8px;font-size:1rem">Kiswire</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-bottom:12px">Listed Korea · HQ Busan</div>
+      <div style="font-size:0.88rem;line-height:2">
+        <span style="color:var(--accent3)">✓</span> Revenue ~$1.3B (2× WireCo)<br>
+        <span style="color:var(--accent3)">✓</span> ~50% Korean domestic share<br>
+        <span style="color:var(--accent3)">✓</span> Scale in commodity wire<br>
+        <span style="color:var(--accent3)">✓</span> Top 3 global share<br>
+        <span style="color:var(--red)">✗</span> <span style="color:var(--muted)">Limited Western certifications</span><br>
+        <span style="color:var(--red)">✗</span> <span style="color:var(--muted)">Asian cost base, forex risk</span><br>
+        <span style="color:var(--accent2)">!</span> Potential acquirer of WireCo for Western footprint
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;border-color:rgba(232,196,77,0.3)">
+    <div style="font-weight:600;color:var(--accent2);margin-bottom:10px;font-size:0.95rem">Strategic Insight: WireCo + BBRG = Global #1 — But Antitrust Makes This Complex</div>
+    <div class="grid grid-2" style="gap:16px">
+      <div>
+        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:8px">A combination would create ~$1.2B+ revenue, complementary geographies (Americas-led WireCo + Europe-led BBRG), and a dominant position in specialty rope globally. Bekaert is under structural pressure to sell BBRG — it earns 5.8% ROCE vs. Bekaert's Steel Wire Solutions at 27%. The strategic logic is undeniable.</p>
+        <p style="font-size:0.9rem;color:var(--muted)">However: both companies compete directly in offshore mooring rope, crane rope, and mining hoist rope. Combined market share in specific certified specialty segments — particularly North Sea offshore rope — could reach 40–60%. The EU's DG Competition would require significant divestitures of specific product lines as a condition of approval. A direct JV is even more problematic and would likely be treated as a cartel structure by competition authorities.</p>
+      </div>
+      <div>
+        <div style="background:var(--surface2);border-radius:8px;padding:14px">
+          <div style="font-weight:600;margin-bottom:8px;font-size:0.88rem">The Right Approach</div>
+          <div style="font-size:0.84rem;color:var(--muted);line-height:1.9">
+            <b style="color:var(--accent2)">Not now</b> — WireCo's 6.5× leverage makes a $500M+ acquisition impossible today<br>
+            <b style="color:var(--accent2)">Post-exit</b> — a new owner with a clean balance sheet pursues BBRG with antitrust remedies fully scoped and priced in from day one<br>
+            <b style="color:var(--accent2)">No JV</b> — any operational joint venture with a direct competitor creates cartel-structure risk<br>
+            <b style="color:var(--accent2)">The value</b> — BBRG optionality makes WireCo more attractive to any sophisticated buyer; the eventual deal is real, just not today
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BBRG Divestiture Likelihood -->
+  <div class="card" style="margin-top:12px;border-color:rgba(232,137,77,0.25);background:rgba(232,137,77,0.04)">
+    <div style="font-weight:600;color:var(--orange);margin-bottom:10px;font-size:0.92rem">BBRG Divestiture — Real Optionality, but Patient Timing</div>
+    <div class="grid grid-2" style="gap:16px">
+      <div>
+        <p style="font-size:0.88rem;color:var(--muted);margin-bottom:8px"><b style="color:var(--text)">Not signalled by Bekaert management.</b> Across four earnings call transcripts (Q1 2025 – Q1 2026), there is zero mention of any plan to sell BBRG. The Q4 2025 CEO commentary explicitly frames M&A in the lifting &amp; mooring segment as an <i>acquisition</i> opportunity — Bekaert is talking about buying, not selling, in this space. The Bexco acquisition (synthetic ropes) was just completed and described as well-integrated.</p>
+        <p style="font-size:0.88rem;color:var(--muted)"><b style="color:var(--text)">But the financial case for disposal is tightening.</b> BBRG goodwill headroom fell from €345M (2024) to €243M (2025). ROCE sits at 5.8% against a cost of capital of approximately 9–10%. Every year of sub-WACC returns erodes the strategic rationale for keeping it inside Bekaert. If EBITDA misses forecast by 1% across the plan period, headroom drops another €77M — impairment becomes a live conversation by 2027.</p>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px">
+        <div style="font-weight:600;margin-bottom:10px;font-size:0.88rem">Probability Assessment</div>
+        <div style="font-size:0.84rem;color:var(--muted);line-height:2">
+          <span style="color:var(--red)">■</span> <b style="color:var(--text)">2026 sale: very unlikely</b> — management committed, Bexco integration fresh, winning large contracts (Mozambique LNG, Gulf of Mexico O&amp;G platform)<br>
+          <span style="color:var(--orange)">■</span> <b style="color:var(--text)">2027 sale: possible</b> — if steel rope weakness persists, goodwill headroom reaches impairment risk, and Bekaert capital allocation pressure builds<br>
+          <span style="color:var(--accent3)">■</span> <b style="color:var(--text)">2028+ sale: more likely</b> — fund cycle, headroom erosion, and a potentially repositioned WireCo (post-exit, clean balance sheet) as natural buyer<br>
+          <span style="color:var(--accent)">■</span> <b style="color:var(--text)">Key watch signal:</b> any BBRG goodwill impairment charge or further headroom reduction in 2026 annual report would be the trigger to watch
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ RISKS ═══════════════════ -->
+<div class="section" id="risks">
+  <div class="section-title">Risk Register</div>
+
+  <div class="risk-item">
+    <div class="risk-badge risk-high">HIGH</div>
+    <div>
+      <div class="risk-title">2028 Debt Maturity — Hard Exit Deadline</div>
+      <div class="risk-desc">$540M first-lien term loan matures November 2028. With 6.5x leverage and minimal FCF generation, Onex must complete a sale by mid-2027 at the latest (allowing ~12–18 months for process + close). A refinancing is possible but expensive — at current credit quality, new debt pricing would be materially higher, further impairing equity value. Every month closer to maturity without a signed deal increases lender leverage in any restructuring.</div>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="risk-badge risk-high">HIGH</div>
+    <div>
+      <div class="risk-title">Elevated Leverage with Minimal Debt Repayment Capacity</div>
+      <div class="risk-desc">At 6.5x EBITDA, WireCo sits at S&amp;P's downgrade trigger. FOCF was negative in both 2024 and 2025, and the forward outlook of $7M (2026E) and $25M (2027F) represents &lt;5% of outstanding debt — insufficient for meaningful deleveraging. Any demand shock, cost increase, or working capital build could push leverage back above 6.5x and trigger a rating cut to B−, materially complicating any sale process.</div>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="risk-badge risk-high">HIGH</div>
+    <div>
+      <div class="risk-title">Onex Fund Overhang — 10-Year Hold, Excluded from Continuation Vehicle</div>
+      <div class="risk-desc">Onex invested in June 2016 via Onex Partners IV ($5.7B, 2014 vintage). At 10 years, this is an exceptionally long hold. In April 2026, Onex completed a $1.6B continuation vehicle (Fidelity, PowerSchool, Sedgwick) — WireCo was explicitly excluded. This signals WireCo cannot attract continuation capital at acceptable pricing given its leverage and credit profile. LP pressure to return capital is acute.</div>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="risk-badge risk-med">MED</div>
+    <div>
+      <div class="risk-title">Asian Competition in Commodity Steel Rope</div>
+      <div class="risk-desc">The primary driver of the catastrophic 2024 deterioration (revenue −$140M, EBITDA −$63M). Improving supply chains post-COVID allowed Asian producers to flood Western markets. WireCo's strategic response — shifting to high-performance, certified products — is correct but takes years to fully execute. Until complete, the steel segment remains structurally exposed.</div>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="risk-badge risk-med">MED</div>
+    <div>
+      <div class="risk-title">Margin Recovery Stalled at Sub-Cycle Levels</div>
+      <div class="risk-desc">S&amp;P forecasts 13–14% EBITDA margins in 2026–27, vs. 18–19% achieved in 2021–23. The gap ($18–37M of annual EBITDA) is the single biggest driver of valuation uncertainty — and the single biggest lever for exit pricing. Execution of the mix shift, manufacturing footprint restructuring, and pricing discipline must all deliver simultaneously.</div>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="risk-badge risk-med">MED</div>
+    <div>
+      <div class="risk-title">End Market Cyclicality (69% Industrial + Energy)</div>
+      <div class="risk-desc">The 2020 (leverage ~10x) and 2024 (leverage 7.3x) downturns demonstrate the asymmetric downside when capital-expenditure-linked markets turn negative. WireCo cannot offset volume declines with pricing power in its commodity steel segments, and its ABL facility availability shrinks precisely when liquidity is most needed.</div>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="risk-badge risk-low">LOW</div>
+    <div>
+      <div class="risk-title">Product Quality &amp; Execution History</div>
+      <div class="risk-desc">WireCo experienced quality control failures in its steel rope business during 2024, losing market share in the energy segment. S&amp;P confirmed these were substantially resolved by early 2025. This is now a resolved risk but illustrates that WireCo's operational execution has been imperfect — third-party buyers will price in a management execution discount.</div>
+    </div>
+  </div>
+
+  <div class="risk-item">
+    <div class="risk-badge risk-med">MED</div>
+    <div>
+      <div class="risk-title">Raw Material &amp; Energy Volatility — Asymmetric Exposure by Segment</div>
+      <div class="risk-desc">
+        WireCo's two main divisions carry fundamentally different input risks. The steel rope segment (~50% of revenue) is exposed to <b style="color:var(--text)">wire rod</b> — a steel market commodity priced on iron ore and coking coal, not oil. Bekaert sources 80–90% of wire rod locally per region, mitigating logistics risk significantly; WireCo should be similarly positioned given its US vertical integration.<br><br>
+        The synthetic rope and nets segment (~34%, including Euronete) is exposed to <b style="color:var(--text)">polymers</b> — HDPE, polypropylene, UHMWPE (Dyneema), nylon — which are petrochemical derivatives <i>directly linked to oil and gas prices</i>. A sustained 20% oil price rise translates to a ~25–35% polymer feedstock cost increase within 4–6 weeks. This is the channel through which the Middle East/Iran conflict matters operationally — not through direct business exposure, but through upstream polymer pricing.<br><br>
+        <b style="color:var(--text)">Energy</b> (primarily electricity, ~7% of revenue for comparable players) is hedged short-term but a sustained electricity price shift is a structural margin risk for wire drawing operations.<br><br>
+        <b style="color:var(--text)">Pass-through works, but has a dangerous time lag.</b> Wire rod adjustments run through contractual mechanisms with 1–3 month lags. Polymer adjustments to fishing fleet customers on annual contracts can lag 6–12 months. During that window, synthetic margins compress directly. Bekaert's Q1 2026 earnings call confirms increasing customer pushback on pass-throughs, even as management describes the mechanism as "working well overall."
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ OPPORTUNITIES ═══════════════════ -->
+<div class="section" id="opportunities">
+  <div class="section-title">Opportunities</div>
+
+  <div class="opp-item">
+    <div class="opp-title">US Tariff Competitiveness — Structural Near-Term Tailwind</div>
+    <div class="opp-desc">WireCo's vertically integrated US manufacturing is uniquely positioned under the current tariff regime. Steel rope buyers increasingly prefer domestic suppliers to avoid tariff-induced supply disruption and price uncertainty. WireCo has already increased domestic crane rope production capacity for this purpose. This is share gain at the expense of Asian importers — requiring no market growth, just pricing and availability advantage.</div>
+  </div>
+
+  <div class="opp-item">
+    <div class="opp-title">Infrastructure &amp; Data Center Construction Cycle</div>
+    <div class="opp-desc">US infrastructure legislation is driving a multi-year increase in crane activity — cranes are WireCo's strategic focus in high-performance rope. Data center construction, semiconductor fab build-out, and grid modernization are all crane-intensive, creating sustained multi-year rope replacement demand. The crane OEM market is already surging; the legislative and nearshoring wave provides a second leg through 2028+.</div>
+  </div>
+
+  <div class="opp-item">
+    <div class="opp-title">Mining Capex Supercycle (Copper, Lithium, Cobalt)</div>
+    <div class="opp-desc">Energy transition requires massive increases in copper, lithium, and cobalt production. Mine openings and expansions directly drive demand for hoist ropes (WireCo's 9% mining segment, highest-margin specialty product). The copper deficit is structural, not cyclical — demand from EVs, grid infrastructure, and data centers creates decade-long tailwinds. Pure picks-and-shovels exposure.</div>
+  </div>
+
+  <div class="opp-item">
+    <div class="opp-title">Product Mix Shift — Path Back to 18–19% Margins</div>
+    <div class="opp-desc">WireCo's deliberate exit from commodity wire and expansion in engineered, certified, high-performance products (crane rope, deepwater mooring, mining hoist) is the single largest value-creation lever. The 2021–23 period demonstrated 18–19% EBITDA margins are achievable at scale. S&amp;P currently forecasts only 13–14% — closing even half of this gap would add $20–25M of EBITDA, moving EV by $120–200M at 7–8x, and improving equity value by that full amount.</div>
+  </div>
+
+  <div class="opp-item">
+    <div class="opp-title">Interest Rate Tailwind — $19M of Annual Cash Flow Releasing</div>
+    <div class="opp-desc">Cash interest is expected to fall from $55.7M (2023 peak) to $36.7M by 2027F as SOFR normalizes — releasing $19M of annual cash on a fixed EBITDA base. This alone could move FOCF/Debt from 1.3% (2026E) toward 6–8% by 2027–28, materially strengthening the company's liquidity and leverage optics for any sale process.</div>
+  </div>
+
+  <div class="opp-item">
+    <div class="opp-title">BBRG Acquisition Optionality (Post-Exit)</div>
+    <div class="opp-desc">Bekaert is under structural pressure to divest BBRG (5.8% ROCE vs. 27% for Steel Wire Solutions). A new WireCo owner with a clean balance sheet could pursue BBRG to create the global #1 in specialty ropes. This bolt-on potential significantly enhances WireCo's attractiveness to any buyer — a strategic or PE acquirer paying for the platform, not just the current earnings.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ EXIT ANALYSIS ═══════════════════ -->
+<div class="section" id="exit">
+  <div class="section-title">Onex Exit Analysis</div>
+
+  <div class="grid grid-4" style="margin-bottom:16px">
+    <div class="kpi-card">
+      <div class="kpi-label">Entry Date</div>
+      <div class="kpi-value">Jun 2016</div>
+      <div class="kpi-sub">$270M equity investment</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Hard Exit Deadline</div>
+      <div class="kpi-value" style="color:var(--red)">Mid-2027</div>
+      <div class="kpi-sub">Must sign deal before Nov 2028 TL maturity</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Cont. Vehicle Status</div>
+      <div class="kpi-value" style="color:var(--red)">Excluded</div>
+      <div class="kpi-sub">Apr 2026 — Fidelity/PowerSchool/Sedgwick only</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Preferred Exit Route</div>
+      <div class="kpi-value" style="color:var(--accent)">Strategic</div>
+      <div class="kpi-sub">Kiswire / Teufelberger / Usha Martin</div>
+    </div>
+  </div>
+
+  <!-- Valuation Bridge -->
+  <div class="card" style="margin-bottom:16px">
+    <div style="font-weight:600;color:#fff;margin-bottom:16px;font-size:0.95rem">Exit Valuation Bridge — Base: 2026E EBITDA $90.7M / 2027F EBITDA $95.5M</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Exit Multiple</th><th>EV ($M)</th><th>− Gross Debt</th><th>− ABL Est.</th><th>Equity Value</th><th>vs. $270M Entry</th><th>~MOIC</th><th>Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5.0× '26E EBITDA</td><td>$454M</td><td>($540M)</td><td>($30M)</td><td class="red">($116M)</td><td class="red">−$386M</td><td class="red">&lt;0×</td><td class="red">Debt restructuring</td>
+          </tr>
+          <tr>
+            <td>6.0× '26E EBITDA</td><td>$544M</td><td>($540M)</td><td>($30M)</td><td class="red">($26M)</td><td class="red">−$296M</td><td class="red">~0×</td><td class="red">Near-total equity loss</td>
+          </tr>
+          <tr>
+            <td>7.0× '26E EBITDA</td><td>$635M</td><td>($540M)</td><td>($30M)</td><td class="orange">$65M</td><td class="orange">−$205M</td><td class="orange">0.2×</td><td class="orange">Severe loss</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>8.0× '26E EBITDA</td><td>$726M</td><td>($540M)</td><td>($30M)</td><td class="yellow">$156M</td><td class="yellow">−$114M</td><td class="yellow">0.6×</td><td class="yellow">Significant loss</td>
+          </tr>
+          <tr>
+            <td>9.0× '26E EBITDA</td><td>$816M</td><td>($540M)</td><td>($30M)</td><td class="green">$246M</td><td class="green">−$24M</td><td class="green">~0.9×</td><td class="green">Near breakeven</td>
+          </tr>
+          <tr>
+            <td>10.0× '26E EBITDA</td><td>$907M</td><td>($540M)</td><td>($30M)</td><td class="green">$337M</td><td class="green">+$67M</td><td class="green">1.2×</td><td class="green">Modest gain — synergy case</td>
+          </tr>
+          <tr style="border-top:2px solid var(--border)">
+            <td>8.0× '27F EBITDA</td><td>$764M</td><td>($535M)</td><td>($30M)</td><td class="yellow">$199M</td><td class="yellow">−$71M</td><td class="yellow">0.7×</td><td class="yellow">Still a loss — need 9×+</td>
+          </tr>
+          <tr>
+            <td>9.0× '27F EBITDA</td><td>$860M</td><td>($535M)</td><td>($30M)</td><td class="green">$295M</td><td class="green">+$25M</td><td class="green">~1.1×</td><td class="green">Near breakeven on wait</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-red" style="margin-top:14px">
+      <div class="alert-title" style="color:var(--red)">⚠ The Uncomfortable Math</div>
+      <p style="font-size:0.88rem;color:var(--muted)">Onex needs a buyer to pay &gt;9× EBITDA to come close to recovering its $270M equity investment. At realistic market multiples for a B-rated, 6.5× levered specialty industrial (typically 6–8×), Onex is likely to realize a material loss. The leverage structure has absorbed essentially all the upside — interest expense and the flat debt balance have converted a period of strong underlying performance (2021–23 EBITDA growth) into near-zero equity value creation. This is a significantly underperforming investment vs. typical PE target of 2–3× MOIC.</p>
+    </div>
+  </div>
+
+  <!-- Exit Scenarios -->
+  <div class="grid grid-3" style="margin-bottom:16px">
+    <div class="exit-scenario preferred">
+      <div class="scenario-label">Scenario 1 — Preferred</div>
+      <div class="scenario-title">Strategic Sale (2026–27)</div>
+      <div class="scenario-row"><span class="label">Likely Buyers</span><span class="value">Kiswire, Teufelberger, Usha Martin</span></div>
+      <div class="scenario-row"><span class="label">Multiple Range</span><span class="value" style="color:var(--accent3)">8–10× EBITDA</span></div>
+      <div class="scenario-row"><span class="label">EV Range</span><span class="value">$725–$955M</span></div>
+      <div class="scenario-row"><span class="label">Equity to Onex</span><span class="value" style="color:var(--orange)">$155–$385M</span></div>
+      <div class="scenario-row"><span class="label">Probability</span><span class="value" style="color:var(--accent)">40%</span></div>
+      <p style="font-size:0.84rem;color:var(--muted);margin-top:10px">Best outcome. Kiswire gains Western presence, brand, and safety certifications it cannot build organically — full acquisition is antitrust-manageable given limited Western overlap. Teufelberger and Usha Martin are alternative buyers. A WireCo + BBRG combination under a new owner is possible but requires antitrust remedies to be scoped and priced in from day one — do not treat it as a clean deal. Synergies justify 9–10× for the right buyer.</p>
+    </div>
+    <div class="exit-scenario">
+      <div class="scenario-label">Scenario 2</div>
+      <div class="scenario-title">PE Secondary (2027)</div>
+      <div class="scenario-row"><span class="label">Likely Buyers</span><span class="value">KPS, Platinum, CVC, Triton</span></div>
+      <div class="scenario-row"><span class="label">Multiple Range</span><span class="value" style="color:var(--orange)">6–7.5× EBITDA</span></div>
+      <div class="scenario-row"><span class="label">EV Range</span><span class="value">$545–$680M</span></div>
+      <div class="scenario-row"><span class="label">Equity to Onex</span><span class="value" style="color:var(--red)">($25M) – $110M</span></div>
+      <div class="scenario-row"><span class="label">Probability</span><span class="value" style="color:var(--accent)">35%</span></div>
+      <p style="font-size:0.84rem;color:var(--muted);margin-top:10px">Industrial PE buys for mix-shift thesis, BBRG optionality, and tariff tailwind. Challenged by existing leverage — new PE buyer must recapitalize significantly. At 6×, Onex essentially hands keys to debt holders.</p>
+    </div>
+    <div class="exit-scenario">
+      <div class="scenario-label">Scenario 3</div>
+      <div class="scenario-title">Distressed / Forced Sale</div>
+      <div class="scenario-row"><span class="label">Trigger</span><span class="value">Earnings miss + 2028 cliff</span></div>
+      <div class="scenario-row"><span class="label">Multiple Range</span><span class="value" style="color:var(--red)">&lt;6× EBITDA</span></div>
+      <div class="scenario-row"><span class="label">EV Range</span><span class="value">&lt;$545M</span></div>
+      <div class="scenario-row"><span class="label">Equity to Onex</span><span class="value" style="color:var(--red)">Zero / negative</span></div>
+      <div class="scenario-row"><span class="label">Probability</span><span class="value" style="color:var(--accent)">25%</span></div>
+      <p style="font-size:0.84rem;color:var(--muted);margin-top:10px">If EBITDA recovery stalls and leverage stays above 6.5× into 2027–28, lenders hold the leverage. Pre-pack restructuring or distressed sale. Equity wiped. Triggered by end-market softness or execution failure.</p>
+    </div>
+  </div>
+
+  <!-- Timeline + key insight -->
+  <div class="grid grid-2">
+    <div class="card">
+      <div style="font-weight:600;color:var(--accent2);margin-bottom:16px;font-size:0.95rem">Exit Timing — The 2028 Clock</div>
+      <div class="timeline">
+        <div class="timeline-item peak">
+          <div class="timeline-date">Q2 2026 (Now)</div>
+          <div class="timeline-event">Recovery confirmed, outlook stable</div>
+          <div class="timeline-detail">EBITDA $88.5M, 6.5× leverage. Begin process preparation. Show 2–3 quarters of trajectory.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">H2 2026 — Q1 2027</div>
+          <div class="timeline-event">Optimal sale launch window</div>
+          <div class="timeline-detail">EBITDA trending $90–95M. Recovery visible. Tariff narrative strong. Launch competitive process with dual-track (strategic + PE).</div>
+        </div>
+        <div class="timeline-item warning">
+          <div class="timeline-date">Mid-2027 — Hard Deadline</div>
+          <div class="timeline-event">Must sign deal</div>
+          <div class="timeline-detail">Closing takes 6–12 months. Sign by mid-2027 to close before 2028 maturity overhang becomes a live diligence issue for buyers.</div>
+        </div>
+        <div class="timeline-item negative">
+          <div class="timeline-date">Nov 2028</div>
+          <div class="timeline-event">$540M TL Maturity</div>
+          <div class="timeline-detail">If unsold: refinancing required. At 5–6× leverage, new money is expensive. Equity further impaired. Lenders in control.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-weight:700;font-size:1.05rem;color:#fff;margin-bottom:16px">Bottom Line Assessment</div>
+      <p style="font-size:0.9rem;color:var(--muted);margin-bottom:12px"><b style="color:var(--text)">Business quality:</b> Genuinely sound industrial asset with durable niche positions, ~80% consumables, and a credible strategic shift toward high-performance rope. Not a structurally declining business.</p>
+      <p style="font-size:0.9rem;color:var(--muted);margin-bottom:12px"><b style="color:var(--text)">The problem is the capital structure, not the business.</b> $540M of debt against $88.5M of EBITDA leaves no equity value at market multiples. Onex has been on the wrong side of the leverage trade throughout most of the hold.</p>
+      <p style="font-size:0.9rem;color:var(--muted);margin-bottom:12px"><b style="color:var(--text)">Key insight on why debt didn't decrease:</b> Floating-rate debt during a historic rate cycle was devastating. The $16.7M jump in interest expense from 2022 to 2023 alone offset the entire EBITDA growth in those peak years. WireCo was generating good EBITDA at the operating level but the interest bill consumed it.</p>
+      <p style="font-size:0.9rem;color:var(--muted);margin-bottom:12px"><b style="color:var(--text)">Best outcome:</b> Strategic buyer paying 9–10× on synergies (Kiswire the most logical). The BBRG angle makes WireCo even more compelling as an acquisition platform.</p>
+      <p style="font-size:0.9rem;color:var(--muted)"><b style="color:var(--text)">Watch: H1 2026 EBITDA.</b> If trending toward $45–50M (annualizing $90M+), the sale process opens with credibility. If disappointing, leverage risks re-entering the danger zone and the exit window may close permanently.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ DEBT REDUCTION STRATEGY ═══════════════════ -->
+<div class="section" id="debtreduction">
+  <div class="section-title">Debt Reduction Strategy — Removing the Sword</div>
+
+  <div class="alert alert-blue" style="margin-bottom:20px">
+    <div class="alert-title" style="color:var(--accent)">The Core Diagnosis: A Good Business Trapped by a Bad Capital Structure</div>
+    <p style="font-size:0.9rem;color:var(--muted)">WireCo's end markets — oil &amp; gas, mining for battery metals, crane-intensive data center construction, fishing — are structurally growing. The problem is not the business. It is $540M of floating-rate debt at 6.5× EBITDA that consumes every dollar of cash flow and prevents any investment in growth. The goal is surgical: remove the leverage constraint, then redirect all energy toward the growth agenda. These are two separate problems requiring two separate solutions.</p>
+  </div>
+
+  <!-- Option cards -->
+  <div class="section-title" style="font-size:1rem">All Options — From Easiest to Most Aggressive</div>
+
+  <div class="grid grid-3" style="margin-bottom:16px">
+
+    <div class="card" style="border-color:rgba(79,201,142,0.3)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="font-weight:700;color:var(--accent3);font-size:0.95rem">1. Amend &amp; Extend</div>
+        <span class="badge" style="background:rgba(79,201,142,0.15);color:var(--accent3);border:1px solid rgba(79,201,142,0.3);font-size:0.72rem">DO FIRST</span>
+      </div>
+      <div style="font-size:0.84rem;color:var(--muted);margin-bottom:12px">Negotiate with lenders to push maturity from Nov 2028 to Nov 2031. In exchange: a 1–2% upfront fee (~$8–10M) and a modest spread increase. Removes the 29-month clock entirely.</div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px;font-size:0.82rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Debt reduction</span><span style="color:var(--orange)">Zero (buys time)</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Lender incentive</span><span style="color:var(--accent3)">High — beats 65% default recovery</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Timeline</span><span>3–6 months</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Antitrust</span><span style="color:var(--accent3)">None</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(79,201,142,0.3)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="font-weight:700;color:var(--accent3);font-size:0.95rem">2. Sale-Leaseback of Real Estate</div>
+        <span class="badge" style="background:rgba(79,201,142,0.15);color:var(--accent3);border:1px solid rgba(79,201,142,0.3);font-size:0.72rem">DO FIRST</span>
+      </div>
+      <div style="font-size:0.84rem;color:var(--muted);margin-bottom:12px">Sell owned manufacturing facilities to an industrial REIT or infrastructure fund; lease back immediately. Operations unchanged. Permanent rent cost (~$6–8M/yr) but cheaper than current marginal debt cost.</div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px;font-size:0.82rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Debt reduction</span><span style="color:var(--accent3)">$80–120M (~1.0× leverage)</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Operational impact</span><span style="color:var(--accent3)">None</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Timeline</span><span>6–9 months</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Antitrust</span><span style="color:var(--accent3)">None</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(79,142,247,0.3)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="font-weight:700;color:var(--accent);font-size:0.95rem">3. Strategic Minority Stake</div>
+        <span class="badge" style="background:rgba(79,142,247,0.15);color:var(--accent);border:1px solid rgba(79,142,247,0.3);font-size:0.72rem">HIGH IMPACT</span>
+      </div>
+      <div style="font-size:0.84rem;color:var(--muted);margin-bottom:12px">Sell 30–40% to Kiswire or Teufelberger at implied EV of ~$600M. Proceeds ~$180–240M used to pay down TL directly. Onex retains 60–70%. Structured as <b style="color:var(--text)">financial investment with limited governance rights</b> to minimise antitrust scrutiny — see note below.</div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px;font-size:0.82rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Debt reduction</span><span style="color:var(--accent3)">$180–240M (→ 3.3–3.8× leverage)</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Onex equity</span><span style="color:var(--accent3)">Preserved — path to recovery</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Timeline</span><span>9–15 months</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Antitrust</span><span style="color:var(--orange)">Low if minority / no control</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(232,137,77,0.3)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="font-weight:700;color:var(--orange);font-size:0.95rem">4. Distressed Debt Exchange (Haircut)</div>
+        <span class="badge" style="background:rgba(232,137,77,0.15);color:var(--orange);border:1px solid rgba(232,137,77,0.3);font-size:0.72rem">TRANSFORMATIVE</span>
+      </div>
+      <div style="font-size:0.84rem;color:var(--muted);margin-bottom:12px">Negotiate voluntarily with major lenders to exchange $540M claims for ~$360M new debt + equity stake. Lenders take a ~33% nominal haircut but avoid the 65-cent default recovery. Onex equity diluted/wiped. Company emerges at 4× leverage with a clean structure.</div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px;font-size:0.82rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Debt reduction</span><span style="color:var(--accent3)">$140–180M (→ 4.0× leverage)</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Onex equity</span><span style="color:var(--red)">Diluted or wiped</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Timeline</span><span>6–12 months out-of-court</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Antitrust</span><span style="color:var(--accent3)">None</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(232,137,77,0.3)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="font-weight:700;color:var(--orange);font-size:0.95rem">5. Pre-packaged Chapter 11</div>
+        <span class="badge" style="background:rgba(232,137,77,0.15);color:var(--orange);border:1px solid rgba(232,137,77,0.3);font-size:0.72rem">NUCLEAR OPTION</span>
+      </div>
+      <div style="font-size:0.84rem;color:var(--muted);margin-bottom:12px">If out-of-court exchange fails due to lender holdouts, take the pre-negotiated plan to US bankruptcy court. With 67% of lenders signed, the court crams down dissenters. Takes 60–120 days. Operations fully normal during process. B2B industrial customers understand this — it is not liquidation.</div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px;font-size:0.82rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Debt reduction</span><span style="color:var(--accent3)">Full restructuring — ~$150–200M</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Onex equity</span><span style="color:var(--red)">Wiped</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Reputational risk</span><span style="color:var(--orange)">Moderate (manageable in B2B)</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Antitrust</span><span style="color:var(--accent3)">None</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(232,196,77,0.3)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div style="font-weight:700;color:var(--accent2);font-size:0.95rem">6. Lender-to-Own / Credit Bid</div>
+        <span class="badge" style="background:rgba(232,196,77,0.15);color:var(--accent2);border:1px solid rgba(232,196,77,0.3);font-size:0.72rem">CLEAN RESET</span>
+      </div>
+      <div style="font-size:0.84rem;color:var(--muted);margin-bottom:12px">Distressed funds (Apollo, KPS, Platinum) accumulate the TL at ~72–75 cents on the dollar, then convert claims to 100% equity at restructuring. New owners are professionals who specialise in this situation. Company emerges debt-free. Onex wiped — but the business gets the cleanest reset possible.</div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px;font-size:0.82rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Debt reduction</span><span style="color:var(--accent3)">Full — near-zero debt at emergence</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Onex equity</span><span style="color:var(--red)">Wiped</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Business outcome</span><span style="color:var(--accent3)">Excellent — growth-ready</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Antitrust</span><span style="color:var(--accent3)">None</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Antitrust Warning -->
+  <div class="alert alert-red" style="margin-bottom:20px">
+    <div class="alert-title" style="color:var(--red)">⚠ Antitrust Constraint on Any Strategic Deal with a Direct Competitor</div>
+    <div class="grid grid-2" style="margin-top:8px;gap:16px">
+      <div>
+        <p style="font-size:0.88rem;color:var(--muted);margin-bottom:8px"><b style="color:var(--text)">WireCo + BBRG (full acquisition or JV) — HIGH risk.</b> Both compete directly in offshore mooring rope, crane rope, and mining hoist rope. In the North Sea offshore segment alone, combined market share could reach 40–60%. The EU's DG Competition would require significant divestitures of specific product lines before approving. A JV is even more problematic — competition authorities treat JVs between direct competitors as potential cartel structures, sometimes more harshly than outright acquisitions. This deal is not impossible but requires priced-in divestiture conditions from day one.</p>
+        <p style="font-size:0.88rem;color:var(--muted)"><b style="color:var(--text)">WireCo + Kiswire (full acquisition) — MODERATE risk.</b> Kiswire is overwhelmingly Asian (50%+ revenue in Korea, limited Western certified-specialty presence). Geographic non-overlap in the US is substantial — Kiswire has almost no US manufacturing. Main scrutiny would be in specific European specialty segments. Likely approvable with modest divestitures or behavioural commitments.</p>
+      </div>
+      <div>
+        <p style="font-size:0.88rem;color:var(--muted);margin-bottom:8px"><b style="color:var(--text)">Kiswire minority stake (30–40%, no operational control) — LOW risk.</b> A financial investment without board representation or access to commercially sensitive information typically does not trigger a full merger review in most jurisdictions. This is why the minority stake route is not just financially attractive — it is the antitrust path of least resistance. This is the right structure for a near-term strategic partnership.</p>
+        <p style="font-size:0.88rem;color:var(--muted)"><b style="color:var(--text)">Bottom line:</b> do not structure any deal with a direct competitor as a JV or operational partnership. Use a minority financial stake in the short term. Full strategic combinations are for post-exit, with antitrust remedies fully scoped and priced in from the start of negotiations.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommended sequence -->
+  <div class="card" style="border-color:rgba(79,201,142,0.3)">
+    <div style="font-weight:700;color:var(--accent3);margin-bottom:16px;font-size:0.95rem">Recommended Sequence — The "Amend, Monetise, Partner, Grow" Plan</div>
+    <div class="grid grid-2" style="gap:20px">
+      <div>
+        <div class="timeline">
+          <div class="timeline-item peak">
+            <div class="timeline-date">Months 0–3 (Now)</div>
+            <div class="timeline-event">Amend &amp; Extend the Term Loan</div>
+            <div class="timeline-detail">Approach agent bank immediately. Cost ~$8–10M in fees plus marginally higher interest. This removes the 2028 cliff and changes the entire negotiating posture for every other option. Do this unconditionally — it makes everything else possible.</div>
+          </div>
+          <div class="timeline-item peak">
+            <div class="timeline-date">Months 3–9</div>
+            <div class="timeline-event">Sale-Leaseback of US Plants</div>
+            <div class="timeline-detail">Run a process on the US manufacturing real estate. Target $80–100M of proceeds → direct TL paydown. Leverage drops from 6.5× to approximately 5.5×. Operationally invisible — plants keep running under long-term leases.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">Months 6–15</div>
+            <div class="timeline-event">Kiswire Minority Stake — 30–40%</div>
+            <div class="timeline-detail">Structure as a financial investment with limited governance rights to minimise antitrust exposure. At ~$600M implied EV, proceeds of $180–240M applied to the TL. Combined with leaseback: leverage falls to approximately 3.3–3.8×. Onex retains majority; equity is now worth something real.</div>
+          </div>
+          <div class="timeline-item peak">
+            <div class="timeline-date">Month 18 onward</div>
+            <div class="timeline-event">Full Growth Agenda — No Distractions</div>
+            <div class="timeline-detail">With leverage at 3.5× and extended maturity, redirect all management energy to the growth plan. Mix shift, energy transition positioning, BBRG acquisition optionality. The 2028–29 exit is now a completely different conversation.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="background:var(--surface2);border-radius:8px;padding:16px;margin-bottom:14px">
+          <div style="font-weight:600;margin-bottom:10px;font-size:0.9rem">Impact on Key Metrics</div>
+          <table style="width:100%;font-size:0.84rem">
+            <thead><tr>
+              <th style="text-align:left;color:var(--muted);padding:5px 8px;font-size:0.75rem">Metric</th>
+              <th style="text-align:center;color:var(--muted);padding:5px 8px;font-size:0.75rem">Today</th>
+              <th style="text-align:center;color:var(--muted);padding:5px 8px;font-size:0.75rem">After A&amp;E + Leaseback</th>
+              <th style="text-align:center;color:var(--muted);padding:5px 8px;font-size:0.75rem">After + Minority Stake</th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="padding:5px 8px;color:#c8cce0">Adj. Debt</td><td style="text-align:center;padding:5px 8px" class="red">$575M</td><td style="text-align:center;padding:5px 8px" class="orange">~$475M</td><td style="text-align:center;padding:5px 8px" class="green">~$270M</td></tr>
+              <tr><td style="padding:5px 8px;color:#c8cce0">Leverage</td><td style="text-align:center;padding:5px 8px" class="red">6.5×</td><td style="text-align:center;padding:5px 8px" class="orange">~5.5×</td><td style="text-align:center;padding:5px 8px" class="green">~3.0×</td></tr>
+              <tr><td style="padding:5px 8px;color:#c8cce0">Maturity</td><td style="text-align:center;padding:5px 8px" class="red">Nov 2028</td><td style="text-align:center;padding:5px 8px" class="green">Nov 2031</td><td style="text-align:center;padding:5px 8px" class="green">Nov 2031</td></tr>
+              <tr><td style="padding:5px 8px;color:#c8cce0">Ann. Interest</td><td style="text-align:center;padding:5px 8px" class="red">~$44M</td><td style="text-align:center;padding:5px 8px" class="orange">~$38M</td><td style="text-align:center;padding:5px 8px" class="green">~$22M</td></tr>
+              <tr><td style="padding:5px 8px;color:#c8cce0">FOCF / yr</td><td style="text-align:center;padding:5px 8px" class="orange">~$7M</td><td style="text-align:center;padding:5px 8px" class="green">~$18M</td><td style="text-align:center;padding:5px 8px" class="green">~$35M</td></tr>
+              <tr><td style="padding:5px 8px;color:#c8cce0">S&amp;P Rating path</td><td style="text-align:center;padding:5px 8px" class="orange">B stable</td><td style="text-align:center;padding:5px 8px" class="orange">B+ possible</td><td style="text-align:center;padding:5px 8px" class="green">BB− possible</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="background:rgba(79,201,142,0.08);border:1px solid rgba(79,201,142,0.2);border-radius:8px;padding:14px">
+          <div style="font-weight:600;color:var(--accent3);margin-bottom:6px;font-size:0.9rem">The Growth Agenda — Once Leverage is at 3×</div>
+          <div style="font-size:0.84rem;color:var(--muted);line-height:1.9">
+            <b style="color:var(--text)">Mix shift completion</b> — full exit from commodity wire; margins back to 18–19%<br>
+            <b style="color:var(--text)">Energy transition</b> — copper/battery mining hoist rope, offshore wind, data center cranes<br>
+            <b style="color:var(--text)">Digital services layer</b> — rope monitoring &amp; predictive replacement contracts (12–15× multiple vs 6–8× for product)<br>
+            <b style="color:var(--text)">BBRG acquisition</b> — at 3× leverage, a $200–250M deal is fundable; creates global #1 in specialty rope with antitrust properly scoped
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+</div><!-- end content -->
+
+<div style="background:var(--surface);border-top:1px solid var(--border);padding:18px 32px;text-align:center;color:var(--muted);font-size:0.8rem">
+  Sources: S&amp;P Global Ratings (13 reports, 2016–2026) · Bekaert Annual Reports &amp; Excel model (2019–2025) · GlobeNewswire — Onex April 2026 Continuation Vehicle · Allied Market Research / Grand View Research
+</div>
+
+<script>
+// ── Dynamic offset helper ─────────────────────────────────────────────
+function stickyH() {
+  const st = document.querySelector('.sticky-top');
+  return st ? st.getBoundingClientRect().height + 20 : 140;
+}
+
+// ── Smooth scroll with correct offset ────────────────────────────────
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - stickyH();
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+}
+
+// ── Nav click handlers ────────────────────────────────────────────────
+document.querySelectorAll('.nav a').forEach(a => {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelectorAll('.nav a').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+    const id = this.getAttribute('href').replace('#', '');
+    scrollToSection(id);
+  });
+});
+
+// ── Scroll spy ────────────────────────────────────────────────────────
+const sections = ['snapshot','financials','cashflow','market','competition','risks','opportunities','exit','debtreduction'];
+function updateSpy() {
+  const offset = stickyH() + 10;
+  let current = sections[0];
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - offset) current = id;
+  });
+  document.querySelectorAll('.nav a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+  // auto-scroll nav tab into view
+  const activeLink = document.querySelector('.nav a.active');
+  if (activeLink) activeLink.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+}
+window.addEventListener('scroll', updateSpy, { passive: true });
+
+// Pie chart
+new Chart(document.getElementById('pieChart').getContext('2d'), {
+  type: 'doughnut',
+  data: { labels: ['Industrial 43%','Energy 26%','Fishing & Maritime 22%','Mining 9%'],
+    datasets: [{ data: [43,26,22,9], backgroundColor: ['#4f8ef7','#e8c44d','#4fc98e','#e8894d'], borderWidth: 0, hoverOffset: 6 }] },
+  options: { responsive: false, plugins: { legend: { display: false } }, cutout: '65%' }
+});
+
+const C = { green:'#4fc98e', red:'#e05252', orange:'#e8894d', blue:'#4f8ef7', yellow:'#e8c44d', muted:'#9196b0' };
+const gridColor = 'rgba(46,50,80,0.5)';
+const years = ['2021','2022','2023','2024','2025','2026E','2027F'];
+const revenues = [670.3,733.5,758.9,618.7,657.4,695.6,720.0];
+const ebitdas  = [131.0,136.6,139.3,75.9,88.5,90.7,95.5];
+const margins  = [19.5,18.6,18.4,12.3,13.5,13.0,13.3];
+const barColors  = [C.green,C.green,C.green,C.red,C.orange,'rgba(79,201,142,0.5)','rgba(79,201,142,0.5)'];
+const barBorders = [C.green,C.green,C.green,C.red,C.orange,C.green,C.green];
+
+new Chart(document.getElementById('ebitdaChart').getContext('2d'), {
+  data: { labels: years,
+    datasets: [
+      { type:'bar', label:'Revenue', data:revenues, backgroundColor:'rgba(79,142,247,0.15)', borderColor:'rgba(79,142,247,0.4)', borderWidth:1, yAxisID:'y' },
+      { type:'bar', label:'EBITDA',  data:ebitdas,  backgroundColor:barColors, borderColor:barBorders, borderWidth:1, yAxisID:'y' },
+      { type:'line', label:'EBITDA Margin %', data:margins, borderColor:C.yellow, backgroundColor:'transparent', borderWidth:2.5, pointRadius:4, pointBackgroundColor:C.yellow, tension:0.3, yAxisID:'y1' }
+    ] },
+  options: { responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ display:false }, tooltip:{ mode:'index', intersect:false } },
+    scales:{
+      x:{ ticks:{ color:C.muted, font:{size:12} }, grid:{ color:gridColor } },
+      y:{ ticks:{ color:C.muted, font:{size:12}, callback:v=>'$'+v+'M' }, grid:{ color:gridColor }, suggestedMax:900 },
+      y1:{ position:'right', ticks:{ color:C.yellow, font:{size:12}, callback:v=>v+'%' }, grid:{ display:false }, min:0, max:30 }
+    } }
+});
+
+const levs = [4.3,4.0,3.9,7.3,6.5,6.3,5.9];
+new Chart(document.getElementById('leverageChart').getContext('2d'), {
+  type:'line',
+  data:{ labels:years,
+    datasets:[
+      { label:'Net Leverage', data:levs, borderColor:C.blue, backgroundColor:'rgba(79,142,247,0.07)', borderWidth:2.5, pointRadius:5,
+        pointBackgroundColor:levs.map(v=>v>6.5?C.red:v>5.5?C.orange:C.green), fill:true, tension:0.3 },
+      { label:'Downgrade Trigger (6.5×)', data:Array(7).fill(6.5), borderColor:'rgba(224,82,82,0.5)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }
+    ] },
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:ctx=>' '+ctx.dataset.label+': '+ctx.raw+'×' } } },
+    scales:{
+      x:{ ticks:{ color:C.muted, font:{size:12} }, grid:{ color:gridColor } },
+      y:{ ticks:{ color:C.muted, font:{size:12}, callback:v=>v+'×' }, grid:{ color:gridColor }, min:0, max:10 }
+    } }
+});
+
+const focfVals = [33.2,29.5,20.1,-8.9,-8.1,7.4,25.4];
+let cum=0; const cumFcf = focfVals.map(v=>{ cum+=v; return Math.round(cum*10)/10; });
+new Chart(document.getElementById('fcfChart').getContext('2d'), {
+  type:'line',
+  data:{ labels:years,
+    datasets:[
+      { label:'Annual FOCF', data:focfVals, type:'bar',
+        backgroundColor:focfVals.map(v=>v<0?'rgba(224,82,82,0.6)':'rgba(79,201,142,0.5)'),
+        borderColor:focfVals.map(v=>v<0?C.red:C.green), borderWidth:1, yAxisID:'y' },
+      { label:'Cumulative FOCF', data:cumFcf, borderColor:C.blue, backgroundColor:'transparent',
+        borderWidth:2.5, pointRadius:4, pointBackgroundColor:C.blue, tension:0.3, yAxisID:'y' }
+    ] },
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ display:false }, tooltip:{ mode:'index', intersect:false } },
+    scales:{
+      x:{ ticks:{ color:C.muted, font:{size:12} }, grid:{ color:gridColor } },
+      y:{ ticks:{ color:C.muted, font:{size:12}, callback:v=>'$'+v+'M' }, grid:{ color:gridColor }, min:-20 }
+    } }
+});
+</script>
+</body>
+</html>
